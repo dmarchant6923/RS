@@ -1,0 +1,152 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6925411839397589859
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 240833769711868825, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_Name
+      value: Spec Orb
+      objectReference: {fileID: 0}
+    - target: {fileID: 2111568807459296289, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_Name
+      value: Spec Mask
+      objectReference: {fileID: 0}
+    - target: {fileID: 2512499426013420911, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_Name
+      value: Spec Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 2717461080199199991, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 2800000, guid: 237c084f538ae7b4883814f94908de59, type: 3}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_Pivot.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 115
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -375
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4565937155874641813, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: canBeToggled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4565937155874641813, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: onSpriteIcon
+      value: 
+      objectReference: {fileID: 2800000, guid: 237c084f538ae7b4883814f94908de59, type: 3}
+    - target: {fileID: 4565937155874641813, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: offSpriteIcon
+      value: 
+      objectReference: {fileID: 2800000, guid: 237c084f538ae7b4883814f94908de59, type: 3}
+    - target: {fileID: 4565937155874641813, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: onSpriteBackground
+      value: 
+      objectReference: {fileID: 2800000, guid: 45588998cd27a7b4d97e7af271e0e166, type: 3}
+    - target: {fileID: 4565937155874641813, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: offSpriteBackground
+      value: 
+      objectReference: {fileID: 2800000, guid: 1ecc6085adcd2044eaf8e8d0f541f9e3, type: 3}
+    - target: {fileID: 4565937155874641813, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: disabledSpriteBackground
+      value: 
+      objectReference: {fileID: 2800000, guid: f6f2ce123f5deed42a0a45978c06c52d, type: 3}
+    - target: {fileID: 4762237774295448102, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_Name
+      value: Spec Orb BG
+      objectReference: {fileID: 0}
+    - target: {fileID: 5399514937459475923, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 2800000, guid: 1ecc6085adcd2044eaf8e8d0f541f9e3, type: 3}
+    - target: {fileID: 8981087384632582640, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_Name
+      value: Spec Panel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8987845916195416452, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_Name
+      value: Spec Orb Icon
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5726324302723807730, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
