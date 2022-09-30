@@ -10,8 +10,10 @@ public class Player : MonoBehaviour
     GameObject newTrueTileObject;
     TrueTile trueTile;
     public Vector2 playerPosition;
-    float moveSpeed = 3.1f;
+    float moveSpeed = 3f;
     public List<Vector2> playerPath;
+
+    public Vector2 truePlayerTile;
 
     public float runEnergy = 500;
     [System.NonSerialized] public float weight = 40;
@@ -20,7 +22,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        Vector2 startTile = TickManager.FindTile(transform.position);
+        Vector2 startTile = TileManager.FindTile(transform.position);
         transform.position = startTile;
 
         newTrueTileObject = Instantiate(trueTileObject, startTile, Quaternion.identity);
@@ -31,7 +33,7 @@ public class Player : MonoBehaviour
 
         playerPath = new List<Vector2>();
 
-        TickManager.beforeTick += RunEnergy;
+        TickManager.afterTick += RunEnergy;
     }
 
     // Update is called once per frame
@@ -48,9 +50,9 @@ public class Player : MonoBehaviour
 
             if (Mathf.Abs(playerPosition.x - playerPath[0].x) > 0 && Mathf.Abs(playerPosition.y - playerPath[0].y) > 0)
             {
-                trueMoveSpeed *= 1.3f;
+                trueMoveSpeed *= Mathf.Sqrt(2);
             }
-            if ((playerPosition - trueTile.currentTile).magnitude > 2 || playerPath.Count > 1)
+            if ((playerPosition - trueTile.currentTile).magnitude > 2 || playerPath.Count > 2)
             {
                 trueMoveSpeed *= 1.3f;
             }
@@ -70,7 +72,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    //updates before every tick
+    //updates after every tick
     void RunEnergy()
     {
         if (trueTile.moving && runEnabled && forceWalk == false)

@@ -57,4 +57,9 @@ public class RunToggle : MonoBehaviour
 
         numberText.text = Mathf.Round(player.runEnergy / 100).ToString();
     }
+
+    private void Update()
+    {
+        numberText.text = Mathf.Round(player.runEnergy / 100).ToString();
+    }
 }

@@ -24,24 +24,35 @@ public class TrueTile : MonoBehaviour
     void Start()
     {
         TickManager.onTick += Move;
-        MouseManager.InGameMouseDown += Click;
+        MouseManager.IGClientClick += ClientClick;
+        MouseManager.IGServerClick += ServerClick;
 
         currentTile = transform.position;
         moving = false;
         path = new List<Vector2>();
     }
 
-    void Click()
+    void ClientClick()
+    {
+        destinationTile = TileManager.mouseCoordinate;
+        if (newClickedTile != null)
+        {
+            Destroy(newClickedTile);
+        }
+        newClickedTile = Instantiate(clickedTile, destinationTile, Quaternion.identity);
+    }
+
+    void ServerClick()
     {
         if (newClickedTile != null)
         {
             Destroy(newClickedTile);
         }
-        destinationTile = TickManager.mouseCoordinate;
         newClickedTile = Instantiate(clickedTile, destinationTile, Quaternion.identity);
         path = new List<Vector2>();
-        FindPath(currentTile, destinationTile);
-        clicked = true;
+        //FindPath(currentTile, destinationTile);
+        //StartCoroutine(Pathfinder.FindAStarPath(currentTile, destinationTile));
+        //clicked = true;
     }
 
     void FindPath(Vector2 startTile, Vector2 endTile)
@@ -113,10 +124,15 @@ public class TrueTile : MonoBehaviour
                 currentTile = path[0];
                 transform.position = currentTile;
                 player.playerPath.Add(currentTile);
+                player.truePlayerTile = currentTile;
                 path.RemoveAt(0);
                 if (path.Count == 0)
                 {
                     moving = false;
+                    if (newClickedTile != null)
+                    {
+                        Destroy(newClickedTile);
+                    }
                     break;
                 }
                 i--;

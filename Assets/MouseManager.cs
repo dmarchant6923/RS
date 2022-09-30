@@ -4,15 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class MouseManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class MouseManager : MonoBehaviour
 {
-    Button button;
-
     public delegate void MouseAction();
-    public static event MouseAction InGameMouseDown;
+    public static event MouseAction IGClientClick;
+    public static event MouseAction IGServerClick;
 
     Camera cam;
     public static bool mouseOnScreen;
+
+    public GameObject mouseTile;
+    GameObject newMouseTile;
+    SpriteRenderer mouseTileSprite;
 
     public class Action
     {
@@ -22,23 +25,12 @@ public class MouseManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     void Start()
     {
-        button = GetComponent<Button>();
-        button.onClick.AddListener(delegate { GameClick(); });
-
         cam = FindObjectOfType<Camera>();
         mouseOnScreen = false;
-    }
 
-    void GameClick()
-    {
-        if (InGameMouseDown != null)
-        {
-            InGameMouseDown();
-            if (Input.GetMouseButtonDown(2))
-            {
-                Debug.Log("you are here");
-            }
-        }
+        newMouseTile = Instantiate(mouseTile, TileManager.mouseCoordinate, Quaternion.identity);
+        mouseTileSprite = newMouseTile.GetComponent<SpriteRenderer>();
+        mouseTileSprite.enabled = false;
     }
 
     private void Update()
@@ -47,18 +39,36 @@ public class MouseManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         if (screenPoint.x < 0 || screenPoint.x > 1 || screenPoint.y < 0 || screenPoint.y > 1)
         {
             mouseOnScreen = false;
+            mouseTileSprite.enabled = false;
             return;
         }
         mouseOnScreen = true;
+
+        if (MouseOverGame.isOverGame)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                GameClientClick();
+                StartCoroutine(GameServerClick());
+            }
+            mouseTileSprite.enabled = true;
+        }
+
+        else
+        {
+            mouseTileSprite.enabled = false;
+        }
+        newMouseTile.transform.position = TileManager.mouseCoordinate;
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    void GameClientClick()
     {
-        actions.Add("Walk here");
+        IGClientClick?.Invoke();
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    IEnumerator GameServerClick()
     {
-        actions.Remove("Walk here");
+        yield return new WaitForSeconds(TickManager.simLatency);
+        IGServerClick?.Invoke();
     }
 }
