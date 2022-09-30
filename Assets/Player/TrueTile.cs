@@ -12,6 +12,7 @@ public class TrueTile : MonoBehaviour
     bool clicked = false;
 
     public Player player;
+    Pathfinder pathFinder;
 
     public Vector2 currentTile;
     public Vector2 destinationTile;
@@ -26,6 +27,8 @@ public class TrueTile : MonoBehaviour
         TickManager.onTick += Move;
         MouseManager.IGClientClick += ClientClick;
         MouseManager.IGServerClick += ServerClick;
+
+        pathFinder = FindObjectOfType<Pathfinder>();
 
         currentTile = transform.position;
         moving = false;
@@ -49,10 +52,9 @@ public class TrueTile : MonoBehaviour
             Destroy(newClickedTile);
         }
         newClickedTile = Instantiate(clickedTile, destinationTile, Quaternion.identity);
-        path = new List<Vector2>();
-        //FindPath(currentTile, destinationTile);
-        //StartCoroutine(Pathfinder.FindAStarPath(currentTile, destinationTile));
-        //clicked = true;
+        path = pathFinder.FindAStarPath(currentTile, destinationTile);
+
+        clicked = true;
     }
 
     void FindPath(Vector2 startTile, Vector2 endTile)
@@ -85,6 +87,7 @@ public class TrueTile : MonoBehaviour
     {
         if (clicked)
         {
+            newClickedTile.transform.position = path[path.Count - 1];
             oddTilesInPath = false;
             if (path.Count % 2 == 1)
             {

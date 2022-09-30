@@ -5,30 +5,155 @@ using TMPro;
 
 public class Pathfinder : MonoBehaviour
 {
-    Player player;
+    public bool debugEnabled = false;
     public GameObject AStarDebug;
     GameObject newAStarDebug;
 
-    private void Start()
-    {
-        player = FindObjectOfType<Player>();
-    }
+    Vector2 startTile;
+    bool startTileFound = false;
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && debugEnabled)
         {
-            StartCoroutine(FindAStarPath(player.truePlayerTile, TileManager.mouseCoordinate));
+            if (startTileFound == false)
+            {
+                startTile = TileManager.mouseCoordinate;
+                startTileFound = true;
+            }
+            else
+            {
+                List<Vector2> path = FindAStarPath(startTile, TileManager.mouseCoordinate);
+                for (int i = 0; i < path.Count; i++)
+                {
+                    newAStarDebug = Instantiate(AStarDebug, path[i], Quaternion.identity);
+                    newAStarDebug.GetComponent<SpriteRenderer>().color = Color.blue;
+                    newAStarDebug.GetComponentInChildren<TMP_Text>().text = i.ToString();
+                    Destroy(newAStarDebug.transform.GetChild(1).gameObject);
+                    newAStarDebug.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                }
+                startTileFound = false;
+            }
         }
     }
 
-    public IEnumerator FindAStarPath(Vector2 startTile, Vector2 endTile)
+    public List<Vector2> FindAStarPath(Vector2 startTile, Vector2 endTile)
     {
-        yield return null;
-        foreach (TMP_Text item in FindObjectsOfType<TMP_Text>())
+        if (debugEnabled)
         {
-            Destroy(item.transform.root.gameObject);
+            foreach (TMP_Text item in FindObjectsOfType<TMP_Text>())
+            {
+                Destroy(item.transform.root.gameObject);
+            }
         }
+
+
+        List<Vector2> closedTiles = new List<Vector2>();
+        List<Vector2> searchedTiles = new List<Vector2>();
+        void ExamineTilesForObstacles(List<Vector2> tileList)
+        {
+            List<Vector2> goodTiles = new List<Vector2>();
+            List<Vector2> goodAdjacentTiles = new List<Vector2>();
+
+            foreach(Vector2 tile in tileList)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    int x = 0; int y = 0;
+                    if (i == 1 || i == 2 | i == 3)
+                    {
+                        x = 1;
+                    }
+                    if (i == 5 || i == 6 | i == 7)
+                    {
+                        x = -1;
+                    }
+                    if (i == 0 || i == 1 | i == 7)
+                    {
+                        y = 1;
+                    }
+                    if (i == 3 || i == 4 | i == 5)
+                    {
+                        y = -1;
+                    }
+
+                    Vector2 newTile = tile + new Vector2(x, y);
+                    if (closedTiles.Contains(newTile) || searchedTiles.Contains(newTile))
+                    {
+                        continue;
+                    }
+                    if (TileDataManager.GetTileData(newTile).obstacle == false)
+                    {
+                        goodTiles.Add(newTile);
+                        if ((newTile - endTile).x == 0 || (newTile - endTile).y == 0)
+                        {
+                            goodAdjacentTiles.Add(newTile);
+                        }
+                    }
+                    searchedTiles.Add(newTile);
+                }
+            }
+
+            if (goodTiles.Count > 0)
+            {
+                Debug.Log(goodAdjacentTiles.Count);
+                bool adjacentTileFound = false;
+                float dist = 10000;
+                Vector2 bestTile = goodTiles[0];
+                Vector2 bestAdjacentTile = goodTiles[0];
+                foreach (Vector2 goodTile in goodAdjacentTiles)
+                {
+                    if ((goodTile - startTile).magnitude < dist)
+                    {
+                        adjacentTileFound = true;
+                        dist = (goodTile - startTile).magnitude;
+                        bestAdjacentTile = goodTile;
+                    }
+                }
+
+                dist = 10000;
+                foreach (Vector2 goodTile in goodTiles)
+                {
+                    if ((goodTile - startTile).magnitude < dist)
+                    {
+                        dist = (goodTile - startTile).magnitude;
+                        bestTile = goodTile;
+                    }
+                }
+                if (adjacentTileFound)
+                {
+                    if (TileManager.TileDistance(startTile, bestTile) >= TileManager.TileDistance(startTile, bestAdjacentTile) - 1)
+                    {
+                        endTile = bestAdjacentTile;
+                    }
+                    else
+                    {
+                        endTile = bestTile;
+                    }
+                    return;
+
+                }
+                endTile = bestTile;
+                return;
+            }
+            else
+            {
+                closedTiles.AddRange(searchedTiles);
+            }
+        }
+
+
+        if (TileDataManager.GetTileData(endTile).obstacle)
+        {
+            closedTiles.Add(endTile);
+            ExamineTilesForObstacles(closedTiles);
+            while (TileDataManager.GetTileData(endTile).obstacle)
+            {
+                ExamineTilesForObstacles(closedTiles);
+            }
+        }
+
+
 
         //  [G]    [H]
         //      [F]
@@ -36,7 +161,8 @@ public class Pathfinder : MonoBehaviour
         //int[1]: H = distance from end tile
         //int[0]: F = sum of G and H
         //
-        //algorithm: Find tile with lowest F cost.
+        //algorithm: First, make sure the selected tile is a valid one. Cannot be on an obstacle.
+        //Find tile with lowest F cost.
         //if multiple with equal lowest F cost, find lowest H cost out of those equal tiles.
         //if equal H and F, arbitrarily pick the furthest SE, prioritizing E/W over N/S.
 
@@ -235,6 +361,10 @@ public class Pathfinder : MonoBehaviour
 
         void SpawnDebugMarkers()
         {
+            if (debugEnabled == false)
+            {
+                return;
+            }
             foreach (Vector2 tile in availableTiles.Keys)
             {
                 RaycastHit2D[] cc = Physics2D.CircleCastAll(tile, 0.2f, Vector2.zero, 0);
@@ -280,37 +410,61 @@ public class Pathfinder : MonoBehaviour
 
             selectedTile = SelectNewTile();
 
-            float timer = 0;
-            float window = 0.2f;
-            while (timer < window)
-            {
-                timer += Time.deltaTime;
-                yield return null;
-                if (Input.GetMouseButtonDown(0))
-                {
-                    endLoop = true;
-                    break;
-                }
-            }
+            //float timer = 0;
+            //float window = 0.2f;
+            //while (timer < window)
+            //{
+            //    timer += Time.deltaTime;
+            //    yield return null;
+            //    if (Input.GetMouseButtonDown(0))
+            //    {
+            //        endLoop = true;
+            //        break;
+            //    }
+            //}
         }
-
-        //SpawnDebugMarkers();
 
         List<Vector2> finalPath = new List<Vector2>();
         Vector2 path = selectedTile;
         finalPath.Add(path);
         while (path != startTile)
         {
+            if (debugEnabled)
+            {
+                newAStarDebug = Instantiate(AStarDebug, path, Quaternion.identity);
+                newAStarDebug.GetComponent<SpriteRenderer>().color = Color.blue;
+                newAStarDebug.GetComponentInChildren<TMP_Text>().text =
+                    "G: " + availableTiles[path][2] + "\nH: " + availableTiles[path][1] + "\nF: " + availableTiles[path][0];
+                newAStarDebug.transform.GetChild(1).eulerAngles = new Vector3(0, 0, VectorToAngle(previousTile[path] - path));
+                newAStarDebug.GetComponent<SpriteRenderer>().sortingOrder = 1;
+            }
+            path = previousTile[path];
+            if (path == startTile)
+            {
+                continue;
+            }
+            finalPath.Add(path);
+            //yield return new WaitForSeconds(0.1f);
+        }
+        if (debugEnabled)
+        {
             newAStarDebug = Instantiate(AStarDebug, path, Quaternion.identity);
             newAStarDebug.GetComponent<SpriteRenderer>().color = Color.blue;
             newAStarDebug.GetComponentInChildren<TMP_Text>().text =
                 "G: " + availableTiles[path][2] + "\nH: " + availableTiles[path][1] + "\nF: " + availableTiles[path][0];
-            newAStarDebug.transform.GetChild(1).eulerAngles = new Vector3(0, 0, VectorToAngle(previousTile[path] - path));
+            Destroy(newAStarDebug.transform.GetChild(1).gameObject);
             newAStarDebug.GetComponent<SpriteRenderer>().sortingOrder = 1;
-            path = previousTile[path];
-            finalPath.Add(path);
-            //yield return new WaitForSeconds(0.1f);
         }
+
+        List<Vector2> reversePath = new List<Vector2>();
+        for (int i = finalPath.Count - 1; i >= 0; i--)
+        {
+            reversePath.Add(finalPath[i]);
+        }
+
+
+
+        return reversePath;
 
     }
 
