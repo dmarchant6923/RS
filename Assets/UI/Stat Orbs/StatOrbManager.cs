@@ -38,12 +38,14 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public Text number;
     float value;
 
+    RightClickMenu rcm;
     [HideInInspector] public string actionText;
 
 
     private void Start()
     {
         orbToggle = GetComponent<Toggle>();
+        rcm = transform.root.GetComponent<RightClickMenu>();
         //orbToggle.onValueChanged.AddListener(delegate { Toggle(); });
 
         transform.GetChild(0).GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
@@ -138,7 +140,7 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if (canBeToggled)
         {
             panelSprite.sprite = panelHighlighted;
-            MouseManager.actions.Add(actionText);
+            rcm.menuStrings.Add(actionText);
         }
     }
 
@@ -147,7 +149,7 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if (canBeToggled)
         {
             panelSprite.sprite = panelNotHighlighted;
-            MouseManager.actions.Remove(actionText);
+            rcm.menuStrings.Remove(actionText);
         }
     }
 

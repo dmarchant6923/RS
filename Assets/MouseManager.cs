@@ -16,12 +16,10 @@ public class MouseManager : MonoBehaviour
     public GameObject mouseTile;
     GameObject newMouseTile;
     SpriteRenderer mouseTileSprite;
+    Color spriteColor;
 
-    public class Action
-    {
-
-    }
-    [HideInInspector] public static List<string> actions = new List<string>();
+    RightClickMenu rightClickMenu;
+    string walkHereString = "Walk here";
 
     void Start()
     {
@@ -30,7 +28,9 @@ public class MouseManager : MonoBehaviour
 
         newMouseTile = Instantiate(mouseTile, TileManager.mouseCoordinate, Quaternion.identity);
         mouseTileSprite = newMouseTile.GetComponent<SpriteRenderer>();
-        mouseTileSprite.enabled = false;
+        spriteColor = mouseTileSprite.color;
+
+        rightClickMenu = FindObjectOfType<RightClickMenu>();
     }
 
     private void Update()
@@ -39,7 +39,7 @@ public class MouseManager : MonoBehaviour
         if (screenPoint.x < 0 || screenPoint.x > 1 || screenPoint.y < 0 || screenPoint.y > 1)
         {
             mouseOnScreen = false;
-            mouseTileSprite.enabled = false;
+            mouseTileSprite.color = Vector4.zero;
             return;
         }
         mouseOnScreen = true;
@@ -51,12 +51,20 @@ public class MouseManager : MonoBehaviour
                 GameClientClick();
                 StartCoroutine(GameServerClick());
             }
-            mouseTileSprite.enabled = true;
-        }
+            mouseTileSprite.color = spriteColor;
 
+            if (rightClickMenu.menuStrings.Contains(walkHereString) == false)
+            {
+                rightClickMenu.menuStrings.Add(walkHereString);
+            }
+        }
         else
         {
-            mouseTileSprite.enabled = false;
+            mouseTileSprite.color = Vector4.zero;
+            if (rightClickMenu.menuStrings.Contains(walkHereString))
+            {
+                rightClickMenu.menuStrings.Remove(walkHereString);
+            }
         }
         newMouseTile.transform.position = TileManager.mouseCoordinate;
     }

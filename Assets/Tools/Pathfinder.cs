@@ -96,7 +96,7 @@ public class Pathfinder : MonoBehaviour
 
             if (goodTiles.Count > 0)
             {
-                Debug.Log(goodAdjacentTiles.Count);
+                //Debug.Log(goodAdjacentTiles.Count);
                 bool adjacentTileFound = false;
                 float dist = 10000;
                 Vector2 bestTile = goodTiles[0];

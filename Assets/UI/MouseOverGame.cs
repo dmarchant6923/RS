@@ -14,13 +14,11 @@ public class MouseOverGame : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        MouseManager.actions.Add("Walk here");
         isOverGame = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        MouseManager.actions.Remove("Walk here");
         isOverGame = false;
     }
 }

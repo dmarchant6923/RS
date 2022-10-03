@@ -9,7 +9,7 @@ public class TileManager : MonoBehaviour
 
     private void Update()
     {
-        if (MouseManager.mouseOnScreen && MouseOverGame.isOverGame)
+        if (MouseManager.mouseOnScreen)
         {
             Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mouseCoordinate = FindTile(new Vector2(worldPoint.x, worldPoint.y));

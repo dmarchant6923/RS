@@ -36,11 +36,9 @@ public class Compass : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        MouseManager.actions.Add("Look North");
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        MouseManager.actions.Remove("Look North");
     }
 }
