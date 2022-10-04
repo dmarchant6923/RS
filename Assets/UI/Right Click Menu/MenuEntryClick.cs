@@ -10,6 +10,10 @@ public class MenuEntryClick : MonoBehaviour, IPointerClickHandler, IPointerEnter
     public MenuScript menuScript;
     Text text;
 
+    public delegate void ClickMethod();
+    public ClickMethod clickMethod;
+
+
     private void Start()
     {
         text = GetComponentInChildren<Text>();
@@ -20,6 +24,10 @@ public class MenuEntryClick : MonoBehaviour, IPointerClickHandler, IPointerEnter
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             menuScript.OptionClicked(optionNumber);
+            if (clickMethod != null)
+            {
+                clickMethod();
+            }
         }
     }
     public void OnPointerEnter(PointerEventData eventData)

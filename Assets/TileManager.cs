@@ -4,18 +4,6 @@ using UnityEngine;
 
 public class TileManager : MonoBehaviour
 {
-    public static Vector2 mouseCoordinate;
-    public static Vector2 clickedTile;
-
-    private void Update()
-    {
-        if (MouseManager.mouseOnScreen)
-        {
-            Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mouseCoordinate = FindTile(new Vector2(worldPoint.x, worldPoint.y));
-        }
-    }
-
     public static Vector2 FindTile(Vector2 coordinate)
     {
         Vector2 scaledCoordinate = new Vector2(coordinate.x, coordinate.y);

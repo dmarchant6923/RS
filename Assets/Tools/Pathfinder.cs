@@ -5,7 +5,7 @@ using TMPro;
 
 public class Pathfinder : MonoBehaviour
 {
-    public bool debugEnabled = false;
+    [HideInInspector] public bool debugEnabled = false;
     public GameObject AStarDebug;
     GameObject newAStarDebug;
 
@@ -18,12 +18,12 @@ public class Pathfinder : MonoBehaviour
         {
             if (startTileFound == false)
             {
-                startTile = TileManager.mouseCoordinate;
+                startTile = MouseManager.mouseCoordinate;
                 startTileFound = true;
             }
             else
             {
-                List<Vector2> path = FindAStarPath(startTile, TileManager.mouseCoordinate);
+                List<Vector2> path = FindAStarPath(startTile, MouseManager.mouseCoordinate);
                 for (int i = 0; i < path.Count; i++)
                 {
                     newAStarDebug = Instantiate(AStarDebug, path[i], Quaternion.identity);

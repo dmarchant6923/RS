@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     public float runEnergy = 500;
     [System.NonSerialized] public float weight = 40;
 
+    [HideInInspector] public bool showTrueTile = false;
+    [HideInInspector] public bool showClickedTile = false;
     public bool debugEnabled = false;
 
     void Start()
@@ -26,9 +28,12 @@ public class Player : MonoBehaviour
         transform.position = startTile;
 
         newTrueTileObject = Instantiate(trueTileObject, startTile, Quaternion.identity);
-        newTrueTileObject.GetComponent<TrueTile>().player = this;
-        newTrueTileObject.GetComponent<TrueTile>().debugEnabled = debugEnabled;
         trueTile = newTrueTileObject.GetComponent<TrueTile>();
+        trueTile.player = this;
+        trueTile.debugEnabled = debugEnabled;
+        trueTile.showTrueTile = showTrueTile;
+        trueTile.showClickedTile = showClickedTile;
+
         runEnabled = false;
 
         playerPath = new List<Vector2>();

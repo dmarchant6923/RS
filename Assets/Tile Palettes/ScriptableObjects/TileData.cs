@@ -9,4 +9,5 @@ public class TileData : ScriptableObject
     public TileBase[] tiles;
 
     public bool obstacle;
+    public string examineText;
 }

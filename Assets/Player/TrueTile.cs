@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TrueTile : MonoBehaviour
 {
@@ -20,7 +21,11 @@ public class TrueTile : MonoBehaviour
     public bool moving;
     [HideInInspector] public bool oddTilesInPath = false;
 
+    [HideInInspector] public bool showTrueTile = false;
+    [HideInInspector] public bool showClickedTile = false;
     [HideInInspector] public bool debugEnabled = false;
+
+    string walkHereString = "Walk here";
 
     void Start()
     {
@@ -29,20 +34,65 @@ public class TrueTile : MonoBehaviour
         MouseManager.IGServerClick += ServerClick;
 
         pathFinder = FindObjectOfType<Pathfinder>();
+        pathFinder.debugEnabled = debugEnabled;
+
+        if (showTrueTile == false)
+        {
+            GetComponent<SpriteRenderer>().enabled = false;
+        }
 
         currentTile = transform.position;
         moving = false;
         path = new List<Vector2>();
     }
 
+    private void Update()
+    {
+        if (MouseOverGame.isOverGame && RightClickMenu.menuOpen == false)
+        {
+            if (RightClickMenu.menuStrings.Contains(walkHereString) == false)
+            {
+                RightClickMenu.menuStrings.Add(walkHereString);
+            }
+        }
+        else if (RightClickMenu.menuOpen == false)
+        {
+            if (RightClickMenu.menuStrings.Contains(walkHereString))
+            {
+                RightClickMenu.menuStrings.Remove(walkHereString);
+            }
+        }
+
+        if (RightClickMenu.menuOpen)
+        {
+            if (RightClickMenu.menuStrings.Contains(walkHereString))
+            {
+                int i = RightClickMenu.menuStrings.IndexOf(walkHereString);
+                if (RightClickMenu.newMenu.transform.GetChild(i + 2).GetComponent<MenuEntryClick>().clickMethod == null)
+                {
+                    RightClickMenu.newMenu.transform.GetChild(i + 2).GetComponent<MenuEntryClick>().clickMethod = MenuClick;
+                    Debug.Log((i + 2) + " " + RightClickMenu.newMenu.transform.GetChild(i + 2).GetComponentInChildren<Text>().text);
+                }
+            }
+        }
+    }
+
+    public void MenuClick()
+    {
+        StartCoroutine(MenuClickCR());
+    }
+
     void ClientClick()
     {
-        destinationTile = TileManager.mouseCoordinate;
+        destinationTile = MouseManager.mouseCoordinate;
         if (newClickedTile != null)
         {
             Destroy(newClickedTile);
         }
-        newClickedTile = Instantiate(clickedTile, destinationTile, Quaternion.identity);
+        if (showClickedTile)
+        {
+            newClickedTile = Instantiate(clickedTile, destinationTile, Quaternion.identity);
+        }
     }
 
     void ServerClick()
@@ -51,10 +101,20 @@ public class TrueTile : MonoBehaviour
         {
             Destroy(newClickedTile);
         }
-        newClickedTile = Instantiate(clickedTile, destinationTile, Quaternion.identity);
+        if (showClickedTile)
+        {
+            newClickedTile = Instantiate(clickedTile, destinationTile, Quaternion.identity);
+        }
         path = pathFinder.FindAStarPath(currentTile, destinationTile);
 
         clicked = true;
+    }
+
+    IEnumerator MenuClickCR()
+    {
+        ClientClick();
+        yield return new WaitForSeconds(TickManager.simLatency);
+        ServerClick();
     }
 
     void FindPath(Vector2 startTile, Vector2 endTile)
@@ -87,7 +147,10 @@ public class TrueTile : MonoBehaviour
     {
         if (clicked)
         {
-            newClickedTile.transform.position = path[path.Count - 1];
+            if (showClickedTile)
+            {
+                newClickedTile.transform.position = path[path.Count - 1];
+            }
             oddTilesInPath = false;
             if (path.Count % 2 == 1)
             {

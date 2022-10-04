@@ -13,6 +13,9 @@ public class TileDataManager : MonoBehaviour
 
     public static Dictionary<TileBase, TileData> dataFromTiles;
 
+    string examineText;
+    string menuText;
+
     private void Start()
     {
         staticMap = map;
@@ -28,6 +31,17 @@ public class TileDataManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        RightClickMenu.menuStrings.Remove(menuText);
+        examineText = GetTileData(MouseManager.mouseCoordinate).examineText;
+        menuText = "Examine " + GetTileName(MouseManager.mouseCoordinate);
+        if (RightClickMenu.menuStrings.Contains(menuText) == false && examineText != "")
+        {
+            RightClickMenu.menuStrings.Insert(0, menuText);
+        }
+    }
+
     public static TileData GetTileData(Vector2 coordinate)
     {
         Vector3Int gridPosition = staticMap.WorldToCell(coordinate);
@@ -40,6 +54,21 @@ public class TileDataManager : MonoBehaviour
         else
         {
             return staticDefaultTileData;
+        }
+    }
+
+    public static string GetTileName(Vector2 coordinate)
+    {
+        Vector3Int gridPosition = staticMap.WorldToCell(coordinate);
+        TileBase selectedTile = staticMap.GetTile(gridPosition);
+
+        if (selectedTile != null)
+        {
+            return selectedTile.name;
+        }
+        else
+        {
+            return "";
         }
     }
 }

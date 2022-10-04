@@ -6,29 +6,41 @@ using UnityEngine.UI;
 public class RightClickMenu : MonoBehaviour
 {
     public GameObject menu;
-    GameObject newMenu;
+    public static GameObject newMenu;
 
-    [HideInInspector] public bool menuOpen = false;
+    public static bool menuOpen = false;
 
     public Text actionText;
 
-    public List<string> menuStrings = new List<string>();
+    public static List<string> menuStrings = new List<string>();
+    public static List<string> openMenuStrings = new List<string>();
+
+    public static List<GameObject> menuObjects = new List<GameObject>();
+    public static List<GameObject> openMenuObjects = new List<GameObject>();
+
+    public static List<Action> actions = new List<Action>();
+    public static List<Action> openActions = new List<Action>();
 
     private void Start()
     {
         menuStrings = new List<string>();
-        Debug.Log(actionText);
+
+        actions = new List<Action>();
+    }
+
+    public static void AddItem(string String, GameObject gameObject)
+    {
+        
     }
 
     private void Update()
     {
         if (MouseManager.mouseOnScreen && Input.GetMouseButtonDown(1) && menuOpen == false)
         {
-            menuOpen = true;
             newMenu = Instantiate(menu, Input.mousePosition, Quaternion.identity);
-            newMenu.transform.parent = transform;
-            newMenu.GetComponent<MenuScript>().parentScript = this;
-            newMenu.GetComponent<MenuScript>().menuStrings = menuStrings;
+            newMenu.transform.SetParent(transform);
+            openMenuStrings = menuStrings;
+            openMenuObjects = menuObjects;
         }
 
         if (menuStrings.Count > 0)

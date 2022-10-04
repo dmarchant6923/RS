@@ -206,9 +206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menu: {fileID: 6599725198985453078, guid: 3e8440e18e277f2479d5bf9b669daaa6, type: 3}
-  menuOpen: 0
   actionText: {fileID: 4455849866442057525}
-  menuStrings: []
 --- !u!1 &1145394116885147425
 GameObject:
   m_ObjectHideFlags: 0
@@ -1423,6 +1421,7 @@ GameObject:
   - component: {fileID: 6282649377015552197}
   - component: {fileID: 2943597438973196008}
   - component: {fileID: 6149905034106046074}
+  - component: {fileID: 5118222410818323670}
   m_Layer: 5
   m_Name: Compass
   m_TagString: Untagged
@@ -1449,7 +1448,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -10}
-  m_SizeDelta: {x: 219.06, y: 115}
+  m_SizeDelta: {x: 210, y: 115}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &6282649377015552197
 CanvasRenderer:
@@ -1515,6 +1514,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7eabb69f16d8c848b56e4175092f09a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5118222410818323670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8562883791043959738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fe906a0d43cbfb47a0fed94be9c0297, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuText: Look North
 --- !u!1 &8574061469470637622
 GameObject:
   m_ObjectHideFlags: 0
@@ -1645,6 +1657,10 @@ PrefabInstance:
     - target: {fileID: 1655223137449342880, guid: 79b22a56854c1974583cf3f28a3adc81, type: 3}
       propertyPath: m_Name
       value: Prayer Orb
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655223137449342880, guid: 79b22a56854c1974583cf3f28a3adc81, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 3213228219471238635, guid: 79b22a56854c1974583cf3f28a3adc81, type: 3}
       propertyPath: m_Pivot.x
@@ -1832,6 +1848,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Health Orb
       objectReference: {fileID: 0}
+    - target: {fileID: 4438053885267178837, guid: dd276e015f2faf24a918710c695f08a2, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd276e015f2faf24a918710c695f08a2, type: 3}
 --- !u!224 &2423721749310562179 stripped
@@ -1938,16 +1958,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spec Orb
       objectReference: {fileID: 0}
+    - target: {fileID: 7154984410998892794, guid: edd86b6fe94e31748a359b8d17c88376, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: edd86b6fe94e31748a359b8d17c88376, type: 3}
---- !u!224 &7372618077810558649 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6423464368091892401, guid: edd86b6fe94e31748a359b8d17c88376, type: 3}
-  m_PrefabInstance: {fileID: 4572411305108605960}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6647290727056368882 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7154984410998892794, guid: edd86b6fe94e31748a359b8d17c88376, type: 3}
+  m_PrefabInstance: {fileID: 4572411305108605960}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &7372618077810558649 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6423464368091892401, guid: edd86b6fe94e31748a359b8d17c88376, type: 3}
   m_PrefabInstance: {fileID: 4572411305108605960}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &4997059450052646405
@@ -1972,6 +1996,10 @@ PrefabInstance:
     - target: {fileID: 240833769711868825, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
       propertyPath: m_Name
       value: Run Energy Orb
+      objectReference: {fileID: 0}
+    - target: {fileID: 240833769711868825, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
       propertyPath: m_Pivot.x

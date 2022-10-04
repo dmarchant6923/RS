@@ -260,7 +260,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 964fa7ed833ce004f955be67dc9be6ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentScript: {fileID: 0}
   text: {fileID: 5041913201172584120}
   menuStrings: []
 --- !u!1 &9021598057814067603
