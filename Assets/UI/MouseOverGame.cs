@@ -5,20 +5,18 @@ using UnityEngine.EventSystems;
 
 public class MouseOverGame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public static bool isOverGame;
-
     private void Start()
     {
-        isOverGame = false;
+        MouseManager.isOverGame = false;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        isOverGame = true;
+        MouseManager.isOverGame = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        isOverGame = false;
+        MouseManager.isOverGame = false;
     }
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7259498458452835272}
   - component: {fileID: 7259498458452835279}
   - component: {fileID: 7259498458452835273}
+  - component: {fileID: 986973260214879770}
   m_Layer: 0
   m_Name: Player True Tile
   m_TagString: Untagged
@@ -101,3 +102,21 @@ MonoBehaviour:
   currentTile: {x: 0, y: 0}
   destinationTile: {x: 0, y: 0}
   moving: 0
+  oddTilesInPath: 0
+  showTrueTile: 0
+  showClickedTile: 0
+  debugEnabled: 0
+--- !u!114 &986973260214879770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7259498458452835278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fe906a0d43cbfb47a0fed94be9c0297, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuTexts:
+  - Walk here

@@ -12,19 +12,13 @@ public class RightClickMenu : MonoBehaviour
 
     public Text actionText;
 
-    public static List<string> menuStrings = new List<string>();
-    public static List<string> openMenuStrings = new List<string>();
-
-    public static List<GameObject> menuObjects = new List<GameObject>();
-    public static List<GameObject> openMenuObjects = new List<GameObject>();
-
     public static List<Action> actions = new List<Action>();
     public static List<Action> openActions = new List<Action>();
 
+    List<string> menuStrings = new List<string>();
+
     private void Start()
     {
-        menuStrings = new List<string>();
-
         actions = new List<Action>();
     }
 
@@ -39,13 +33,21 @@ public class RightClickMenu : MonoBehaviour
         {
             newMenu = Instantiate(menu, Input.mousePosition, Quaternion.identity);
             newMenu.transform.SetParent(transform);
-            openMenuStrings = menuStrings;
-            openMenuObjects = menuObjects;
+            openActions = actions;
+        }
+
+        menuStrings = new List<string>();
+        foreach (Action action in actions)
+        {
+            foreach (string menuString in action.menuTexts)
+            {
+                menuStrings.Add(menuString);
+            }
         }
 
         if (menuStrings.Count > 0)
         {
-            actionText.text = menuStrings[menuStrings.Count - 1];
+            actionText.text = menuStrings[0];
         }
         if (menuStrings.Count > 1)
         {

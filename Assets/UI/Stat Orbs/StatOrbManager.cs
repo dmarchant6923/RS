@@ -38,7 +38,8 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public Text number;
     float value;
 
-    [HideInInspector] public string actionText;
+    Action orbAction;
+    MenuEntryClick menuEntry;
 
 
     private void Start()
@@ -60,6 +61,8 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
 
         TickManager.afterTick += OnTick;
+
+        orbAction = GetComponent<Action>();
     }
 
     private void Update()
@@ -80,6 +83,29 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         else
         {
             number.color = new Color(1, (value) / 100 * 2, 0);
+        }
+
+        if (RightClickMenu.menuOpen == false && menuEntry != null)
+        {
+            menuEntry = null;
+        }
+        if (RightClickMenu.menuOpen && RightClickMenu.openActions.Contains(orbAction))
+        {
+            if (menuEntry == null)
+            {
+                foreach (MenuEntryClick entry in RightClickMenu.newMenu.GetComponentsInChildren<MenuEntryClick>())
+                {
+                    if (entry.action == orbAction)
+                    {
+                        menuEntry = entry;
+                        break;
+                    }
+                }
+            }
+            if (menuEntry != null)
+            {
+                menuEntry.clickMethod = ClickedToggle;
+            }
         }
     }
 
@@ -138,7 +164,7 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if (canBeToggled)
         {
             panelSprite.sprite = panelHighlighted;
-            RightClickMenu.menuStrings.Add(actionText);
+            //RightClickMenu.menuStrings.Add(actionText);
         }
     }
 
@@ -147,7 +173,7 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if (canBeToggled)
         {
             panelSprite.sprite = panelNotHighlighted;
-            RightClickMenu.menuStrings.Remove(actionText);
+            //RightClickMenu.menuStrings.Remove(actionText);
         }
     }
 

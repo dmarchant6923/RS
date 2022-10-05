@@ -11,6 +11,7 @@ public class RunToggle : MonoBehaviour
     Text numberText;
 
     StatOrbManager orbManager;
+
     void Start()
     {
         runToggle = GetComponent<Toggle>();
@@ -19,10 +20,6 @@ public class RunToggle : MonoBehaviour
         numberText = GetComponentInChildren<Text>();
         numberText.text = Mathf.Round(player.runEnergy / 100).ToString();
         runToggle.isOn = false;
-
-        orbManager.actionText = "Toggle Run";
-
-        //runToggle.onValueChanged.AddListener(delegate { RunEnergyPressed(); });
 
         TickManager.onTick += ToggleRun;
         orbManager.onToggle += RunEnergyPressed;
@@ -55,11 +52,6 @@ public class RunToggle : MonoBehaviour
             orbManager.active = false;
         }
 
-        numberText.text = Mathf.Round(player.runEnergy / 100).ToString();
-    }
-
-    private void Update()
-    {
         numberText.text = Mathf.Round(player.runEnergy / 100).ToString();
     }
 }

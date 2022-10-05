@@ -22,8 +22,6 @@ public class PrayerToggle : MonoBehaviour
         prayerToggle = GetComponent<Toggle>();
         prayerToggle.onValueChanged.AddListener(delegate { PrayerPressed(); });
 
-        orbManager.actionText = "Activate Quick-Prayers";
-
         startPosition = flickInidcator.position.x;
         distance = Mathf.Abs(flickInidcator.localPosition.x) * 2;
         speed = distance / TickManager.maxTickTime;

@@ -25,7 +25,8 @@ public class TrueTile : MonoBehaviour
     [HideInInspector] public bool showClickedTile = false;
     [HideInInspector] public bool debugEnabled = false;
 
-    string walkHereString = "Walk here";
+    Action walkHereAction;
+    MenuEntryClick menuEntry;
 
     void Start()
     {
@@ -44,35 +45,41 @@ public class TrueTile : MonoBehaviour
         currentTile = transform.position;
         moving = false;
         path = new List<Vector2>();
+
+        walkHereAction = GetComponent<Action>();
     }
 
     private void Update()
     {
-        if (MouseOverGame.isOverGame && RightClickMenu.menuOpen == false)
+        if (RightClickMenu.menuOpen == false)
         {
-            if (RightClickMenu.menuStrings.Contains(walkHereString) == false)
+            if (MouseManager.isOverGame && RightClickMenu.actions.Contains(walkHereAction) == false)
             {
-                RightClickMenu.menuStrings.Add(walkHereString);
+                RightClickMenu.actions.Add(walkHereAction);
             }
-        }
-        else if (RightClickMenu.menuOpen == false)
-        {
-            if (RightClickMenu.menuStrings.Contains(walkHereString))
+            else if (MouseManager.isOverGame == false && RightClickMenu.actions.Contains(walkHereAction))
             {
-                RightClickMenu.menuStrings.Remove(walkHereString);
+                RightClickMenu.actions.Remove(walkHereAction);
             }
         }
 
-        if (RightClickMenu.menuOpen)
+
+        if (RightClickMenu.menuOpen && RightClickMenu.openActions.Contains(walkHereAction))
         {
-            if (RightClickMenu.menuStrings.Contains(walkHereString))
+            if (menuEntry == null)
             {
-                int i = RightClickMenu.menuStrings.IndexOf(walkHereString);
-                if (RightClickMenu.newMenu.transform.GetChild(i + 2).GetComponent<MenuEntryClick>().clickMethod == null)
+                foreach (MenuEntryClick entry in RightClickMenu.newMenu.GetComponentsInChildren<MenuEntryClick>())
                 {
-                    RightClickMenu.newMenu.transform.GetChild(i + 2).GetComponent<MenuEntryClick>().clickMethod = MenuClick;
-                    Debug.Log((i + 2) + " " + RightClickMenu.newMenu.transform.GetChild(i + 2).GetComponentInChildren<Text>().text);
+                    if (entry.action == walkHereAction)
+                    {
+                        menuEntry = entry;
+                        break;
+                    }
                 }
+            }
+            if (menuEntry != null)
+            {
+                menuEntry.clickMethod = MenuClick;
             }
         }
     }
@@ -117,32 +124,7 @@ public class TrueTile : MonoBehaviour
         ServerClick();
     }
 
-    void FindPath(Vector2 startTile, Vector2 endTile)
-    {
-        Vector2 delta = endTile - startTile;
-        Vector2 frontTile = startTile;
-
-        while (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
-        {
-            frontTile = new Vector2(frontTile.x + Mathf.Sign(delta.x), frontTile.y);
-            path.Add(frontTile);
-            delta = endTile - frontTile;
-        }
-        while (Mathf.Abs(delta.y) > Mathf.Abs(delta.x))
-        {
-            frontTile = new Vector2(frontTile.x, frontTile.y + Mathf.Sign(delta.y));
-            path.Add(frontTile);
-            delta = endTile - frontTile;
-        }
-        while (delta.magnitude > 0)
-        {
-            frontTile = new Vector2(frontTile.x + Mathf.Sign(delta.x), frontTile.y + Mathf.Sign(delta.y));
-            path.Add(frontTile);
-            delta = endTile - frontTile;
-        }
-    }
-
-    //updates every tick
+    //updates on every tick
     void Move()
     {
         if (clicked)

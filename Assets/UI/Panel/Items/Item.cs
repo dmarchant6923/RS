@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpecOrb : MonoBehaviour
+public class Item : MonoBehaviour
 {
-    StatOrbManager orbManager;
+    // Start is called before the first frame update
     void Start()
     {
-        orbManager = GetComponent<StatOrbManager>();
+        
     }
 
     // Update is called once per frame

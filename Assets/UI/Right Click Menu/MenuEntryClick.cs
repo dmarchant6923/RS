@@ -6,7 +6,9 @@ using UnityEngine.EventSystems;
 
 public class MenuEntryClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    public int optionNumber = 0;
+    [System.NonSerialized] public int actionNumber = -1;
+    [System.NonSerialized] public int stringNumber = -1;
+    public Action action;
     public MenuScript menuScript;
     Text text;
 
@@ -23,7 +25,7 @@ public class MenuEntryClick : MonoBehaviour, IPointerClickHandler, IPointerEnter
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            menuScript.OptionClicked(optionNumber);
+            menuScript.OptionClicked(actionNumber, stringNumber);
             if (clickMethod != null)
             {
                 clickMethod();
