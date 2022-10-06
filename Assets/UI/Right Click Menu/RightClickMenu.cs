@@ -45,17 +45,18 @@ public class RightClickMenu : MonoBehaviour
             }
         }
 
-        if (menuStrings.Count > 0)
+        if (menuStrings.Count == 0 || menuOpen)
+        {
+            actionText.text = "";
+        }
+        else if (menuStrings.Count > 0 && menuOpen == false)
         {
             actionText.text = menuStrings[0];
         }
-        if (menuStrings.Count > 1)
+        
+        if (menuStrings.Count > 1 && menuOpen == false)
         {
             actionText.text += " / " + (menuStrings.Count - 1) + " more options";
-        }
-        if (menuStrings.Count == 0)
-        {
-            actionText.text = "";
         }
     }
 

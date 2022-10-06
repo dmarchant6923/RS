@@ -737,6 +737,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 126875275577074468, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: m_Name
+      value: Dragon scimitar
+      objectReference: {fileID: 0}
     - target: {fileID: 481909365292701897, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
       propertyPath: m_Name
       value: UI
@@ -828,6 +832,10 @@ PrefabInstance:
     - target: {fileID: 481909365292701941, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6877244238249921137, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: equipment
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
@@ -1088,6 +1096,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuTexts:
   - 
+  priorities: 
 --- !u!114 &606093693
 MonoBehaviour:
   m_ObjectHideFlags: 0

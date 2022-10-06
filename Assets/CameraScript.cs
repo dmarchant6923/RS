@@ -28,7 +28,7 @@ public class CameraScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.mouseScrollDelta.y != 0)
+        if (Input.mouseScrollDelta.y != 0 && MouseManager.mouseOnScreen)
         {
             if (cam.orthographicSize >= minCamSize && cam.orthographicSize <= maxCamSize)
             {
