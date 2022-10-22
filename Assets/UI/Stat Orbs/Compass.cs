@@ -27,6 +27,16 @@ public class Compass : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         compassMiddle = transform.GetChild(0);
 
         compassAction = GetComponent<Action>();
+
+        compassAction.menuTexts[0] = "Look North";
+        compassAction.menuTexts[1] = "Look East";
+        compassAction.menuTexts[2] = "Look South";
+        compassAction.menuTexts[3] = "Look West";
+
+        compassAction.action0 += OnClickNorth;
+        compassAction.action1 += OnClickEast;
+        compassAction.action2 += OnClickSouth;
+        compassAction.action3 += OnClickWest;
     }
 
     public void OnClickNorth()
@@ -49,44 +59,6 @@ public class Compass : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private void Update()
     {
         compassMiddle.eulerAngles = new Vector3(0, 0, -cam.transform.eulerAngles.z);
-
-        if (RightClickMenu.menuOpen && RightClickMenu.openActions.Contains(compassAction))
-        {
-            if (menuEntries[0] == null)
-            {
-                int i = 0;
-                foreach (MenuEntryClick entry in RightClickMenu.newMenu.GetComponentsInChildren<MenuEntryClick>())
-                {
-                    if (entry.action == compassAction)
-                    {
-                        menuEntries[i] = entry;
-                        i++;
-                    }
-                }
-            }
-            if (menuEntries[0] != null)
-            {
-                foreach (MenuEntryClick entry in menuEntries)
-                {
-                    if (entry.stringNumber == 0)
-                    {
-                        entry.clickMethod = OnClickNorth;
-                    }
-                    if (entry.stringNumber == 1)
-                    {
-                        entry.clickMethod = OnClickEast;
-                    }
-                    if (entry.stringNumber == 2)
-                    {
-                        entry.clickMethod = OnClickSouth;
-                    }
-                    if (entry.stringNumber == 3)
-                    {
-                        entry.clickMethod = OnClickWest;
-                    }
-                }
-            }
-        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)

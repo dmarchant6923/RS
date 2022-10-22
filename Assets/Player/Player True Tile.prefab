@@ -120,3 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuTexts:
   - Walk here
+  priorities: 
+  itemAction: 0
+  ignoreUse: 1
+  itemName: 

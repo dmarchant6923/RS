@@ -5,6 +5,7 @@ using UnityEngine;
 public class TickManager : MonoBehaviour
 {
     public delegate void TickAction();
+    public static event TickAction cancelBeforeTick;
     public static event TickAction beforeTick;
     public static event TickAction onTick;
     public static event TickAction afterTick;
@@ -27,6 +28,10 @@ public class TickManager : MonoBehaviour
         {
             tickTimer -= maxTickTime;
             tickCount++;
+            if (cancelBeforeTick != null)
+            {
+                cancelBeforeTick();
+            }
             if (beforeTick != null)
             {
                 beforeTick();

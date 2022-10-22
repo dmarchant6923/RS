@@ -23,6 +23,7 @@ public class RunToggle : MonoBehaviour
 
         TickManager.onTick += ToggleRun;
         orbManager.onToggle += RunEnergyPressed;
+        orbManager.orbAction.menuTexts[0] = "Toggle Run";
     }
 
     void RunEnergyPressed()

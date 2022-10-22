@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     [System.NonSerialized] public bool forceWalk = false;
     public GameObject trueTileObject;
     GameObject newTrueTileObject;
-    TrueTile trueTile;
+    [HideInInspector] public TrueTile trueTile;
     public Vector2 playerPosition;
     float moveSpeed = 3f;
     public List<Vector2> playerPath;

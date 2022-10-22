@@ -12,10 +12,16 @@ public class UIManager : MonoBehaviour
 
     Action UIAction;
 
+    public GameObject panel;
+    public RectTransform statPanel;
+    float panelOpenPos;
+
     private void Start()
     {
         raycaster = FindObjectOfType<GraphicRaycaster>();
         eventSystem = FindObjectOfType<EventSystem>();
+
+        panelOpenPos = statPanel.position.x;
     }
 
     void Update()
@@ -29,7 +35,7 @@ public class UIManager : MonoBehaviour
         List<RaycastResult> results = new List<RaycastResult>();
         raycaster.Raycast(eventData, results);
 
-        bool actionFound = false;
+        UIAction = null;
         foreach (RaycastResult result in results)
         {
             GameObject item = result.gameObject;
@@ -43,22 +49,23 @@ public class UIManager : MonoBehaviour
             }
             if (item.GetComponent<Action>() != null)
             {
-                actionFound = true;
                 UIAction = item.GetComponent<Action>();
-                if (RightClickMenu.actions.Contains(UIAction) == false)
-                {
-                    RightClickMenu.actions.Add(UIAction);
-                    break;
-                }
+                break;
             }
         }
-        if (actionFound == false)
+
+        RightClickMenu.UIAction = UIAction;
+
+
+
+
+        if (panel.activeSelf && statPanel.position.x != panelOpenPos)
         {
-            if (UIAction != null && RightClickMenu.actions.Contains(UIAction))
-            {
-                RightClickMenu.actions.Remove(UIAction);
-            }
-            UIAction = null;
+            statPanel.position = new Vector2(panelOpenPos, statPanel.position.y);
+        }
+        if (panel.activeSelf == false && statPanel.position.x == panelOpenPos)
+        {
+            statPanel.position = new Vector2(1920, statPanel.position.y);
         }
     }
 }

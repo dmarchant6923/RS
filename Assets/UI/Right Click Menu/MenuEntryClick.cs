@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class MenuEntryClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class MenuEntryClick : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [System.NonSerialized] public int actionNumber = -1;
     [System.NonSerialized] public int stringNumber = -1;
@@ -12,8 +12,8 @@ public class MenuEntryClick : MonoBehaviour, IPointerClickHandler, IPointerEnter
     public MenuScript menuScript;
     Text text;
 
-    public delegate void ClickMethod();
-    public ClickMethod clickMethod;
+    //public delegate void ClickMethod();
+    //public ClickMethod clickMethod;
 
 
     private void Start()
@@ -21,15 +21,11 @@ public class MenuEntryClick : MonoBehaviour, IPointerClickHandler, IPointerEnter
         text = GetComponentInChildren<Text>();
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnPointerDown(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            menuScript.OptionClicked(actionNumber, stringNumber);
-            if (clickMethod != null)
-            {
-                clickMethod();
-            }
+            StartCoroutine(OptionClicked());
         }
     }
     public void OnPointerEnter(PointerEventData eventData)
@@ -40,5 +36,19 @@ public class MenuEntryClick : MonoBehaviour, IPointerClickHandler, IPointerEnter
     public void OnPointerExit(PointerEventData eventData)
     {
         text.color = Color.white;
+    }
+
+    IEnumerator OptionClicked()
+    {
+        yield return null;
+        menuScript.OptionClicked(actionNumber, stringNumber);
+        //if (clickMethod != null)
+        //{
+        //    clickMethod();
+        //}
+        if (action != null)
+        {
+            action.PickAction(stringNumber);
+        }
     }
 }

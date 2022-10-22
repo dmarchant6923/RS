@@ -14,11 +14,9 @@ public class TileDataManager : MonoBehaviour
     public static Dictionary<TileBase, TileData> dataFromTiles;
 
     string examineText;
-    string openMenuExamineText;
     string menuText;
 
     Action examineTileAction;
-    MenuEntryClick menuEntry;
 
     private void Start()
     {
@@ -41,40 +39,22 @@ public class TileDataManager : MonoBehaviour
     {
         if (RightClickMenu.menuOpen == false)
         {
-            menuEntry = null;
             examineText = GetTileData(MouseManager.mouseCoordinate).examineText;
 
             if (examineText != "")
             {
                 menuText = "Examine " + GetTileName(MouseManager.mouseCoordinate);
-                examineTileAction.menuTexts[0] = menuText;
-                if (RightClickMenu.actions.Contains(examineTileAction) == false)
+                examineTileAction.menuTexts[5] = menuText;
+                examineTileAction.examineText = examineText;
+                examineTileAction.objectName = GetTileName(MouseManager.mouseCoordinate);
+                if (RightClickMenu.tileActions.Contains(examineTileAction) == false)
                 {
-                    RightClickMenu.actions.Add(examineTileAction);
+                    RightClickMenu.tileActions.Add(examineTileAction);
                 }
             }
-            else if (RightClickMenu.actions.Contains(examineTileAction))
+            else if (RightClickMenu.tileActions.Contains(examineTileAction))
             {
-                RightClickMenu.actions.Remove(examineTileAction);
-            }
-        }
-
-        if (RightClickMenu.menuOpen)
-        {
-            if (menuEntry == null)
-            {
-                foreach (MenuEntryClick entry in RightClickMenu.newMenu.GetComponentsInChildren<MenuEntryClick>())
-                {
-                    if (entry.action == examineTileAction)
-                    {
-                        menuEntry = entry;
-                        return;
-                    }
-                }
-            }
-            if (menuEntry != null && menuEntry.clickMethod == null)
-            {
-                menuEntry.clickMethod = ExamineTile;
+                RightClickMenu.tileActions.Remove(examineTileAction);
             }
         }
     }

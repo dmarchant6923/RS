@@ -7,8 +7,9 @@ public class OptionManager : MonoBehaviour
     Player player;
     public bool showTrueTile;
     public bool showClickedTile;
-
     public bool showMouseTile;
+
+    public bool highlightSelectedGroundItems;
 
     void Start()
     {

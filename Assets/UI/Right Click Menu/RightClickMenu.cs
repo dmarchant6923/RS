@@ -12,23 +12,42 @@ public class RightClickMenu : MonoBehaviour
 
     public Text actionText;
 
+    public static Action UIAction;
+    public static List<Action> tileActions = new List<Action>();
+    public static List<Action> gameActions = new List<Action>();
+
     public static List<Action> actions = new List<Action>();
     public static List<Action> openActions = new List<Action>();
 
     List<string> menuStrings = new List<string>();
+
+    public static bool isUsingItem = false;
+    public static GameObject itemBeingUsed;
+    public static string usingItemString;
+
+    [HideInInspector] public Action leftClickAction;
 
     private void Start()
     {
         actions = new List<Action>();
     }
 
-    public static void AddItem(string String, GameObject gameObject)
-    {
-        
-    }
-
     private void Update()
     {
+        actions = new List<Action>();
+        foreach(Action action in tileActions)
+        {
+            actions.Add(action);
+        }
+        foreach (Action action in gameActions)
+        {
+            actions.Add(action);
+        }
+        if (UIAction != null)
+        {
+            actions.Add(UIAction);
+        }
+
         if (MouseManager.mouseOnScreen && Input.GetMouseButtonDown(1) && menuOpen == false)
         {
             newMenu = Instantiate(menu, Input.mousePosition, Quaternion.identity);
@@ -41,22 +60,78 @@ public class RightClickMenu : MonoBehaviour
         {
             foreach (string menuString in action.menuTexts)
             {
-                menuStrings.Add(menuString);
+                if (menuString != null)
+                {
+                    menuStrings.Add(menuString);
+                }
             }
         }
 
-        if (menuStrings.Count == 0 || menuOpen)
+        leftClickAction = null;
+        if (isUsingItem == false)
         {
-            actionText.text = "";
+            if (actions.Count == 0 || menuOpen)
+            {
+                actionText.text = "";
+            }
+            else if (menuOpen == false)
+            {
+                foreach (Action action in actions)
+                {
+                    for (int priority = 1; priority > -2; priority--)
+                    {
+                        for (int i = 0; i < action.menuTexts.Length; i++)
+                        {
+                            if (string.IsNullOrEmpty(action.menuTexts[i]) == false && action.menuPriorities[i] == priority)
+                            {
+                                leftClickAction = action;
+                                actionText.text = action.menuTexts[i];
+                                break;
+                            }
+                        }
+                        if (leftClickAction != null)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (menuStrings.Count > 1 && menuOpen == false)
+            {
+                actionText.text += " / " + (menuStrings.Count - 1) + " more options";
+            }
+
+            if (MouseManager.screenLeftClick && leftClickAction != null && menuOpen == false && leftClickAction.actionOnPointerUp == false)
+            {
+                leftClickAction.PickTopAction();
+            }
         }
-        else if (menuStrings.Count > 0 && menuOpen == false)
+        else
         {
-            actionText.text = menuStrings[0];
-        }
-        
-        if (menuStrings.Count > 1 && menuOpen == false)
-        {
-            actionText.text += " / " + (menuStrings.Count - 1) + " more options";
+            usingItemString = "Use " + itemBeingUsed.name + " -> ";
+            actionText.text = usingItemString;
+            foreach (Action action in actions)
+            {
+                if (action.ignoreUse == false && action != itemBeingUsed.GetComponent<Action>())
+                {
+                    leftClickAction = action;
+                    actionText.text += action.objectName;
+                    break;
+                }
+            }
+
+            if (MouseManager.screenLeftClick && menuOpen == false)
+            {
+                if (leftClickAction != null)
+                {
+                    leftClickAction.actionUsedOnThis = itemBeingUsed.GetComponent<Action>();
+                    leftClickAction.PickAction(9);
+                }
+                else
+                {
+                    isUsingItem = false;
+                }
+            }
         }
     }
 

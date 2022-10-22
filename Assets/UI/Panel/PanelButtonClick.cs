@@ -4,20 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class PanelButtonClick : MonoBehaviour, IPointerDownHandler
+public class PanelButtonClick : MonoBehaviour
 {
     PanelButtons script;
+    Action buttonAction;
 
     void Start()
     {
         script = transform.parent.GetComponent<PanelButtons>();
+        buttonAction = GetComponent<Action>();
+        buttonAction.menuTexts[0] = gameObject.name;
+        buttonAction.action0 += ClickButton;
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void ClickButton()
     {
-        if (Input.GetMouseButton(0))
-        {
-            script.OnClick(transform);
-        }
+        script.OnClick(transform, false);
     }
 }

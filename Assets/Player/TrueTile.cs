@@ -31,8 +31,6 @@ public class TrueTile : MonoBehaviour
     void Start()
     {
         TickManager.onTick += Move;
-        MouseManager.IGClientClick += ClientClick;
-        MouseManager.IGServerClick += ServerClick;
 
         pathFinder = FindObjectOfType<Pathfinder>();
         pathFinder.debugEnabled = debugEnabled;
@@ -47,40 +45,20 @@ public class TrueTile : MonoBehaviour
         path = new List<Vector2>();
 
         walkHereAction = GetComponent<Action>();
+        walkHereAction.action0 += MenuClick;
+        walkHereAction.menuTexts[0] = "walk here";
+        walkHereAction.cancelLevel[0] = 1;
     }
 
     private void Update()
     {
-        if (RightClickMenu.menuOpen == false)
+        if (MouseManager.isOverGame && RightClickMenu.tileActions.Contains(walkHereAction) == false)
         {
-            if (MouseManager.isOverGame && RightClickMenu.actions.Contains(walkHereAction) == false)
-            {
-                RightClickMenu.actions.Add(walkHereAction);
-            }
-            else if (MouseManager.isOverGame == false && RightClickMenu.actions.Contains(walkHereAction))
-            {
-                RightClickMenu.actions.Remove(walkHereAction);
-            }
+            RightClickMenu.tileActions.Add(walkHereAction);
         }
-
-
-        if (RightClickMenu.menuOpen && RightClickMenu.openActions.Contains(walkHereAction))
+        else if (MouseManager.isOverGame == false && RightClickMenu.tileActions.Contains(walkHereAction))
         {
-            if (menuEntry == null)
-            {
-                foreach (MenuEntryClick entry in RightClickMenu.newMenu.GetComponentsInChildren<MenuEntryClick>())
-                {
-                    if (entry.action == walkHereAction)
-                    {
-                        menuEntry = entry;
-                        break;
-                    }
-                }
-            }
-            if (menuEntry != null)
-            {
-                menuEntry.clickMethod = MenuClick;
-            }
+            RightClickMenu.tileActions.Remove(walkHereAction);
         }
     }
 
@@ -104,6 +82,22 @@ public class TrueTile : MonoBehaviour
 
     void ServerClick()
     {
+        if (newClickedTile != null)
+        {
+            Destroy(newClickedTile);
+        }
+        if (showClickedTile)
+        {
+            newClickedTile = Instantiate(clickedTile, destinationTile, Quaternion.identity);
+        }
+        path = pathFinder.FindAStarPath(currentTile, destinationTile);
+
+        clicked = true;
+    }
+
+    public void ExternalMovement(Vector2 coordinate)
+    {
+        destinationTile = coordinate;
         if (newClickedTile != null)
         {
             Destroy(newClickedTile);

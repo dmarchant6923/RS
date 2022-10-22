@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     Toggle orbToggle;
     public delegate void OrbEvent();
@@ -36,10 +36,10 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     float currentPosition;
 
     public Text number;
+    public float initialValue;
     float value;
 
-    Action orbAction;
-    MenuEntryClick menuEntry;
+    [HideInInspector] public Action orbAction;
 
 
     private void Start()
@@ -48,6 +48,11 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         //orbToggle.onValueChanged.AddListener(delegate { Toggle(); });
 
         transform.GetChild(0).GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
+
+        if (initialValue == 0)
+        {
+            initialValue = 100;
+        }
 
         initialScale = maskRT.rect.height;
         initialPosition = maskRT.rect.position.y;
@@ -63,49 +68,9 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         TickManager.afterTick += OnTick;
 
         orbAction = GetComponent<Action>();
-    }
-
-    private void Update()
-    {
-        value = float.Parse(number.text);
-
-        currentScale = minScale + ((initialScale - minScale) * value / 100);
-        currentPosition = minPosition + ((initialPosition - minPosition) * value / 100) - 12.5f;
-
-        maskRT.sizeDelta = new Vector2(maskRT.sizeDelta.x, currentScale);
-        maskRT.localPosition = new Vector2(maskRT.localPosition.x, currentPosition);
-
-
-        if (value >= 50)
+        if (orbAction != null)
         {
-            number.color = new Color(1 - (value - 50) / 100 * 2, 1, 0);
-        }
-        else
-        {
-            number.color = new Color(1, (value) / 100 * 2, 0);
-        }
-
-        if (RightClickMenu.menuOpen == false && menuEntry != null)
-        {
-            menuEntry = null;
-        }
-        if (RightClickMenu.menuOpen && RightClickMenu.openActions.Contains(orbAction))
-        {
-            if (menuEntry == null)
-            {
-                foreach (MenuEntryClick entry in RightClickMenu.newMenu.GetComponentsInChildren<MenuEntryClick>())
-                {
-                    if (entry.action == orbAction)
-                    {
-                        menuEntry = entry;
-                        break;
-                    }
-                }
-            }
-            if (menuEntry != null)
-            {
-                menuEntry.clickMethod = ClickedToggle;
-            }
+            orbAction.action0 += ClickedToggle;
         }
     }
 
@@ -113,6 +78,28 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         orbToggle.isOn = active;
         SwitchSprites(active);
+
+        value = float.Parse(number.text);
+        UpdateMask();
+    }
+
+    public void UpdateMask()
+    {
+        currentScale = minScale + ((initialScale - minScale) * value / initialValue);
+        currentPosition = minPosition + ((initialPosition - minPosition) * value / initialValue) - 12.5f;
+
+        maskRT.sizeDelta = new Vector2(maskRT.sizeDelta.x, currentScale);
+        maskRT.localPosition = new Vector2(maskRT.localPosition.x, currentPosition);
+
+
+        if (value >= initialValue / 2)
+        {
+            number.color = new Color(1 - (value - (initialValue / 2)) / initialValue * 2, 1, 0);
+        }
+        else
+        {
+            number.color = new Color(1, value / initialValue * 2, 0);
+        }
     }
 
     public void ClickedToggle()
@@ -164,7 +151,6 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if (canBeToggled)
         {
             panelSprite.sprite = panelHighlighted;
-            //RightClickMenu.menuStrings.Add(actionText);
         }
     }
 
@@ -173,12 +159,6 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if (canBeToggled)
         {
             panelSprite.sprite = panelNotHighlighted;
-            //RightClickMenu.menuStrings.Remove(actionText);
         }
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        ClickedToggle();
     }
 }

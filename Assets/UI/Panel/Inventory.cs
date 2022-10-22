@@ -11,7 +11,19 @@ public class Inventory : MonoBehaviour
 
     Item[] items;
     RectTransform[] itemRTs;
-    Vector2[] itemPositions = new Vector2[28];
+
+    public GameObject inventoryParent;
+    public GameObject inventorySlot;
+    GameObject newInventorySlot;
+    [HideInInspector] public GameObject[] inventorySlots = new GameObject[28];
+
+    public static int slotsTaken;
+
+    [HideInInspector] public List<Equipment> equipQueue = new List<Equipment>();
+
+    public delegate void EquipAction();
+    public static event EquipAction UpdateEquippedItems;
+    public static event EquipAction ReadEquippedItems;
 
     private void Start()
     {
@@ -49,18 +61,100 @@ public class Inventory : MonoBehaviour
                 float height = br.y + (6 - j) * heightIncrement;
                 float width = br.x - (3 - i) * widthIncrement;
                 Vector2 position = new Vector2(width, height);
-                itemPositions[index] = position;
+                newInventorySlot = Instantiate(inventorySlot, inventoryParent.transform);
+                newInventorySlot.GetComponent<RectTransform>().position = position;
+                inventorySlots[27 - index] = newInventorySlot;
+            }
+        }
 
-                if (items[index] != null)
+        TickManager.onTick += CountSlots;
+        TickManager.beforeTick += EquipQueue;
+        SortInventory();
+    }
+
+    public void SortInventory()
+    {
+        foreach (Item item in itemParent.GetComponentsInChildren<Item>())
+        {
+            for (int i = 0; i < 28; i++)
+            {
+                if (inventorySlots[i].GetComponentInChildren<Item>() == null)
                 {
-                    itemRTs[index].position = position;
-                    items[index].gameObject.SetActive(true);
+                    item.transform.SetParent(inventorySlots[i].transform);
+                    item.transform.position = item.transform.parent.position;
                 }
             }
         }
 
-        //items[0].position = center;
-        //items[1].position = br;
-        //items[2].position = panelAnchor;
+        foreach (GameObject slot in inventorySlots)
+        {
+            if (slot.GetComponentInChildren<Item>() != null)
+            {
+                slot.GetComponentInChildren<Item>().GetComponent<RectTransform>().position = slot.GetComponent<RectTransform>().position;
+            }
+        }
+        CountSlots();
+    }
+    public void CountSlots()
+    {
+        slotsTaken = 0;
+        foreach (GameObject slot in inventorySlots)
+        {
+            if (slot.GetComponentInChildren<Item>() != null)
+            {
+                slotsTaken++;
+            }
+        }
+    }
+
+    public void PlaceInInventory(GameObject item)
+    {
+        if (slotsTaken == 28)
+        {
+            Destroy(item);
+            Debug.Log("item destroyed");
+            return;
+        }
+
+        item.transform.SetParent(itemParent.transform);
+        SortInventory();
+        CountSlots();
+    }
+
+    void EquipQueue()
+    {
+        bool updateStats = false;
+        foreach (Equipment equipment in equipQueue)
+        {
+            updateStats = true;
+            equipment.Equip();
+        }
+        if (updateStats)
+        {
+            if (UpdateEquippedItems != null)
+            {
+                UpdateEquippedItems();
+            }
+            if (ReadEquippedItems != null)
+            {
+                ReadEquippedItems();
+            }
+        }
+        equipQueue = new List<Equipment>();
+    }
+
+    public GameObject ScanForItem(string itemName)
+    {
+        GameObject item = null;
+        foreach (GameObject slot in inventorySlots)
+        {
+            if (slot.transform.childCount > 0 && slot.transform.GetChild(0).name == itemName)
+            {
+                item = slot.transform.GetChild(0).gameObject;
+                break;
+            }
+        }
+
+        return item;
     }
 }
