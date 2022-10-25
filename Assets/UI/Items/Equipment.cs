@@ -12,8 +12,8 @@ public class Equipment : MonoBehaviour
 
     Action itemAction;
 
-    bool isEquipped = false;
-    bool equipDelayActive = false;
+    [HideInInspector] public bool isEquipped = false;
+    [HideInInspector] public bool equippedWhenClicked = false;
     public Transform equipSlot;
     public GameObject itemsParent;
     Item itemScript;
@@ -66,9 +66,11 @@ public class Equipment : MonoBehaviour
             equipString = "Wield ";
         }
         itemScript.menuTexts[0] = equipString;
-        itemAction.cancelLevel[0] = 1;
+        itemAction.cancelLevels[0] = 1;
         itemScript.UpdateActions();
-        itemAction.action0 += DelayedEquip;
+        itemAction.clientAction0 += Click;
+        itemAction.serverAction0 += AddToEquipQueue;
+        itemAction.orderLevels[0] = -1;
 
         if (GetComponent<ChargeItem>() != null)
         {
@@ -77,20 +79,17 @@ public class Equipment : MonoBehaviour
         }
     }
 
-    public void DelayedEquip()
+    void Click()
     {
-        if (equipDelayActive == false && itemScript.inventory.equipQueue.Contains(this) == false)
-        {
-            itemScript.clickHeld = true;
-            StartCoroutine(EquipDelay());
-        }
+        itemScript.clickHeld = true;
     }
-    IEnumerator EquipDelay()
+
+    void AddToEquipQueue()
     {
-        equipDelayActive = true;
-        yield return new WaitForSeconds(TickManager.simLatency);
-        equipDelayActive = false;
-        itemScript.inventory.equipQueue.Add(this);
+        if (equippedWhenClicked == isEquipped)
+        {
+            Equip();
+        }
     }
 
     public void Equip()
@@ -118,13 +117,13 @@ public class Equipment : MonoBehaviour
             transform.SetParent(equipSlot.transform);
             transform.position = equipSlot.transform.position;
 
-            foreach (Equipment item in equipSlot.GetComponentsInChildren<Equipment>())
+            foreach (Equipment equipment in equipSlot.GetComponentsInChildren<Equipment>())
             {
-                if (item != this)
+                if (equipment != this)
                 {
-                    item.Equip();
-                    item.transform.SetParent(inventorySlot);
-                    item.transform.position = inventorySlot.position;
+                    equipment.Equip();
+                    equipment.transform.SetParent(inventorySlot);
+                    equipment.transform.position = inventorySlot.position;
                     break;
                 }
             }
@@ -165,8 +164,11 @@ public class Equipment : MonoBehaviour
             else
             {
                 Debug.Log("You don't have enough free space to do that.");
+                return;
             }
         }
+
+        itemScript.inventory.UpdateStats();
 
         if (equipSlot.GetComponentInChildren<Equipment>() != null)
         {

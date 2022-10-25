@@ -9,9 +9,8 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     Action itemAction;
 
     bool useActive = false;
-    bool equipped = false;
 
-    public RawImage itemImage;
+    [HideInInspector] public RawImage itemImage;
     GameObject mask;
     Shadow shadow;
     Outline outline;
@@ -30,6 +29,9 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public static bool highlightSelectedItems;
 
+    bool isEquipment = false;
+    Equipment equipScript;
+
     private void Start()
     {
         itemAction = GetComponent<Action>();
@@ -43,11 +45,12 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         itemAction.addObjectName = true;
 
         menuTexts[2] = "Use ";
-        itemAction.action2 += Use;
+        itemAction.clientAction2 += Use;
 
         menuTexts[4] = "Drop ";
-        itemAction.cancelLevel[4] = 1;
-        itemAction.action4 += Drop;
+        itemAction.cancelLevels[4] = 1;
+        itemAction.serverAction4 += Drop;
+        itemAction.orderLevels[4] = -1;
 
         menuTexts[8] = "Examine ";
 
@@ -55,7 +58,11 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         player = FindObjectOfType<Player>();
 
-        TickManager.beforeTick += BeforeTick;
+        if (GetComponent<Equipment>() != null)
+        {
+            isEquipment = true;
+            equipScript = GetComponent<Equipment>();
+        }
     }
 
     public void UpdateActions(string name)
@@ -92,19 +99,19 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
     }
 
+    //void Drop()
+    //{
+    //    Invoke("DelayDrop", TickManager.simLatency);
+    //}
+
+    //void DelayDrop()
+    //{
+    //    dropped = true;
+    //}
+
     void Drop()
     {
-        Invoke("DelayDrop", TickManager.simLatency);
-    }
-
-    void DelayDrop()
-    {
-        dropped = true;
-    }
-
-    void BeforeTick()
-    {
-        if (dropped)
+        if (gameObject.activeSelf)
         {
             GameObject newItem = Instantiate(groundPrefab, player.truePlayerTile, Quaternion.identity);
             newItem.gameObject.name = itemAction.objectName;
@@ -115,7 +122,6 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             transform.position = groundItemsParent.transform.position;
             inventory.SortInventory();
             gameObject.SetActive(false);
-            dropped = false;
         }
     }
 
@@ -150,6 +156,10 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (useActive == false)
         {
             clickHeld = true;
+            if (isEquipment)
+            {
+                equipScript.equippedWhenClicked = equipScript.isEquipped;
+            }
         }
         if (Input.GetMouseButtonDown(0) && RightClickMenu.isUsingItem == false)
         {
@@ -170,7 +180,8 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         float maxDist = 15;
         float timer = 0;
         float window = 0.15f;
-        while (Input.GetMouseButton(0))
+
+        while (Input.GetMouseButton(0) && gameObject.transform.parent.parent == inventory.inventoryParent.transform)
         {
             timer += Time.deltaTime;
             Vector3 mousePoint = Input.mousePosition;
@@ -189,31 +200,40 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         else
         {
             float insertRange = 27;
-
+            bool failed = false;
             while (Input.GetMouseButton(0))
             {
+                if (gameObject.transform.parent.parent != inventory.inventoryParent.transform)
+                {
+                    failed = true;
+                    break;
+                }
                 Vector3 mousePoint = Input.mousePosition;
                 itemRT.position = mousePoint - relativeDist;
                 yield return null;
             }
-            float minDist = 10000;
-            foreach (GameObject slot in inventory.inventorySlots)
+            if (failed == false)
             {
-                RectTransform rt = slot.GetComponent<RectTransform>();
-                minDist = Mathf.Min((Input.mousePosition - rt.position).magnitude, minDist);
-                if ((Input.mousePosition - rt.position).magnitude < insertRange)
+                float minDist = 10000;
+                foreach (GameObject slot in inventory.inventorySlots)
                 {
-                    Transform currentParent = transform.parent;
-                    if (rt.GetComponentInChildren<Equipment>() != null)
+                    RectTransform rt = slot.GetComponent<RectTransform>();
+                    minDist = Mathf.Min((Input.mousePosition - rt.position).magnitude, minDist);
+                    if ((Input.mousePosition - rt.position).magnitude < insertRange)
                     {
-                        rt.GetComponentInChildren<Equipment>().transform.SetParent(currentParent);
+                        Transform currentParent = transform.parent;
+                        if (rt.GetComponentInChildren<Item>() != null)
+                        {
+                            rt.GetComponentInChildren<Item>().transform.SetParent(currentParent);
+                        }
+                        transform.SetParent(rt.transform);
+                        break;
                     }
-                    transform.SetParent(rt.transform);
-                    break;
                 }
+                inventory.SortInventory();
             }
-            inventory.SortInventory();
         }
+        yield return new WaitForSeconds(0.1f);
         clickHeld = false;
     }
 }

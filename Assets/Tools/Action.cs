@@ -5,8 +5,9 @@ using UnityEngine;
 public class Action : MonoBehaviour
 {
     [System.NonSerialized] public string[] menuTexts = new string[9];
-    [System.NonSerialized] public int[] menuPriorities = new int[9]; // priority -1, 0, or 1
-    [System.NonSerialized] public int[] cancelLevel = new int[10]; //cancel level 0, 1, 2, or 3. level cancels that level and all below it.
+    [System.NonSerialized] public int[] menuPriorities = new int[9]; // priority -1, 0, or 1. highest priority shows at the top of action menu
+    [System.NonSerialized] public int[] cancelLevels = new int[10]; //cancel level 0, 1, 2, or 3. level cancels that level and all below it.
+    [System.NonSerialized] public int[] orderLevels = new int[10]; //order level -1, 0, 1. before tick, on tick, after tick.
     public string examineText;
     [HideInInspector] public string objectName;
     public bool addObjectName;
@@ -14,33 +15,55 @@ public class Action : MonoBehaviour
     [HideInInspector] public bool itemAction = false;
     public bool ignoreUse = false;
 
-    public delegate void MenuAction();
-    public event MenuAction action0;
-    public event MenuAction action1;
-    public event MenuAction action2;
-    public event MenuAction action3;
-    public event MenuAction action4;
-    public event MenuAction action5;
-    public event MenuAction action6;
-    public event MenuAction action7;
-    public event MenuAction actionExamine;
-    public event MenuAction actionUse;
+    public delegate void ObjectAction();
 
-    public static event MenuAction cancel1;
-    public static event MenuAction cancel2;
-    public static event MenuAction cancel3;
+    public event ObjectAction clientAction0;
+    public event ObjectAction clientAction1;
+    public event ObjectAction clientAction2;
+    public event ObjectAction clientAction3;
+    public event ObjectAction clientAction4;
+    public event ObjectAction clientAction5;
+    public event ObjectAction clientAction6;
+    public event ObjectAction clientAction7;
+    public event ObjectAction clientActionExamine;
+    public event ObjectAction clientActionUse;
 
-    bool invokeCancel1;
-    bool invokeCancel2;
-    bool invokeCancel3;
+    public event ObjectAction serverAction0;
+    public event ObjectAction serverAction1;
+    public event ObjectAction serverAction2;
+    public event ObjectAction serverAction3;
+    public event ObjectAction serverAction4;
+    public event ObjectAction serverAction5;
+    public event ObjectAction serverAction6;
+    public event ObjectAction serverAction7;
+    public event ObjectAction serverActionExamine;
+    public event ObjectAction serverActionUse;
+
+    public static List<int> beforeTickNum = new List<int>();
+    public static List<int> onTickNum = new List<int>();
+    public static List<int> afterTickNum = new List<int>();
+
+    public static List<Action> beforeTickActions = new List<Action>();
+    public static List<Action> onTickActions = new List<Action>();
+    public static List<Action> afterTickActions = new List<Action>();
+    static bool staticEventsAddedToTickManager;
+
+    public static event ObjectAction cancel1;
+    public static event ObjectAction cancel2;
+    public static event ObjectAction cancel3;
+
+    static bool invokeCancel1;
+    static bool invokeCancel2;
+    static bool invokeCancel3;
 
     [HideInInspector] public Action actionUsedOnThis;
 
     public bool actionOnPointerUp;
 
     bool validAction = false;
+    bool topActionPicked = false;
 
-    private void Start()
+    private IEnumerator Start()
     {
         menuTexts = new string[9];
         if (examineText != null && string.IsNullOrEmpty(examineText) == false)
@@ -50,7 +73,35 @@ public class Action : MonoBehaviour
 
         menuPriorities[8] = -1;
 
-        TickManager.cancelBeforeTick += CancelActions;
+        if (staticEventsAddedToTickManager == false)
+        {
+            TickManager.cancelBeforeTick += CancelActions;
+            TickManager.beforeTick += BeforeTick;
+            TickManager.onTick += OnTick;
+            TickManager.afterTick += AfterTick;
+            staticEventsAddedToTickManager = true;
+        }
+
+        beforeTickNum = new List<int>();
+        beforeTickActions = new List<Action>();
+        onTickNum = new List<int>();
+        onTickActions = new List<Action>();
+        afterTickNum = new List<int>();
+        afterTickActions = new List<Action>();
+
+        yield return null;
+        for (int i = 0; i < orderLevels.Length; i++)
+        {
+            orderLevels[i] = Mathf.Clamp(orderLevels[i], -1, 1);
+        }
+        for (int i = 0; i < menuPriorities.Length; i++)
+        {
+            menuPriorities[i] = Mathf.Clamp(menuPriorities[i], -1, 1);
+        }
+        for (int i = 0; i < cancelLevels.Length; i++)
+        {
+            cancelLevels[i] = Mathf.Clamp(cancelLevels[i], 0, 3);
+        }
     }
 
     public void UpdateName()
@@ -67,74 +118,219 @@ public class Action : MonoBehaviour
         }
     }
 
+
+    public void PickTopAction()
+    {
+        for (int i = 1; i > -2; i--)
+        {
+            for (int j = 0; j < menuPriorities.Length; j++)
+            {
+                if (menuPriorities[j] == i && string.IsNullOrEmpty(menuTexts[j]) == false)
+                {
+                    PickAction(j);
+                    if (topActionPicked)
+                    {
+                        topActionPicked = false;
+                        return;
+                    }
+                }
+            }
+        }
+
+        //if (action0 != null)
+        //{
+        //    PickAction(0);
+        //}
+        //else if (action1 != null)
+        //{
+        //    PickAction(1);
+        //}
+        //else if (action2 != null)
+        //{
+        //    PickAction(2);
+        //}
+        //else if (action3 != null)
+        //{
+        //    PickAction(3);
+        //}
+        //else if (action4 != null)
+        //{
+        //    PickAction(4);
+        //}
+        //else if (action5 != null)
+        //{
+        //    PickAction(5);
+        //}
+        //else if (action6 != null)
+        //{
+        //    PickAction(6);
+        //}
+        //else if (action7 != null)
+        //{
+        //    PickAction(7);
+        //}
+    }
     public void PickAction(int actionNumber)
     {
-        //Debug.Log(gameObject.name + " action number: " + actionNumber + " cancel level: " + cancelLevel[actionNumber]);
         if (actionNumber == 0)
         {
-            Action0();
+            clientAction0?.Invoke();
+            if (serverAction0 != null)
+            {
+                StartCoroutine(DelayAction(actionNumber));
+            }
+            if (clientAction0 != null || serverAction0 != null)
+            {
+                validAction = true;
+            }
         }
         else if (actionNumber == 1)
         {
-            Action1();
+            clientAction1?.Invoke();
+            if (serverAction1 != null)
+            {
+                StartCoroutine(DelayAction(actionNumber));
+            }
+            if (clientAction1 != null || serverAction1 != null)
+            {
+                validAction = true;
+            }
         }
         else if (actionNumber == 2)
         {
-            Action2();
+            clientAction2?.Invoke();
+            if (serverAction2 != null)
+            {
+                StartCoroutine(DelayAction(actionNumber));
+            }
+            if (clientAction2 != null || serverAction2 != null)
+            {
+                validAction = true;
+            }
         }
         else if (actionNumber == 3)
         {
-            Action3();
+            clientAction3?.Invoke();
+            if (serverAction3 != null)
+            {
+                StartCoroutine(DelayAction(actionNumber));
+            }
+            if (clientAction3 != null || serverAction3 != null)
+            {
+                validAction = true;
+            }
         }
         else if (actionNumber == 4)
         {
-            Action4();
+            clientAction4?.Invoke();
+            if (serverAction4 != null)
+            {
+                StartCoroutine(DelayAction(actionNumber));
+            }
+            if (clientAction4 != null || serverAction4 != null)
+            {
+                validAction = true;
+            }
         }
         else if (actionNumber == 5)
         {
-            Action5();
+            clientAction5?.Invoke();
+            if (serverAction5 != null)
+            {
+                StartCoroutine(DelayAction(actionNumber));
+            }
+            if (clientAction5 != null || serverAction5 != null)
+            {
+                validAction = true;
+            }
         }
         else if (actionNumber == 6)
         {
-            Action6();
+            clientAction6?.Invoke();
+            if (serverAction6 != null)
+            {
+                StartCoroutine(DelayAction(actionNumber));
+            }
+            if (clientAction6 != null || serverAction6 != null)
+            {
+                validAction = true;
+            }
         }
         else if (actionNumber == 7)
         {
-            Action7();
+            clientAction7?.Invoke();
+            if (serverAction7 != null)
+            {
+                StartCoroutine(DelayAction(actionNumber));
+            }
+            if (clientAction7 != null || serverAction7 != null)
+            {
+                validAction = true;
+            }
         }
         else if (actionNumber == 8)
         {
-            ActionExamine();
+            clientActionExamine?.Invoke();
+            if (serverActionExamine != null)
+            {
+                StartCoroutine(DelayAction(actionNumber));
+            }
+            if (clientActionExamine != null || serverActionExamine != null)
+            {
+                validAction = true;
+            }
         }
         else if (actionNumber == 9)
         {
-            UseActionOnThis();
+            clientActionUse?.Invoke();
+            if (serverActionUse != null)
+            {
+                StartCoroutine(DelayAction(actionNumber));
+            }
+            if (clientActionUse != null || serverActionUse != null)
+            {
+                validAction = true;
+            }
+            //UseActionOnThis();
+            RightClickMenu.isUsingItem = false;
         }
         else
         {
             Debug.Log("no action selected");
         }
 
+        topActionPicked = true;
         if (validAction == false)
         {
+            topActionPicked = false;
             return;
         }
         validAction = false;
 
-        if (cancelLevel[actionNumber] == 1)
+        if (cancelLevels[actionNumber] > 0)
         {
-            StartCoroutine(DelayCancel(1));
-        }
-        else if (cancelLevel[actionNumber] == 2)
-        {
-            StartCoroutine(DelayCancel(2));
-        }
-        else if (cancelLevel[actionNumber] == 3)
-        {
-            StartCoroutine(DelayCancel(3));
+            StartCoroutine(DelayCancel(cancelLevels[actionNumber]));
         }
     }
-
+    IEnumerator DelayAction(int num)
+    {
+        yield return new WaitForSeconds(TickManager.simLatency);
+        if (orderLevels[num] == -1)
+        {
+            beforeTickActions.Add(this);
+            beforeTickNum.Add(num);
+        }
+        else if (orderLevels[num] == 0)
+        {
+            onTickActions.Add(this);
+            onTickNum.Add(num);
+        }
+        else if (orderLevels[num] == 1)
+        {
+            afterTickActions.Add(this);
+            afterTickNum.Add(num);
+        }
+    }
     IEnumerator DelayCancel(int num)
     {
         yield return new WaitForSeconds(TickManager.simLatency);
@@ -155,7 +351,7 @@ public class Action : MonoBehaviour
         }
     }
 
-    public void CancelActions()
+    public static void CancelActions()
     {
         if (invokeCancel1)
         {
@@ -173,125 +369,96 @@ public class Action : MonoBehaviour
             invokeCancel3 = false;
         }
     }
+    public static void BeforeTick()
+    {
+        for (int i = 0; i < beforeTickActions.Count; i++)
+        {
+            if (beforeTickActions[i].gameObject.activeSelf)
+            {
+                beforeTickActions[i].PickServerAction(beforeTickNum[i]);
+            }
+        }
 
-    public void PickTopAction()
+        beforeTickActions = new List<Action>();
+        beforeTickNum = new List<int>();
+    }
+    public static void OnTick()
     {
-        if (action0 != null)
+        for (int i = 0; i < onTickActions.Count; i++)
         {
-            PickAction(0);
+            if (onTickActions[i].gameObject.activeSelf)
+            {
+                onTickActions[i].PickServerAction(onTickNum[i]);
+            }
         }
-        else if (action1 != null)
+
+        onTickActions = new List<Action>();
+        onTickNum = new List<int>();
+    }
+    public static void AfterTick()
+    {
+        for (int i = 0; i < afterTickActions.Count; i++)
         {
-            PickAction(1);
+            if (afterTickActions[i].gameObject.activeSelf)
+            {
+                afterTickActions[i].PickServerAction(afterTickNum[i]);
+            }
         }
-        else if (action2 != null)
-        {
-            PickAction(2);
-        }
-        else if (action3 != null)
-        {
-            PickAction(3);
-        }
-        else if (action4 != null)
-        {
-            PickAction(4);
-        }
-        else if (action5 != null)
-        {
-            PickAction(5);
-        }
-        else if (action6 != null)
-        {
-            PickAction(6);
-        }
-        else if (action7 != null)
-        {
-            PickAction(7);
-        }
+
+        afterTickActions = new List<Action>();
+        afterTickNum = new List<int>();
     }
 
-    public void Action0()
+    public void PickServerAction(int actionNumber)
     {
-        if (action0 != null)
+        if (actionNumber == 0)
         {
-            action0();
-            validAction = true;
+            serverAction0?.Invoke();
         }
-    }
-    public void Action1()
-    {
-        if (action1 != null)
+        if (actionNumber == 1)
         {
-            action1();
-            validAction = true;
+            serverAction1?.Invoke();
         }
-    }
-    public void Action2()
-    {
-        if (action2 != null)
+        if (actionNumber == 2)
         {
-            action2();
-            validAction = true;
+            serverAction2?.Invoke();
         }
-    }
-    public void Action3()
-    {
-        if (action3 != null)
+        if (actionNumber == 3)
         {
-            action3();
-            validAction = true;
+            serverAction3?.Invoke();
         }
-    }
-    public void Action4()
-    {
-        if (action4 != null)
+        if (actionNumber == 4)
         {
-            action4();
-            validAction = true;
+            serverAction4?.Invoke();
         }
-    }
-    public void Action5()
-    {
-        if (action5 != null)
+        if (actionNumber == 5)
         {
-            action5();
-            validAction = true;
+            serverAction5?.Invoke();
         }
-    }
-    public void Action6()
-    {
-        if (action6 != null)
+        if (actionNumber == 6)
         {
-            action6();
-            validAction = true;
+            serverAction6?.Invoke();
         }
-    }
-    public void Action7()
-    {
-        if (action7 != null)
+        if (actionNumber == 7)
         {
-            action7();
-            validAction = true;
+            serverAction7?.Invoke();
         }
-    }
-    public void ActionExamine()
-    {
-        Debug.Log(examineText);
-        validAction = true;
-    }
-    public void UseActionOnThis()
-    {
-        if (actionUse != null && actionUsedOnThis != null)
+        if (actionNumber == 8)
         {
-            actionUse();
+            serverActionExamine?.Invoke();
         }
-        else
+        if (actionNumber == 9)
         {
+            if (serverActionUse != null && actionUsedOnThis != null)
+            {
+                serverActionUse();
+            }
+            else
+            {
+                DefaultUseAction();
+            }
             actionUsedOnThis = null;
-            DefaultUseAction();
         }
-        RightClickMenu.isUsingItem = false;
-        validAction = true;
     }
 
     public void DefaultUseAction()

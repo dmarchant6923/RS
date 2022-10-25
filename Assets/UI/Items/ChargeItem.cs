@@ -23,17 +23,9 @@ public class ChargeItem : MonoBehaviour
     Inventory inventory;
     Item itemScript;
 
-    bool checkClicked = false;
-    bool objectUsedOnThis = false;
-
     bool chargeDialogueActive = false;
     bool chargeInputRecieved = false;
     int inputCharges = 0;
-
-    bool unchargeClicked = false;
-
-    bool equippable;
-    Equipment equipScript;
 
     private IEnumerator Start()
     {
@@ -63,15 +55,17 @@ public class ChargeItem : MonoBehaviour
         }
 
         TickManager.beforeTick += BeforeTick;
-        TickManager.afterTick += AfterTick;
 
         yield return null;
 
         itemScript.menuTexts[1] = "Check ";
-        itemAction.action1 += Check;
-        itemAction.cancelLevel[1] = 1;
+        itemAction.serverAction1 += Check;
+        itemAction.cancelLevels[1] = 1;
+        itemAction.orderLevels[1] = 1;
 
-        itemAction.action3 += Uncharge;
+        itemAction.serverAction3 += Uncharge;
+        itemAction.cancelLevels[3] = 1;
+        itemAction.orderLevels[3] = -1;
 
         if (charges > 0)
         {
@@ -83,43 +77,182 @@ public class ChargeItem : MonoBehaviour
             itemScript.UpdateActions(gameObject.name + " (uncharged)");
         }
 
-        itemAction.actionUse += ObjectUsedOnThis;
-        itemAction.cancelLevel[6] = 1;
-
-        if (GetComponent<Equipment>() != null)
-        {
-            equipScript = GetComponent<Equipment>();
-            equippable = true;
-        }
-    }
-
-    void Check()
-    {
-        Invoke("DelayCheck", TickManager.simLatency);
-    }
-    void DelayCheck()
-    {
-        checkClicked = true;
+        itemAction.serverActionUse += ObjectUsedOnThis;
+        itemAction.cancelLevels[9] = 1;
+        itemAction.orderLevels[9] = -1;
     }
 
     void Uncharge()
     {
-        Invoke("DelayUncharge", TickManager.simLatency);
+        if (charges <= 0)
+        {
+            return;
+        }
+
+        int numSpaces = chargeItems.Count;
+        foreach (GameObject item in chargeItems)
+        {
+            if (inventory.ScanForItem(item.name) != null)
+            {
+                numSpaces--;
+            }
+        }
+
+        inventory.CountSlots();
+        if (Inventory.slotsTaken > 28 - numSpaces)
+        {
+            Debug.Log("You don't have enough inventory space.");
+            return;
+        }
+
+        for (int i = 0; i < chargeItems.Count; i++)
+        {
+            GameObject newItem = inventory.ScanForItem(chargeItems[i].name);
+            if (newItem != null)
+            {
+                newItem.GetComponent<StackableItem>().AddToQuantity(chargeQuantities[i] * charges);
+            }
+            else
+            {
+                newItem = Instantiate(chargeItems[i]);
+                newItem.name = chargeItems[i].name;
+                newItem.GetComponent<StackableItem>().quantity = chargeQuantities[i] * charges;
+                newItem.GetComponent<Item>().inventory = itemScript.inventory;
+                newItem.GetComponent<Item>().groundItemsParent = itemScript.groundItemsParent;
+                newItem.GetComponent<Item>().groundPrefab = itemScript.groundPrefab;
+                inventory.PlaceInInventory(newItem);
+            }
+        }
+        ChargeToUncharged();
     }
-    void DelayUncharge()
+
+
+    void ChargeToUncharged()
     {
-        unchargeClicked = true;
+        charges = 0;
+        itemScript.menuTexts[3] = "";
+        itemScript.menuTexts[1] = "";
+        if (GetComponent<Equipment>() != null)
+        {
+            GetComponent<Equipment>().RemoveEquipAction();
+        }
+        itemScript.itemImage.color = new Color(0.7f, 0.7f, 0.7f, 1);
+        itemScript.UpdateActions(gameObject.name + " (uncharged)");
+
     }
+    void UnchargedToCharged()
+    {
+        itemScript.menuTexts[1] = "Check ";
+        itemScript.menuTexts[3] = "Uncharge ";
+        if (GetComponent<Equipment>() != null)
+        {
+            GetComponent<Equipment>().AddEquipAction();
+        }
+        itemScript.itemImage.color = new Color(1, 1, 1, 1);
+        itemScript.UpdateActions(gameObject.name);
+    }
+    public void RemoveUnchargeAction()
+    {
+        itemScript.menuTexts[3] = "";
+        itemScript.UpdateActions(gameObject.name);
+    }
+    public void AddUnchargeAction()
+    {
+        itemScript.menuTexts[3] = "Uncharge ";
+        itemScript.UpdateActions(gameObject.name);
+    }
+
 
     void ObjectUsedOnThis()
     {
-        Invoke("DelayObjectUsedOnThis", TickManager.simLatency);
-    }
-    void DelayObjectUsedOnThis()
-    {
-        objectUsedOnThis = true;
-    }
+        bool itemFound = false;
+        for (int i = 0; i < chargeItems.Count; i++)
+        {
+            if (itemAction.actionUsedOnThis.gameObject.name == chargeItems[i].name)
+            {
+                itemFound = true;
+                break;
+            }
+        }
 
+        if (itemFound == false)
+        {
+            itemAction.DefaultUseAction();
+            return;
+        }
+
+        bool itemsInInventory = true;
+        for (int i = 0; i < chargeItems.Count; i++)
+        {
+            GameObject item = inventory.ScanForItem(chargeItems[i].name);
+            if (item == null || item.GetComponent<StackableItem>().quantity < chargeQuantities[i])
+            {
+                itemsInInventory = false;
+                break;
+            }
+        }
+
+        if (itemsInInventory == false)
+        {
+            string quantityString = "";
+
+            if (chargeItems.Count == 1)
+            {
+                quantityString = chargeQuantities[0] + "x " + chargeItems[0].name;
+            }
+            else if (chargeItems.Count == 2)
+            {
+                quantityString = chargeQuantities[0] + "x " + chargeItems[0].name + " and " + chargeQuantities[1] + "x " + chargeItems[2].name;
+            }
+            else
+            {
+                for (int i = 0; i < chargeItems.Count; i++)
+                {
+                    if (i > 0)
+                    {
+                        quantityString += ", ";
+                    }
+                    if (i == chargeItems.Count - 1 && chargeItems.Count > 0)
+                    {
+                        quantityString += "and ";
+                    }
+                    quantityString += chargeQuantities[i] + "x " + chargeItems[i].name;
+                }
+            }
+
+            Debug.Log("You need " + quantityString + " to charge the " + gameObject.name + ".");
+            return;
+        }
+
+        int allowedCharges = maxCharges - charges;
+        for (int i = 0; i < chargeItems.Count; i++)
+        {
+            GameObject item = inventory.ScanForItem(chargeItems[i].name);
+            int num = (int)Mathf.Floor(item.GetComponent<StackableItem>().quantity / chargeQuantities[i]);
+            if (num < allowedCharges)
+            {
+                allowedCharges = num;
+            }
+        }
+
+        DialogueBox.PlayerInput("How many charges do you wish to add? (0 - " + allowedCharges + ")");
+
+        chargeDialogueActive = true;
+        DialogueBox.InputSubmitted += ReceiveInput;
+    }
+    void ReceiveInput()
+    {
+        DialogueBox.InputSubmitted -= ReceiveInput;
+        Invoke("DelayReceiveInput", TickManager.simLatency);
+        if (DialogueBox.InputString != "")
+        {
+            inputCharges = int.Parse(DialogueBox.InputString);
+        }
+    }
+    void DelayReceiveInput()
+    {
+        chargeInputRecieved = true;
+    }
     void BeforeTick()
     {
         if (chargeDialogueActive && chargeInputRecieved)
@@ -156,180 +289,11 @@ public class ChargeItem : MonoBehaviour
             chargeDialogueActive = false;
             chargeInputRecieved = false;
         }
-
-        if (objectUsedOnThis)
-        {
-            objectUsedOnThis = false;
-            bool itemFound = false;
-            for (int i = 0; i < chargeItems.Count; i++)
-            {
-                if (itemAction.actionUsedOnThis.gameObject.name == chargeItems[i].name)
-                {
-                    itemFound = true;
-                    break;
-                }
-            }
-
-            if (itemFound == false)
-            {
-                itemAction.DefaultUseAction();
-                return;
-            }
-
-            bool itemsInInventory = true;
-            for (int i = 0; i < chargeItems.Count; i++)
-            {
-                GameObject item = inventory.ScanForItem(chargeItems[i].name);
-                if (item == null || item.GetComponent<StackableItem>().quantity < chargeQuantities[i])
-                {
-                    itemsInInventory = false;
-                    break;
-                }
-            }
-
-            if (itemsInInventory == false)
-            {
-                string quantityString = "";
-
-                if (chargeItems.Count == 1)
-                {
-                    quantityString = chargeQuantities[0] + "x " + chargeItems[0].name;
-                }
-                else if (chargeItems.Count == 2)
-                {
-                    quantityString = chargeQuantities[0] + "x " + chargeItems[0].name + " and " + chargeQuantities[1] + "x " + chargeItems[2].name;
-                }
-                else
-                {
-                    for (int i = 0; i < chargeItems.Count; i++)
-                    {
-                        if (i > 0)
-                        {
-                            quantityString += ", ";
-                        }
-                        if (i == chargeItems.Count - 1 && chargeItems.Count > 0)
-                        {
-                            quantityString += "and ";
-                        }
-                        quantityString += chargeQuantities[i] + "x " + chargeItems[i].name;
-                    }
-                }
-
-                Debug.Log("You need " + quantityString + " to charge the " + gameObject.name + ".");
-                return;
-            }
-
-            int allowedCharges = maxCharges - charges;
-            for (int i = 0; i < chargeItems.Count; i++)
-            {
-                GameObject item = inventory.ScanForItem(chargeItems[i].name);
-                int num = (int)Mathf.Floor(item.GetComponent<StackableItem>().quantity / chargeQuantities[i]);
-                if (num < allowedCharges)
-                {
-                    allowedCharges = num;
-                }
-            }
-
-            DialogueBox.PlayerInput("How many charges do you wish to add? (0 - " + allowedCharges + ")");
-
-            chargeDialogueActive = true;
-            DialogueBox.InputSubmitted += ReceiveInput;
-        }
-
-        if (unchargeClicked)
-        {
-            unchargeClicked = false;
-            int numSpaces = chargeItems.Count;
-            foreach (GameObject item in chargeItems)
-            {
-                if (inventory.ScanForItem(item.name) != null)
-                {
-                    numSpaces--;
-                }
-            }
-
-            inventory.CountSlots();
-            if (Inventory.slotsTaken > 28 - numSpaces)
-            {
-                Debug.Log("You don't have enough inventory space.");
-                return;
-            }
-
-            for (int i = 0; i < chargeItems.Count; i++)
-            {
-                GameObject newItem = inventory.ScanForItem(chargeItems[i].name);
-                if (newItem != null)
-                {
-                    newItem.GetComponent<StackableItem>().AddToQuantity(chargeQuantities[i] * charges);
-                }
-                else
-                {
-                    newItem = Instantiate(chargeItems[i]);
-                    newItem.name = chargeItems[i].name;
-                    newItem.GetComponent<StackableItem>().quantity = chargeQuantities[i] * charges;
-                    inventory.PlaceInInventory(newItem);
-                }
-            }
-            ChargeToUncharged();
-        }
     }
 
-    void ChargeToUncharged()
-    {
-        charges = 0;
-        itemScript.menuTexts[3] = "";
-        itemScript.menuTexts[1] = "";
-        if (GetComponent<Equipment>() != null)
-        {
-            GetComponent<Equipment>().RemoveEquipAction();
-        }
-        itemScript.itemImage.color = new Color(0.7f, 0.7f, 0.7f, 1);
-        itemScript.UpdateActions(gameObject.name + " (uncharged)");
 
-    }
-    void UnchargedToCharged()
+    void Check()
     {
-        itemScript.menuTexts[1] = "Check ";
-        itemScript.menuTexts[3] = "Uncharge ";
-        if (GetComponent<Equipment>() != null)
-        {
-            GetComponent<Equipment>().AddEquipAction();
-        }
-        itemScript.itemImage.color = new Color(1, 1, 1, 1);
-        itemScript.UpdateActions(gameObject.name);
-    }
-
-    public void RemoveUnchargeAction()
-    {
-        itemScript.menuTexts[3] = "";
-        itemScript.UpdateActions(gameObject.name);
-    }
-    public void AddUnchargeAction()
-    {
-        itemScript.menuTexts[3] = "Uncharge ";
-        itemScript.UpdateActions(gameObject.name);
-    }
-
-    void ReceiveInput()
-    {
-        DialogueBox.InputSubmitted -= ReceiveInput;
-        Invoke("DelayReceiveInput", TickManager.simLatency);
-        if (DialogueBox.InputString != "")
-        {
-            inputCharges = int.Parse(DialogueBox.InputString);
-        }
-    }
-
-    void DelayReceiveInput()
-    {
-        chargeInputRecieved = true;
-    }
-    void AfterTick()
-    {
-        if (checkClicked)
-        {
-            checkClicked = false;
-            Debug.Log("Your " + gameObject.name + " has " + charges + " charges.");
-        }
+        Debug.Log("Your " + gameObject.name + " has " + charges + " charges.");
     }
 }

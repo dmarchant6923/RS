@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4843337945644513518
 RectTransform:
   m_ObjectHideFlags: 0
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -1100,7 +1100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -1643,7 +1643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -2201,7 +2201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -2336,6 +2336,8 @@ MonoBehaviour:
   twoHanded: 0
   weaponCategory: Stab Sword
   ammoCategory: 
+  isEquipped: 0
+  equippedWhenClicked: 0
   equipSlot: {fileID: 1600326423103775014}
   itemsParent: {fileID: 4588207405026825746}
   stackable: 0
@@ -2353,7 +2355,7 @@ MonoBehaviour:
   rangedStrength: 0
   magicDamage: 0
   prayer: 0
-  hasSpec: 0
+  hasSpec: 1
   attackSpeed: 4
   specCost: 22
   specDescription: 
@@ -2369,11 +2371,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570adbb61a6ab63478647b003f4dd418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemImage: {fileID: 0}
   clickHeld: 0
   inventory: {fileID: 1016839545870424289}
   groundItemsParent: {fileID: 8353442295658822351}
   groundPrefab: {fileID: 8940232162871179629, guid: ebe7f289e798d5e42b0485e06a8f5e24, type: 3}
-  player: {fileID: 0}
 --- !u!1 &1555951317484103677
 GameObject:
   m_ObjectHideFlags: 0
@@ -2567,6 +2569,8 @@ MonoBehaviour:
   twoHanded: 0
   weaponCategory: Bladed Staff
   ammoCategory: 
+  isEquipped: 0
+  equippedWhenClicked: 0
   equipSlot: {fileID: 1600326423103775014}
   itemsParent: {fileID: 4588207405026825746}
   stackable: 0
@@ -2600,11 +2604,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570adbb61a6ab63478647b003f4dd418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemImage: {fileID: 0}
   clickHeld: 0
   inventory: {fileID: 1016839545870424289}
   groundItemsParent: {fileID: 8353442295658822351}
   groundPrefab: {fileID: 8940232162871179629, guid: ebe7f289e798d5e42b0485e06a8f5e24, type: 3}
-  player: {fileID: 0}
 --- !u!1 &1607998103447063828
 GameObject:
   m_ObjectHideFlags: 0
@@ -2675,7 +2679,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -2991,6 +2995,8 @@ MonoBehaviour:
   twoHanded: 0
   weaponCategory: 
   ammoCategory: 
+  isEquipped: 0
+  equippedWhenClicked: 0
   equipSlot: {fileID: 3906164848203426328}
   itemsParent: {fileID: 4588207405026825746}
   stackable: 0
@@ -3024,11 +3030,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570adbb61a6ab63478647b003f4dd418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemImage: {fileID: 0}
   clickHeld: 0
   inventory: {fileID: 1016839545870424289}
   groundItemsParent: {fileID: 8353442295658822351}
   groundPrefab: {fileID: 8940232162871179629, guid: ebe7f289e798d5e42b0485e06a8f5e24, type: 3}
-  player: {fileID: 0}
 --- !u!1 &1777541820488994211
 GameObject:
   m_ObjectHideFlags: 0
@@ -3644,7 +3650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -3974,6 +3980,8 @@ MonoBehaviour:
   twoHanded: 0
   weaponCategory: 
   ammoCategory: Arrow
+  isEquipped: 0
+  equippedWhenClicked: 0
   equipSlot: {fileID: 8572760909331659542}
   itemsParent: {fileID: 4588207405026825746}
   stackable: 1
@@ -4033,11 +4041,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570adbb61a6ab63478647b003f4dd418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemImage: {fileID: 0}
   clickHeld: 0
   inventory: {fileID: 1016839545870424289}
   groundItemsParent: {fileID: 8353442295658822351}
   groundPrefab: {fileID: 8940232162871179629, guid: ebe7f289e798d5e42b0485e06a8f5e24, type: 3}
-  player: {fileID: 0}
 --- !u!1 &2736475890675288153
 GameObject:
   m_ObjectHideFlags: 0
@@ -4180,7 +4188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -4526,7 +4534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -5185,7 +5193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -6196,7 +6204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -6393,7 +6401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -6955,7 +6963,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4863722722415828983
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7248,7 +7256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -7479,7 +7487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -7686,6 +7694,8 @@ MonoBehaviour:
   twoHanded: 0
   weaponCategory: 
   ammoCategory: 
+  isEquipped: 0
+  equippedWhenClicked: 0
   equipSlot: {fileID: 5731010081059362904}
   itemsParent: {fileID: 4588207405026825746}
   stackable: 0
@@ -7719,11 +7729,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570adbb61a6ab63478647b003f4dd418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemImage: {fileID: 0}
   clickHeld: 0
   inventory: {fileID: 1016839545870424289}
   groundItemsParent: {fileID: 8353442295658822351}
   groundPrefab: {fileID: 8940232162871179629, guid: ebe7f289e798d5e42b0485e06a8f5e24, type: 3}
-  player: {fileID: 0}
 --- !u!1 &5293941770428132491
 GameObject:
   m_ObjectHideFlags: 0
@@ -7866,7 +7876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -8098,9 +8108,10 @@ MonoBehaviour:
   panel: {fileID: 416123686948032571}
   panelButtons: {fileID: 1147818102676820614}
   prayerParent: {fileID: 3571044599493836852}
-  selectQuickPrayers: 0
   quickPrayerBackground: {fileID: 1989302953585010091}
   doneButton: {fileID: 4870889873210327920}
+  prayerOrb: {fileID: 3524160880011469979}
+  prayerChanged: 0
   prayerText: {fileID: 4901720690185052098}
 --- !u!1 &5507362521241028069
 GameObject:
@@ -8172,7 +8183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -8556,7 +8567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -8793,7 +8804,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greenBar: {fileID: 6531963168801974437}
   specText: {fileID: 2261995613343854103}
-  specOrb: {fileID: 6932448429629188350}
+  specOrb: {fileID: 4997059450052646405}
 --- !u!114 &3845373552341990832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9110,7 +9121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -9262,7 +9273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -9744,7 +9755,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -9951,6 +9962,8 @@ MonoBehaviour:
   twoHanded: 1
   weaponCategory: Bow
   ammoCategory: 
+  isEquipped: 0
+  equippedWhenClicked: 0
   equipSlot: {fileID: 1600326423103775014}
   itemsParent: {fileID: 4588207405026825746}
   stackable: 0
@@ -9984,11 +9997,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570adbb61a6ab63478647b003f4dd418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemImage: {fileID: 0}
   clickHeld: 0
   inventory: {fileID: 1016839545870424289}
   groundItemsParent: {fileID: 8353442295658822351}
   groundPrefab: {fileID: 8940232162871179629, guid: ebe7f289e798d5e42b0485e06a8f5e24, type: 3}
-  player: {fileID: 0}
 --- !u!1 &6329272860765068705
 GameObject:
   m_ObjectHideFlags: 0
@@ -10059,7 +10072,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -10556,7 +10569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -11529,7 +11542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -11856,7 +11869,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -11991,6 +12004,8 @@ MonoBehaviour:
   twoHanded: 0
   weaponCategory: Slash Sword
   ammoCategory: 
+  isEquipped: 0
+  equippedWhenClicked: 0
   equipSlot: {fileID: 1600326423103775014}
   itemsParent: {fileID: 4588207405026825746}
   stackable: 0
@@ -12024,11 +12039,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570adbb61a6ab63478647b003f4dd418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemImage: {fileID: 0}
   clickHeld: 0
   inventory: {fileID: 1016839545870424289}
   groundItemsParent: {fileID: 8353442295658822351}
   groundPrefab: {fileID: 8940232162871179629, guid: ebe7f289e798d5e42b0485e06a8f5e24, type: 3}
-  player: {fileID: 0}
 --- !u!1 &7405094601214086067
 GameObject:
   m_ObjectHideFlags: 0
@@ -12099,7 +12114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -13100,7 +13115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -13294,7 +13309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -13511,7 +13526,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -13890,7 +13905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -14312,7 +14327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4096736e7b498a34ba51b00cd5f334d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectiveActive: 0
+  active: 0
   clicked: 0
   check: {fileID: 2437401752962824862, guid: ff69355e67ba14344b4d60fe82c3960d, type: 3}
   newCheck: {fileID: 0}
@@ -14520,6 +14535,8 @@ MonoBehaviour:
   twoHanded: 0
   weaponCategory: Powered Staff
   ammoCategory: 
+  isEquipped: 0
+  equippedWhenClicked: 0
   equipSlot: {fileID: 1600326423103775014}
   itemsParent: {fileID: 4588207405026825746}
   stackable: 0
@@ -14575,11 +14592,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570adbb61a6ab63478647b003f4dd418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemImage: {fileID: 0}
   clickHeld: 0
   inventory: {fileID: 1016839545870424289}
   groundItemsParent: {fileID: 8353442295658822351}
   groundPrefab: {fileID: 8940232162871179629, guid: ebe7f289e798d5e42b0485e06a8f5e24, type: 3}
-  player: {fileID: 0}
 --- !u!1 &9117141679862195618
 GameObject:
   m_ObjectHideFlags: 0
@@ -14872,10 +14889,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1016839545870424289}
     - target: {fileID: 3208957534094500281, guid: 67cf1f193b34fb64db5c8b41a1979c17, type: 3}
-      propertyPath: groundPrefab
-      value: 
-      objectReference: {fileID: 8940232162871179629, guid: ebe7f289e798d5e42b0485e06a8f5e24, type: 3}
-    - target: {fileID: 3208957534094500281, guid: 67cf1f193b34fb64db5c8b41a1979c17, type: 3}
       propertyPath: groundItemsParent
       value: 
       objectReference: {fileID: 8353442295658822351}
@@ -15075,6 +15088,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79b22a56854c1974583cf3f28a3adc81, type: 3}
+--- !u!114 &3524160880011469979 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3094643659058887596, guid: 79b22a56854c1974583cf3f28a3adc81, type: 3}
+  m_PrefabInstance: {fileID: 1880876976407306039}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 000828f4b0ab0ab498410b6052ad3462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &3930967028930693852 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3213228219471238635, guid: 79b22a56854c1974583cf3f28a3adc81, type: 3}
@@ -15290,10 +15314,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1016839545870424289}
     - target: {fileID: 7946979120142229922, guid: 993f2063e0092964ab2836ed01ba54f8, type: 3}
-      propertyPath: groundPrefab
-      value: 
-      objectReference: {fileID: 8940232162871179629, guid: ebe7f289e798d5e42b0485e06a8f5e24, type: 3}
-    - target: {fileID: 7946979120142229922, guid: 993f2063e0092964ab2836ed01ba54f8, type: 3}
       propertyPath: groundItemsParent
       value: 
       objectReference: {fileID: 8353442295658822351}
@@ -15315,10 +15335,6 @@ PrefabInstance:
       propertyPath: inventory
       value: 
       objectReference: {fileID: 1016839545870424289}
-    - target: {fileID: 114760317083931639, guid: 13cea84b8e7f5e042ad31a88caea4e2d, type: 3}
-      propertyPath: groundPrefab
-      value: 
-      objectReference: {fileID: 8940232162871179629, guid: ebe7f289e798d5e42b0485e06a8f5e24, type: 3}
     - target: {fileID: 114760317083931639, guid: 13cea84b8e7f5e042ad31a88caea4e2d, type: 3}
       propertyPath: groundItemsParent
       value: 
@@ -15523,27 +15539,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: edd86b6fe94e31748a359b8d17c88376, type: 3}
---- !u!224 &7372618077810558649 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6423464368091892401, guid: edd86b6fe94e31748a359b8d17c88376, type: 3}
-  m_PrefabInstance: {fileID: 4572411305108605960}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6647290727056368882 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7154984410998892794, guid: edd86b6fe94e31748a359b8d17c88376, type: 3}
   m_PrefabInstance: {fileID: 4572411305108605960}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6932448429629188350 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6863897903089951990, guid: edd86b6fe94e31748a359b8d17c88376, type: 3}
+--- !u!224 &7372618077810558649 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6423464368091892401, guid: edd86b6fe94e31748a359b8d17c88376, type: 3}
   m_PrefabInstance: {fileID: 4572411305108605960}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6647290727056368882}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 000828f4b0ab0ab498410b6052ad3462, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1488138224277021312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15575,6 +15580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbdae350a233dc74292f8831a091d955, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  orbManager: {fileID: 0}
   specBar: {fileID: 2132469583404292614}
 --- !u!1001 &5226603045337038969
 PrefabInstance:
@@ -15676,10 +15682,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1016839545870424289}
     - target: {fileID: 5595849072523008420, guid: a76a3fed26b868c468181e2d085917d7, type: 3}
-      propertyPath: groundPrefab
-      value: 
-      objectReference: {fileID: 8940232162871179629, guid: ebe7f289e798d5e42b0485e06a8f5e24, type: 3}
-    - target: {fileID: 5595849072523008420, guid: a76a3fed26b868c468181e2d085917d7, type: 3}
       propertyPath: groundItemsParent
       value: 
       objectReference: {fileID: 8353442295658822351}
@@ -15700,10 +15702,6 @@ PrefabInstance:
     - target: {fileID: 240833769711868825, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
       propertyPath: m_Name
       value: Run Energy Orb
-      objectReference: {fileID: 0}
-    - target: {fileID: 240833769711868825, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
-      propertyPath: m_TagString
-      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
       propertyPath: m_Pivot.x
@@ -15796,27 +15794,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4123251820995606994, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
   m_PrefabInstance: {fileID: 8453710320486537431}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8504486830538703694 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 240833769711868825, guid: 7ca77290ba8e546438822b7f2b573d51, type: 3}
-  m_PrefabInstance: {fileID: 8453710320486537431}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1665526124715973229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8504486830538703694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fe906a0d43cbfb47a0fed94be9c0297, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  examineText: 
-  objectName: 
-  addObjectName: 0
-  itemAction: 0
-  ignoreUse: 1
-  actionUsedOnThis: {fileID: 0}
-  actionOnPointerUp: 0

@@ -13,7 +13,6 @@ public class GroundItem : MonoBehaviour
     SpriteRenderer sprite;
     Player playerScript;
 
-    bool startPlayerMovement = false;
     bool willTake = false;
 
     public static GameObject itemToTake;
@@ -37,7 +36,9 @@ public class GroundItem : MonoBehaviour
 
         itemAction.menuTexts[0] = "Take ";
         itemAction.menuPriorities[0] = 1;
-        itemAction.action0 += Take;
+        itemAction.clientAction0 += TrueTileIndicator;
+        itemAction.serverAction0 += Take;
+        itemAction.orderLevels[0] = -1;
         itemAction.UpdateName();
 
         TickManager.beforeTick += BeforeTick;
@@ -63,22 +64,24 @@ public class GroundItem : MonoBehaviour
         }
     }
 
+    void TrueTileIndicator()
+    {
+        playerScript.trueTile.ClientClick(trueTile);
+    }
+
+    void Take()
+    {
+        itemToTake = gameObject;
+        willTake = true;
+
+        if (playerScript.truePlayerTile != trueTile)
+        {
+            playerScript.trueTile.ExternalMovement(trueTile);
+        }
+    }
+
     void BeforeTick()
     {
-        if (startPlayerMovement)
-        {
-            startPlayerMovement = false;
-            willTake = true;
-
-            if (playerScript.truePlayerTile != trueTile)
-            {
-                playerScript.trueTile.ExternalMovement(transform.position);
-            }
-            //item.SetActive(true);
-            //inventory.PlaceInInventory(item);
-            //Destroy(gameObject);
-        }
-
         if (willTake && itemToTake == gameObject && trueTile == playerScript.truePlayerTile)
         {
             willTake = false;
@@ -87,18 +90,6 @@ public class GroundItem : MonoBehaviour
             inventory.PlaceInInventory(item);
             Destroy(gameObject);
         }
-    }
-
-    void Take()
-    {
-        Invoke("DelayTake", TickManager.simLatency);
-    }
-
-    void DelayTake()
-    {
-        itemToTake = gameObject;
-        startPlayerMovement = true;
-        willTake = true;
     }
 
     void CancelTake()

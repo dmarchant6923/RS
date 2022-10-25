@@ -32,10 +32,13 @@ public class PrayerToggle : MonoBehaviour
 
         TickManager.onTick += OnTick;
         TickManager.afterTick += ReadPrayer;
-        orbManager.onToggle += PrayerPressed;
+
         orbManager.orbAction.menuTexts[0] = "Activate Quick-prayers";
+        orbManager.orbAction.serverAction0 += ActivateQuickPrayers;
+
         orbManager.orbAction.menuTexts[1] = "Setup Quick-prayers";
-        orbManager.orbAction.action1 += SetupQuickPrayers;
+        orbManager.orbAction.serverAction1 += SetupQuickPrayers;
+        orbManager.orbAction.orderLevels[1] = -1;
 
         numberText = GetComponentInChildren<Text>();
         numberText.text = Mathf.Round(PlayerStats.currentPrayer).ToString();
@@ -47,28 +50,18 @@ public class PrayerToggle : MonoBehaviour
         flickInidcator.position = new Vector2(Mathf.MoveTowards(flickInidcator.position.x, flickInidcator.position.x + distance, speed * Time.deltaTime), flickInidcator.position.y);
     }
 
-    void PrayerPressed()
+    void ActivateQuickPrayers()
     {
-        prayerScript.ActivateQuickPrayers();
+        prayerScript.ActivateQuickPrayers(orbManager.active);
     }
     void SetupQuickPrayers()
     {
-        Invoke("DelaySetupQuickPrayers", TickManager.simLatency);
+        prayerScript.SelectQuickPrayers();
     }
 
-    void DelaySetupQuickPrayers()
-    {
-        prayerScript.selectQuickPrayers = true;
-    }
 
     void OnTick()
     {
-        if (togglePressed)
-        {
-            //prayerScript.ActivateQuickPrayers();
-            togglePressed = false;
-        }
-
         flickInidcator.position = new Vector2(startPosition, flickInidcator.position.y);
     }
 

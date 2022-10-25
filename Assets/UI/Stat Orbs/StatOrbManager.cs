@@ -8,7 +8,6 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 {
     Toggle orbToggle;
     public delegate void OrbEvent();
-    public event OrbEvent onToggle;
 
     public bool active = false;
 
@@ -65,67 +64,26 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             backgroundSprite.texture = disabledSpriteBackground;
         }
 
-        TickManager.afterTick += OnTick;
+        TickManager.afterTick += AfterTick;
 
         orbAction = GetComponent<Action>();
         if (orbAction != null)
         {
-            orbAction.action0 += ClickedToggle;
+            orbAction.clientAction0 += ClientClickedToggle;
         }
     }
 
-    void OnTick()
-    {
-        orbToggle.isOn = active;
-        SwitchSprites(active);
-
-        value = float.Parse(number.text);
-        UpdateMask();
-    }
-
-    public void UpdateMask()
-    {
-        currentScale = minScale + ((initialScale - minScale) * value / initialValue);
-        currentPosition = minPosition + ((initialPosition - minPosition) * value / initialValue) - 12.5f;
-
-        maskRT.sizeDelta = new Vector2(maskRT.sizeDelta.x, currentScale);
-        maskRT.localPosition = new Vector2(maskRT.localPosition.x, currentPosition);
-
-
-        if (value >= initialValue / 2)
-        {
-            number.color = new Color(1 - (value - (initialValue / 2)) / initialValue * 2, 1, 0);
-        }
-        else
-        {
-            number.color = new Color(1, value / initialValue * 2, 0);
-        }
-    }
-
-    public void ClickedToggle()
+    public void ClientClickedToggle()
     {
         if (canBeToggled)
         {
             active = !active;
-            StartCoroutine(Toggle(active));
+            SwitchSprites();
         }
     }
 
-    public IEnumerator Toggle(bool active)
-    {
-        SwitchSprites(active);
-        yield return new WaitForSeconds(TickManager.simLatency);
-        if (canBeToggled)
-        {
-            if (onToggle != null)
-            {
-                onToggle();
-            }
-        }
-        yield return null;
-    }
 
-    void SwitchSprites(bool isOn)
+    public void SwitchSprites(bool isOn)
     {
         if (canBeToggled)
         {
@@ -146,6 +104,56 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
     }
 
+    void SwitchSprites()
+    {
+        if (canBeToggled)
+        {
+            if (backgroundSprite.texture == offSpriteBackground)
+            {
+                backgroundSprite.texture = onSpriteBackground;
+                iconSprite.texture = onSpriteIcon;
+            }
+            else
+            {
+                backgroundSprite.texture = offSpriteBackground;
+                iconSprite.texture = offSpriteIcon;
+            }
+        }
+        else if (disabledSpriteBackground != null)
+        {
+            backgroundSprite.texture = disabledSpriteBackground;
+        }
+    }
+
+
+    void AfterTick()
+    {
+        orbToggle.isOn = active;
+        SwitchSprites(active);
+
+        value = float.Parse(number.text);
+        UpdateMask();
+    }
+    public void UpdateMask()
+    {
+        currentScale = minScale + ((initialScale - minScale) * value / initialValue);
+        currentPosition = minPosition + ((initialPosition - minPosition) * value / initialValue) - 12.5f;
+
+        maskRT.sizeDelta = new Vector2(maskRT.sizeDelta.x, currentScale);
+        maskRT.localPosition = new Vector2(maskRT.localPosition.x, currentPosition);
+
+
+        if (value >= initialValue / 2)
+        {
+            number.color = new Color(1 - (value - (initialValue / 2)) / initialValue * 2, 1, 0);
+        }
+        else
+        {
+            number.color = new Color(1, value / initialValue * 2, 0);
+        }
+    }
+
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (canBeToggled)
@@ -153,7 +161,6 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             panelSprite.sprite = panelHighlighted;
         }
     }
-
     public void OnPointerExit(PointerEventData eventData)
     {
         if (canBeToggled)

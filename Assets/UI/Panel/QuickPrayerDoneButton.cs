@@ -19,21 +19,21 @@ public class QuickPrayerDoneButton : MonoBehaviour, IPointerEnterHandler, IPoint
     {
         doneAction = GetComponent<Action>();
         doneAction.menuTexts[0] = "Done";
-        doneAction.action0 += ClickDone;
+        doneAction.clientAction0 += ClientClickDone;
+        doneAction.serverAction0 += ServerClickDone;
 
         button = GetComponent<RawImage>();
         buttonText = button.GetComponentInChildren<Text>();
         textColor = buttonText.color;
     }
 
-    void ClickDone()
+    void ClientClickDone()
     {
         button.texture = buttonOn;
-        Invoke("DelayClickDone", TickManager.simLatency);
     }
-    void DelayClickDone()
+    void ServerClickDone()
     {
-        prayerScript.selectQuickPrayers = false;
+        prayerScript.DeselectQuickPrayers();
     }
 
     private void OnDisable()

@@ -7,7 +7,6 @@ public class RunToggle : MonoBehaviour
 {
     Toggle runToggle;
     Player player;
-    bool togglePressed = false;
     Text numberText;
 
     StatOrbManager orbManager;
@@ -21,32 +20,27 @@ public class RunToggle : MonoBehaviour
         numberText.text = Mathf.Round(player.runEnergy / 100).ToString();
         runToggle.isOn = false;
 
-        TickManager.onTick += ToggleRun;
-        orbManager.onToggle += RunEnergyPressed;
+        TickManager.afterTick += AfterTick;
         orbManager.orbAction.menuTexts[0] = "Toggle Run";
-    }
-
-    void RunEnergyPressed()
-    {
-        togglePressed = true;
+        orbManager.orbAction.serverAction0 += ToggleRun;
+        orbManager.orbAction.orderLevels[0] = -1;
     }
 
     void ToggleRun()
     {
-        if (togglePressed)
+        if (player.runEnergy > 100)
         {
-            if (player.runEnergy > 100)
-            {
-                player.runEnabled = orbManager.active;
-            }
-            else
-            {
-                runToggle.isOn = false;
-                orbManager.active = false;
-            }
+            player.runEnabled = orbManager.active;
         }
+        else
+        {
+            runToggle.isOn = false;
+            orbManager.active = false;
+        }
+    }
 
-        togglePressed = false;
+    void AfterTick()
+    {
         if (player.runEnergy == 0)
         {
             runToggle.isOn = false;

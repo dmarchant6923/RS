@@ -346,6 +346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   examineText: 
   objectName: 
+  addObjectName: 0
   itemAction: 0
   ignoreUse: 1
   actionUsedOnThis: {fileID: 0}

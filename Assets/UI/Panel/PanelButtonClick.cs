@@ -14,7 +14,7 @@ public class PanelButtonClick : MonoBehaviour
         script = transform.parent.GetComponent<PanelButtons>();
         buttonAction = GetComponent<Action>();
         buttonAction.menuTexts[0] = gameObject.name;
-        buttonAction.action0 += ClickButton;
+        buttonAction.clientAction0 += ClickButton;
     }
 
     public void ClickButton()

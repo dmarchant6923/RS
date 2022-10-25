@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9205354686325549910}
   - component: {fileID: 5726324302723807730}
   - component: {fileID: 4565937155874641813}
+  - component: {fileID: 1665526124715973229}
   m_Layer: 5
   m_Name: Run Energy Orb
   m_TagString: Untagged
@@ -113,6 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 000828f4b0ab0ab498410b6052ad3462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  active: 0
   panelHighlighted: {fileID: 21300000, guid: df7e5d9d2991e7945bd17fb2c85e5d5d, type: 3}
   panelNotHighlighted: {fileID: 21300000, guid: 3f0134d1c5a65974aacb815d22ff9414, type: 3}
   onSpriteBackground: {fileID: 2800000, guid: ee1216d50925e3f40a16667b18f4dafb, type: 3}
@@ -126,6 +128,27 @@ MonoBehaviour:
   canBeToggled: 1
   maskRT: {fileID: 6666360437157875711}
   number: {fileID: 3296619941423910752}
+  initialValue: 0
+  orbAction: {fileID: 0}
+--- !u!114 &1665526124715973229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 240833769711868825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fe906a0d43cbfb47a0fed94be9c0297, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  examineText: 
+  objectName: 
+  addObjectName: 0
+  itemAction: 0
+  ignoreUse: 1
+  actionUsedOnThis: {fileID: 0}
+  actionOnPointerUp: 0
 --- !u!1 &2111568807459296289
 GameObject:
   m_ObjectHideFlags: 0

@@ -64,7 +64,7 @@ public class MouseManager : MonoBehaviour
             {
                 if (cast.collider.GetComponent<Action>() != null && gameActions.Contains(cast.collider.GetComponent<Action>()) == false && cast.collider.GetComponent<SpriteRenderer>().sortingOrder == i)
                 {
-                    Debug.Log(cast.collider.GetComponent<SpriteRenderer>().sortingOrder + " " + cast.collider.gameObject + " " + i);
+                    //Debug.Log(cast.collider.GetComponent<SpriteRenderer>().sortingOrder + " " + cast.collider.gameObject + " " + i);
                     gameActions.Add(cast.collider.GetComponent<Action>());
                 }
             }

@@ -7,8 +7,8 @@ public class ActivatePrayer : MonoBehaviour
 {
     Action prayerAction;
     RawImage image;
-    [HideInInspector] public bool effectiveActive = false;
-    bool active;
+    Prayer prayerScript;
+    [HideInInspector] public bool active = false;
 
     [HideInInspector] public bool clicked = false;
 
@@ -30,18 +30,24 @@ public class ActivatePrayer : MonoBehaviour
     [HideInInspector] public bool selectQuickPrayer;
     [HideInInspector] public int isQuickPrayer;
     [HideInInspector] public bool QPeffectiveActive = false;
-    bool QPactive;
 
     private void Start()
     {
         image = GetComponent<RawImage>();
         prayerAction = GetComponent<Action>();
+        prayerScript = FindObjectOfType<Prayer>();
         prayerAction.menuTexts[0] = "Activate <color=orange>" + gameObject.name + "</color>";
-        prayerAction.action0 += ClickPrayer;
+
+        prayerAction.clientAction0 += ClientClickPrayer;
+        prayerAction.serverAction0 += ServerClickPrayer;
+        prayerAction.clientAction1 += ClientSelectQuickPrayer;
+        prayerAction.serverAction1 += ServerSelectQuickPrayer;
+        //order level for both actions is 0
+
+
         if (image.color.a == 1)
         {
             prayerAction.menuTexts[0] = "Deactivate <color=orange>" + gameObject.name + "</color>";
-            effectiveActive = true;
             active = true;
         }
 
@@ -54,66 +60,39 @@ public class ActivatePrayer : MonoBehaviour
         {
             newCheck.texture = checkOn;
             QPeffectiveActive = true;
-            QPactive = true;
         }
         selectQuickPrayer = false;
     }
 
-    void ClickPrayer()
-    {
-        if (selectQuickPrayer == false)
-        {
-            active = !active;
-            ChangeColors(active);
-            StartCoroutine(DelayActivate(false));
-        }
-        else
-        {
-            QPactive = !QPactive;
-            CheckOnOff(QPactive);
-            ChangeColors(false);
-            StartCoroutine(DelayActivate(true));
-        }
-    }
 
-    public void ClickQuickPrayer()
+
+    void ClientClickPrayer()
+    {
+        ChangeColors();
+    }
+    public void ServerClickPrayer()
     {
         active = !active;
-        StartCoroutine(DelayActivate(false));
-    }
-
-    IEnumerator DelayActivate(bool QP)
-    {
-        yield return new WaitForSeconds(TickManager.simLatency);
-        if (QP == false)
-        {
-            Prayer.activateQueue.Add(this);
-        }
-        else
-        {
-            Prayer.QPactivateQueue.Add(this);
-        }
-    }
-
-    public void Activate()
-    {
-        effectiveActive = !effectiveActive;
-        active = effectiveActive;
-        ChangeColors(effectiveActive);
-        if (effectiveActive)
+        ChangeColors(active);
+        if (active)
         {
             AvoidConflictingPrayers(false);
         }
-        if (effectiveActive == false && Prayer.CheckActivePrayers().Count == 0)
+        if (active == false && Prayer.CheckActivePrayers().Count == 0)
         {
             PlayerStats.prayersOnForATick = false;
         }
+        prayerScript.prayerChanged = true;
     }
 
-    public void QPActivate()
+
+    void ClientSelectQuickPrayer()
+    {
+        CheckOnOff();
+    }
+    void ServerSelectQuickPrayer()
     {
         QPeffectiveActive = !QPeffectiveActive;
-        QPactive = QPeffectiveActive;
         CheckOnOff(QPeffectiveActive);
         if (QPeffectiveActive)
         {
@@ -125,22 +104,39 @@ public class ActivatePrayer : MonoBehaviour
     {
         if (QP == false)
         {
-            effectiveActive = false;
             active = false;
             ChangeColors(false);
         }
         else
         {
             QPeffectiveActive = false;
-            QPactive = false;
             CheckOnOff(QPeffectiveActive);
+        }
+    }
+
+    public void QPActivate()
+    {
+        QPeffectiveActive = !QPeffectiveActive;
+        CheckOnOff(QPeffectiveActive);
+        if (QPeffectiveActive)
+        {
+            AvoidConflictingPrayers(true);
         }
     }
 
     public void ChangeColors(bool on)
     {
         Color color = image.color;
-        if (on == false || selectQuickPrayer)
+        if (selectQuickPrayer)
+        {
+            prayerAction.menuTexts[1] = "Toggle <color=orange>" + gameObject.name + "</color>";
+            prayerAction.menuTexts[0] = "";
+            color.a = 0;
+            image.color = color;
+            return;
+        }
+
+        if (on == false)
         {
             prayerAction.menuTexts[0] = "Activate <color=orange>" + gameObject.name + "</color>";
             color.a = 0;
@@ -153,7 +149,23 @@ public class ActivatePrayer : MonoBehaviour
         image.color = color;
     }
 
-    void CheckOnOff(bool on)
+    void ChangeColors()
+    {
+        Color color = image.color;
+        if (color.a == 1)
+        {
+            prayerAction.menuTexts[0] = "Activate <color=orange>" + gameObject.name + "</color>";
+            color.a = 0;
+        }
+        else
+        {
+            prayerAction.menuTexts[0] = "Deactivate <color=orange>" + gameObject.name + "</color>";
+            color.a = 1;
+        }
+        image.color = color;
+    }
+
+    public void CheckOnOff(bool on)
     {
         if (on)
         {
@@ -163,6 +175,22 @@ public class ActivatePrayer : MonoBehaviour
         {
             newCheck.texture = checkOff;
         }
+        prayerAction.menuTexts[1] = "Toggle <color=orange>" + gameObject.name + "</color>";
+        prayerAction.menuTexts[0] = "";
+    }
+
+    void CheckOnOff()
+    {
+        if (newCheck.texture == checkOff)
+        {
+            newCheck.texture = checkOn;
+        }
+        else
+        {
+            newCheck.texture = checkOff;
+        }
+        prayerAction.menuTexts[1] = "Toggle <color=orange>" + gameObject.name + "</color>";
+        prayerAction.menuTexts[0] = "";
     }
 
     void AvoidConflictingPrayers(bool QP)
@@ -170,7 +198,7 @@ public class ActivatePrayer : MonoBehaviour
         foreach (GameObject prayer in Prayer.prayers)
         {
             ActivatePrayer script = prayer.GetComponent<ActivatePrayer>();
-            if (script == this || (QP == false && script.effectiveActive == false) || (QP && script.QPeffectiveActive == false))
+            if (script == this || (QP == false && script.active == false) || (QP && script.QPeffectiveActive == false))
             {
                 continue;
             }

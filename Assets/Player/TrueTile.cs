@@ -26,7 +26,6 @@ public class TrueTile : MonoBehaviour
     [HideInInspector] public bool debugEnabled = false;
 
     Action walkHereAction;
-    MenuEntryClick menuEntry;
 
     void Start()
     {
@@ -45,9 +44,10 @@ public class TrueTile : MonoBehaviour
         path = new List<Vector2>();
 
         walkHereAction = GetComponent<Action>();
-        walkHereAction.action0 += MenuClick;
+        walkHereAction.clientAction0 += ClientClick;
+        walkHereAction.serverAction0 += ServerClick;
         walkHereAction.menuTexts[0] = "walk here";
-        walkHereAction.cancelLevel[0] = 1;
+        walkHereAction.cancelLevels[0] = 1;
     }
 
     private void Update()
@@ -62,11 +62,6 @@ public class TrueTile : MonoBehaviour
         }
     }
 
-    public void MenuClick()
-    {
-        StartCoroutine(MenuClickCR());
-    }
-
     void ClientClick()
     {
         destinationTile = MouseManager.mouseCoordinate;
@@ -79,23 +74,7 @@ public class TrueTile : MonoBehaviour
             newClickedTile = Instantiate(clickedTile, destinationTile, Quaternion.identity);
         }
     }
-
-    void ServerClick()
-    {
-        if (newClickedTile != null)
-        {
-            Destroy(newClickedTile);
-        }
-        if (showClickedTile)
-        {
-            newClickedTile = Instantiate(clickedTile, destinationTile, Quaternion.identity);
-        }
-        path = pathFinder.FindAStarPath(currentTile, destinationTile);
-
-        clicked = true;
-    }
-
-    public void ExternalMovement(Vector2 coordinate)
+    public void ClientClick(Vector2 coordinate)
     {
         destinationTile = coordinate;
         if (newClickedTile != null)
@@ -106,52 +85,65 @@ public class TrueTile : MonoBehaviour
         {
             newClickedTile = Instantiate(clickedTile, destinationTile, Quaternion.identity);
         }
-        path = pathFinder.FindAStarPath(currentTile, destinationTile);
-
-        clicked = true;
     }
 
-    IEnumerator MenuClickCR()
+    public void ExternalMovement(Vector2 coordinate)
     {
-        ClientClick();
-        yield return new WaitForSeconds(TickManager.simLatency);
+        destinationTile = coordinate;
         ServerClick();
     }
+    void ServerClick()
+    {
+        if (newClickedTile != null)
+        {
+            Destroy(newClickedTile);
+        }
+        if (showClickedTile)
+        {
+            newClickedTile = Instantiate(clickedTile, destinationTile, Quaternion.identity);
+        }
+
+
+        path = pathFinder.FindAStarPath(currentTile, destinationTile);
+
+
+        if (showClickedTile)
+        {
+            newClickedTile.transform.position = path[path.Count - 1];
+        }
+        oddTilesInPath = false;
+        if (path.Count % 2 == 1)
+        {
+            oddTilesInPath = true;
+        }
+        if (path.Count == 1)
+        {
+            player.forceWalk = true;
+        }
+        moving = true;
+
+        if (debugEnabled)
+        {
+            foreach (GameObject tile in debugTiles)
+            {
+                Destroy(tile);
+            }
+            debugTiles = new List<GameObject>();
+
+            foreach (Vector2 tile in path)
+            {
+                newDebugTile = Instantiate(debugTile, tile, Quaternion.identity);
+                debugTiles.Add(newDebugTile);
+            }
+        }
+    }
+
 
     //updates on every tick
     void Move()
     {
         if (clicked)
         {
-            if (showClickedTile)
-            {
-                newClickedTile.transform.position = path[path.Count - 1];
-            }
-            oddTilesInPath = false;
-            if (path.Count % 2 == 1)
-            {
-                oddTilesInPath = true;
-            }
-            if (path.Count == 1)
-            {
-                player.forceWalk = true;
-            }
-            moving = true;
-
-            if (debugEnabled)
-            {
-                foreach (GameObject tile in debugTiles)
-                {
-                    Destroy(tile);
-                }
-                debugTiles = new List<GameObject>();
-
-                foreach (Vector2 tile in path)
-                {
-                    newDebugTile = Instantiate(debugTile, tile, Quaternion.identity);
-                    debugTiles.Add(newDebugTile);
-                }
-            }
             clicked = false;
         }
 
@@ -190,6 +182,16 @@ public class TrueTile : MonoBehaviour
                 }
                 debugTiles = new List<GameObject>();
             }
+        }
+    }
+
+    public void StopMovement()
+    {
+        path = new List<Vector2>();
+        moving = false;
+        if (newClickedTile != null)
+        {
+            Destroy(newClickedTile);
         }
     }
 }

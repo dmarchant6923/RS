@@ -16,7 +16,11 @@ public class AttackStyle : MonoBehaviour
     {
         styleAction = GetComponent<Action>();
         styleAction.menuTexts[0] = styleName;
-        styleAction.action0 += SelectStyle;
+        styleAction.clientAction0 += SelectStyle;
+        styleAction.serverAction0 += ServerSelectStyle;
+        styleAction.orderLevels[0] = -1;
+
+        //TickManager.beforeTick += BeforeTick;
 
         styleScript = transform.parent.GetComponent<AttackStyles>();
     }
@@ -26,11 +30,10 @@ public class AttackStyle : MonoBehaviour
         if (styleScript.selectedStyle != styleNumber)
         {
             styleScript.ChangeStyleColor(styleNumber);
-            Invoke("DelaySelectStyle", TickManager.simLatency);
         }
     }
 
-    void DelaySelectStyle()
+    void ServerSelectStyle()
     {
         styleScript.selectedStyle = styleNumber;
         styleScript.styleChanged = true;

@@ -33,10 +33,10 @@ public class Compass : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         compassAction.menuTexts[2] = "Look South";
         compassAction.menuTexts[3] = "Look West";
 
-        compassAction.action0 += OnClickNorth;
-        compassAction.action1 += OnClickEast;
-        compassAction.action2 += OnClickSouth;
-        compassAction.action3 += OnClickWest;
+        compassAction.clientAction0 += OnClickNorth;
+        compassAction.clientAction1 += OnClickEast;
+        compassAction.clientAction2 += OnClickSouth;
+        compassAction.clientAction3 += OnClickWest;
     }
 
     public void OnClickNorth()

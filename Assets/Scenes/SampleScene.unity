@@ -1069,9 +1069,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b21c04fac0fe9104b8d8b1ecf8ac2353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showTrueTile: 0
-  showClickedTile: 0
-  showMouseTile: 0
+  showTrueTile: 1
+  showClickedTile: 1
+  showMouseTile: 1
+  highlightSelectedGroundItems: 0
 --- !u!1 &606093689
 GameObject:
   m_ObjectHideFlags: 0

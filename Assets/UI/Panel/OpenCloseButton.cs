@@ -19,7 +19,7 @@ public class OpenCloseButton : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         buttonAction = GetComponent<Action>();
         buttonAction.menuTexts[0] = actionText;
-        buttonAction.action0 += ClickButton;
+        buttonAction.clientAction0 += ClickButton;
     }
 
     void ClickButton()

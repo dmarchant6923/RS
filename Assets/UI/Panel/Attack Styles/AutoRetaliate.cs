@@ -5,9 +5,7 @@ using UnityEngine.UI;
 
 public class AutoRetaliate : MonoBehaviour
 {
-    bool active = false;
-    public static bool effectiveActive = false;
-    bool clickedButton = false;
+    public static bool active = false;
 
     Action retaliateAction;
 
@@ -21,39 +19,23 @@ public class AutoRetaliate : MonoBehaviour
     {
         retaliateAction = GetComponent<Action>();
         retaliateAction.menuTexts[0] = "Auto Retaliate";
-        retaliateAction.action0 += ClickButton;
+        //retaliateAction.action0 += ClickButton;
+        retaliateAction.serverAction0 += BeforeTickAutoRetailateSwitch;
+        retaliateAction.orderLevels[0] = -1;
 
         image = GetComponent<RawImage>();
 
-        TickManager.beforeTick += BeforeTick;
-
         if (PlayerPrefs.GetInt("Auto Retaliate", 0) == 1)
         {
-            clickedButton = true;
             active = true;
-            BeforeTick();
+            BeforeTickAutoRetailateSwitch();
         }
     }
 
-    void ClickButton()
-    {
-        Invoke("DelayClickButton", TickManager.simLatency);
-    }
-    void DelayClickButton()
+    void BeforeTickAutoRetailateSwitch()
     {
         active = !active;
-        clickedButton = true;
-    }
-    void BeforeTick()
-    {
-        if (clickedButton == false)
-        {
-            return;
-        }
-        clickedButton = false;
-
-        effectiveActive = active;
-        if (effectiveActive)
+        if (active)
         {
             image.texture = retaliateOn;
             retaliateText.text = "Auto Retaliate\n(On)";
@@ -64,6 +46,6 @@ public class AutoRetaliate : MonoBehaviour
             retaliateText.text = "Auto Retaliate\n(Off)";
         }
 
-        PlayerPrefs.SetInt("Auto Retaliate", (effectiveActive) ? 1 : 0);
+        PlayerPrefs.SetInt("Auto Retaliate", (active) ? 1 : 0);
     }
 }

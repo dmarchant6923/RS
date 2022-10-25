@@ -13,7 +13,7 @@ public class TickManager : MonoBehaviour
     public const float maxTickTime = 0.6f;
     public static int tickCount;
     float tickTimer;
-    public static float simLatency = 0.1f;
+    public static float simLatency = 0.2f;
 
     private void Awake()
     {

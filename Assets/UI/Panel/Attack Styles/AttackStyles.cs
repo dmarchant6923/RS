@@ -87,28 +87,31 @@ public class AttackStyles : MonoBehaviour
     string longrangeType = "Longrange";
 
 
-    private void Start()
+    private IEnumerator Start()
     {
         styles[0] = style1; styles[1] = style2; styles[2] = style3; styles[3] = style4;
         styles[4] = mageStyle5; styles[5] = mageStyle6; styles[6] = mageStyle7; styles[7] = mageStyleDefensiveCast8; styles[8] = mageStyleCast9;
 
         Inventory.ReadEquippedItems += UpdateWeapon;
         TickManager.beforeTick += UpdateStyleSelected;
-        UpdateWeapon();
-
         combatLvlText.text = "Combat Lvl: " + PlayerStats.combatLevel.ToString("F2");
+
+        yield return null;
+
+        UpdateWeapon();
     }
 
     void UpdateWeapon()
     {
-        specBar.SetActive(false);
+
+        bool hasSpec = false;
         if (WornEquipment.weapon != null)
         {
             weaponText.text = WornEquipment.weapon.name;
             categoryText.text = "Category: " + WornEquipment.weapon.weaponCategory;
             if (WornEquipment.weapon.hasSpec)
             {
-                specBar.SetActive(true);
+                hasSpec = true;
             }
         }
         else
@@ -116,6 +119,8 @@ public class AttackStyles : MonoBehaviour
             weaponText.text = "Unarmed";
             categoryText.text = "Category: Unarmed";
         }
+        specBar.SetActive(hasSpec);
+        specBar.GetComponent<SpecBar>().ToggleOrbEnabled(hasSpec);
 
         UpdateStylesWeaponChange();
     }
@@ -427,6 +432,7 @@ public class AttackStyles : MonoBehaviour
 
     void UpdateStyleSelected()
     {
+        ChangeStyleColor(selectedStyle);
         if (styleChanged == false)
         {
             return;
@@ -434,7 +440,6 @@ public class AttackStyles : MonoBehaviour
         styleChanged = false;
 
         UpdateBonuses();
-        ChangeStyleColor(selectedStyle);
 
         if (WornEquipment.weapon != null)
         {

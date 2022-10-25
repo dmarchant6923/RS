@@ -9,8 +9,6 @@ public class OptionManager : MonoBehaviour
     public bool showClickedTile;
     public bool showMouseTile;
 
-    public bool highlightSelectedGroundItems;
-
     void Start()
     {
         player = FindObjectOfType<Player>();

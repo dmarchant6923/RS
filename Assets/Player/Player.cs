@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
 
         playerPath = new List<Vector2>();
 
-        TickManager.afterTick += RunEnergy;
+        TickManager.onTick += RunEnergy;
     }
 
     // Update is called once per frame
@@ -77,7 +77,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    //updates after every tick
+    //updates on every tick
     void RunEnergy()
     {
         if (trueTile.moving && runEnabled && forceWalk == false)

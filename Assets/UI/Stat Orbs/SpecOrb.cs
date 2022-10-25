@@ -5,33 +5,37 @@ using UnityEngine.UI;
 
 public class SpecOrb : MonoBehaviour
 {
-    StatOrbManager orbManager;
+    [HideInInspector] public StatOrbManager orbManager;
     Toggle orbToggle;
     public SpecBar specBar;
-    bool clicked = false;
     
     void Start()
     {
         orbManager = GetComponent<StatOrbManager>();
         orbManager.orbAction.menuTexts[0] = "Use Special Attack";
         orbToggle = GetComponent<Toggle>();
-        orbManager.onToggle += Toggle;
-        TickManager.beforeTick += BeforeTick;
+        orbManager.orbAction.serverAction0 += Toggle;
     }
 
     void Toggle()
     {
-        clicked = true;
-    }
-    void BeforeTick()
-    {
-        if (clicked == false)
-        {
-            return;
-        }
-        clicked = false;
-
-        SpecBar.effectiveActive = orbToggle.isOn;
         specBar.UpdateSpec();
+    }
+
+    public void ToggleEnabled(bool enabled)
+    {
+        if (enabled)
+        {
+            orbManager.canBeToggled = true;
+            orbManager.orbAction.menuTexts[0] = "Use Special Attack";
+            orbManager.SwitchSprites(orbManager.active);
+        }
+        else
+        {
+            orbManager.active = false;
+            orbManager.canBeToggled = false;
+            orbManager.orbAction.menuTexts[0] = "";
+            orbManager.SwitchSprites(false);
+        }
     }
 }

@@ -68,7 +68,7 @@ public class Inventory : MonoBehaviour
         }
 
         TickManager.onTick += CountSlots;
-        TickManager.beforeTick += EquipQueue;
+        //TickManager.beforeTick += EquipQueue;
         SortInventory();
     }
 
@@ -121,26 +121,38 @@ public class Inventory : MonoBehaviour
         CountSlots();
     }
 
-    void EquipQueue()
+    //void EquipQueue()
+    //{
+    //    bool updateStats = false;
+    //    foreach (Equipment equipment in equipQueue)
+    //    {
+    //        updateStats = true;
+    //        equipment.Equip();
+    //    }
+    //    if (updateStats)
+    //    {
+    //        if (UpdateEquippedItems != null)
+    //        {
+    //            UpdateEquippedItems();
+    //        }
+    //        if (ReadEquippedItems != null)
+    //        {
+    //            ReadEquippedItems();
+    //        }
+    //    }
+    //    equipQueue = new List<Equipment>();
+    //}
+
+    public void UpdateStats()
     {
-        bool updateStats = false;
-        foreach (Equipment equipment in equipQueue)
+        if (UpdateEquippedItems != null)
         {
-            updateStats = true;
-            equipment.Equip();
+            UpdateEquippedItems();
         }
-        if (updateStats)
+        if (ReadEquippedItems != null)
         {
-            if (UpdateEquippedItems != null)
-            {
-                UpdateEquippedItems();
-            }
-            if (ReadEquippedItems != null)
-            {
-                ReadEquippedItems();
-            }
+            ReadEquippedItems();
         }
-        equipQueue = new List<Equipment>();
     }
 
     public GameObject ScanForItem(string itemName)

@@ -8,15 +8,14 @@ public class SpecBar : MonoBehaviour
 {
     public RawImage greenBar;
     public Text specText;
-    public StatOrbManager specOrb;
+    public SpecOrb specOrb;
 
     float maxWidth;
 
     public static float specPercentage;
 
     Action specAction;
-    bool active;
-    public static bool effectiveActive;
+    public static bool active;
     bool clicked = false;
 
     private void Start()
@@ -26,48 +25,46 @@ public class SpecBar : MonoBehaviour
 
         specAction = GetComponent<Action>();
         specAction.menuTexts[0] = "Use <color=green>Special Attack</color>";
-        specAction.action0 += ClickedSpec;
+        specAction.serverAction0 += UpdateSpec;
+        specAction.orderLevels[0] = -1;
 
-        TickManager.beforeTick += UpdateClickedSpec;
         active = false;
-        effectiveActive = false;
     }
 
-    void ClickedSpec()
+    public void UpdateSpec(bool activate)
     {
-        Invoke("DelayClickSpec", TickManager.simLatency);
-    }
-
-    void DelayClickSpec()
-    {
-        active = !active;
-        clicked = true;
-    }
-
-    void UpdateClickedSpec()
-    {
-        if (clicked == false)
+        if (activate)
         {
-            return;
+            active = true;
+            specText.color = Color.yellow;
+            specOrb.orbManager.active = true;
         }
-        clicked = false;
-
-        effectiveActive = active;
-        UpdateSpec();
+        else
+        {
+            active = false;
+            specText.color = Color.black;
+            specOrb.orbManager.active = false;
+        }
     }
 
     public void UpdateSpec()
     {
-        if (effectiveActive)
+        active = !active;
+        if (active)
         {
             specText.color = Color.yellow;
-            specOrb.active = true;
+            specOrb.orbManager.active = true;
         }
         else
         {
             specText.color = Color.black;
-            specOrb.active = false;
+            specOrb.orbManager.active = false;
         }
-        active = effectiveActive;
+    }
+
+    public void ToggleOrbEnabled(bool hasSpec)
+    {
+        UpdateSpec(false);
+        specOrb.ToggleEnabled(hasSpec);
     }
 }
