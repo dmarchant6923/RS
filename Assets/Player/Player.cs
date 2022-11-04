@@ -20,6 +20,13 @@ public class Player : MonoBehaviour
 
     [HideInInspector] public bool showTrueTile = false;
     [HideInInspector] public bool showClickedTile = false;
+
+    float angleFacing;
+    float targetAngle;
+    Transform playerArrow;
+    float rotationSpeed = 300;
+    public static GameObject targetedNPC;
+
     public bool debugEnabled = false;
 
     void Start()
@@ -37,6 +44,8 @@ public class Player : MonoBehaviour
         runEnabled = false;
 
         playerPath = new List<Vector2>();
+
+        playerArrow = transform.GetChild(0);
 
         TickManager.onTick += RunEnergy;
     }
@@ -63,6 +72,10 @@ public class Player : MonoBehaviour
             }
 
             transform.position = Vector2.MoveTowards(transform.position, playerPath[0], trueMoveSpeed * Time.deltaTime);
+            if (targetedNPC == null)
+            {
+                targetAngle = Tools.VectorToAngle(playerPath[0] - playerPosition);
+            }
 
             if ((playerPosition - playerPath[0]).magnitude < 0.01f)
             {
@@ -75,6 +88,13 @@ public class Player : MonoBehaviour
                 }
             }
         }
+        if (targetedNPC != null)
+        {
+            targetAngle = Tools.VectorToAngle(targetedNPC.transform.position - transform.position);
+        }
+
+        angleFacing = Mathf.MoveTowardsAngle(angleFacing, targetAngle, rotationSpeed * Time.deltaTime);
+        playerArrow.transform.eulerAngles = new Vector3(0, 0, angleFacing);
     }
 
     //updates on every tick

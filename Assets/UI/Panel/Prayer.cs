@@ -87,7 +87,6 @@ public class Prayer : MonoBehaviour
 
     public void ActivateQuickPrayers(bool orbActive)
     {
-        Debug.Log(orbActive);
         if (orbActive == false)
         {
             DeactivatePrayers();

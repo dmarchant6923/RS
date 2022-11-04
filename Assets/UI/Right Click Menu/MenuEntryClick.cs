@@ -15,7 +15,6 @@ public class MenuEntryClick : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     //public delegate void ClickMethod();
     //public ClickMethod clickMethod;
 
-
     private void Start()
     {
         text = GetComponentInChildren<Text>();
@@ -42,10 +41,6 @@ public class MenuEntryClick : MonoBehaviour, IPointerDownHandler, IPointerEnterH
     {
         yield return null;
         menuScript.OptionClicked(actionNumber, stringNumber);
-        //if (clickMethod != null)
-        //{
-        //    clickMethod();
-        //}
         if (action != null)
         {
             action.PickAction(stringNumber);

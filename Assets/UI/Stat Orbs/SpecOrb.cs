@@ -12,7 +12,7 @@ public class SpecOrb : MonoBehaviour
     void Start()
     {
         orbManager = GetComponent<StatOrbManager>();
-        orbManager.orbAction.menuTexts[0] = "Use Special Attack";
+        orbManager.orbAction.menuTexts[0] = "Use <color=orange>Special Attack</color>";
         orbToggle = GetComponent<Toggle>();
         orbManager.orbAction.serverAction0 += Toggle;
     }
@@ -27,7 +27,7 @@ public class SpecOrb : MonoBehaviour
         if (enabled)
         {
             orbManager.canBeToggled = true;
-            orbManager.orbAction.menuTexts[0] = "Use Special Attack";
+            orbManager.orbAction.menuTexts[0] = "Use <color=orange>Special Attack</color>";
             orbManager.SwitchSprites(orbManager.active);
         }
         else

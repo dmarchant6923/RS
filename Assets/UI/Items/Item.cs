@@ -32,6 +32,8 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     bool isEquipment = false;
     Equipment equipScript;
 
+    public static bool shiftClickToDrop;
+
     private void Start()
     {
         itemAction = GetComponent<Action>();
@@ -98,17 +100,6 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             outline.enabled = true;
         }
     }
-
-    //void Drop()
-    //{
-    //    Invoke("DelayDrop", TickManager.simLatency);
-    //}
-
-    //void DelayDrop()
-    //{
-    //    dropped = true;
-    //}
-
     void Drop()
     {
         if (gameObject.activeSelf)
@@ -149,11 +140,26 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             color.a = 1;
             itemImage.color = color;
         }
+
+        if (shiftClickToDrop)
+        {
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            {
+                if (itemAction.menuPriorities[4] != 1)
+                {
+                    itemAction.menuPriorities[4] = 1;
+                }
+            }
+            else if (itemAction.menuPriorities[4] != 0)
+            {
+                itemAction.menuPriorities[4] = 0;
+            }
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (useActive == false)
+        if (useActive == false && RightClickMenu.isCastingSpell == false)
         {
             clickHeld = true;
             if (isEquipment)
@@ -161,7 +167,7 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 equipScript.equippedWhenClicked = equipScript.isEquipped;
             }
         }
-        if (Input.GetMouseButtonDown(0) && RightClickMenu.isUsingItem == false)
+        if (Input.GetMouseButtonDown(0) && RightClickMenu.isUsingItem == false && RightClickMenu.isCastingSpell == false)
         {
             StartCoroutine(ItemDrag(eventData.position));
         }

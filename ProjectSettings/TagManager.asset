@@ -13,7 +13,7 @@ TagManager:
   - Water
   - UI
   - Ground Items
-  - 
+  - NPC
   - 
   - 
   - 
@@ -39,6 +39,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Tile Markers
+    uniqueID: 2427674043
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground Items
+    uniqueID: 2661372771
+    locked: 0
+  - name: NPC
+    uniqueID: 84638367
+    locked: 0
+  - name: Player
+    uniqueID: 3145274713
     locked: 0

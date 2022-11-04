@@ -16,12 +16,19 @@ public class UIManager : MonoBehaviour
     public RectTransform statPanel;
     float panelOpenPos;
 
+
+    public GameObject xClick;
+    public static GameObject staticXClick;
+    public static GameObject newXClick;
+
     private void Start()
     {
         raycaster = FindObjectOfType<GraphicRaycaster>();
         eventSystem = FindObjectOfType<EventSystem>();
 
         panelOpenPos = statPanel.position.x;
+
+        staticXClick = xClick;
     }
 
     void Update()
@@ -67,5 +74,16 @@ public class UIManager : MonoBehaviour
         {
             statPanel.position = new Vector2(1920, statPanel.position.y);
         }
+    }
+
+    public static void ClickX(bool redClick)
+    {
+        if (newXClick != null)
+        {
+            Destroy(newXClick);
+        }
+        //newXClick = Instantiate(staticXClick, Camera.main.ScreenToViewportPoint(Input.mousePosition), Quaternion.identity);
+        newXClick = Instantiate(staticXClick, Input.mousePosition, Quaternion.identity);
+        newXClick.GetComponent<ClickX>().redClick = redClick;
     }
 }

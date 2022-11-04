@@ -24,55 +24,99 @@ public class MenuScript : MonoBehaviour, IPointerExitHandler, IPointerClickHandl
         menuRT = GetComponent<RectTransform>();
         boxWidth = menuRT.rect.width;
 
-        for (int priority = -1; priority < 2; priority++)
+        if (RightClickMenu.isUsingItem == false && RightClickMenu.isCastingSpell == false)
         {
-            for (int i = RightClickMenu.openActions.Count - 1; i >= 0; i--)
+            for (int priority = -1; priority < 2; priority++)
             {
-                for (int j = RightClickMenu.openActions[i].menuTexts.Length - 1; j >= 0; j--)
+                for (int i = RightClickMenu.openActions.Count - 1; i >= 0; i--)
                 {
-                    if (string.IsNullOrEmpty(RightClickMenu.openActions[i].menuTexts[j]) || RightClickMenu.openActions[i].menuPriorities[j] != priority)
+                    for (int j = RightClickMenu.openActions[i].menuTexts.Length - 1; j >= 0; j--)
                     {
-                        continue;
-                    }
-
-                    if (RightClickMenu.isUsingItem == false)
-                    {
-                        hoverBoxRT.sizeDelta += Vector2.up * textHeight;
-                        menuRT.sizeDelta += Vector2.up * textHeight;
-                        newText = Instantiate(text, transform);
-                        newText.GetComponent<RectTransform>().position = text.GetComponent<RectTransform>().position + Vector3.up * textHeight * (entries + 1) * 2;
-                        newText.GetComponentInChildren<Text>().text = RightClickMenu.openActions[i].menuTexts[j];
-                        newText.GetComponent<MenuEntryClick>().menuScript = this;
-                        newText.GetComponent<MenuEntryClick>().actionNumber = i;
-                        newText.GetComponent<MenuEntryClick>().stringNumber = j;
-                        newText.GetComponent<MenuEntryClick>().action = RightClickMenu.openActions[i];
-                        entries++;
-                    }
-                    else if (RightClickMenu.openActions[i].ignoreUse == false)
-                    {
-                        if (RightClickMenu.openActions[i] == RightClickMenu.itemBeingUsed.GetComponent<Action>())
+                        if (string.IsNullOrEmpty(RightClickMenu.openActions[i].menuTexts[j]) || RightClickMenu.openActions[i].menuPriorities[j] != priority)
                         {
                             continue;
                         }
-                        hoverBoxRT.sizeDelta += Vector2.up * textHeight;
-                        menuRT.sizeDelta += Vector2.up * textHeight;
-                        newText = Instantiate(text, transform);
-                        newText.GetComponent<RectTransform>().position = text.GetComponent<RectTransform>().position + Vector3.up * textHeight * (entries + 1) * 2;
-                        newText.GetComponentInChildren<Text>().text = RightClickMenu.usingItemString + RightClickMenu.openActions[i].gameObject.name;
-                        newText.GetComponent<MenuEntryClick>().menuScript = this;
-                        newText.GetComponent<MenuEntryClick>().actionNumber = i;
-                        newText.GetComponent<MenuEntryClick>().stringNumber = j;
-                        newText.GetComponent<MenuEntryClick>().action = RightClickMenu.openActions[i];
-                        entries++;
-                        j = -100;
-                    }
+                        if (RightClickMenu.isUsingItem == false && RightClickMenu.isCastingSpell == false)
+                        {
+                            hoverBoxRT.sizeDelta += Vector2.up * textHeight;
+                            menuRT.sizeDelta += Vector2.up * textHeight;
+                            newText = Instantiate(text, transform);
+                            newText.GetComponent<RectTransform>().position = text.GetComponent<RectTransform>().position + Vector3.up * textHeight * (entries + 1) * 2;
+                            newText.GetComponentInChildren<Text>().text = RightClickMenu.openActions[i].menuTexts[j];
+                            newText.GetComponent<MenuEntryClick>().menuScript = this;
+                            newText.GetComponent<MenuEntryClick>().actionNumber = i;
+                            newText.GetComponent<MenuEntryClick>().stringNumber = j;
+                            newText.GetComponent<MenuEntryClick>().action = RightClickMenu.openActions[i];
+                            entries++;
+                        }
+                        else if (RightClickMenu.openActions[i].ignoreUse == false)
+                        {
+                            if (RightClickMenu.openActions[i] == RightClickMenu.itemBeingUsed.GetComponent<Action>())
+                            {
+                                continue;
+                            }
+                            hoverBoxRT.sizeDelta += Vector2.up * textHeight;
+                            menuRT.sizeDelta += Vector2.up * textHeight;
+                            newText = Instantiate(text, transform);
+                            newText.GetComponent<RectTransform>().position = text.GetComponent<RectTransform>().position + Vector3.up * textHeight * (entries + 1) * 2;
+                            newText.GetComponentInChildren<Text>().text = RightClickMenu.usingItemString + RightClickMenu.openActions[i].gameObject.name;
+                            if (RightClickMenu.isCastingSpell)
+                            {
+                                newText.GetComponentInChildren<Text>().text = RightClickMenu.castingSpellString + RightClickMenu.openActions[i].gameObject.name;
+                            }
+                            newText.GetComponent<MenuEntryClick>().menuScript = this;
+                            newText.GetComponent<MenuEntryClick>().actionNumber = i;
+                            newText.GetComponent<MenuEntryClick>().stringNumber = j;
+                            newText.GetComponent<MenuEntryClick>().action = RightClickMenu.openActions[i];
+                            entries++;
+                            j = -100;
+                        }
 
-                    if (newText.GetComponentInChildren<Text>().preferredWidth + 10 > boxWidth)
-                    {
-                        menuRT.sizeDelta += Vector2.right * (newText.GetComponentInChildren<Text>().preferredWidth + 10 - boxWidth);
-                        hoverBoxRT.sizeDelta += Vector2.right * (newText.GetComponentInChildren<Text>().preferredWidth + 10 - boxWidth);
-                        boxWidth = newText.GetComponentInChildren<Text>().preferredWidth + 10;
+                        if (newText.GetComponentInChildren<Text>().preferredWidth + 10 > boxWidth)
+                        {
+                            menuRT.sizeDelta += Vector2.right * (newText.GetComponentInChildren<Text>().preferredWidth + 10 - boxWidth);
+                            hoverBoxRT.sizeDelta += Vector2.right * (newText.GetComponentInChildren<Text>().preferredWidth + 10 - boxWidth);
+                            boxWidth = newText.GetComponentInChildren<Text>().preferredWidth + 10;
+                        }
                     }
+                }
+            }
+        }
+        else
+        {
+            for (int i = RightClickMenu.openActions.Count - 1; i >= 0; i--)
+            {
+                if (RightClickMenu.openActions[i].ignoreUse == false)
+                {
+                    if (RightClickMenu.openActions[i] == RightClickMenu.itemBeingUsed.GetComponent<Action>())
+                    {
+                        continue;
+                    }
+                    if (RightClickMenu.isCastingSpell && RightClickMenu.openActions[i].gameObject.GetComponent<NPC>() == null)
+                    {
+                        continue;
+                    }
+                    hoverBoxRT.sizeDelta += Vector2.up * textHeight;
+                    menuRT.sizeDelta += Vector2.up * textHeight;
+                    newText = Instantiate(text, transform);
+                    newText.GetComponent<RectTransform>().position = text.GetComponent<RectTransform>().position + Vector3.up * textHeight * (entries + 1) * 2;
+                    newText.GetComponentInChildren<Text>().text = RightClickMenu.usingItemString + RightClickMenu.openActions[i].gameObject.name;
+                    if (RightClickMenu.isCastingSpell)
+                    {
+                        newText.GetComponentInChildren<Text>().text = RightClickMenu.castingSpellString + RightClickMenu.openActions[i].gameObject.name;
+                    }
+                    newText.GetComponent<MenuEntryClick>().menuScript = this;
+                    newText.GetComponent<MenuEntryClick>().actionNumber = i;
+                    newText.GetComponent<MenuEntryClick>().stringNumber = 9;
+                    newText.GetComponent<MenuEntryClick>().action = RightClickMenu.openActions[i];
+                    entries++;
+                }
+
+                if (newText.GetComponentInChildren<Text>().preferredWidth + 10 > boxWidth)
+                {
+                    menuRT.sizeDelta += Vector2.right * (newText.GetComponentInChildren<Text>().preferredWidth + 10 - boxWidth);
+                    hoverBoxRT.sizeDelta += Vector2.right * (newText.GetComponentInChildren<Text>().preferredWidth + 10 - boxWidth);
+                    boxWidth = newText.GetComponentInChildren<Text>().preferredWidth + 10;
                 }
             }
         }

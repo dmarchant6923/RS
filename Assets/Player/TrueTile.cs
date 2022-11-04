@@ -10,7 +10,6 @@ public class TrueTile : MonoBehaviour
     public GameObject debugTile;
     GameObject newDebugTile;
     List<GameObject> debugTiles = new List<GameObject>();
-    bool clicked = false;
 
     public Player player;
     Pathfinder pathFinder;
@@ -48,6 +47,8 @@ public class TrueTile : MonoBehaviour
         walkHereAction.serverAction0 += ServerClick;
         walkHereAction.menuTexts[0] = "walk here";
         walkHereAction.cancelLevels[0] = 1;
+        walkHereAction.inGame = true;
+        walkHereAction.redClick = false;
     }
 
     private void Update()
@@ -142,12 +143,6 @@ public class TrueTile : MonoBehaviour
     //updates on every tick
     void Move()
     {
-        if (clicked)
-        {
-            clicked = false;
-        }
-
-
         if (path.Count > 0)
         {
             int i = 1;

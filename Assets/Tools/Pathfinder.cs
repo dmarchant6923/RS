@@ -468,6 +468,29 @@ public class Pathfinder : MonoBehaviour
 
     }
 
+    public List<Vector2> FindSimplePath(Vector2 startTile, Vector2 endTile)
+    {
+        List<Vector2> path = new List<Vector2>();
+        Vector2 currentTile = startTile;
+        while (Mathf.Abs(currentTile.x - endTile.x) > Mathf.Abs(currentTile.y - endTile.y))
+        {
+            currentTile += Vector2.right * Mathf.Sign(endTile.x - currentTile.x);
+            path.Add(currentTile);
+        }
+        while (Mathf.Abs(currentTile.x - endTile.x) < Mathf.Abs(currentTile.y - endTile.y))
+        {
+            currentTile += Vector2.up * Mathf.Sign(endTile.y - currentTile.y);
+            path.Add(currentTile);
+        }
+        while (currentTile != endTile)
+        {
+            currentTile += new Vector2(Mathf.Sign(endTile.x - currentTile.x), Mathf.Sign(endTile.y - currentTile.y));
+            path.Add(currentTile);
+        }
+
+        return path;
+    }
+
     public static Vector2 AngleToVector(float angle)
     {
         Vector2 vector = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad + Mathf.PI / 2),

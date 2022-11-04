@@ -58,7 +58,8 @@ public class MouseManager : MonoBehaviour
         List<Action> gameActions = new List<Action>();
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D[] castAll = Physics2D.CircleCastAll(worldPoint, 0.1f, Vector2.zero, 0);
-        for (int i = 0; i >= -20; i--) 
+        //for (int i = -20; i <=0; i++)
+        for (int i = 0; i >= -20; i--)
         {
             foreach (RaycastHit2D cast in castAll)
             {

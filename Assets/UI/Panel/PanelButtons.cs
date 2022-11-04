@@ -27,7 +27,13 @@ public class PanelButtons : MonoBehaviour
     Vector3 onPosition;
     Vector3 panelOnPosition;
 
-    Action buttonAction;
+    public static bool enablePanelHotkeys;
+    public static KeyCode attackStylesHotKey;
+    public static KeyCode inventoryHotKey;
+    public static KeyCode wornEquipmentHotKey;
+    public static KeyCode prayerHotKey;
+    public static KeyCode spellbookHotKey;
+    static KeyCode[] hotkeys = new KeyCode[5];
 
     private IEnumerator Start()
     {
@@ -46,8 +52,6 @@ public class PanelButtons : MonoBehaviour
         onPosition = attackStylesPanel.GetComponent<RectTransform>().localPosition;
         panelOnPosition = panel.GetComponent<RectTransform>().localPosition;
 
-        buttonAction = GetComponent<Action>();
-
         foreach (GameObject panelobject in panelObjects)
         {
             if (panelobject != null)
@@ -57,7 +61,28 @@ public class PanelButtons : MonoBehaviour
             }
         }
         yield return null;
+
         ForceClose();
+
+        hotkeys[0] = attackStylesHotKey;
+        hotkeys[1] = inventoryHotKey;
+        hotkeys[2] = wornEquipmentHotKey;
+        hotkeys[3] = prayerHotKey;
+        hotkeys[4] = spellbookHotKey;
+    }
+
+    void Update()
+    {
+        if (enablePanelHotkeys && Input.anyKeyDown)
+        {
+            for (int i = 0; i < hotkeys.Length; i++)
+            {
+                if (Input.GetKeyDown(hotkeys[i]))
+                {
+                    OnClick(buttons[i], false);
+                }
+            }
+        }
     }
 
     public void ForceOpen(string buttonName)
@@ -71,7 +96,6 @@ public class PanelButtons : MonoBehaviour
             }
         }
     }
-
     public void ForceClose()
     {
         currentButton = null;

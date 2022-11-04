@@ -25,6 +25,10 @@ public class RightClickMenu : MonoBehaviour
     public static GameObject itemBeingUsed;
     public static string usingItemString;
 
+    public static bool isCastingSpell = false;
+    public static GameObject spellBeingCast;
+    public static string castingSpellString;
+
     [HideInInspector] public Action leftClickAction;
 
     private void Start()
@@ -68,7 +72,7 @@ public class RightClickMenu : MonoBehaviour
         }
 
         leftClickAction = null;
-        if (isUsingItem == false)
+        if (isUsingItem == false && isCastingSpell == false)
         {
             if (actions.Count == 0 || menuOpen)
             {
@@ -106,17 +110,25 @@ public class RightClickMenu : MonoBehaviour
                 leftClickAction.PickTopAction();
             }
         }
-        else
+        else if (isUsingItem)
         {
-            usingItemString = "Use " + itemBeingUsed.name + " -> ";
+            usingItemString = "Use <color=orange>" + itemBeingUsed.name + "</color> -> ";
             actionText.text = usingItemString;
+            int actionCounter = 0;
             foreach (Action action in actions)
             {
                 if (action.ignoreUse == false && action != itemBeingUsed.GetComponent<Action>())
                 {
-                    leftClickAction = action;
-                    actionText.text += action.objectName;
-                    break;
+                    if (leftClickAction == null)
+                    {
+                        leftClickAction = action;
+                        actionText.text += action.objectName;
+                    }
+                    else
+                    {
+                        actionCounter++;
+                        actionText.text = "Use <color=orange>" + itemBeingUsed.name + "</color> -> " + action.objectName + " / " + actionCounter + " more options";
+                    }
                 }
             }
 
@@ -133,7 +145,28 @@ public class RightClickMenu : MonoBehaviour
                 }
             }
         }
-    }
+        else if (isCastingSpell)
+        {
+            castingSpellString = "Cast <color=lime>" + spellBeingCast.name + "</color> -> ";
+            actionText.text = castingSpellString;
+            foreach (Action action in actions)
+            {
+                if (action.ignoreUse == false && action != spellBeingCast.GetComponent<Action>() && action.GetComponent<NPC>() != null)
+                {
+                    leftClickAction = action;
+                    actionText.text += action.objectName;
+                    break;
+                }
+            }
 
-    
+            if (MouseManager.screenLeftClick && menuOpen == false)
+            {
+                if (leftClickAction != null)
+                {
+                    spellBeingCast.GetComponent<Spell>().CastSpell(leftClickAction.gameObject);
+                }
+                isCastingSpell = false;
+            }
+        }
+    }
 }

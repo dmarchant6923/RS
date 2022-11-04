@@ -24,7 +24,7 @@ public class SpecBar : MonoBehaviour
         maxWidth = greenBar.rectTransform.rect.width;
 
         specAction = GetComponent<Action>();
-        specAction.menuTexts[0] = "Use <color=green>Special Attack</color>";
+        specAction.menuTexts[0] = "Use <color=lime>Special Attack</color>";
         specAction.serverAction0 += UpdateSpec;
         specAction.orderLevels[0] = -1;
 

@@ -38,8 +38,9 @@ public class Equipment : MonoBehaviour
     public int magicDamage;
     public int prayer;
 
-    public bool hasSpec = false;
     public int attackSpeed;
+    public int rangeDistance = 1;
+    public bool hasSpec = false;
     public int specCost;
     public string specDescription;
 

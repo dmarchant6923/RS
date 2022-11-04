@@ -14,6 +14,9 @@ public class Action : MonoBehaviour
 
     [HideInInspector] public bool itemAction = false;
     public bool ignoreUse = false;
+    public bool inGame = false;
+    [HideInInspector] public bool redClick = true;
+
 
     public delegate void ObjectAction();
 
@@ -69,6 +72,7 @@ public class Action : MonoBehaviour
         if (examineText != null && string.IsNullOrEmpty(examineText) == false)
         {
             menuTexts[8] = "Examine ";
+            serverActionExamine += Examine;
         }
 
         menuPriorities[8] = -1;
@@ -136,39 +140,6 @@ public class Action : MonoBehaviour
                 }
             }
         }
-
-        //if (action0 != null)
-        //{
-        //    PickAction(0);
-        //}
-        //else if (action1 != null)
-        //{
-        //    PickAction(1);
-        //}
-        //else if (action2 != null)
-        //{
-        //    PickAction(2);
-        //}
-        //else if (action3 != null)
-        //{
-        //    PickAction(3);
-        //}
-        //else if (action4 != null)
-        //{
-        //    PickAction(4);
-        //}
-        //else if (action5 != null)
-        //{
-        //    PickAction(5);
-        //}
-        //else if (action6 != null)
-        //{
-        //    PickAction(6);
-        //}
-        //else if (action7 != null)
-        //{
-        //    PickAction(7);
-        //}
     }
     public void PickAction(int actionNumber)
     {
@@ -274,24 +245,17 @@ public class Action : MonoBehaviour
             if (serverActionExamine != null)
             {
                 StartCoroutine(DelayAction(actionNumber));
-            }
-            if (clientActionExamine != null || serverActionExamine != null)
-            {
                 validAction = true;
             }
         }
         else if (actionNumber == 9)
         {
             clientActionUse?.Invoke();
-            if (serverActionUse != null)
-            {
-                StartCoroutine(DelayAction(actionNumber));
-            }
+            StartCoroutine(DelayAction(actionNumber));
             if (clientActionUse != null || serverActionUse != null)
             {
                 validAction = true;
             }
-            //UseActionOnThis();
             RightClickMenu.isUsingItem = false;
         }
         else
@@ -306,6 +270,10 @@ public class Action : MonoBehaviour
             return;
         }
         validAction = false;
+        if (inGame)
+        {
+            UIManager.ClickX(redClick);
+        }
 
         if (cancelLevels[actionNumber] > 0)
         {
@@ -464,5 +432,10 @@ public class Action : MonoBehaviour
     public void DefaultUseAction()
     {
         Debug.Log("Nothing interesting happens.");
+    }
+
+    void Examine()
+    {
+        Debug.Log(examineText);
     }
 }
