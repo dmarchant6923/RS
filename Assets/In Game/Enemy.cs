@@ -35,10 +35,9 @@ public class Enemy : MonoBehaviour
     [HideInInspector] public float combatLevel;
     [HideInInspector] public string combatLevelColor;
 
-    NPC npcScript;
+    [HideInInspector] public NPC npcScript;
     Action npcAction;
-    Player playerScript;
-    TrueTile playerTrueTileScript;
+    Combat playerCombatScript;
     Pathfinder pathFinder;
 
     bool playerAttackingEnemy = false;
@@ -50,8 +49,7 @@ public class Enemy : MonoBehaviour
 
         npcScript = GetComponent<NPC>();
         npcAction = GetComponent<Action>();
-        playerScript = FindObjectOfType<Player>();
-        playerTrueTileScript = FindObjectOfType<TrueTile>();
+        playerCombatScript = FindObjectOfType<Player>().GetComponent<Combat>();
         pathFinder = FindObjectOfType<Pathfinder>();
 
         float baselvl = 0.25f * ((float)defence + hitpoints + (1 * 0.5f));
@@ -107,67 +105,20 @@ public class Enemy : MonoBehaviour
         npcScript.UpdateActions(gameObject.name, true);
 
         Action.cancel1 += CancelAttack;
-
-        TickManager.beforeTick += AttackTick;
     }
 
     void Attack()
     {
         playerAttackingEnemy = true;
-        Player.targetedNPC = gameObject;
-    }
-
-    void AttackTick()
-    {
-        if (playerAttackingEnemy)
-        {
-            List<Vector2> adjacentTiles = new List<Vector2>();
-            if (TileDataManager.GetTileData(npcScript.trueTile + Vector2.up).obstacle == false)
-            {
-                adjacentTiles.Add(npcScript.trueTile + Vector2.up);
-            }
-            if (TileDataManager.GetTileData(npcScript.trueTile + Vector2.down).obstacle == false)
-            {
-                adjacentTiles.Add(npcScript.trueTile + Vector2.down);
-            }
-            if (TileDataManager.GetTileData(npcScript.trueTile + Vector2.left).obstacle == false)
-            {
-                adjacentTiles.Add(npcScript.trueTile + Vector2.left);
-            }
-            if (TileDataManager.GetTileData(npcScript.trueTile + Vector2.right).obstacle == false)
-            {
-                adjacentTiles.Add(npcScript.trueTile + Vector2.right);
-            }
-
-            foreach (Vector2 tile in adjacentTiles)
-            {
-                if (playerTrueTileScript.currentTile == tile)
-                {
-                    return;
-                }
-            }
-
-            int distance = 10000;
-            Vector2 targetTile = adjacentTiles[0];
-            foreach (Vector2 tile in adjacentTiles)
-            {
-                List<Vector2> path = pathFinder.FindAStarPath(playerTrueTileScript.currentTile, tile);
-                if (path.Count < distance)
-                {
-                    targetTile = tile;
-                    distance = path.Count;
-                }
-            }
-
-            playerTrueTileScript.ExternalMovement(targetTile);
-
-        }
+        Player.targetedNPC = npcScript;
+        Player.attackTargetedNPC = true;
+        playerCombatScript.targetEnemy = this;
     }
 
     void CancelAttack()
     {
         playerAttackingEnemy = false;
-        if (Player.targetedNPC == gameObject)
+        if (Player.targetedNPC == npcScript)
         {
             Player.targetedNPC = null;
         }

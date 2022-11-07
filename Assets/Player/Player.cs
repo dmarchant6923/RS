@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public GameObject trueTileObject;
     GameObject newTrueTileObject;
     [HideInInspector] public TrueTile trueTile;
+    [HideInInspector] public Combat combatScript;
     public Vector2 playerPosition;
     float moveSpeed = 3f;
     public List<Vector2> playerPath;
@@ -24,8 +25,12 @@ public class Player : MonoBehaviour
     float angleFacing;
     float targetAngle;
     Transform playerArrow;
+    SpriteRenderer arrowColor;
     float rotationSpeed = 300;
-    public static GameObject targetedNPC;
+    public static NPC targetedNPC;
+    public static bool attackTargetedNPC;
+    [HideInInspector] public Vector2 targetNPCPreviousTile;
+    [HideInInspector] public bool attackThisTick = false;
 
     public bool debugEnabled = false;
 
@@ -46,11 +51,16 @@ public class Player : MonoBehaviour
         playerPath = new List<Vector2>();
 
         playerArrow = transform.GetChild(0);
+        arrowColor = playerArrow.GetChild(0).GetComponent<SpriteRenderer>();
 
+        combatScript = GetComponent<Combat>();
+        combatScript.scriptAttachedToPlayer = true;
+
+        TickManager.beforeTick += BeforeTick;
         TickManager.onTick += RunEnergy;
+        TickManager.afterTick += AfterTick;
     }
 
-    // Update is called once per frame
     void Update()
     {
         playerPosition = new Vector2(transform.position.x, transform.position.y);
@@ -72,10 +82,6 @@ public class Player : MonoBehaviour
             }
 
             transform.position = Vector2.MoveTowards(transform.position, playerPath[0], trueMoveSpeed * Time.deltaTime);
-            if (targetedNPC == null)
-            {
-                targetAngle = Tools.VectorToAngle(playerPath[0] - playerPosition);
-            }
 
             if ((playerPosition - playerPath[0]).magnitude < 0.01f)
             {
@@ -87,6 +93,10 @@ public class Player : MonoBehaviour
                     forceWalk = true;
                 }
             }
+            else if (targetedNPC == null)
+            {
+                targetAngle = Tools.VectorToAngle(playerPath[0] - playerPosition);
+            }
         }
         if (targetedNPC != null)
         {
@@ -97,7 +107,13 @@ public class Player : MonoBehaviour
         playerArrow.transform.eulerAngles = new Vector3(0, 0, angleFacing);
     }
 
-    //updates on every tick
+    void BeforeTick()
+    {
+        if (targetedNPC != null)
+        {
+            targetNPCPreviousTile = targetedNPC.trueTile;
+        }
+    }
     void RunEnergy()
     {
         if (trueTile.moving && runEnabled && forceWalk == false)
@@ -112,6 +128,25 @@ public class Player : MonoBehaviour
         else
         {
             runEnergy = Mathf.Min(10000, runEnergy + (99 / 6) + 8);
+        }
+    }
+
+    void AfterTick()
+    {
+        if (targetedNPC != null)
+        {
+            if (attackThisTick)
+            {
+                arrowColor.color = Color.red;
+            }
+            else
+            {
+                arrowColor.color = Color.yellow;
+            }
+        }
+        else
+        {
+            arrowColor.color = Color.green;
         }
     }
 }

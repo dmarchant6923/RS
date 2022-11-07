@@ -39,7 +39,7 @@ public class Equipment : MonoBehaviour
     public int prayer;
 
     public int attackSpeed;
-    public int rangeDistance = 1;
+    public int attackDistance = 1;
     public bool hasSpec = false;
     public int specCost;
     public string specDescription;

@@ -24,6 +24,9 @@ public class TrueTile : MonoBehaviour
     [HideInInspector] public bool showClickedTile = false;
     [HideInInspector] public bool debugEnabled = false;
 
+    public delegate void TrueTileMoved();
+    public static event TrueTileMoved afterMovement;
+
     Action walkHereAction;
 
     void Start()
@@ -166,6 +169,7 @@ public class TrueTile : MonoBehaviour
                 }
                 i--;
             }
+
         }
         else
         {
@@ -178,6 +182,8 @@ public class TrueTile : MonoBehaviour
                 debugTiles = new List<GameObject>();
             }
         }
+
+        afterMovement();
     }
 
     public void StopMovement()

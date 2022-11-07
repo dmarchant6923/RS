@@ -104,8 +104,10 @@ public class ActivatePrayer : MonoBehaviour
     {
         if (QP == false)
         {
-            active = false;
-            ChangeColors(false);
+            if (active)
+            {
+                ServerClickPrayer();
+            }
         }
         else
         {

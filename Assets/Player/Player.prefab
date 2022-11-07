@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 5385707279894170822}
   - component: {fileID: 5385707279894170820}
   - component: {fileID: 5435353179154756461}
+  - component: {fileID: -1379261487197747176}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -208,6 +209,18 @@ MonoBehaviour:
   hitpoints: 99
   prayer: 55
   agility: 99
+--- !u!114 &-1379261487197747176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5385707279894170681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0eebaa7d530bd04a89f0733e1ab3ce7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5795649407363136618
 GameObject:
   m_ObjectHideFlags: 0

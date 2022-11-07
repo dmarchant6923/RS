@@ -57,23 +57,24 @@ public class MouseManager : MonoBehaviour
 
         List<Action> gameActions = new List<Action>();
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D[] castAll = Physics2D.CircleCastAll(worldPoint, 0.1f, Vector2.zero, 0);
-        //for (int i = -20; i <=0; i++)
-        for (int i = 0; i >= -20; i--)
-        {
-            foreach (RaycastHit2D cast in castAll)
-            {
-                if (cast.collider.GetComponent<Action>() != null && gameActions.Contains(cast.collider.GetComponent<Action>()) == false && cast.collider.GetComponent<SpriteRenderer>().sortingOrder == i)
-                {
-                    //Debug.Log(cast.collider.GetComponent<SpriteRenderer>().sortingOrder + " " + cast.collider.gameObject + " " + i);
-                    gameActions.Add(cast.collider.GetComponent<Action>());
-                }
-            }
-        }
         RightClickMenu.gameActions = gameActions;
 
         if (isOverGame)
         {
+            RaycastHit2D[] castAll = Physics2D.CircleCastAll(worldPoint, 0.1f, Vector2.zero, 0);
+            //for (int i = -20; i <=0; i++)
+            for (int i = 0; i >= -20; i--)
+            {
+                foreach (RaycastHit2D cast in castAll)
+                {
+                    if (cast.collider.GetComponent<Action>() != null && gameActions.Contains(cast.collider.GetComponent<Action>()) == false && cast.collider.GetComponent<SpriteRenderer>().sortingOrder == i)
+                    {
+                        //Debug.Log(cast.collider.GetComponent<SpriteRenderer>().sortingOrder + " " + cast.collider.gameObject + " " + i);
+                        gameActions.Add(cast.collider.GetComponent<Action>());
+                    }
+                }
+            }
+
             mouseCoordinate = TileManager.FindTile(new Vector2(worldPoint.x, worldPoint.y));
             if (Input.GetMouseButtonDown(0))
             {

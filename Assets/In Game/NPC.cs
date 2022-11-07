@@ -142,16 +142,19 @@ public class NPC : MonoBehaviour
             }
 
             transform.position = Vector2.MoveTowards(transform.position, npcPath[0], trueMoveSpeed * Time.deltaTime);
-            if (isTargetingPlayer == false)
-            {
-                targetAngle = Tools.VectorToAngle(npcPath[0] - npcPosition);
-            }
 
             if ((npcPosition - npcPath[0]).magnitude < 0.01f)
             {
                 transform.position = npcPath[0];
                 npcPath.RemoveAt(0);
                 forceWalk = false;
+            }
+            else
+            {
+                if (isTargetingPlayer == false)
+                {
+                    targetAngle = Tools.VectorToAngle(npcPath[0] - npcPosition);
+                }
             }
         }
 

@@ -61,6 +61,7 @@ public class WornEquipment : MonoBehaviour
     public static int prayer;
 
     public static int attackSpeed;
+    public static int attackDistance = 1;
     public static int specCost;
 
     public Text statPanelText;
@@ -146,6 +147,19 @@ public class WornEquipment : MonoBehaviour
                 rangedStrength += item.rangedStrength;
                 magicDamage += item.magicDamage;
                 prayer += item.prayer;
+
+                if (slot == weaponSlot)
+                {
+                    attackSpeed = item.attackSpeed;
+                    attackDistance = item.attackDistance;
+                    specCost = item.specCost;
+                }
+            }
+            else if (slot == weaponSlot)
+            {
+                attackSpeed = 4;
+                attackDistance = 1;
+                specCost = 0;
             }
         }
         UpdateText();
@@ -168,6 +182,7 @@ public class WornEquipment : MonoBehaviour
             "    Melee Strength: " + meleeStrength + "\n" +
             "    Ranged Strength: " + rangedStrength + "\n" +
             "    Magic Damage: +" + magicDamage + "%\n" +
-            "    prayer: " + prayer;
+            "    prayer: " + prayer + "\n" + 
+            "    Weapon Range: " + attackDistance;
     }
 }

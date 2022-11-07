@@ -77,7 +77,6 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (canBeToggled)
         {
-            active = !active;
             SwitchSprites();
         }
     }

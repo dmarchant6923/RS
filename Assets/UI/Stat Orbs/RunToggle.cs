@@ -30,6 +30,7 @@ public class RunToggle : MonoBehaviour
     {
         if (player.runEnergy > 100)
         {
+            orbManager.active = !orbManager.active;
             player.runEnabled = orbManager.active;
         }
         else

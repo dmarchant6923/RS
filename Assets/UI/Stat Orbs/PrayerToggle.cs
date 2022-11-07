@@ -52,6 +52,7 @@ public class PrayerToggle : MonoBehaviour
 
     void ActivateQuickPrayers()
     {
+        orbManager.active = !orbManager.active;
         prayerScript.ActivateQuickPrayers(orbManager.active);
     }
     void SetupQuickPrayers()

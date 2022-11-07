@@ -3240,7 +3240,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 19
+    m_FontSize: 18
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -3253,7 +3253,8 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: "Attack Bonus\n    Stab:\n    Slash:\n    Crush:\n    Magic:\n    Range:\n\nDefence
     Bonus\n    Stab:\n    Slash:\n    Crush:\n    Magic:\n    Range:\n\nOther Bonuses\n   
-    Melee Strength:\n    Ranged Strength:\n    Magic Damage:\n    Prayer:"
+    Melee Strength:\n    Ranged Strength:\n    Magic Damage:\n    Prayer:\n    Weapon
+    Range: "
 --- !u!1 &1360956918324323063
 GameObject:
   m_ObjectHideFlags: 0
@@ -4000,7 +4001,7 @@ MonoBehaviour:
   magicDamage: 0
   prayer: 0
   attackSpeed: 4
-  rangeDistance: 1
+  attackDistance: 1
   hasSpec: 1
   specCost: 22
   specDescription: 
@@ -4325,7 +4326,7 @@ MonoBehaviour:
   magicDamage: 15
   prayer: 0
   attackSpeed: 4
-  rangeDistance: 1
+  attackDistance: 1
   hasSpec: 1
   specCost: 100
   specDescription: 
@@ -4909,7 +4910,7 @@ MonoBehaviour:
   magicDamage: 0
   prayer: 0
   attackSpeed: 0
-  rangeDistance: 1
+  attackDistance: 1
   hasSpec: 0
   specCost: 0
   specDescription: 
@@ -6988,7 +6989,7 @@ MonoBehaviour:
   magicDamage: 0
   prayer: 0
   attackSpeed: 0
-  rangeDistance: 1
+  attackDistance: 1
   hasSpec: 0
   specCost: 0
   specDescription: 
@@ -14020,7 +14021,7 @@ MonoBehaviour:
   magicDamage: 0
   prayer: 2
   attackSpeed: 0
-  rangeDistance: 1
+  attackDistance: 1
   hasSpec: 0
   specCost: 0
   specDescription: 
@@ -17683,7 +17684,7 @@ MonoBehaviour:
   magicDamage: 0
   prayer: 0
   attackSpeed: 4
-  rangeDistance: 7
+  attackDistance: 7
   hasSpec: 1
   specCost: 55
   specDescription: 
@@ -17998,6 +17999,7 @@ GameObject:
   - component: {fileID: 3150898166545000286}
   - component: {fileID: 365638140007399650}
   - component: {fileID: 1147818102676820614}
+  - component: {fileID: 7385049435719534247}
   m_Layer: 5
   m_Name: Panel Buttons
   m_TagString: Action Parent
@@ -18062,6 +18064,33 @@ MonoBehaviour:
   wornEquipmentPanel: {fileID: 8710014385290857791}
   prayerPanel: {fileID: 5493565096790857744}
   spellbookPanel: {fileID: 3333038877298247757}
+--- !u!114 &7385049435719534247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6353799503853385206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.31764707, g: 0.2784314, b: 0.23137255, a: 0.2901961}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 0}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1 &6356923385139335907
 GameObject:
   m_ObjectHideFlags: 0
@@ -21181,7 +21210,7 @@ MonoBehaviour:
   magicDamage: 0
   prayer: 0
   attackSpeed: 4
-  rangeDistance: 1
+  attackDistance: 1
   hasSpec: 1
   specCost: 55
   specDescription: 
@@ -25772,7 +25801,7 @@ MonoBehaviour:
   magicDamage: 0
   prayer: 0
   attackSpeed: 4
-  rangeDistance: 7
+  attackDistance: 7
   hasSpec: 0
   specCost: 0
   specDescription: 
@@ -26388,11 +26417,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79b22a56854c1974583cf3f28a3adc81, type: 3}
---- !u!224 &3930967028930693852 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3213228219471238635, guid: 79b22a56854c1974583cf3f28a3adc81, type: 3}
-  m_PrefabInstance: {fileID: 1880876976407306039}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3524160880011469979 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3094643659058887596, guid: 79b22a56854c1974583cf3f28a3adc81, type: 3}
@@ -26404,6 +26428,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 000828f4b0ab0ab498410b6052ad3462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &3930967028930693852 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3213228219471238635, guid: 79b22a56854c1974583cf3f28a3adc81, type: 3}
+  m_PrefabInstance: {fileID: 1880876976407306039}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2763748708508747933
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26847,14 +26876,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: edd86b6fe94e31748a359b8d17c88376, type: 3}
---- !u!224 &7372618077810558649 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6423464368091892401, guid: edd86b6fe94e31748a359b8d17c88376, type: 3}
-  m_PrefabInstance: {fileID: 4572411305108605960}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6647290727056368882 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7154984410998892794, guid: edd86b6fe94e31748a359b8d17c88376, type: 3}
+  m_PrefabInstance: {fileID: 4572411305108605960}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &7372618077810558649 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6423464368091892401, guid: edd86b6fe94e31748a359b8d17c88376, type: 3}
   m_PrefabInstance: {fileID: 4572411305108605960}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1488138224277021312
