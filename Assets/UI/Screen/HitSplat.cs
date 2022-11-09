@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class HitSplat : MonoBehaviour
 {
     public int damage;
-    public int max;
+    public int maxHit;
+    public bool showMaxHitSplat = false;
 
     public GameObject objectGettingHit;
     RawImage hitsplat;
@@ -22,7 +23,7 @@ public class HitSplat : MonoBehaviour
         {
             hitsplat.texture = blueHitSplat;
         }
-        if (damage == max)
+        if (showMaxHitSplat && damage == maxHit && damage > 1)
         {
             hitsplat.texture = maxHitSplat;
         }

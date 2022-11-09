@@ -44,6 +44,8 @@ public class Enemy : MonoBehaviour
     {
         public int damage;
         public int ticks;
+        public bool fromPlayer = false;
+        public int maxHit;
     }
     List<IncomingDamage> damageQueue = new List<IncomingDamage>();
 
@@ -107,6 +109,7 @@ public class Enemy : MonoBehaviour
         npcScript.menuTexts[0] = "Attack ";
         npcAction.cancelLevels[0] = 1;
         npcAction.menuPriorities[0] = 1;
+        npcAction.staticPlayerActions[0] = true;
         npcAction.serverAction0 += Attack;
         npcScript.UpdateActions(gameObject.name, true);
 
@@ -130,11 +133,13 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void DealDamageToEnemy(int damage, int tickDelay)
+    public void DealDamageToEnemy(int damage, int tickDelay, bool fromPlayer, int maxHit)
     {
         IncomingDamage newDamage = new IncomingDamage();
         newDamage.damage = damage;
         newDamage.ticks = tickDelay;
+        newDamage.fromPlayer = fromPlayer;
+        newDamage.maxHit = maxHit;
         damageQueue.Add(newDamage);
     }
 
@@ -145,7 +150,7 @@ public class Enemy : MonoBehaviour
             damage.ticks--;
             if (damage.ticks <= 0)
             {
-                TakeDamage(damage.damage);
+                TakeDamage(damage);
             }
         }
         for (int i = 0; i < damageQueue.Count; i++)
@@ -158,11 +163,13 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void TakeDamage(int damage)
+    void TakeDamage(IncomingDamage damage)
     {
-        hitpoints -= damage;
+        hitpoints -= damage.damage;
         GameObject newHitSplat = Instantiate(UIManager.staticHitSplat, Camera.main.WorldToScreenPoint(transform.position), Quaternion.identity);
-        newHitSplat.GetComponent<HitSplat>().damage = damage;
+        newHitSplat.GetComponent<HitSplat>().damage = damage.damage;
         newHitSplat.GetComponent<HitSplat>().objectGettingHit = gameObject;
+        newHitSplat.GetComponent<HitSplat>().showMaxHitSplat = damage.fromPlayer;
+        newHitSplat.GetComponent<HitSplat>().maxHit = damage.maxHit;
     }
 }

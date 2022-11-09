@@ -51,6 +51,7 @@ public class TrueTile : MonoBehaviour
         walkHereAction.clientAction0 += ClientClick;
         walkHereAction.serverAction0 += ServerClick;
         walkHereAction.menuTexts[0] = "walk here";
+        walkHereAction.staticPlayerActions[0] = true;
         walkHereAction.cancelLevels[0] = 1;
         walkHereAction.inGame = true;
         walkHereAction.redClick = false;

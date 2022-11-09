@@ -24,6 +24,8 @@ public class StackableItem : MonoBehaviour
 
     public Item itemScript;
 
+    [HideInInspector] public bool groundItem = false;
+
     private void Start()
     {
         itemScript = GetComponent<Item>();
@@ -77,5 +79,68 @@ public class StackableItem : MonoBehaviour
     {
         quantity += increment;
         ChooseImage();
+    }
+
+    public void UseRangedAmmo(Vector2 targetTile)
+    {
+        float rand = Random.Range(0f, 1f);
+        if (WornEquipment.assembler)
+        {
+            if (rand < 0.2f)
+            {
+                AddToQuantity(-1);
+            }
+        }
+        else if (WornEquipment.accumulator)
+        {
+            if (rand < 0.2f)
+            {
+                AddToQuantity(-1);
+            }
+            else if (rand < 0.28f)
+            {
+                AddToQuantity(-1);
+                Spawn(targetTile);
+            }
+        }
+        else
+        {
+            AddToQuantity(-1);
+            if (rand > 0.07f)
+            {
+                Spawn(targetTile);
+            }
+        }
+    }
+
+    public void Spawn(Vector2 tile)
+    {
+        Vector2 worldPoint = Camera.main.ScreenToWorldPoint(tile);
+        RaycastHit2D[] castAll = Physics2D.CircleCastAll(worldPoint, 0.1f, Vector2.zero, 0);
+        StackableItem existingItem = null;
+        foreach (RaycastHit2D cast in castAll)
+        {
+            if (cast.collider.name == gameObject.name)
+            {
+                existingItem = cast.collider.GetComponent<StackableItem>();
+            }
+        }
+
+        if (existingItem != null)
+        {
+            existingItem.AddToQuantity(1);
+        }
+        else
+        {
+            GameObject newItem = Instantiate(itemScript.groundPrefab, tile, Quaternion.identity);
+            newItem.gameObject.name = itemScript.itemAction.objectName;
+            newItem.GetComponent<GroundItem>().item = gameObject;
+            newItem.GetComponent<GroundItem>().trueTile = tile;
+            newItem.GetComponent<Action>().examineText = itemScript.itemAction.examineText;
+            UnityEditorInternal.ComponentUtility.CopyComponent(this);
+            UnityEditorInternal.ComponentUtility.PasteComponentAsNew(newItem);
+            newItem.GetComponent<StackableItem>().groundItem = true;
+            newItem.GetComponent<StackableItem>().quantity = 1;
+        }
     }
 }

@@ -8,6 +8,11 @@ public class Action : MonoBehaviour
     [System.NonSerialized] public int[] menuPriorities = new int[9]; // priority -1, 0, or 1. highest priority shows at the top of action menu
     [System.NonSerialized] public int[] cancelLevels = new int[10]; //cancel level 0, 1, 2, or 3. level cancels that level and all below it.
     [System.NonSerialized] public int[] orderLevels = new int[10]; //order level -1, 0, 1. before tick, on tick, after tick.
+    [System.NonSerialized] public bool[] staticPlayerActions = new bool[9]; //if the action will be overridden by another static action
+
+    public static Action staticPlayerAction; //only for certain actions that involve the player. Allows a subsequent action to override a previous one.
+    public static int staticActionNum;
+
     public string examineText;
     [HideInInspector] public string objectName;
     public bool addObjectName;
@@ -283,7 +288,12 @@ public class Action : MonoBehaviour
     IEnumerator DelayAction(int num)
     {
         yield return new WaitForSeconds(TickManager.simLatency);
-        if (orderLevels[num] == -1)
+        if (staticPlayerActions[num])
+        {
+            staticPlayerAction = this;
+            staticActionNum = num;
+        }
+        else if (orderLevels[num] == -1)
         {
             beforeTickActions.Add(this);
             beforeTickNum.Add(num);
@@ -347,6 +357,13 @@ public class Action : MonoBehaviour
             }
         }
 
+        if (staticPlayerAction != null && staticPlayerAction.orderLevels[staticActionNum] == -1)
+        {
+            staticPlayerAction.PickServerAction(staticActionNum);
+            staticPlayerAction = null;
+            staticActionNum = -1;
+        }
+
         beforeTickActions = new List<Action>();
         beforeTickNum = new List<int>();
     }
@@ -360,6 +377,13 @@ public class Action : MonoBehaviour
             }
         }
 
+        if (staticPlayerAction != null && staticPlayerAction.orderLevels[staticActionNum] == 0)
+        {
+            staticPlayerAction.PickServerAction(staticActionNum);
+            staticPlayerAction = null;
+            staticActionNum = -1;
+        }
+
         onTickActions = new List<Action>();
         onTickNum = new List<int>();
     }
@@ -371,6 +395,13 @@ public class Action : MonoBehaviour
             {
                 afterTickActions[i].PickServerAction(afterTickNum[i]);
             }
+        }
+
+        if (staticPlayerAction != null && staticPlayerAction.orderLevels[staticActionNum] == 1)
+        {
+            staticPlayerAction.PickServerAction(staticActionNum);
+            staticPlayerAction = null;
+            staticActionNum = -1;
         }
 
         afterTickActions = new List<Action>();

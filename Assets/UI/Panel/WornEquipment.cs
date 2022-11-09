@@ -69,8 +69,19 @@ public class WornEquipment : MonoBehaviour
     public static bool voidMage;
     public static bool eliteVoid;
     public static bool slayerHelm;
+    public static bool accumulator;
+    public static bool assembler;
 
     public Text statPanelText;
+
+    public static string slashSwordCategory = "Slash Sword";
+    public static string stabSwordCategory = "Stab Sword";
+    public static string bowCategory = "Bow";
+    public static string crossbowCategory = "Crossbow";
+    public static string thrownCategory = "Thrown";
+    public static string staffCategory = "Staff";
+    public static string bladedStaffCategory = "Bladed Staff";
+    public static string poweredStaffCategory = "Powered Staff";
 
     private void Start()
     {
@@ -219,6 +230,17 @@ public class WornEquipment : MonoBehaviour
         if (head != null && head.name.Contains("Slayer helmet"))
         {
             slayerHelm = true;
+        }
+
+        accumulator = false;
+        assembler = false;
+        if (cape != null && (cape.name == "Ava's assembler" || cape.name == "Masori assembler"))
+        {
+            assembler = true;
+        }
+        else if (cape != null && cape.name == "Ava's accumulator")
+        {
+            accumulator = true;
         }
     }
     public void UpdateText()

@@ -90,7 +90,7 @@ MonoBehaviour:
   max: 0
   objectGettingHit: {fileID: 0}
   blueHitSplat: {fileID: 2800000, guid: 2fe0f5a26e857894e98b4f01c40394d0, type: 3}
-  maxHitSplat: {fileID: 2800000, guid: f62e001111c2d984d9e5683e03bba23a, type: 3}
+  maxHitSplat: {fileID: 2800000, guid: 73f534c0c2494ff4d80ed75d5deb15a7, type: 3}
 --- !u!1 &9164857115610995429
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,7 +159,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 35
+    m_FontSize: 30
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 1

@@ -24,11 +24,35 @@ public class Combat : MonoBehaviour
     }
     public void PlayerAttack()
     {
+
+        playerScript.attackThisTick = false;
+
+        if (AttackStyles.attackStyle == AttackStyles.rangedStyle && WornEquipment.weapon.weaponCategory != WornEquipment.thrownCategory)
+        {
+            if (WornEquipment.ammo == null)
+            {
+                Debug.Log("There is no ammo left in your quiver.");
+                playerScript.RemoveFocus();
+                return;
+            }
+            if (WornEquipment.weapon.weaponCategory == WornEquipment.bowCategory && WornEquipment.ammo.ammoCategory != "Arrow")
+            {
+                Debug.Log("You can't use that ammo with your bow.");
+                playerScript.RemoveFocus();
+                return;
+            }
+            if (WornEquipment.weapon.weaponCategory == WornEquipment.crossbowCategory && WornEquipment.ammo.ammoCategory != "Bolt")
+            {
+                Debug.Log("You can't use that ammo with your crossbow.");
+                playerScript.RemoveFocus();
+                return;
+            }
+        }
+
         Prayer.UpdatePrayerBonuses();
 
         if (attackCooldown <= 0)
         {
-            playerScript.attackThisTick = true;
             attackCooldown = WornEquipment.attackSpeed;
             if (AttackStyles.attackStyle == AttackStyles.rangedStyle && AttackStyles.attackType == AttackStyles.rapidType)
             {
@@ -51,14 +75,7 @@ public class Combat : MonoBehaviour
             {
                 maxAttRoll *= Mathf.Floor(effects.attackRollMult());
             }
-
-
-
             float maxDefRoll = EnemyDefenseRoll(Player.targetedNPC.GetComponent<Enemy>());
-
-
-
-
             float attRoll = Random.Range(0, (int) maxAttRoll);
             float defRoll = Random.Range(0, (int) maxDefRoll);
             bool success = false;
@@ -83,6 +100,8 @@ public class Combat : MonoBehaviour
                 }
             }
 
+
+
             float maxHit = PlayerMaxHit();
             int hitRoll = 0;
             if (success)
@@ -95,7 +114,18 @@ public class Combat : MonoBehaviour
                 hitRoll = Random.Range(0, (int)maxHit + 1);
             }
 
-            Player.targetedNPC.GetComponent<Enemy>().DealDamageToEnemy(hitRoll, 1);
+
+
+            Player.targetedNPC.GetComponent<Enemy>().DealDamageToEnemy(hitRoll, 1, true, (int) maxHit);
+            playerScript.attackThisTick = true;
+
+
+            if (AttackStyles.attackStyle == AttackStyles.rangedStyle && WornEquipment.weapon.weaponCategory != WornEquipment.thrownCategory)
+            {
+                WornEquipment.ammo.GetComponent<StackableItem>().UseRangedAmmo(playerScript.targetNPCPreviousTile);
+            }
+
+
 
 
             float hitChance;

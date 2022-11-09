@@ -174,7 +174,7 @@ public class AttackStyles : MonoBehaviour
 
 
 
-        else if (category == "Slash Sword")
+        else if (category == WornEquipment.slashSwordCategory)
         {
             style1.SetActive(true);
             style2.SetActive(true);
@@ -193,7 +193,7 @@ public class AttackStyles : MonoBehaviour
             style4.transform.GetChild(0).GetComponent<RawImage>().texture = swordBlock;
             style4.GetComponentInChildren<Text>().text = "Block";
 
-            selectedStyle = PlayerPrefs.GetInt("Slash Sword", 1);
+            selectedStyle = PlayerPrefs.GetInt(WornEquipment.slashSwordCategory, 1);
 
             attackStyle = slashStyle;
             if (selectedStyle == 1)
@@ -214,7 +214,7 @@ public class AttackStyles : MonoBehaviour
                 attackType = defensiveType;
             }
         }
-        else if (category == "Stab Sword")
+        else if (category == WornEquipment.stabSwordCategory)
         {
             style1.SetActive(true);
             style2.SetActive(true);
@@ -233,7 +233,7 @@ public class AttackStyles : MonoBehaviour
             style4.transform.GetChild(0).GetComponent<RawImage>().texture = swordBlock;
             style4.GetComponentInChildren<Text>().text = "Block";
 
-            selectedStyle = PlayerPrefs.GetInt("Stab Sword", 1);
+            selectedStyle = PlayerPrefs.GetInt(WornEquipment.stabSwordCategory, 1);
 
             attackStyle = stabStyle;
             if (selectedStyle == 1)
@@ -257,7 +257,7 @@ public class AttackStyles : MonoBehaviour
 
 
 
-        else if (category == "Bow")
+        else if (category == WornEquipment.bowCategory)
         {
             style1.SetActive(true);
             style2.SetActive(true);
@@ -272,7 +272,38 @@ public class AttackStyles : MonoBehaviour
             style3.transform.GetChild(0).GetComponent<RawImage>().texture = bowLongrange;
             style3.GetComponentInChildren<Text>().text = "Longrange";
 
-            selectedStyle = PlayerPrefs.GetInt("Bow", 1);
+            selectedStyle = PlayerPrefs.GetInt(WornEquipment.bowCategory, 1);
+
+            attackStyle = rangedStyle;
+            if (selectedStyle == 1)
+            {
+                attackType = accurateType;
+            }
+            else if (selectedStyle == 2)
+            {
+                attackType = rapidType;
+            }
+            else
+            {
+                attackType = longrangeType;
+            }
+        }
+        else if (category == WornEquipment.crossbowCategory)
+        {
+            style1.SetActive(true);
+            style2.SetActive(true);
+            style3.SetActive(true);
+
+            style1.transform.GetChild(0).GetComponent<RawImage>().texture = cbowAccurate;
+            style1.GetComponentInChildren<Text>().text = "Accurate";
+
+            style2.transform.GetChild(0).GetComponent<RawImage>().texture = cbowRapid;
+            style2.GetComponentInChildren<Text>().text = "Rapid";
+
+            style3.transform.GetChild(0).GetComponent<RawImage>().texture = cbowLongrange;
+            style3.GetComponentInChildren<Text>().text = "Longrange";
+
+            selectedStyle = PlayerPrefs.GetInt(WornEquipment.crossbowCategory, 1);
 
             attackStyle = rangedStyle;
             if (selectedStyle == 1)
@@ -291,7 +322,7 @@ public class AttackStyles : MonoBehaviour
 
 
 
-        else if (category == "Staff" || category == "Bladed Staff")
+        else if (category == WornEquipment.staffCategory || category == WornEquipment.bladedStaffCategory)
         {
             mageStyle5.SetActive(true);
             mageStyle6.SetActive(true);
@@ -299,12 +330,12 @@ public class AttackStyles : MonoBehaviour
             mageStyleDefensiveCast8.SetActive(true);
             mageStyleCast9.SetActive(true);
 
-            if (category == "Staff")
+            if (category == WornEquipment.staffCategory)
             {
                 mageStyle5.GetComponentInChildren<Text>().text = "Bash";
                 mageStyle6.GetComponentInChildren<Text>().text = "Pound";
                 mageStyle7.GetComponentInChildren<Text>().text = "Focus";
-                selectedStyle = PlayerPrefs.GetInt("Staff", 5);
+                selectedStyle = PlayerPrefs.GetInt(WornEquipment.staffCategory, 5);
 
                 attackStyle = crushStyle;
                 if (selectedStyle == 5)
@@ -330,12 +361,12 @@ public class AttackStyles : MonoBehaviour
                     attackType = accurateType;
                 }
             }
-            else if (category == "Bladed Staff")
+            else if (category == WornEquipment.bladedStaffCategory)
             {
                 mageStyle5.GetComponentInChildren<Text>().text = "Jab";
                 mageStyle6.GetComponentInChildren<Text>().text = "Swipe";
                 mageStyle7.GetComponentInChildren<Text>().text = "Fend";
-                selectedStyle = PlayerPrefs.GetInt("Bladed Staff", 5);
+                selectedStyle = PlayerPrefs.GetInt(WornEquipment.bladedStaffCategory, 5);
 
                 if (selectedStyle == 5)
                 {
@@ -364,7 +395,7 @@ public class AttackStyles : MonoBehaviour
                 }
             }
         }
-        else if (category == "Powered Staff")
+        else if (category == WornEquipment.poweredStaffCategory)
         {
             style1.SetActive(true);
             style2.SetActive(true);
@@ -379,7 +410,7 @@ public class AttackStyles : MonoBehaviour
             style3.transform.GetChild(0).GetComponent<RawImage>().texture = thrownLongrange;
             style3.GetComponentInChildren<Text>().text = "Longrange";
 
-            selectedStyle = PlayerPrefs.GetInt("Powered Staff", 1);
+            selectedStyle = PlayerPrefs.GetInt(WornEquipment.poweredStaffCategory, 1);
 
             attackStyle = magicStyle;
             if (selectedStyle != 3)

@@ -17,6 +17,7 @@ public class GroundItem : MonoBehaviour
 
     public static GameObject itemToTake;
 
+
     private void Start()
     {
         sprite = GetComponent<SpriteRenderer>();

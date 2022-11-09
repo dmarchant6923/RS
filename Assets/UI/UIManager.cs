@@ -16,7 +16,6 @@ public class UIManager : MonoBehaviour
     public RectTransform statPanel;
     float panelOpenPos;
 
-
     public GameObject xClick;
     public static GameObject staticXClick;
     public static GameObject newXClick;

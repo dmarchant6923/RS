@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    Action itemAction;
+    [HideInInspector] public Action itemAction;
 
     bool useActive = false;
 

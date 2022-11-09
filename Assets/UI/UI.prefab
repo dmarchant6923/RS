@@ -1149,7 +1149,7 @@ MonoBehaviour:
   panel: {fileID: 7722403565364076504}
   statPanel: {fileID: 5438376242608038834}
   xClick: {fileID: 1660316495929115245, guid: 185d826365bb7e04995ab3254db42550, type: 3}
-  hitSplat: {fileID: 0}
+  hitSplat: {fileID: 3469392685918802564, guid: 825f0835ceab47845b0e889a10fc3b3e, type: 3}
 --- !u!1 &569201656000816035
 GameObject:
   m_ObjectHideFlags: 0

@@ -161,6 +161,7 @@ public class Player : MonoBehaviour
         targetedNPC = enemy.GetComponent<NPC>();
         attackTargetedNPC = true;
         targetNPCPreviousTile = targetedNPC.trueTile;
+        targetAngle = Tools.VectorToAngle(targetedNPC.transform.position - transform.position);
         if (combatScript.InAttackRange(trueTile, targetNPCPreviousTile, WornEquipment.attackDistance))
         {
             trueTileScript.StopMovement();
@@ -196,5 +197,11 @@ public class Player : MonoBehaviour
         {
             attackThisTick = false;
         }
+    }
+
+    public void RemoveFocus()
+    {
+        targetedNPC = null;
+        attackTargetedNPC = false;
     }
 }
