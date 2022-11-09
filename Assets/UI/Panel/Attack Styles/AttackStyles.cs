@@ -73,18 +73,18 @@ public class AttackStyles : MonoBehaviour
     public static string attackStyle;
     public static string attackType;
 
-    string crushStyle = "Crush";
-    string stabStyle = "Stab";
-    string slashStyle = "Slash";
-    string rangedStyle = "Ranged";
-    string magicStyle = "Magic";
+    public static string crushStyle = "Crush";
+    public static string stabStyle = "Stab";
+    public static string slashStyle = "Slash";
+    public static string rangedStyle = "Ranged";
+    public static string magicStyle = "Magic";
 
-    string accurateType = "Accurate";
-    string aggressiveType = "Aggressive";
-    string defensiveType = "Defensive";
-    string controlledType = "Controlled";
-    string rapidType = "Rapid";
-    string longrangeType = "Longrange";
+    public static string accurateType = "Accurate";
+    public static string aggressiveType = "Aggressive";
+    public static string defensiveType = "Defensive";
+    public static string controlledType = "Controlled";
+    public static string rapidType = "Rapid";
+    public static string longrangeType = "Longrange";
 
 
     private IEnumerator Start()
@@ -202,11 +202,11 @@ public class AttackStyles : MonoBehaviour
             }
             else if (selectedStyle == 2)
             {
-                attackStyle = stabStyle;
                 attackType = aggressiveType;
             }
             else if (selectedStyle == 3)
             {
+                attackStyle = stabStyle;
                 attackType = controlledType;
             }
             else
@@ -439,8 +439,6 @@ public class AttackStyles : MonoBehaviour
         }
         styleChanged = false;
 
-        UpdateBonuses();
-
         if (WornEquipment.weapon != null)
         {
             PlayerPrefs.SetInt(WornEquipment.weapon.weaponCategory, selectedStyle);
@@ -449,6 +447,8 @@ public class AttackStyles : MonoBehaviour
         {
             PlayerPrefs.SetInt("Unarmed", selectedStyle);
         }
+
+        UpdateStylesWeaponChange();
     }
 
     void UpdateBonuses()
@@ -492,7 +492,7 @@ public class AttackStyles : MonoBehaviour
             }
             else if (attackType == longrangeType)
             {
-                distanceBonus = 1;
+                distanceBonus = 2;
                 defBonus = 3;
             }
         }
@@ -505,7 +505,7 @@ public class AttackStyles : MonoBehaviour
             else if (attackType == longrangeType)
             {
                 magicBonus = 1;
-                distanceBonus = 1;
+                distanceBonus = 2;
             }
         }
     }

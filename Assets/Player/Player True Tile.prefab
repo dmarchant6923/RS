@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7259498458452835272}
   - component: {fileID: 7259498458452835279}
-  - component: {fileID: 7259498458452835273}
   - component: {fileID: 986973260214879770}
   m_Layer: 0
   m_Name: Player True Tile
@@ -84,28 +83,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7259498458452835273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7259498458452835278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7ba53e95b48c5f468c08cd3e2d6cd62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clickedTile: {fileID: 5402262035001510343, guid: fb45f42012f69054ca0858cf971bd9f1, type: 3}
-  debugTile: {fileID: 6542302095627379823, guid: a3c20cf03d9487a4d8e63fbc499ea5ef, type: 3}
-  player: {fileID: 0}
-  currentTile: {x: 0, y: 0}
-  destinationTile: {x: 0, y: 0}
-  moving: 0
-  oddTilesInPath: 0
-  showTrueTile: 0
-  showClickedTile: 0
-  debugEnabled: 0
 --- !u!114 &986973260214879770
 MonoBehaviour:
   m_ObjectHideFlags: 0

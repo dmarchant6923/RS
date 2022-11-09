@@ -104,10 +104,10 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (gameObject.activeSelf)
         {
-            GameObject newItem = Instantiate(groundPrefab, player.truePlayerTile, Quaternion.identity);
+            GameObject newItem = Instantiate(groundPrefab, player.trueTile, Quaternion.identity);
             newItem.gameObject.name = itemAction.objectName;
             newItem.GetComponent<GroundItem>().item = gameObject;
-            newItem.GetComponent<GroundItem>().trueTile = player.truePlayerTile;
+            newItem.GetComponent<GroundItem>().trueTile = player.trueTile;
             newItem.GetComponent<Action>().examineText = itemAction.examineText;
             transform.SetParent(groundItemsParent.transform);
             transform.position = groundItemsParent.transform.position;

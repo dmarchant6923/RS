@@ -95,6 +95,8 @@ GameObject:
   - component: {fileID: 5385707279894170820}
   - component: {fileID: 5435353179154756461}
   - component: {fileID: -1379261487197747176}
+  - component: {fileID: 981017874431734}
+  - component: {fileID: 4140966173132359281}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -181,13 +183,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trueTileObject: {fileID: 7259498458452835278, guid: 66a1d7b163a109b458137626bcf52314, type: 3}
-  trueTile: {fileID: 0}
+  trueTileScript: {fileID: 0}
+  combatScript: {fileID: 0}
   playerPosition: {x: 0, y: 0}
   playerPath: []
-  truePlayerTile: {x: 0, y: 0}
+  trueTile: {x: 0, y: 0}
   runEnergy: 10000
   showTrueTile: 0
   showClickedTile: 0
+  targetNPCPreviousTile: {x: 0, y: 0}
+  attackThisTick: 0
   debugEnabled: 0
 --- !u!114 &5435353179154756461
 MonoBehaviour:
@@ -221,6 +226,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0eebaa7d530bd04a89f0733e1ab3ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scriptAttachedToPlayer: 0
+  targetEnemy: {fileID: 0}
+--- !u!114 &981017874431734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5385707279894170681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7ba53e95b48c5f468c08cd3e2d6cd62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickedTile: {fileID: 5402262035001510343, guid: fb45f42012f69054ca0858cf971bd9f1, type: 3}
+  debugTile: {fileID: 6542302095627379823, guid: a3c20cf03d9487a4d8e63fbc499ea5ef, type: 3}
+  player: {fileID: 0}
+  tileMarker: {fileID: 7259498458452835272, guid: 66a1d7b163a109b458137626bcf52314, type: 3}
+  currentTile: {x: 0, y: 0}
+  destinationTile: {x: 0, y: 0}
+  moving: 0
+  oddTilesInPath: 0
+  showTrueTile: 0
+  showClickedTile: 0
+  debugEnabled: 0
+--- !u!114 &4140966173132359281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5385707279894170681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fe906a0d43cbfb47a0fed94be9c0297, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  examineText: 
+  objectName: 
+  addObjectName: 0
+  itemAction: 0
+  ignoreUse: 1
+  inGame: 0
+  redClick: 1
+  actionUsedOnThis: {fileID: 0}
+  actionOnPointerUp: 0
 --- !u!1 &5795649407363136618
 GameObject:
   m_ObjectHideFlags: 0

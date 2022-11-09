@@ -66,7 +66,7 @@ public class GroundItem : MonoBehaviour
 
     void TrueTileIndicator()
     {
-        playerScript.trueTile.ClientClick(trueTile);
+        playerScript.trueTileScript.ClientClick(trueTile);
     }
 
     void Take()
@@ -74,15 +74,15 @@ public class GroundItem : MonoBehaviour
         itemToTake = gameObject;
         willTake = true;
 
-        if (playerScript.truePlayerTile != trueTile)
+        if (playerScript.trueTile != trueTile)
         {
-            playerScript.trueTile.ExternalMovement(trueTile);
+            playerScript.trueTileScript.ExternalMovement(trueTile);
         }
     }
 
     void BeforeTick()
     {
-        if (willTake && itemToTake == gameObject && trueTile == playerScript.truePlayerTile)
+        if (willTake && itemToTake == gameObject && trueTile == playerScript.trueTile)
         {
             willTake = false;
 

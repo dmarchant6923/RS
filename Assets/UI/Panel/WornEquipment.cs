@@ -64,6 +64,12 @@ public class WornEquipment : MonoBehaviour
     public static int attackDistance = 1;
     public static int specCost;
 
+    public static bool voidMelee;
+    public static bool voidRange;
+    public static bool voidMage;
+    public static bool eliteVoid;
+    public static bool slayerHelm;
+
     public Text statPanelText;
 
     private void Start()
@@ -126,6 +132,7 @@ public class WornEquipment : MonoBehaviour
         attackStab = 0; attackSlash = 0; attackCrush = 0; attackRange = 0; attackMagic = 0;
         defenceStab = 0; defenceSlash = 0; defenceCrush = 0; defenceRange = 0; defenceMagic = 0;
         meleeStrength = 0; rangedStrength = 0; magicDamage = 0; prayer = 0;
+
         foreach (Transform slot in slots)
         {
             if (slot.GetComponentInChildren<Equipment>() != null)
@@ -162,7 +169,57 @@ public class WornEquipment : MonoBehaviour
                 specCost = 0;
             }
         }
+
+        EquipmentEffects();
+
         UpdateText();
+    }
+
+    void EquipmentEffects()
+    {
+        voidMelee = false;
+        voidRange = false;
+        voidMage = false;
+        eliteVoid = false;
+        bool fullVoid = true;
+        if (glove == null || glove.name != "Void knight gloves")
+        {
+            fullVoid = false;
+        }
+        if (fullVoid && (leg == null || leg.name.ToLower().Contains("void")))
+        {
+            fullVoid = false;
+        }
+        if (fullVoid && (body == null || body.name.ToLower().Contains("void")))
+        {
+            fullVoid = false;
+        }
+        if (fullVoid && head != null && head.name.ToLower().Contains("void knight"))
+        {
+            if (leg.name == "Elite void robe" && body.name == "Elite void top")
+            {
+                eliteVoid = true;
+            }
+
+            if (head.name == "Void melee helm")
+            {
+                voidMelee = true;
+            }
+            if (head.name == "Void ranger helm")
+            {
+                voidRange = true;
+            }
+            if (head.name == "Void mage helm")
+            {
+                voidMage = true;
+            }
+        }
+
+        slayerHelm = false;
+        if (head != null && head.name.Contains("Slayer helmet"))
+        {
+            slayerHelm = true;
+        }
     }
     public void UpdateText()
     {

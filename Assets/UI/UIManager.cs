@@ -21,6 +21,9 @@ public class UIManager : MonoBehaviour
     public static GameObject staticXClick;
     public static GameObject newXClick;
 
+    public GameObject hitSplat;
+    public static GameObject staticHitSplat;
+
     private void Start()
     {
         raycaster = FindObjectOfType<GraphicRaycaster>();
@@ -29,6 +32,7 @@ public class UIManager : MonoBehaviour
         panelOpenPos = statPanel.position.x;
 
         staticXClick = xClick;
+        staticHitSplat = hitSplat;
     }
 
     void Update()

@@ -37,8 +37,15 @@ public class Enemy : MonoBehaviour
 
     [HideInInspector] public NPC npcScript;
     Action npcAction;
-    Combat playerCombatScript;
-    Pathfinder pathFinder;
+
+    Player playerScript;
+
+    public class IncomingDamage
+    {
+        public int damage;
+        public int ticks;
+    }
+    List<IncomingDamage> damageQueue = new List<IncomingDamage>();
 
     bool playerAttackingEnemy = false;
 
@@ -49,8 +56,8 @@ public class Enemy : MonoBehaviour
 
         npcScript = GetComponent<NPC>();
         npcAction = GetComponent<Action>();
-        playerCombatScript = FindObjectOfType<Player>().GetComponent<Combat>();
-        pathFinder = FindObjectOfType<Pathfinder>();
+
+        playerScript = FindObjectOfType<Player>();
 
         float baselvl = 0.25f * ((float)defence + hitpoints + (1 * 0.5f));
         float meleelvl = (13f / 40f) * ((float)attack + strength);
@@ -98,21 +105,20 @@ public class Enemy : MonoBehaviour
         yield return null;
 
         npcScript.menuTexts[0] = "Attack ";
-        npcAction.orderLevels[0] = -1;
         npcAction.cancelLevels[0] = 1;
         npcAction.menuPriorities[0] = 1;
         npcAction.serverAction0 += Attack;
         npcScript.UpdateActions(gameObject.name, true);
 
         Action.cancel1 += CancelAttack;
+
+        TickManager.beforeTick += BeforeTick;
     }
 
     void Attack()
     {
         playerAttackingEnemy = true;
-        Player.targetedNPC = npcScript;
-        Player.attackTargetedNPC = true;
-        playerCombatScript.targetEnemy = this;
+        playerScript.AttackEnemy(this);
     }
 
     void CancelAttack()
@@ -122,5 +128,41 @@ public class Enemy : MonoBehaviour
         {
             Player.targetedNPC = null;
         }
+    }
+
+    public void DealDamageToEnemy(int damage, int tickDelay)
+    {
+        IncomingDamage newDamage = new IncomingDamage();
+        newDamage.damage = damage;
+        newDamage.ticks = tickDelay;
+        damageQueue.Add(newDamage);
+    }
+
+    void BeforeTick()
+    {
+        foreach (IncomingDamage damage in damageQueue)
+        {
+            damage.ticks--;
+            if (damage.ticks <= 0)
+            {
+                TakeDamage(damage.damage);
+            }
+        }
+        for (int i = 0; i < damageQueue.Count; i++)
+        {
+            if (damageQueue[i].ticks <= 0)
+            {
+                damageQueue.Remove(damageQueue[i]);
+                i--;
+            }
+        }
+    }
+
+    void TakeDamage(int damage)
+    {
+        hitpoints -= damage;
+        GameObject newHitSplat = Instantiate(UIManager.staticHitSplat, Camera.main.WorldToScreenPoint(transform.position), Quaternion.identity);
+        newHitSplat.GetComponent<HitSplat>().damage = damage;
+        newHitSplat.GetComponent<HitSplat>().objectGettingHit = gameObject;
     }
 }

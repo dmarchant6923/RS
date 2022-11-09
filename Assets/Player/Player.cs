@@ -8,13 +8,13 @@ public class Player : MonoBehaviour
     [System.NonSerialized] public bool forceWalk = false;
     public GameObject trueTileObject;
     GameObject newTrueTileObject;
-    [HideInInspector] public TrueTile trueTile;
+    [HideInInspector] public TrueTile trueTileScript;
     [HideInInspector] public Combat combatScript;
     public Vector2 playerPosition;
     float moveSpeed = 3f;
     public List<Vector2> playerPath;
 
-    public Vector2 truePlayerTile;
+    public Vector2 trueTile;
 
     public float runEnergy = 500;
     [System.NonSerialized] public float weight = 40;
@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     Transform playerArrow;
     SpriteRenderer arrowColor;
     float rotationSpeed = 300;
+
     public static NPC targetedNPC;
     public static bool attackTargetedNPC;
     [HideInInspector] public Vector2 targetNPCPreviousTile;
@@ -39,12 +40,11 @@ public class Player : MonoBehaviour
         Vector2 startTile = TileManager.FindTile(transform.position);
         transform.position = startTile;
 
-        newTrueTileObject = Instantiate(trueTileObject, startTile, Quaternion.identity);
-        trueTile = newTrueTileObject.GetComponent<TrueTile>();
-        trueTile.player = this;
-        trueTile.debugEnabled = debugEnabled;
-        trueTile.showTrueTile = showTrueTile;
-        trueTile.showClickedTile = showClickedTile;
+        trueTileScript = GetComponent<TrueTile>();
+        trueTileScript.player = this;
+        trueTileScript.debugEnabled = debugEnabled;
+        trueTileScript.showTrueTile = showTrueTile;
+        trueTileScript.showClickedTile = showClickedTile;
 
         runEnabled = false;
 
@@ -54,11 +54,12 @@ public class Player : MonoBehaviour
         arrowColor = playerArrow.GetChild(0).GetComponent<SpriteRenderer>();
 
         combatScript = GetComponent<Combat>();
-        combatScript.scriptAttachedToPlayer = true;
 
         TickManager.beforeTick += BeforeTick;
-        TickManager.onTick += RunEnergy;
+        TickManager.onTick += OnTick;
         TickManager.afterTick += AfterTick;
+
+        TrueTile.afterMovement += PerformAttack;
     }
 
     void Update()
@@ -76,7 +77,7 @@ public class Player : MonoBehaviour
             {
                 trueMoveSpeed *= Mathf.Sqrt(2);
             }
-            if ((playerPosition - trueTile.currentTile).magnitude > 2 || playerPath.Count > 2)
+            if ((playerPosition - trueTileScript.currentTile).magnitude > 2 || playerPath.Count > 2)
             {
                 trueMoveSpeed *= 1.3f;
             }
@@ -88,7 +89,7 @@ public class Player : MonoBehaviour
                 transform.position = playerPath[0];
                 playerPath.RemoveAt(0);
                 forceWalk = false;
-                if (runEnabled && playerPath.Count > 0 && playerPath[0] == trueTile.destinationTile && trueTile.oddTilesInPath)
+                if (runEnabled && playerPath.Count > 0 && playerPath[0] == trueTileScript.destinationTile && trueTileScript.oddTilesInPath)
                 {
                     forceWalk = true;
                 }
@@ -114,9 +115,9 @@ public class Player : MonoBehaviour
             targetNPCPreviousTile = targetedNPC.trueTile;
         }
     }
-    void RunEnergy()
+    void OnTick()
     {
-        if (trueTile.moving && runEnabled && forceWalk == false)
+        if (trueTileScript.moving && runEnabled && forceWalk == false)
         {
             runEnergy -= 67 + (67 * Mathf.Clamp(weight, 0, 64) / 64);
             if (runEnergy < 0)
@@ -128,6 +129,11 @@ public class Player : MonoBehaviour
         else
         {
             runEnergy = Mathf.Min(10000, runEnergy + (99 / 6) + 8);
+        }
+
+        if (targetedNPC != null && attackTargetedNPC)
+        {
+            AttackEnemy(targetedNPC.GetComponent<Enemy>());
         }
     }
 
@@ -147,6 +153,48 @@ public class Player : MonoBehaviour
         else
         {
             arrowColor.color = Color.green;
+        }
+    }
+
+    public void AttackEnemy(Enemy enemy)
+    {
+        targetedNPC = enemy.GetComponent<NPC>();
+        attackTargetedNPC = true;
+        targetNPCPreviousTile = targetedNPC.trueTile;
+        if (combatScript.InAttackRange(trueTile, targetNPCPreviousTile, WornEquipment.attackDistance))
+        {
+            trueTileScript.StopMovement();
+        }
+        else
+        {
+            if (combatScript.AdjacentTileAvailable(targetNPCPreviousTile) == false)
+            {
+                Debug.Log("I can't reach that!");
+                targetedNPC = null;
+                attackTargetedNPC = false;
+            }
+            else
+            {
+                Vector2 targetTile = combatScript.FindAdjacentTile(targetNPCPreviousTile);
+                trueTileScript.ExternalMovement(targetTile);
+            }
+        }
+    }
+
+    void PerformAttack()
+    {
+        if (targetedNPC == null || attackTargetedNPC == false)
+        {
+            return;
+        }
+
+        if (combatScript.InAttackRange(trueTile, targetNPCPreviousTile, Mathf.Min(WornEquipment.attackDistance + AttackStyles.distanceBonus, 10)))
+        {
+            combatScript.PlayerAttack();
+        }
+        else
+        {
+            attackThisTick = false;
         }
     }
 }

@@ -26,6 +26,14 @@ public class Prayer : MonoBehaviour
 
     public Text prayerText;
 
+    public static float attackPrayerBonus; //0
+    public static float strengthPrayerBonus; //1
+    public static float rangedAttackPrayerBonus; //2
+    public static float rangedStrengthPrayerBonus; //3
+    public static float magicAttackPrayerBonus; //4
+    public static float defensePrayerBonus; //5
+    public static float[] bonuses = new float[6];
+
 
     private void Start()
     {
@@ -66,20 +74,38 @@ public class Prayer : MonoBehaviour
         doneButton.SetActive(false);
         prayerText.transform.parent.gameObject.SetActive(true);
         prayerText.text = PlayerStats.currentPrayer + " / " + PlayerStats.initialPrayer;
+
+
+        for (int i = 0; i < bonuses.Length; i++)
+        {
+            bonuses[i] = 1;
+        }
+        attackPrayerBonus = 1;
+        strengthPrayerBonus = 1;
+        rangedAttackPrayerBonus = 1;
+        rangedStrengthPrayerBonus = 1;
+        magicAttackPrayerBonus = 1;
+        defensePrayerBonus = 1;
     }
     void Activate()
     {
         if (prayerChanged)
         {
             drainRate = 0;
-            foreach (GameObject prayer in prayers)
+
+            for (int i = 0; i < bonuses.Length; i++)
             {
-                if (prayer.GetComponent<ActivatePrayer>().active)
-                {
-                    drainRate += prayer.GetComponent<ActivatePrayer>().drainRate;
-                }
+                bonuses[i] = 1;
             }
 
+            foreach (GameObject prayer in prayers)
+            {
+                ActivatePrayer prayerScript = prayer.GetComponent<ActivatePrayer>();
+                if (prayerScript.active)
+                {
+                    drainRate += prayerScript.drainRate;
+                }
+            }
             prayerChanged = false;
         }
     }
@@ -170,5 +196,34 @@ public class Prayer : MonoBehaviour
             }
         }
         return activePrayers;
+    }
+
+    public static void UpdatePrayerBonuses()
+    {
+        for (int i = 0; i < bonuses.Length; i++)
+        {
+            bonuses[i] = 1;
+        }
+
+        foreach (GameObject prayer in CheckActivePrayers())
+        {
+            ActivatePrayer prayerScript = prayer.GetComponent<ActivatePrayer>();
+            drainRate += prayerScript.drainRate;
+
+            for (int i = 0; i < prayerScript.bonuses.Length; i++)
+            {
+                if (prayerScript.bonuses[i] > 1)
+                {
+                    bonuses[i] = prayerScript.bonuses[i];
+                }
+            }
+        }
+
+        attackPrayerBonus = bonuses[0];
+        strengthPrayerBonus = bonuses[1];
+        rangedAttackPrayerBonus = bonuses[2];
+        rangedStrengthPrayerBonus = bonuses[3];
+        magicAttackPrayerBonus = bonuses[4];
+        defensePrayerBonus = bonuses[5];
     }
 }

@@ -31,6 +31,8 @@ public class ActivatePrayer : MonoBehaviour
     [HideInInspector] public int isQuickPrayer;
     [HideInInspector] public bool QPeffectiveActive = false;
 
+    public float[] bonuses = new float[6];
+
     private void Start()
     {
         image = GetComponent<RawImage>();
@@ -43,7 +45,6 @@ public class ActivatePrayer : MonoBehaviour
         prayerAction.clientAction1 += ClientSelectQuickPrayer;
         prayerAction.serverAction1 += ServerSelectQuickPrayer;
         //order level for both actions is 0
-
 
         if (image.color.a == 1)
         {

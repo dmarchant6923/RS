@@ -11,13 +11,15 @@ public class TrueTile : MonoBehaviour
     GameObject newDebugTile;
     List<GameObject> debugTiles = new List<GameObject>();
 
-    public Player player;
+    [HideInInspector] public Player player;
     Pathfinder pathFinder;
+    public Transform tileMarker;
+    Transform newTileMarker;
 
-    public Vector2 currentTile;
-    public Vector2 destinationTile;
+    [HideInInspector] public Vector2 currentTile;
+    [HideInInspector] public Vector2 destinationTile;
     List<Vector2> path;
-    public bool moving;
+    [HideInInspector] public bool moving;
     [HideInInspector] public bool oddTilesInPath = false;
 
     [HideInInspector] public bool showTrueTile = false;
@@ -29,29 +31,30 @@ public class TrueTile : MonoBehaviour
 
     Action walkHereAction;
 
-    void Start()
+    IEnumerator Start()
     {
         TickManager.onTick += Move;
 
+        walkHereAction = GetComponent<Action>();
         pathFinder = FindObjectOfType<Pathfinder>();
-        pathFinder.debugEnabled = debugEnabled;
 
-        if (showTrueTile == false)
+        if (showTrueTile)
         {
-            GetComponent<SpriteRenderer>().enabled = false;
+            newTileMarker = Instantiate(tileMarker, TileManager.FindTile(transform.position), Quaternion.identity);
         }
 
-        currentTile = transform.position;
+        currentTile = TileManager.FindTile(transform.position);
         moving = false;
         path = new List<Vector2>();
 
-        walkHereAction = GetComponent<Action>();
+        yield return null;
         walkHereAction.clientAction0 += ClientClick;
         walkHereAction.serverAction0 += ServerClick;
         walkHereAction.menuTexts[0] = "walk here";
         walkHereAction.cancelLevels[0] = 1;
         walkHereAction.inGame = true;
         walkHereAction.redClick = false;
+        pathFinder.debugEnabled = debugEnabled;
     }
 
     private void Update()
@@ -154,9 +157,9 @@ public class TrueTile : MonoBehaviour
             while (i > 0)
             {
                 currentTile = path[0];
-                transform.position = currentTile;
+                newTileMarker.position = currentTile;
                 player.playerPath.Add(currentTile);
-                player.truePlayerTile = currentTile;
+                player.trueTile = currentTile;
                 path.RemoveAt(0);
                 if (path.Count == 0)
                 {
