@@ -26,6 +26,10 @@ public class ChargeItem : MonoBehaviour
     bool chargeDialogueActive = false;
     bool chargeInputRecieved = false;
     int inputCharges = 0;
+    string initialName;
+
+    bool isEquipment;
+    Equipment equipScript;
 
     private IEnumerator Start()
     {
@@ -55,6 +59,7 @@ public class ChargeItem : MonoBehaviour
         }
 
         TickManager.beforeTick += BeforeTick;
+        TickManager.afterTick += AfterTick;
 
         yield return null;
 
@@ -67,19 +72,51 @@ public class ChargeItem : MonoBehaviour
         itemAction.cancelLevels[3] = 1;
         itemAction.orderLevels[3] = -1;
 
-        if (charges > 0)
-        {
-            itemScript.menuTexts[3] = "Uncharge ";
-            itemScript.UpdateActions(gameObject.name);
-        }
-        else
-        {
-            itemScript.UpdateActions(gameObject.name + " (uncharged)");
-        }
+        itemScript.menuTexts[3] = "Uncharge ";
+        itemScript.UpdateActions(gameObject.name);
 
         itemAction.serverActionUse += ObjectUsedOnThis;
         itemAction.cancelLevels[9] = 1;
         itemAction.orderLevels[9] = -1;
+
+        initialName = gameObject.name;
+        if (charges <= 0)
+        {
+            charges = 0;
+            ChargeToUncharged();
+        }
+        if (GetComponent<Equipment>() != null)
+        {
+            isEquipment = true;
+            equipScript = GetComponent<Equipment>();
+        }
+    }
+
+    public void UseCharge()
+    {
+        if (charges <= 0)
+        {
+            Debug.Log("ERROR: took a charge when it had no charges");
+            return;
+        }
+
+        charges--;
+        if (charges == 0 && ((isEquipment && equipScript.isEquipped == false) || isEquipment == false))
+        {
+            if (isEquipment)
+            {
+                Debug.Log("Your " + gameObject.name + " has run out of charges.");
+            }
+            ChargeToUncharged();
+        }
+    }
+
+    void AfterTick()
+    {
+        if (charges == 0 && isEquipment && equipScript.isEquipped == false && string.IsNullOrEmpty(itemScript.menuTexts[0]) == false)
+        {
+            ChargeToUncharged();
+        }
     }
 
     void Uncharge()
@@ -132,34 +169,36 @@ public class ChargeItem : MonoBehaviour
         charges = 0;
         itemScript.menuTexts[3] = "";
         itemScript.menuTexts[1] = "";
-        if (GetComponent<Equipment>() != null)
+        if (isEquipment)
         {
-            GetComponent<Equipment>().RemoveEquipAction();
+            equipScript.RemoveEquipAction();
         }
         itemScript.itemImage.color = new Color(0.7f, 0.7f, 0.7f, 1);
-        itemScript.UpdateActions(gameObject.name + " (uncharged)");
+        itemScript.UpdateActions(initialName + " (uncharged)");
+        gameObject.name = initialName + " (uncharged)";
 
     }
     void UnchargedToCharged()
     {
         itemScript.menuTexts[1] = "Check ";
         itemScript.menuTexts[3] = "Uncharge ";
-        if (GetComponent<Equipment>() != null)
+        if (isEquipment)
         {
-            GetComponent<Equipment>().AddEquipAction();
+            equipScript.AddEquipAction();
         }
         itemScript.itemImage.color = new Color(1, 1, 1, 1);
-        itemScript.UpdateActions(gameObject.name);
+        itemScript.UpdateActions(initialName);
+        gameObject.name = initialName;
     }
     public void RemoveUnchargeAction()
     {
         itemScript.menuTexts[3] = "";
-        itemScript.UpdateActions(gameObject.name);
+        itemScript.UpdateActions(initialName);
     }
     public void AddUnchargeAction()
     {
         itemScript.menuTexts[3] = "Uncharge ";
-        itemScript.UpdateActions(gameObject.name);
+        itemScript.UpdateActions(initialName);
     }
 
 
@@ -294,6 +333,11 @@ public class ChargeItem : MonoBehaviour
 
     void Check()
     {
-        Debug.Log("Your " + gameObject.name + " has " + charges + " charges.");
+        string end = "s.";
+        if (charges == 1)
+        {
+            end = ".";
+        }
+        Debug.Log("Your " + gameObject.name + " has " + charges + " charge" + end);
     }
 }

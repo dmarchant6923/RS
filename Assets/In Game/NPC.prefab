@@ -25,9 +25,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 84942501146797281}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.7, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
-  m_Children: []
+  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.1, z: 1}
+  m_Children:
+  - {fileID: 1098829819788297694}
   m_Father: {fileID: 4095213786728016975}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -180,12 +181,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c117e8a793fd7fe48ac59f1bdd451986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trueTile: {x: 0, y: 0}
   wanderRange: 7
   newPathFrequency: 7
+  tileSize: 1
   runEnabled: 0
+  moving: 0
   showTrueTile: 1
+  showSizeTile: 0
   trueTileMarker: {fileID: 8798984986620772772, guid: 6817671db81f94545b9ce0d50c4d6067, type: 3}
+  newSizeTileMarker: {fileID: 0}
   npcAction: {fileID: 0}
+  isTargetingPlayer: 0
+  externalTarget: 0
+  freezeTicks: 0
+  frozen: 0
 --- !u!114 &-411661126454071473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,11 +268,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5077209455727665063}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.7, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1}
   m_Children: []
-  m_Father: {fileID: 4095213786728016975}
-  m_RootOrder: 1
+  m_Father: {fileID: 2813898527659425719}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6769782646065393292
 SpriteRenderer:
@@ -343,7 +353,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2813898527659425719}
-  - {fileID: 1098829819788297694}
   m_Father: {fileID: 4371471395131933021}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

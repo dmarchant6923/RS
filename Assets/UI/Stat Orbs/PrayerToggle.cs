@@ -35,6 +35,7 @@ public class PrayerToggle : MonoBehaviour
 
         orbManager.orbAction.menuTexts[0] = "Activate Quick-prayers";
         orbManager.orbAction.serverAction0 += ActivateQuickPrayers;
+        orbManager.orbAction.orderLevels[0] = -1;
 
         orbManager.orbAction.menuTexts[1] = "Setup Quick-prayers";
         orbManager.orbAction.serverAction1 += SetupQuickPrayers;

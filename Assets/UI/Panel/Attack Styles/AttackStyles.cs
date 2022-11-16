@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class AttackStyles : MonoBehaviour
 {
+    public GameObject mainPanel;
+    public GameObject autocastPanel;
+
     public Text weaponText;
     public Text combatLvlText;
     public Text categoryText;
@@ -18,6 +21,11 @@ public class AttackStyles : MonoBehaviour
     public GameObject mageStyle7;
     public GameObject mageStyleDefensiveCast8;
     public GameObject mageStyleCast9;
+
+    public RawImage defensiveCastImage;
+    public RawImage normalCastImage;
+    Texture defaultDefensiveCastTexture;
+    Texture defaultNormalCastTexture;
 
     public GameObject specBar;
 
@@ -59,7 +67,7 @@ public class AttackStyles : MonoBehaviour
 
     GameObject[] styles = new GameObject[9];
 
-    public int selectedStyle = 1;
+    public static int selectedStyle = 1;
     public bool styleChanged = false;
 
     public static int attBonus;
@@ -86,15 +94,29 @@ public class AttackStyles : MonoBehaviour
     public static string rapidType = "Rapid";
     public static string longrangeType = "Longrange";
 
+    [HideInInspector] public static bool autocastSelectActive = false;
+    [HideInInspector] public static bool selectingDefensive = false;
+    [HideInInspector] public static Spell currentSpellOnAutocast;
+
+    public static AttackStyles instance;
+
 
     private IEnumerator Start()
     {
+        currentSpellOnAutocast = null;
         styles[0] = style1; styles[1] = style2; styles[2] = style3; styles[3] = style4;
         styles[4] = mageStyle5; styles[5] = mageStyle6; styles[6] = mageStyle7; styles[7] = mageStyleDefensiveCast8; styles[8] = mageStyleCast9;
 
         Inventory.ReadEquippedItems += UpdateWeapon;
         TickManager.beforeTick += UpdateStyleSelected;
         combatLvlText.text = "Combat Lvl: " + PlayerStats.combatLevel.ToString("F2");
+
+        autocastPanel.transform.localPosition = Vector2.right * 1000;
+
+        defaultDefensiveCastTexture = defensiveCastImage.texture;
+        defaultNormalCastTexture = normalCastImage.texture;
+
+        instance = this;
 
         yield return null;
 
@@ -103,7 +125,6 @@ public class AttackStyles : MonoBehaviour
 
     void UpdateWeapon()
     {
-
         bool hasSpec = false;
         if (WornEquipment.weapon != null)
         {
@@ -125,11 +146,40 @@ public class AttackStyles : MonoBehaviour
         UpdateStylesWeaponChange();
     }
 
+    void UpdateStyleSelected()
+    {
+        ChangeStyleColor(selectedStyle);
+
+        if (styleChanged == false)
+        {
+            return;
+        }
+        styleChanged = false;
+
+        if (WornEquipment.weapon != null)
+        {
+            PlayerPrefs.SetInt(WornEquipment.weapon.weaponCategory, selectedStyle);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("Unarmed", selectedStyle);
+        }
+
+        if (selectedStyle != 8 && selectedStyle != 9)
+        {
+            currentSpellOnAutocast = null;
+            RemoveAutocast();
+        }
+
+        UpdateStylesWeaponChange();
+    }
+
     void UpdateStylesWeaponChange()
     {
-        foreach (GameObject style in styles)
+        bool[] setActive = new bool[styles.Length];
+        for (int i = 0; i < styles.Length; i++)
         {
-            style.SetActive(false);
+            styles[i].SetActive(true);
         }
 
         string category = "";
@@ -142,9 +192,9 @@ public class AttackStyles : MonoBehaviour
 
         if (WornEquipment.weapon == null)
         {
-            style1.SetActive(true);
-            style2.SetActive(true);
-            style3.SetActive(true);
+            setActive[0] = true;
+            setActive[1] = true;
+            setActive[2] = true;
 
             style1.transform.GetChild(0).GetComponent<RawImage>().texture = unarmedPunch;
             style1.GetComponentInChildren<Text>().text = "Punch";
@@ -176,10 +226,10 @@ public class AttackStyles : MonoBehaviour
 
         else if (category == WornEquipment.slashSwordCategory)
         {
-            style1.SetActive(true);
-            style2.SetActive(true);
-            style3.SetActive(true);
-            style4.SetActive(true);
+            setActive[0] = true;
+            setActive[1] = true;
+            setActive[2] = true;
+            setActive[3] = true;
 
             style1.transform.GetChild(0).GetComponent<RawImage>().texture = swordChop;
             style1.GetComponentInChildren<Text>().text = "Chop";
@@ -216,10 +266,10 @@ public class AttackStyles : MonoBehaviour
         }
         else if (category == WornEquipment.stabSwordCategory)
         {
-            style1.SetActive(true);
-            style2.SetActive(true);
-            style3.SetActive(true);
-            style4.SetActive(true);
+            setActive[0] = true;
+            setActive[1] = true;
+            setActive[2] = true;
+            setActive[3] = true;
 
             style1.transform.GetChild(0).GetComponent<RawImage>().texture = swordLunge;
             style1.GetComponentInChildren<Text>().text = "Stab";
@@ -242,12 +292,12 @@ public class AttackStyles : MonoBehaviour
             }
             else if (selectedStyle == 2)
             {
-                attackStyle = slashStyle;
                 attackType = aggressiveType;
             }
             else if (selectedStyle == 3)
             {
                 attackType = aggressiveType;
+                attackStyle = slashStyle;
             }
             else
             {
@@ -259,9 +309,9 @@ public class AttackStyles : MonoBehaviour
 
         else if (category == WornEquipment.bowCategory)
         {
-            style1.SetActive(true);
-            style2.SetActive(true);
-            style3.SetActive(true);
+            setActive[0] = true;
+            setActive[1] = true;
+            setActive[2] = true;
 
             style1.transform.GetChild(0).GetComponent<RawImage>().texture = bowAccurate;
             style1.GetComponentInChildren<Text>().text = "Accurate";
@@ -290,9 +340,9 @@ public class AttackStyles : MonoBehaviour
         }
         else if (category == WornEquipment.crossbowCategory)
         {
-            style1.SetActive(true);
-            style2.SetActive(true);
-            style3.SetActive(true);
+            setActive[0] = true;
+            setActive[1] = true;
+            setActive[2] = true;
 
             style1.transform.GetChild(0).GetComponent<RawImage>().texture = cbowAccurate;
             style1.GetComponentInChildren<Text>().text = "Accurate";
@@ -324,18 +374,34 @@ public class AttackStyles : MonoBehaviour
 
         else if (category == WornEquipment.staffCategory || category == WornEquipment.bladedStaffCategory)
         {
-            mageStyle5.SetActive(true);
-            mageStyle6.SetActive(true);
-            mageStyle7.SetActive(true);
-            mageStyleDefensiveCast8.SetActive(true);
-            mageStyleCast9.SetActive(true);
+            setActive[4] = true;
+            setActive[5] = true;
+            setActive[6] = true;
+            setActive[7] = true;
+            setActive[8] = true;
+
+            if (category == WornEquipment.staffCategory)
+            {
+                selectedStyle = PlayerPrefs.GetInt(WornEquipment.staffCategory, 5);
+            }
+            else
+            {
+                selectedStyle = PlayerPrefs.GetInt(WornEquipment.bladedStaffCategory, 5);
+            }
+
+            if (selectedStyle == 8 || selectedStyle == 9)
+            {
+                if (currentSpellOnAutocast == null || currentSpellOnAutocast.available == false)
+                {
+                    RemoveAutocast();
+                }
+            }
 
             if (category == WornEquipment.staffCategory)
             {
                 mageStyle5.GetComponentInChildren<Text>().text = "Bash";
                 mageStyle6.GetComponentInChildren<Text>().text = "Pound";
                 mageStyle7.GetComponentInChildren<Text>().text = "Focus";
-                selectedStyle = PlayerPrefs.GetInt(WornEquipment.staffCategory, 5);
 
                 attackStyle = crushStyle;
                 if (selectedStyle == 5)
@@ -355,7 +421,7 @@ public class AttackStyles : MonoBehaviour
                     attackStyle = magicStyle;
                     attackType = defensiveType;
                 }
-                else if (selectedStyle == 8)
+                else if (selectedStyle == 9)
                 {
                     attackStyle = magicStyle;
                     attackType = accurateType;
@@ -366,7 +432,6 @@ public class AttackStyles : MonoBehaviour
                 mageStyle5.GetComponentInChildren<Text>().text = "Jab";
                 mageStyle6.GetComponentInChildren<Text>().text = "Swipe";
                 mageStyle7.GetComponentInChildren<Text>().text = "Fend";
-                selectedStyle = PlayerPrefs.GetInt(WornEquipment.bladedStaffCategory, 5);
 
                 if (selectedStyle == 5)
                 {
@@ -388,18 +453,20 @@ public class AttackStyles : MonoBehaviour
                     attackStyle = magicStyle;
                     attackType = defensiveType;
                 }
-                else if (selectedStyle == 8)
+                else if (selectedStyle == 9)
                 {
                     attackStyle = magicStyle;
                     attackType = accurateType;
                 }
             }
+
+            WornEquipment.UpdateStats();
         }
         else if (category == WornEquipment.poweredStaffCategory)
         {
-            style1.SetActive(true);
-            style2.SetActive(true);
-            style3.SetActive(true);
+            setActive[0] = true;
+            setActive[1] = true;
+            setActive[2] = true;
 
             style1.transform.GetChild(0).GetComponent<RawImage>().texture = thrownAccurate;
             style1.GetComponentInChildren<Text>().text = "Accurate";
@@ -429,15 +496,19 @@ public class AttackStyles : MonoBehaviour
 
         UpdateBonuses();
 
-        foreach (GameObject style in styles)
+        for (int i = 0; i < styles.Length; i++)
         {
-            if (style.activeSelf)
+            if (setActive[i] == false)
             {
-                style.GetComponent<AttackStyle>().styleName = style.GetComponentInChildren<Text>().text;
-                style.GetComponent<Action>().menuTexts[0] = style.GetComponentInChildren<Text>().text;
-                if (style.GetComponent<Action>().menuTexts[0] == "Spell")
+                styles[i].SetActive(false);
+            }
+            else 
+            {
+                styles[i].GetComponent<AttackStyle>().styleName = styles[i].GetComponentInChildren<Text>().text;
+                styles[i].GetComponent<Action>().menuTexts[0] = styles[i].GetComponentInChildren<Text>().text;
+                if (styles[i].GetComponent<Action>().menuTexts[0] == "Spell")
                 {
-                    style.GetComponent<Action>().menuTexts[0] = "Choose spell";
+                    styles[i].GetComponent<Action>().menuTexts[0] = "Choose spell";
                 }
             }
         }
@@ -459,27 +530,6 @@ public class AttackStyles : MonoBehaviour
                 styles[i].GetComponent<RawImage>().texture = styleOn;
             }
         }
-    }
-
-    void UpdateStyleSelected()
-    {
-        ChangeStyleColor(selectedStyle);
-        if (styleChanged == false)
-        {
-            return;
-        }
-        styleChanged = false;
-
-        if (WornEquipment.weapon != null)
-        {
-            PlayerPrefs.SetInt(WornEquipment.weapon.weaponCategory, selectedStyle);
-        }
-        else
-        {
-            PlayerPrefs.SetInt("Unarmed", selectedStyle);
-        }
-
-        UpdateStylesWeaponChange();
     }
 
     void UpdateBonuses()
@@ -539,5 +589,65 @@ public class AttackStyles : MonoBehaviour
                 distanceBonus = 2;
             }
         }
+    }
+
+    public void InitiateSelectAutocast(int styleNumber)
+    {
+        autocastSelectActive = true;
+        if (styleNumber == 8)
+        {
+            selectingDefensive = true;
+        }
+        autocastPanel.transform.localPosition = Vector2.zero;
+        mainPanel.transform.localPosition = Vector2.right * 1000;
+    }
+    public void SelectedAutocastSpell()
+    {
+        if (currentSpellOnAutocast != null)
+        {
+            styleChanged = true;
+            normalCastImage.texture = currentSpellOnAutocast.spellImage.texture;
+            normalCastImage.transform.localScale = Vector2.one * 1.4f;
+            defensiveCastImage.texture = currentSpellOnAutocast.spellImage.texture;
+            defensiveCastImage.transform.localScale = Vector2.one * 1.4f;
+            if (selectingDefensive)
+            {
+                mageStyleDefensiveCast8.GetComponent<AttackStyle>().SelectStyle();
+                selectedStyle = 8;
+                PlayerPrefs.SetInt(WornEquipment.weapon.weaponCategory, 8);
+            }
+            else
+            {
+                mageStyleCast9.GetComponent<AttackStyle>().SelectStyle();
+                selectedStyle = 9;
+                PlayerPrefs.SetInt(WornEquipment.weapon.weaponCategory, 9);
+            }
+            UpdateStyleSelected();
+        }
+        else
+        {
+            defensiveCastImage.texture = defaultDefensiveCastTexture;
+            defensiveCastImage.transform.localScale = Vector2.one;
+            normalCastImage.texture = defaultNormalCastTexture;
+            normalCastImage.transform.localScale = Vector2.one;
+        }
+
+        autocastSelectActive = false;
+        selectingDefensive = false;
+        autocastPanel.transform.localPosition = Vector2.right * 1000;
+        mainPanel.transform.localPosition = Vector2.zero;
+    }
+    public void RemoveAutocast()
+    {
+        currentSpellOnAutocast = null;
+        PlayerPrefs.SetInt(WornEquipment.staffCategory, 5);
+        PlayerPrefs.SetInt(WornEquipment.bladedStaffCategory, 5);
+        defensiveCastImage.texture = defaultDefensiveCastTexture;
+        defensiveCastImage.transform.localScale = Vector2.one;
+        normalCastImage.texture = defaultNormalCastTexture;
+        normalCastImage.transform.localScale = Vector2.one;
+        selectedStyle = 5;
+        styleChanged = true;
+        WornEquipment.UpdateStats();
     }
 }

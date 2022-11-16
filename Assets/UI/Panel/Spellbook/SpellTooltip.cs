@@ -24,6 +24,8 @@ public class SpellTooltip : MonoBehaviour
     Vector3 onPositionHigh;
     Vector3 offPosition;
 
+    [System.NonSerialized] public bool onAutocastSpellSelect = false;
+
     void Start()
     {
         rt = GetComponent<RectTransform>();
@@ -91,19 +93,30 @@ public class SpellTooltip : MonoBehaviour
                     }
                 }
                 int numberOfThisRune = 0;
-                foreach (StackableItem item in Spellbook.runesInInventory)
+                string str;
+                if (Spellbook.runeSource != null && Spellbook.runeSource.infiniteSupply && 
+                    (spell.runes[i].ToLower().Contains(Spellbook.runeSource.runeToSupply) || string.IsNullOrEmpty(Spellbook.runeSource.runeToSupply)))
                 {
-                    if (item.name.ToLower() == spell.runes[i].ToLower())
-                    {
-                        numberOfThisRune = item.quantity;
-                        if (item.quantity >= spell.quantities[i])
-                        {
-                            enoughRunes[i] = true;
-                        }
-                        break;
-                    }
+                    str = "*";
+                    enoughRunes[i] = true;
                 }
-                string str = Tools.IntToShortString(numberOfThisRune);
+                else
+                {
+                    foreach (StackableItem item in Spellbook.runesInInventory)
+                    {
+                        if (item.name.ToLower() == spell.runes[i].ToLower())
+                        {
+                            numberOfThisRune = item.quantity;
+                            if (item.quantity >= spell.quantities[i])
+                            {
+                                enoughRunes[i] = true;
+                            }
+                            break;
+                        }
+                    }
+                    str = Tools.IntToShortString(numberOfThisRune);
+                }
+
 
                 runeImages[i].GetComponentInChildren<Text>().text = str + "/" + spell.quantities[i];
                 runeImages[i].GetComponentInChildren<Text>().color = enoughRunes[i] ? Color.green : Color.red;

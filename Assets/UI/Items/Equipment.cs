@@ -14,8 +14,8 @@ public class Equipment : MonoBehaviour
 
     [HideInInspector] public bool isEquipped = false;
     [HideInInspector] public bool equippedWhenClicked = false;
-    public Transform equipSlot;
-    public GameObject itemsParent;
+    public string equipSlotName;
+    [HideInInspector] public Transform equipSlot;
     Item itemScript;
     string equipString;
 
@@ -50,9 +50,16 @@ public class Equipment : MonoBehaviour
     private IEnumerator Start()
     {
         itemAction = GetComponent<Action>();
-        itemAction.itemAction = true;
 
-        if (equipSlot != WornEquipment.ammoSlot)
+        for (int i = 0; i < WornEquipment.wornEquipment.transform.childCount; i++)
+        {
+            if (equipSlotName.ToLower() == WornEquipment.wornEquipment.transform.GetChild(i).name.ToLower())
+            {
+                equipSlot = WornEquipment.wornEquipment.transform.GetChild(i);
+            }
+        }
+
+        if (equipSlot != WornEquipment.ammoSlot && equipSlot != WornEquipment.weaponSlot)
         {
             stackable = false;
         }
@@ -62,7 +69,7 @@ public class Equipment : MonoBehaviour
         yield return null;
 
         equipString = "Wear ";
-        if (weaponCategory != null && weaponCategory != "")
+        if ((weaponCategory != null && weaponCategory != "") || equipSlot == WornEquipment.ammoSlot)
         {
             equipString = "Wield ";
         }
@@ -120,6 +127,13 @@ public class Equipment : MonoBehaviour
 
             foreach (Equipment equipment in equipSlot.GetComponentsInChildren<Equipment>())
             {
+                if (equipment != this && equipment.name == gameObject.name && stackable == true)
+                {
+                    equipment.GetComponent<StackableItem>().AddToQuantity(GetComponent<StackableItem>().quantity);
+                    Destroy(gameObject);
+                    break;
+                }
+
                 if (equipment != this)
                 {
                     equipment.Equip();
@@ -144,6 +158,18 @@ public class Equipment : MonoBehaviour
         }
         else
         {
+            if (stackable)
+            {
+                GameObject existingItem = itemScript.inventory.ScanForItem(gameObject.name);
+                if (existingItem != null)
+                {
+                    existingItem.GetComponent<StackableItem>().AddToQuantity(GetComponent<StackableItem>().quantity);
+                    equipSlot.GetComponent<RawImage>().enabled = true;
+                    Destroy(gameObject);
+                    return;
+                }
+            }
+
             if (Inventory.slotsTaken < 28)
             {
                 isEquipped = false;

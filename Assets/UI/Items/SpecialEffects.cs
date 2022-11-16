@@ -8,13 +8,14 @@ public class SpecialEffects : MonoBehaviour
     public bool crystalBow;
     public bool rerollAttMult;
     public bool rerollDefMult;
+    public bool TumekensShadow;
 
-    public float gearBonusMult()
+    public float GearBonusMult()
     {
         float mult = 1;
         return mult;
     }
-    public float attackRollMult()
+    public float AttackRollMult()
     {
         float mult = 1;
 
@@ -29,7 +30,7 @@ public class SpecialEffects : MonoBehaviour
 
         return mult;
     }
-    public float maxHitMult()
+    public float MaxHitMult()
     {
         float mult = 1;
 
@@ -41,8 +42,6 @@ public class SpecialEffects : MonoBehaviour
             mult = Mathf.Clamp(mult, 0, 250);
             mult /= 100;
         }
-
-
         return mult;
     }
 }

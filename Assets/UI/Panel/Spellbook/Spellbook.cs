@@ -23,6 +23,10 @@ public class Spellbook : MonoBehaviour
 
     public Inventory inventory;
     public static List<StackableItem> runesInInventory = new List<StackableItem>();
+    public delegate void Runes();
+    public static event Runes runesUpdated;
+
+    public static RuneSource runeSource;
 
     void Start()
     {
@@ -68,12 +72,14 @@ public class Spellbook : MonoBehaviour
         }
 
         TickManager.onTick += CountRunes;
-    }
 
-    void CountRunes()
+        runeSource = null;
+}
+
+    public static void CountRunes()
     {
         runesInInventory = new List<StackableItem>();
-        foreach (GameObject slot in inventory.inventorySlots)
+        foreach (GameObject slot in Inventory.inventorySlots)
         {
             if (slot.GetComponentInChildren<StackableItem>() != null)
             {
@@ -84,6 +90,8 @@ public class Spellbook : MonoBehaviour
                 }
             }
         }
+
+        runesUpdated();
 
         foreach (Spell spell in spells)
         {

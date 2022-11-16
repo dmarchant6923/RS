@@ -36,7 +36,7 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public Text number;
     public float initialValue;
-    float value;
+    [HideInInspector] public float value;
 
     [HideInInspector] public Action orbAction;
 

@@ -20,6 +20,7 @@ public class PlayerStats : MonoBehaviour
     public static int initialMagic;
     public static int initialHitpoints;
     public static int initialPrayer;
+    public static int[] initialStats = new int[7];
 
     public static int currentAttack;
     public static int currentStrength;
@@ -28,6 +29,7 @@ public class PlayerStats : MonoBehaviour
     public static int currentMagic;
     public static int currentHitpoints;
     public static int currentPrayer;
+    public static int[] currentStats = new int[7];
 
     public static float combatLevel;
 
@@ -35,8 +37,35 @@ public class PlayerStats : MonoBehaviour
     float drainPerTick;
     public static bool prayersOnForATick = false;
 
+    bool timerActive;
+    int initialTickTimer = 100;
+    int tickTimer;
+    float timer;
+
+    public static int divineTicks = 500;
+
+    public static PlayerStats instance;
+
+    static int divineAttackTimer = 0;
+    static int divineStrengthTimer = 0;
+    static int divineDefenseTimer = 0;
+    static int divineRangedTimer = 0;
+    static int divineMagicTimer = 0;
+
+    public static int drinkDelay = 0;
+    public static int foodDelay = 0;
+    public static int karambwanDelayLol = 0;
+
+    //static bool ignoreAttackDecrease = false;
+    //static bool ignoreStrengthDecrease = false;
+    //static bool ignoreDefenseDecrease = false;
+    //static bool ignoreRangeDecrease = false;
+    //static bool ignoreMagicDecrease = false;
+
     private void Start()
     {
+        instance = this;
+
         initialAttack = attack;
         initialStrength = strength;
         initialDefence = defence;
@@ -54,6 +83,7 @@ public class PlayerStats : MonoBehaviour
         currentPrayer = prayer;
 
         truePrayer = prayer * 100;
+        TickManager.beforeTick += BoostTimer;
         TickManager.onTick += PrayerDrain;
 
         float baselvl = 0.25f * ((float) defence + hitpoints + (prayer * 0.5f));
@@ -61,6 +91,106 @@ public class PlayerStats : MonoBehaviour
         float rangelvl = (13f / 40f) * ((float) ranged * 3 / 2);
         float magelvl = (13f / 40f) * ((float) magic * 3 / 2);
         combatLevel = baselvl + Mathf.Max(meleelvl, rangelvl, magelvl);
+
+        BuffBar.instance.UpdateBaseStats();
+    }
+
+    void BoostTimer()
+    {
+        if (timerActive)
+        {
+            if (tickTimer == 0)
+            {
+                StatRestoreTick();
+                tickTimer = initialTickTimer;
+                timer = (float)initialTickTimer * TickManager.maxTickTime;
+            }
+            tickTimer--;
+        }
+        else
+        {
+            BuffBar.instance.DisableTimer();
+            timerActive = false;
+            tickTimer = initialTickTimer;
+            timer = (float)initialTickTimer * TickManager.maxTickTime;
+        }
+
+        bool update = false;
+        if (divineAttackTimer > 0)
+        {
+            divineAttackTimer--;
+            if (divineAttackTimer == 0 && currentAttack > initialAttack)
+            {
+                currentAttack = initialAttack;
+                update = true;
+            }
+        }
+        if (divineStrengthTimer > 0)
+        {
+            divineStrengthTimer--;
+            if (divineStrengthTimer == 0 && currentStrength > initialStrength)
+            {
+                currentStrength = initialStrength;
+                update = true;
+            }
+        }
+        if (divineDefenseTimer > 0)
+        {
+            divineDefenseTimer--;
+            if (divineDefenseTimer == 0 && currentDefence > initialDefence)
+            {
+                currentDefence = initialDefence;
+                update = true;
+            }
+        }
+        if (divineRangedTimer > 0)
+        {
+            divineRangedTimer--;
+            if (divineRangedTimer == 0 && currentRanged > initialRanged)
+            {
+                currentRanged = initialRanged;
+                update = true;
+            }
+        }
+        if (divineMagicTimer > 0)
+        {
+            divineMagicTimer--;
+            if (divineMagicTimer == 0 && currentMagic > initialMagic)
+            {
+                currentMagic = initialMagic;
+                update = true;
+            }
+        }
+
+        if (update)
+        {
+            BuffBar.instance.UpdateStats();
+        }
+
+
+        if (drinkDelay > 0)
+        {
+            drinkDelay--;
+        }
+    }
+
+    private void Update()
+    {
+        if (timerActive)
+        {
+            if (Mathf.Floor(timer) > Mathf.Floor(timer - Time.deltaTime) && timer - Time.deltaTime > 0)
+            {
+                BuffBar.instance.UpdateTimer(timer - Time.deltaTime);
+            }
+            if (timer > 0)
+            {
+                timer -= Time.deltaTime;
+            }
+            else
+            {
+                timer = 0;
+            }
+        }
     }
 
     void PrayerDrain()
@@ -81,5 +211,123 @@ public class PlayerStats : MonoBehaviour
         {
             prayersOnForATick = true;
         }
+    }
+
+    public static void PlayerHeal(int amount)
+    {
+        PlayerHeal(amount, 0);
+    }
+
+    public static void PlayerHeal(int amount, int overHeal)
+    {
+        if (currentHitpoints >= initialHitpoints + overHeal)
+        {
+
+        }
+        else
+        {
+            currentHitpoints = Mathf.Min(currentHitpoints + amount, initialHitpoints + overHeal);
+        }
+    }
+
+    public static void PotionStatBoost(PotionStatBuff potion)
+    {
+        if (potion.attack)
+        {
+            currentAttack = potion.CalcBoost(initialAttack, currentAttack);
+        }
+        if (potion.strength)
+        {
+            currentStrength = potion.CalcBoost(initialStrength, currentStrength);
+        }
+        if (potion.defense)
+        {
+            currentDefence = potion.CalcBoost(initialDefence, currentDefence);
+        }
+        if (potion.range)
+        {
+            currentRanged = potion.CalcBoost(initialRanged, currentRanged);
+        }
+        if (potion.mage)
+        {
+            currentMagic = potion.CalcBoost(initialMagic, currentMagic);
+        }
+        if (potion.prayer)
+        {
+            currentPrayer = potion.CalcBoost(initialPrayer, currentPrayer);
+        }
+        if (potion.hitpoints)
+        {
+            currentHitpoints = potion.CalcBoost(initialHitpoints, currentHitpoints);
+        }
+
+        if (potion.divine)
+        {
+            NewDivineTimer(potion);
+        }
+        else
+        {
+            instance.timerActive = true;
+            instance.tickTimer = instance.initialTickTimer;
+            instance.timer = (float)instance.initialTickTimer * TickManager.maxTickTime;
+        }
+
+        drinkDelay = 3;
+        foodDelay = 3;
+
+        BuffBar.instance.UpdateStats();
+    }
+
+    void StatRestoreTick()
+    {
+        bool keepTimerActive = false;
+        if (currentAttack != initialAttack && divineAttackTimer == 0)
+        {
+            currentAttack += (int)Mathf.Sign(initialAttack - currentAttack);
+            keepTimerActive = true;
+        }
+        if (currentStrength != initialStrength && divineStrengthTimer == 0)
+        {
+            currentStrength += (int)Mathf.Sign(initialStrength - currentStrength);
+            keepTimerActive = true;
+        }
+        if (currentDefence != initialDefence && divineDefenseTimer == 0)
+        {
+            currentDefence += (int)Mathf.Sign(initialDefence - currentDefence);
+            keepTimerActive = true;
+        }
+        if (currentRanged != initialRanged && divineRangedTimer == 0)
+        {
+            currentRanged += (int)Mathf.Sign(initialRanged - currentRanged);
+            keepTimerActive = true;
+        }
+        if (currentMagic != initialMagic && divineMagicTimer == 0)
+        {
+            currentMagic += (int)Mathf.Sign(initialMagic - currentMagic);
+            keepTimerActive = true;
+        }
+        if (currentPrayer > initialPrayer)
+        {
+            currentPrayer -= (int)Mathf.Sign(initialPrayer - currentPrayer);
+            keepTimerActive = true;
+        }
+
+        if (keepTimerActive == false)
+        {
+            timerActive = false;
+        }
+
+        BuffBar.instance.UpdateStats();
+    }
+
+    public static void NewDivineTimer(PotionStatBuff buffScript)
+    {
+        divineAttackTimer = buffScript.attack ? divineTicks : divineAttackTimer;
+        divineStrengthTimer = buffScript.strength ? divineTicks : divineStrengthTimer;
+        divineDefenseTimer = buffScript.defense ? divineTicks : divineDefenseTimer;
+        divineRangedTimer = buffScript.range ? divineTicks : divineRangedTimer;
+        divineMagicTimer = buffScript.mage ? divineTicks : divineMagicTimer;
+
+        BuffBar.instance.CreateExtraTimer(buffScript.dose4, (float)divineTicks * TickManager.maxTickTime, buffScript.GetComponent<Potion>().potionColor);
     }
 }

@@ -22,12 +22,12 @@ public class AttackStyle : MonoBehaviour
 
         //TickManager.beforeTick += BeforeTick;
 
-        styleScript = transform.parent.GetComponent<AttackStyles>();
+        styleScript = FindObjectOfType<AttackStyles>();
     }
 
-    void SelectStyle()
+    public void SelectStyle()
     {
-        if (styleScript.selectedStyle != styleNumber)
+        if (AttackStyles.selectedStyle != styleNumber && styleNumber != 8 && styleNumber != 9)
         {
             styleScript.ChangeStyleColor(styleNumber);
         }
@@ -35,7 +35,14 @@ public class AttackStyle : MonoBehaviour
 
     void ServerSelectStyle()
     {
-        styleScript.selectedStyle = styleNumber;
-        styleScript.styleChanged = true;
+        if (styleNumber != 8 && styleNumber != 9)
+        {
+            AttackStyles.selectedStyle = styleNumber;
+            styleScript.styleChanged = true;
+        }
+        else if (AttackStyles.autocastSelectActive == false)
+        {
+            styleScript.InitiateSelectAutocast(styleNumber);
+        }
     }
 }

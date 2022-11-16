@@ -25,9 +25,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5357135998875391391}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.7, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
-  m_Children: []
+  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.1, z: 1}
+  m_Children:
+  - {fileID: 2952679841435594530}
   m_Father: {fileID: 8663026353585447383}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -226,8 +227,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0eebaa7d530bd04a89f0733e1ab3ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptAttachedToPlayer: 0
+  onPlayer: 0
   targetEnemy: {fileID: 0}
+  attackCooldown: 0
+  minCoolDown: -7
+  projectile: {fileID: 6025835048010670392, guid: 5b5b57d91dfa50f43ba55ef8df626e95, type: 3}
 --- !u!114 &981017874431734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,7 +304,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7483946696070233532}
-  - {fileID: 2952679841435594530}
   m_Father: {fileID: 5385707279894170823}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -329,11 +332,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8144154084942238910}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.7, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1}
   m_Children: []
-  m_Father: {fileID: 8663026353585447383}
-  m_RootOrder: 1
+  m_Father: {fileID: 7483946696070233532}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2532221907149864982
 SpriteRenderer:

@@ -1,0 +1,309 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class Prayer : MonoBehaviour
+{
+    public RectTransform panel;
+    public PanelButtons panelButtons;
+    float panelScale;
+
+    public GameObject prayerParent;
+    public static GameObject[] prayers = new GameObject[29];
+
+    float panelWidthScale = 0.89f;
+    float panelHeightScale = 0.92f;
+    float brWidthScale = 2f;
+    float brHeightScale = 2.91f;
+
+    public GameObject quickPrayerBackground;
+    public GameObject doneButton;
+    public StatOrbManager prayerOrb;
+
+    public bool prayerChanged = false;
+    public static float drainRate;
+
+    public Text prayerText;
+
+    public static float attackPrayerBonus; //0
+    public static float strengthPrayerBonus; //1
+    public static float rangedAttackPrayerBonus; //2
+    public static float rangedStrengthPrayerBonus; //3
+    public static float magicAttackPrayerBonus; //4
+    public static float defensePrayerBonus; //5
+
+    public static bool protectFromMagic;
+    public static bool protectFromMissiles;
+    public static bool protectFromMelee;
+    public static bool retribution;
+    public static bool redemption;
+    public static bool smite;
+    public static string currentOverhead;
+
+    public static float[] bonuses = new float[6];
+
+
+    private void Start()
+    {
+        for (int i = 0; i < prayerParent.GetComponentsInChildren<RawImage>().Length; i++)
+        {
+            prayers[i] = prayerParent.GetComponentsInChildren<RawImage>()[i].gameObject;
+        }
+
+        panelScale = panel.transform.localScale.x;
+        Vector2 panelAnchor = panel.position;
+        float panelWidth = panel.rect.width * panelScale;
+        float panelHeight = panel.rect.height * panelScale;
+        Vector2 center = panelAnchor + new Vector2(-panelWidth / 2, panelHeight / 2);
+        float widthIncrement = panelWidth * panelWidthScale / 5;
+        float heightIncrement = panelHeight * panelHeightScale / 7;
+        Vector2 br = center += new Vector2(widthIncrement * brWidthScale, -heightIncrement * brHeightScale);
+
+        for (int j = 0; j < 7; j++)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                int index = (j * 5) + (i % 5);
+                if (index > 28)
+                {
+                    break;
+                }
+                float height = br.y + (6 - j) * heightIncrement;
+                float width = br.x - (4 - i) * widthIncrement;
+                Vector2 position = new Vector2(width, height);
+                prayers[index].GetComponent<RectTransform>().position = position;
+            }
+        }
+
+        TickManager.beforeTick += Activate;
+        TickManager.afterTick += UpdateText;
+
+        quickPrayerBackground.SetActive(false);
+        doneButton.SetActive(false);
+        prayerText.transform.parent.gameObject.SetActive(true);
+        prayerText.text = PlayerStats.currentPrayer + " / " + PlayerStats.initialPrayer;
+
+
+        for (int i = 0; i < bonuses.Length; i++)
+        {
+            bonuses[i] = 1;
+        }
+        attackPrayerBonus = 1;
+        strengthPrayerBonus = 1;
+        rangedAttackPrayerBonus = 1;
+        rangedStrengthPrayerBonus = 1;
+        magicAttackPrayerBonus = 1;
+        defensePrayerBonus = 1;
+    }
+    void Activate()
+    {
+        if (prayerChanged)
+        {
+            drainRate = 0;
+
+            for (int i = 0; i < bonuses.Length; i++)
+            {
+                bonuses[i] = 1;
+            }
+            protectFromMagic = false;
+            protectFromMissiles = false;
+            protectFromMelee = false;
+            retribution = false;
+            redemption = false;
+            smite = false;
+
+            bool overhead = false;
+            foreach (GameObject prayer in prayers)
+            {
+                ActivatePrayer prayerScript = prayer.GetComponent<ActivatePrayer>();
+                if (prayerScript.active)
+                {
+                    drainRate += prayerScript.drainRate;
+
+                    if (prayerScript.overhead)
+                    {
+                        if (prayer.name == "Protect from Melee")
+                        {
+                            protectFromMelee = true;
+                        }
+                        else if (prayer.name == "Protect from Missiles")
+                        {
+                            protectFromMissiles = true;
+                        }
+                        else if (prayer.name == "Protect from Magic")
+                        {
+                            protectFromMagic = true;
+                        }
+                        else if (prayer.name == "Retribution")
+                        {
+                            retribution = true;
+                        }
+                        else if (prayer.name == "Redemption")
+                        {
+                            redemption = true;
+                        }
+                        else if (prayer.name == "Smite")
+                        {
+                            smite = true;
+                        }
+                        currentOverhead = prayer.name;
+
+                        UpdateOverhead(prayerScript);
+                        overhead = true;
+                    }
+                }
+            }
+
+            if (overhead == false)
+            {
+                UpdateOverhead(null);
+            }
+            prayerChanged = false;
+        }
+    }
+
+
+    public void ActivateQuickPrayers(bool orbActive)
+    {
+        if (orbActive == false)
+        {
+            DeactivatePrayers();
+            return;
+        }
+
+
+        foreach (GameObject prayer in prayers)
+        {
+            ActivatePrayer script = prayer.GetComponent<ActivatePrayer>();
+            if (script.QPeffectiveActive == false)
+            {
+                continue;
+            }
+
+            if (script.active == false)
+            {
+                script.ServerClickPrayer();
+            }
+        }
+    }
+    public void SelectQuickPrayers()
+    {
+        if (quickPrayerBackground.activeSelf == false)
+        {
+            panelButtons.ForceOpen("Prayer");
+            quickPrayerBackground.SetActive(true);
+            doneButton.SetActive(true);
+            foreach (GameObject prayer in prayers)
+            {
+                prayer.GetComponent<ActivatePrayer>().newCheck.enabled = true;
+                prayer.GetComponent<ActivatePrayer>().selectQuickPrayer = true;
+                prayer.GetComponent<ActivatePrayer>().ChangeColors(false);
+                prayer.GetComponent<ActivatePrayer>().CheckOnOff(prayer.GetComponent<ActivatePrayer>().QPeffectiveActive);
+            }
+            prayerText.transform.parent.gameObject.SetActive(false);
+        }
+    }
+    public void DeselectQuickPrayers()
+    {
+        if (quickPrayerBackground.activeSelf)
+        {
+            quickPrayerBackground.SetActive(false);
+            doneButton.SetActive(false);
+            foreach (GameObject prayer in prayers)
+            {
+                prayer.GetComponent<ActivatePrayer>().newCheck.enabled = false;
+                prayer.GetComponent<ActivatePrayer>().selectQuickPrayer = false;
+                prayer.GetComponent<ActivatePrayer>().ChangeColors(prayer.GetComponent<ActivatePrayer>().active);
+            }
+            prayerText.transform.parent.gameObject.SetActive(true);
+        }
+    }
+
+    static public void DeactivatePrayers()
+    {
+        foreach (GameObject prayer in prayers)
+        {
+            prayer.GetComponent<ActivatePrayer>().ForceDeactivate(false);
+        }
+        drainRate = 0;
+    }
+
+    void UpdateText()
+    {
+        prayerText.text = PlayerStats.currentPrayer + " / " + PlayerStats.initialPrayer;
+        if (prayerOrb.active && CheckActivePrayers().Count == 0)
+        {
+            prayerOrb.ClientClickedToggle();
+        }
+    }
+
+    public static List<GameObject> CheckActivePrayers()
+    {
+        List<GameObject> activePrayers = new List<GameObject>();
+        foreach (GameObject prayer in prayers)
+        {
+            if (prayer.GetComponent<ActivatePrayer>().active)
+            {
+                activePrayers.Add(prayer);
+            }
+        }
+        return activePrayers;
+    }
+
+    public static void UpdatePrayerBonuses()
+    {
+        for (int i = 0; i < bonuses.Length; i++)
+        {
+            bonuses[i] = 1;
+        }
+
+        foreach (GameObject prayer in CheckActivePrayers())
+        {
+            ActivatePrayer prayerScript = prayer.GetComponent<ActivatePrayer>();
+
+            for (int i = 0; i < prayerScript.bonuses.Length; i++)
+            {
+                if (prayerScript.bonuses[i] > 1)
+                {
+                    bonuses[i] = prayerScript.bonuses[i];
+                }
+            }
+        }
+
+        attackPrayerBonus = bonuses[0];
+        strengthPrayerBonus = bonuses[1];
+        rangedAttackPrayerBonus = bonuses[2];
+        rangedStrengthPrayerBonus = bonuses[3];
+        magicAttackPrayerBonus = bonuses[4];
+        defensePrayerBonus = bonuses[5];
+    }
+
+    void UpdateOverhead(ActivatePrayer prayer)
+    {
+        if (prayer != null)
+        {
+            Overhead script;
+            if (UIManager.newOverhead == null)
+            {
+                UIManager.newOverhead = Instantiate(UIManager.staticOverhead, transform.position, Quaternion.identity);
+                script = UIManager.newOverhead.GetComponent<Overhead>();
+                script.objectWithOverhead = Player.player.gameObject;
+                script.worldSpaceOffset = 0.8f;
+                script.initialOverhead = currentOverhead;
+            }
+            else
+            {
+                script = UIManager.newOverhead.GetComponent<Overhead>();
+                script.SwitchOverhead(currentOverhead);
+            }
+        }
+        else
+        {
+            if (UIManager.newOverhead != null)
+            {
+                Destroy(UIManager.newOverhead);
+            }
+        }
+    }
+}

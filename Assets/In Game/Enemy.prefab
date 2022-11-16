@@ -8,8 +8,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4371471395131933020, guid: 23339714d51375142b814ae821deac9a, type: 3}
-      propertyPath: m_Color.g
+      propertyPath: m_Color.b
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4371471395131933020, guid: 23339714d51375142b814ae821deac9a, type: 3}
+      propertyPath: m_Color.g
+      value: 0.5904022
       objectReference: {fileID: 0}
     - target: {fileID: 4371471395131933020, guid: 23339714d51375142b814ae821deac9a, type: 3}
       propertyPath: m_SortingOrder
@@ -21,11 +25,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4371471395131933021, guid: 23339714d51375142b814ae821deac9a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 2.997
       objectReference: {fileID: 0}
     - target: {fileID: 4371471395131933021, guid: 23339714d51375142b814ae821deac9a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.993
       objectReference: {fileID: 0}
     - target: {fileID: 4371471395131933021, guid: 23339714d51375142b814ae821deac9a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -82,12 +86,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46a86c146d3f15945a3a2b508dcf5f39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitpoints: 10
-  attack: 1
-  strength: 1
-  defence: 1
+  hitpoints: 60
+  attack: 100
+  strength: 70
+  defence: 100
   ranged: 1
-  magic: 1
+  magic: 150
   attackStab: 0
   attackSlash: 0
   attackCrush: 0
@@ -101,5 +105,32 @@ MonoBehaviour:
   meleeStrength: 0
   rangedStrength: 0
   magicDamage: 0
-  attackSpeed: 0
+  attackSpeed: 4
+  attackDistance: 1
+  attackStyle: Slash
+  aggro: 0
+  aggroRange: 3
+  willOverrideMaxHit: 0
+  newMaxHit: 0
   combatLevel: 0
+  combatLevelColor: 
+  npcScript: {fileID: 0}
+  isAttackingPlayer: 0
+  attackThisTick: 0
+--- !u!114 &6428832248520485119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6343085593206809457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0eebaa7d530bd04a89f0733e1ab3ce7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onPlayer: 0
+  targetEnemy: {fileID: 0}
+  attackCooldown: 0
+  minCoolDown: -7
+  projectile: {fileID: 6025835048010670392, guid: 5b5b57d91dfa50f43ba55ef8df626e95, type: 3}

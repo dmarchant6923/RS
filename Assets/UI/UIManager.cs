@@ -23,6 +23,19 @@ public class UIManager : MonoBehaviour
     public GameObject hitSplat;
     public static GameObject staticHitSplat;
 
+    public GameObject overhead;
+    public static GameObject staticOverhead;
+    public static GameObject newOverhead;
+
+    public GameObject healthBar;
+    public static GameObject staticHealthBar;
+
+    public GameObject groundItemsParent;
+    public static GameObject staticGroundItemsParent;
+
+    public Inventory inventory;
+    public static Inventory staticInventory;
+
     private void Start()
     {
         raycaster = FindObjectOfType<GraphicRaycaster>();
@@ -32,6 +45,10 @@ public class UIManager : MonoBehaviour
 
         staticXClick = xClick;
         staticHitSplat = hitSplat;
+        staticOverhead = overhead;
+        staticHealthBar = healthBar;
+        staticGroundItemsParent = groundItemsParent;
+        staticInventory = inventory;
     }
 
     void Update()

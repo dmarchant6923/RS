@@ -468,26 +468,49 @@ public class Pathfinder : MonoBehaviour
 
     }
 
-    public List<Vector2> FindSimplePath(Vector2 startTile, Vector2 endTile)
+    public List<Vector2> FindNPCPath(NPC npcScript, Vector2 startTile, Vector2 endTile, int npcSize)
     {
         List<Vector2> path = new List<Vector2>();
         Vector2 currentTile = startTile;
-        while (Mathf.Abs(currentTile.x - endTile.x) > Mathf.Abs(currentTile.y - endTile.y))
-        {
-            currentTile += Vector2.right * Mathf.Sign(endTile.x - currentTile.x);
-            path.Add(currentTile);
-        }
-        while (Mathf.Abs(currentTile.x - endTile.x) < Mathf.Abs(currentTile.y - endTile.y))
-        {
-            currentTile += Vector2.up * Mathf.Sign(endTile.y - currentTile.y);
-            path.Add(currentTile);
-        }
         while (currentTile != endTile)
         {
-            currentTile += new Vector2(Mathf.Sign(endTile.x - currentTile.x), Mathf.Sign(endTile.y - currentTile.y));
-            path.Add(currentTile);
-        }
+            Vector2 newTile;
+            if (Mathf.Abs(currentTile.x - endTile.x) > 0 && Mathf.Abs(currentTile.y - endTile.y) > 0)
+            {
+                Vector2 moveX = Vector2.right * Mathf.Sign(Mathf.Sign(endTile.x - currentTile.x));
+                Vector2 moveY = Vector2.up * Mathf.Sign(Mathf.Sign(endTile.y - currentTile.y));
+                newTile = currentTile + new Vector2(Mathf.Sign(endTile.x - currentTile.x), Mathf.Sign(endTile.y - currentTile.y));
+                if (Tools.BlockNPCMovement(npcScript, newTile, npcSize) == false && 
+                    Tools.BlockNPCMovement(npcScript, currentTile + moveX, npcSize) == false && Tools.BlockNPCMovement(npcScript, currentTile + moveY, npcSize) == false)
+                {
+                    path.Add(newTile);
+                    currentTile = newTile;
+                    continue;
+                }
+            }
+            if (Mathf.Abs(currentTile.x - endTile.x) > 0)
+            {
+                newTile = currentTile + Vector2.right * Mathf.Sign(endTile.x - currentTile.x);
+                if (Tools.BlockNPCMovement(npcScript, newTile, npcSize) == false)
+                {
+                    path.Add(newTile);
+                    currentTile = newTile;
+                    continue;
+                }
+            }
+            if (Mathf.Abs(currentTile.y - endTile.y) > 0)
+            {
+                newTile = currentTile + Vector2.up * Mathf.Sign(endTile.y - currentTile.y);
+                if (Tools.BlockNPCMovement(npcScript, newTile, npcSize) == false)
+                {
+                    path.Add(newTile);
+                    currentTile = newTile;
+                    continue;
+                }
+            }
 
+            endTile = currentTile;
+        }
         return path;
     }
 

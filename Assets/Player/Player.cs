@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
     [System.NonSerialized] public bool runEnabled;
     [System.NonSerialized] public bool forceWalk = false;
     public GameObject trueTileObject;
-    GameObject newTrueTileObject;
     [HideInInspector] public TrueTile trueTileScript;
     [HideInInspector] public Combat combatScript;
     public Vector2 playerPosition;
@@ -32,6 +31,20 @@ public class Player : MonoBehaviour
     public static bool attackTargetedNPC;
     [HideInInspector] public Vector2 targetNPCPreviousTile;
     [HideInInspector] public bool attackThisTick = false;
+    [System.NonSerialized] public bool attackUsingSpell = false;
+    [System.NonSerialized] public Spell spellBeingUsed;
+
+    public class IncomingDamage
+    {
+        public int damage;
+        public int ticks;
+        public Enemy enemyAttacking;
+    }
+    GameObject newHitSplat;
+    List<IncomingDamage> damageQueue = new List<IncomingDamage>();
+    GameObject newHealthBar;
+
+    public static Player player;
 
     public bool debugEnabled = false;
 
@@ -54,6 +67,8 @@ public class Player : MonoBehaviour
         arrowColor = playerArrow.GetChild(0).GetComponent<SpriteRenderer>();
 
         combatScript = GetComponent<Combat>();
+        combatScript.onPlayer = true;
+        player = this;
 
         TickManager.beforeTick += BeforeTick;
         TickManager.onTick += OnTick;
@@ -99,7 +114,7 @@ public class Player : MonoBehaviour
                 targetAngle = Tools.VectorToAngle(playerPath[0] - playerPosition);
             }
         }
-        if (targetedNPC != null)
+        if (targetedNPC != null && (targetedNPC.transform.position - transform.position).magnitude > 0.1f)
         {
             targetAngle = Tools.VectorToAngle(targetedNPC.transform.position - transform.position);
         }
@@ -113,6 +128,23 @@ public class Player : MonoBehaviour
         if (targetedNPC != null)
         {
             targetNPCPreviousTile = targetedNPC.trueTile;
+        }
+
+        foreach (IncomingDamage damage in damageQueue)
+        {
+            damage.ticks--;
+            if (damage.ticks <= 0)
+            {
+                TakeDamage(damage);
+            }
+        }
+        for (int i = 0; i < damageQueue.Count; i++)
+        {
+            if (damageQueue[i].ticks <= 0)
+            {
+                damageQueue.Remove(damageQueue[i]);
+                i--;
+            }
         }
     }
     void OnTick()
@@ -136,7 +168,6 @@ public class Player : MonoBehaviour
             AttackEnemy(targetedNPC.GetComponent<Enemy>());
         }
     }
-
     void AfterTick()
     {
         if (targetedNPC != null)
@@ -156,19 +187,71 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void AddToDamageQueue(int damage, int tickDelay, Enemy enemyAttacking)
+    {
+        IncomingDamage newDamage = new IncomingDamage();
+        newDamage.damage = damage;
+        newDamage.ticks = tickDelay;
+        newDamage.enemyAttacking = enemyAttacking;
+        damageQueue.Add(newDamage);
+    }
+    void TakeDamage(IncomingDamage damage)
+    {
+        PlayerStats.currentHitpoints -= damage.damage;
+        if (newHitSplat == null)
+        {
+            newHitSplat = Instantiate(UIManager.staticHitSplat, Camera.main.WorldToScreenPoint(transform.position), Quaternion.identity);
+            HitSplat splatScript = newHitSplat.GetComponent<HitSplat>();
+            splatScript.NewHitSplat(damage.damage, 0);
+            splatScript.objectGettingHit = gameObject;
+        }
+        else
+        {
+            newHitSplat.GetComponent<HitSplat>().NewHitSplat(damage.damage, 0);
+        }
+
+        if (newHealthBar == null)
+        {
+            newHealthBar = Instantiate(UIManager.staticHealthBar, transform.position, Quaternion.identity);
+            HealthBar healthScript = newHealthBar.GetComponent<HealthBar>();
+            healthScript.maxHealth = PlayerStats.initialHitpoints;
+            healthScript.currentHealth = PlayerStats.currentHitpoints;
+            healthScript.objectWithHealth = gameObject;
+            healthScript.worldSpaceOffset = 0.5f;
+        }
+        else
+        {
+            HealthBar healthScript = newHealthBar.GetComponent<HealthBar>();
+            healthScript.UpdateHealth(PlayerStats.currentHitpoints);
+        }
+
+        if (AutoRetaliate.active && damage.enemyAttacking != null)
+        {
+            AttackEnemy(damage.enemyAttacking);
+        }
+    }
+
     public void AttackEnemy(Enemy enemy)
     {
         targetedNPC = enemy.GetComponent<NPC>();
         attackTargetedNPC = true;
         targetNPCPreviousTile = targetedNPC.trueTile;
         targetAngle = Tools.VectorToAngle(targetedNPC.transform.position - transform.position);
-        if (combatScript.InAttackRange(trueTile, targetNPCPreviousTile, WornEquipment.attackDistance))
+        int range = Mathf.Min(WornEquipment.attackDistance + AttackStyles.distanceBonus, 10);
+        if (attackUsingSpell && spellBeingUsed != null)
         {
-            trueTileScript.StopMovement();
+            range = 10;
+        }
+        if (combatScript.InAttackRange(trueTile, targetNPCPreviousTile, range, enemy.npcScript.tileSize) && combatScript.PlayerInsideEnemy(enemy) == false)
+        {
+            if (trueTileScript.moving)
+            {
+                trueTileScript.StopMovement();
+            }
         }
         else
         {
-            if (combatScript.AdjacentTileAvailable(targetNPCPreviousTile) == false)
+            if (combatScript.AdjacentTileAvailable(targetNPCPreviousTile, enemy.npcScript.tileSize) == false && range == 1)
             {
                 Debug.Log("I can't reach that!");
                 targetedNPC = null;
@@ -176,29 +259,46 @@ public class Player : MonoBehaviour
             }
             else
             {
-                Vector2 targetTile = combatScript.FindAdjacentTile(targetNPCPreviousTile);
+                Vector2 targetTile = combatScript.FindEnemyAdjacentTile(targetNPCPreviousTile, enemy.npcScript.tileSize);
                 trueTileScript.ExternalMovement(targetTile);
             }
         }
     }
-
     void PerformAttack()
     {
         if (targetedNPC == null || attackTargetedNPC == false)
         {
+            attackThisTick = false;
             return;
         }
-
-        if (combatScript.InAttackRange(trueTile, targetNPCPreviousTile, Mathf.Min(WornEquipment.attackDistance + AttackStyles.distanceBonus, 10)))
+        int range = Mathf.Min(WornEquipment.attackDistance + AttackStyles.distanceBonus, 10);
+        if ((attackUsingSpell && spellBeingUsed != null) || AttackStyles.selectedStyle == 8 || AttackStyles.selectedStyle == 9)
         {
-            combatScript.PlayerAttack();
+            range = 10;
+        }
+
+        if (combatScript.InAttackRange(trueTile, targetNPCPreviousTile, range, targetedNPC.tileSize) && combatScript.PlayerInsideEnemy(targetedNPC.GetComponent<Enemy>()) == false)
+        {
+            if (attackUsingSpell && spellBeingUsed != null)
+            {
+                Spellbook.CountRunes();
+                combatScript.PlayerCastSpell(spellBeingUsed);
+            }
+            else if (AttackStyles.selectedStyle == 8 || AttackStyles.selectedStyle == 9)
+            {
+                Spellbook.CountRunes();
+                combatScript.PlayerCastSpell(AttackStyles.currentSpellOnAutocast);
+            }
+            else
+            {
+                combatScript.PlayerAttack();
+            }
         }
         else
         {
             attackThisTick = false;
         }
     }
-
     public void RemoveFocus()
     {
         targetedNPC = null;

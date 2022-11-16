@@ -14,8 +14,8 @@ TagManager:
   - UI
   - Ground Items
   - NPC
-  - 
-  - 
+  - Projectiles
+  - NPC True Tile
   - 
   - 
   - 
@@ -53,4 +53,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3145274713
+    locked: 0
+  - name: Projectile
+    uniqueID: 591594125
     locked: 0

@@ -79,6 +79,23 @@ public class TileDataManager : MonoBehaviour
         }
     }
 
+    public static bool ObstacleInArea(Vector2 SWTile, int size)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                Vector2 tile = SWTile + Vector2.right * i + Vector2.up * j;
+                if (GetTileData(tile).obstacle)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public static string GetTileName(Vector2 coordinate)
     {
         Vector3Int gridPosition = staticMap.WorldToCell(coordinate);

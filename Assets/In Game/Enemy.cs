@@ -31,6 +31,16 @@ public class Enemy : MonoBehaviour
     public int magicDamage;
 
     public int attackSpeed;
+    public int attackDistance = 1;
+    public string attackStyle;
+
+    public bool aggro;
+    public int aggroRange = 3;
+
+    public bool willOverrideMaxHit = false;
+    public int newMaxHit;
+
+    [HideInInspector] bool inCombat;
 
     [HideInInspector] public float combatLevel;
     [HideInInspector] public string combatLevelColor;
@@ -39,6 +49,13 @@ public class Enemy : MonoBehaviour
     Action npcAction;
 
     Player playerScript;
+    Combat combatScript;
+    [HideInInspector] public bool isAttackingPlayer = false;
+    [HideInInspector] public bool attackThisTick = false;
+    Vector2 playerPreviousTile;
+
+    GameObject newHealthBar;
+
 
     public class IncomingDamage
     {
@@ -60,6 +77,7 @@ public class Enemy : MonoBehaviour
         npcAction = GetComponent<Action>();
 
         playerScript = FindObjectOfType<Player>();
+        combatScript = GetComponent<Combat>();
 
         float baselvl = 0.25f * ((float)defence + hitpoints + (1 * 0.5f));
         float meleelvl = (13f / 40f) * ((float)attack + strength);
@@ -110,37 +128,29 @@ public class Enemy : MonoBehaviour
         npcAction.cancelLevels[0] = 1;
         npcAction.menuPriorities[0] = 1;
         npcAction.staticPlayerActions[0] = true;
-        npcAction.serverAction0 += Attack;
+        npcAction.serverAction0 += PlayerAttack;
         npcScript.UpdateActions(gameObject.name, true);
 
-        Action.cancel1 += CancelAttack;
+        Action.cancel1 += CancelPlayerAttack;
 
         TickManager.beforeTick += BeforeTick;
+        TickManager.onTick += PerformAttack;
+
+        npcScript.beforeMovement += BeforeMovement;
     }
 
-    void Attack()
+    void PlayerAttack()
     {
         playerAttackingEnemy = true;
         playerScript.AttackEnemy(this);
     }
-
-    void CancelAttack()
+    void CancelPlayerAttack()
     {
         playerAttackingEnemy = false;
         if (Player.targetedNPC == npcScript)
         {
             Player.targetedNPC = null;
         }
-    }
-
-    public void DealDamageToEnemy(int damage, int tickDelay, bool fromPlayer, int maxHit)
-    {
-        IncomingDamage newDamage = new IncomingDamage();
-        newDamage.damage = damage;
-        newDamage.ticks = tickDelay;
-        newDamage.fromPlayer = fromPlayer;
-        newDamage.maxHit = maxHit;
-        damageQueue.Add(newDamage);
     }
 
     void BeforeTick()
@@ -161,15 +171,133 @@ public class Enemy : MonoBehaviour
                 i--;
             }
         }
+
+        if (combatScript.attackCooldown == combatScript.minCoolDown)
+        {
+            inCombat = false;
+        }
     }
 
+    public void AddToDamageQueue(int damage, int tickDelay, bool fromPlayer, int maxHit)
+    {
+        IncomingDamage newDamage = new IncomingDamage();
+        newDamage.damage = damage;
+        newDamage.ticks = tickDelay;
+        newDamage.fromPlayer = fromPlayer;
+        newDamage.maxHit = maxHit;
+        damageQueue.Add(newDamage);
+    }
     void TakeDamage(IncomingDamage damage)
     {
         hitpoints -= damage.damage;
         GameObject newHitSplat = Instantiate(UIManager.staticHitSplat, Camera.main.WorldToScreenPoint(transform.position), Quaternion.identity);
-        newHitSplat.GetComponent<HitSplat>().damage = damage.damage;
-        newHitSplat.GetComponent<HitSplat>().objectGettingHit = gameObject;
-        newHitSplat.GetComponent<HitSplat>().showMaxHitSplat = damage.fromPlayer;
-        newHitSplat.GetComponent<HitSplat>().maxHit = damage.maxHit;
+        HitSplat splatScript = newHitSplat.GetComponent<HitSplat>();
+        splatScript.objectGettingHit = gameObject;
+        splatScript.showMaxHitSplat = damage.fromPlayer;
+        splatScript.NewHitSplat(damage.damage, damage.maxHit);
+
+        if (newHealthBar == null)
+        {
+            newHealthBar = Instantiate(UIManager.staticHealthBar, transform.position, Quaternion.identity);
+            HealthBar healthScript = newHealthBar.GetComponent<HealthBar>();
+            healthScript.maxHealth = initialHitpoints;
+            healthScript.currentHealth = hitpoints;
+            healthScript.objectWithHealth = gameObject;
+            healthScript.worldSpaceOffset = 0.5f;
+        }
+        else
+        {
+            HealthBar healthScript = newHealthBar.GetComponent<HealthBar>();
+            healthScript.UpdateHealth(hitpoints);
+        }
+
+        if (damage.fromPlayer && isAttackingPlayer == false)
+        {
+            AttackPlayer();
+            if (inCombat == false)
+            {
+                combatScript.attackCooldown = 2;
+                inCombat = true;
+            }
+        }
+    }
+    public void SpellEffects(Spell spell)
+    {
+        if (spell.freeze)
+        {
+            if (npcScript.freezeTicks < -4)
+            {
+                npcScript.freezeTicks = spell.freezeLength;
+            }
+        }
+    }
+
+    public void BeforeMovement()
+    {
+        if (npcScript.isTargetingPlayer && isAttackingPlayer)
+        {
+            AttackPlayer();
+        }
+        else if (aggro && TileManager.TileDistance(playerScript.trueTile, npcScript.trueTile) <= aggroRange)
+        {
+            AttackPlayer();
+        }
+    }
+
+    public void AttackPlayer()
+    {
+        npcScript.isTargetingPlayer = true;
+        npcScript.externalTarget = true;
+        isAttackingPlayer = true;
+        playerPreviousTile = playerScript.trueTile;
+        if (combatScript.InAttackRange(playerPreviousTile, npcScript.trueTile, attackDistance, npcScript.tileSize))
+        {
+            if (combatScript.PlayerInsideEnemy(this))
+            {
+                int randX = Random.Range(0, (int)2);
+                int randY = Random.Range(0, (int)5);
+                Vector2 target = Vector2.zero;
+                if (randX == 0 && randY != 4)
+                {
+                    target = new Vector2(Random.Range(0, (int) 2) * 2 - 1, 0);
+                }
+                else if (randY != 4)
+                {
+                    target = new Vector2(0, Random.Range(0, (int)2) * 2 - 1);
+                }
+
+                npcScript.ExternalMovement(npcScript.trueTile + target);
+            }
+            else
+            {
+                npcScript.StopMovement();
+            }
+
+        }
+        else
+        {
+            Vector2 targetTile = playerScript.trueTile;
+            if (combatScript.DistanceToCombat(playerScript.trueTile, npcScript.trueTile, npcScript.tileSize) == 1)
+            {
+                targetTile = combatScript.FindPlayerAdjacentTile(npcScript.trueTile, playerScript.trueTile, npcScript.tileSize);
+            }
+            npcScript.ExternalMovement(targetTile);
+        }
+    }
+    void PerformAttack()
+    {
+        if (isAttackingPlayer == false || npcScript.isTargetingPlayer == false)
+        {
+            return;
+        }
+
+        if (combatScript.InAttackRange(playerPreviousTile, npcScript.trueTile, attackDistance, npcScript.tileSize) && combatScript.PlayerInsideEnemy(this) == false)
+        {
+            combatScript.EnemyAttack(this);
+        }
+        else
+        {
+            attackThisTick = false;
+        }
     }
 }

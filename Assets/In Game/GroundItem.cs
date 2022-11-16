@@ -5,8 +5,13 @@ using UnityEngine.UI;
 
 public class GroundItem : MonoBehaviour
 {
-    public GameObject item;
+    //public GameObject item;
+    public Texture itemTexture;
     public Vector2 trueTile;
+    public bool chargeItem;
+    public int charges;
+    public bool equipment = false;
+    bool stackableItem;
 
     Action itemAction;
     Inventory inventory;
@@ -22,13 +27,17 @@ public class GroundItem : MonoBehaviour
     {
         sprite = GetComponent<SpriteRenderer>();
         sprite.color = new Color(1, 1, 1, 1);
-        Texture2D tex = (Texture2D) item.transform.GetChild(0).GetComponent<RawImage>().texture;
+        Texture2D tex = (Texture2D) itemTexture;
         Sprite newSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
         sprite.sprite = newSprite;
 
-        if (item.GetComponent<ChargeItem>() != null && item.GetComponent<ChargeItem>().charges <= 0)
+        if (chargeItem && charges == 0)
         {
             sprite.color = new Color(0.7f, 0.7f, 0.7f, 1);
+        }
+        if (GetComponent<StackableGroundItem>() != null)
+        {
+            stackableItem = true;
         }
 
         itemAction = GetComponent<Action>();
@@ -45,8 +54,6 @@ public class GroundItem : MonoBehaviour
         TickManager.beforeTick += BeforeTick;
         TickManager.afterTick += RenderSprite;
         Action.cancel1 += CancelTake;
-
-        itemAction.examineText = item.GetComponent<Action>().examineText;
 
         inventory = FindObjectOfType<Inventory>();
         playerScript = FindObjectOfType<Player>();
@@ -86,9 +93,36 @@ public class GroundItem : MonoBehaviour
         if (willTake && itemToTake == gameObject && trueTile == playerScript.trueTile)
         {
             willTake = false;
+            itemToTake = null;
 
-            item.SetActive(true);
-            inventory.PlaceInInventory(item);
+            GameObject newItem = null;
+            if (stackableItem)
+            {
+                newItem = inventory.ScanForItem(gameObject.name);
+                if (newItem != null)
+                {
+                    newItem.GetComponent<StackableItem>().AddToQuantity(GetComponent<StackableGroundItem>().quantity);
+                    Destroy(gameObject);
+                    return;
+                }
+            }
+
+            string path = "Items/" + gameObject.name;
+            if (equipment)
+            {
+                path = "Equipment/" + gameObject.name;
+            }
+
+            newItem = Tools.LoadFromResource(gameObject.name);
+            if (chargeItem)
+            {
+                newItem.GetComponent<ChargeItem>().charges = charges;
+            }
+            if (GetComponent<StackableGroundItem>() != null)
+            {
+                newItem.GetComponent<StackableItem>().quantity = GetComponent<StackableGroundItem>().quantity;
+            }
+            inventory.PlaceInInventory(newItem);
             Destroy(gameObject);
         }
     }

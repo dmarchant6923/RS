@@ -24,6 +24,17 @@ public class Spell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public string rune4;
     public int quantity4;
 
+    public bool freeze;
+    public int freezeLength;
+    public bool leech;
+    public int leechPercent;
+    public bool poison;
+    public int poisonDamage;
+    public bool attackDebuff;
+    public int debuffPercent;
+
+    public Color projectileColor;
+
     [HideInInspector] public string[] runes = new string[4];
     [HideInInspector] public int[] quantities = new int[4];
 
@@ -33,16 +44,20 @@ public class Spell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     bool hasRune4;
 
     Action spellAction;
-    bool available;
+    [System.NonSerialized] public bool available;
     bool isCastingSpell;
 
     SpellTooltip tooltip;
 
     RawImage maskImage;
-    RawImage spellImage;
+    [HideInInspector] public RawImage spellImage;
     RawImage mask;
 
-    void Start()
+    [System.NonSerialized] public bool onAutocastSelectPanel = false;
+    [System.NonSerialized] public ChooseSpell chooseSpellScript;
+    [HideInInspector] public AttackStyles attackStyleScript;
+
+    IEnumerator Start()
     {
         if (combatSpell)
         {
@@ -55,16 +70,22 @@ public class Spell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
 
 
-        tooltip = FindObjectOfType<SpellTooltip>();
         spellAction = GetComponent<Action>();
-        spellAction.menuTexts[0] = "Cast <color=lime>" + gameObject.name + "</color>";
-        spellAction.clientAction0 += UseSpell;
+        if (onAutocastSelectPanel == false)
+        {
+            spellAction.menuTexts[0] = "Cast <color=lime>" + gameObject.name + "</color>";
+            spellAction.clientAction0 += UseSpell;
+        }
+        else
+        {
+            spellAction.menuTexts[0] = gameObject.name;
+            spellAction.serverAction0 += SelectAutocast;
+        }
 
         //spellImage = GetComponent<RawImage>();
         spellImage = transform.GetChild(1).GetComponent<RawImage>();
         spellImage.texture = GetComponent<RawImage>().texture;
         spellImage.gameObject.SetActive(true);
-        Destroy(GetComponent<RawImage>());
         mask = transform.GetChild(0).GetComponent<RawImage>();
         mask.texture = spellImage.texture;
 
@@ -80,6 +101,11 @@ public class Spell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         quantities[3] = quantity4;
 
         Disable();
+
+        yield return null;
+        yield return null;
+        tooltip = transform.parent.parent.GetComponentInChildren<SpellTooltip>();
+        Destroy(GetComponent<RawImage>());
     }
 
     void UseSpell()
@@ -93,6 +119,14 @@ public class Spell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void CastSpell(GameObject target)
     {
         Debug.Log("cast spell on " + target.name);
+        if (target.GetComponent<Enemy>() == null)
+        {
+            Debug.Log("You can't attack this.");
+            return;
+        }
+        Player.player.attackUsingSpell = true;
+        Player.player.spellBeingUsed = this;
+        target.GetComponent<Action>().PickAction(0);
     }
 
     void Update()
@@ -119,6 +153,32 @@ public class Spell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         hasRune2 = string.IsNullOrEmpty(rune2);
         hasRune3 = string.IsNullOrEmpty(rune3);
         hasRune4 = string.IsNullOrEmpty(rune4);
+
+        if (Spellbook.runeSource != null && Spellbook.runeSource.infiniteSupply)
+        {
+            for (int i = 0; i < runes.Length; i++)
+            {
+                if (runes[i].ToLower().Contains(Spellbook.runeSource.runeToSupply) || string.IsNullOrEmpty(Spellbook.runeSource.runeToSupply))
+                {
+                    if (i == 0)
+                    {
+                        hasRune1 = true;
+                    }
+                    else if (i == 1)
+                    {
+                        hasRune2 = true;
+                    }
+                    else if (i == 2)
+                    {
+                        hasRune3 = true;
+                    }
+                    else
+                    {
+                        hasRune4 = true;
+                    }
+                }
+            }
+        }
         bool hasAll = false;
         foreach (StackableItem rune in Spellbook.runesInInventory)
         {
@@ -155,6 +215,100 @@ public class Spell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             Disable();
         }
     }
+    public void SpellNotAvailable()
+    {
+        if (available == false)
+        {
+            string missingRune = "";
+            if (hasRune1 == false)
+            {
+                missingRune = rune1;
+            }
+            else if (hasRune2 == false)
+            {
+                missingRune = rune2;
+            }
+            else if (hasRune3 == false)
+            {
+                missingRune = rune3;
+            }
+            else if (hasRune4 == false)
+            {
+                missingRune = rune4;
+            }
+
+            if (string.IsNullOrEmpty(missingRune) == false)
+            {
+                Debug.Log("You do not have enough " + missingRune + "s to cast this spell.");
+            }
+        }
+    }
+
+    void SelectAutocast()
+    {
+        if (AttackStyles.autocastSelectActive == false)
+        {
+            return;
+        }
+
+        if (available == false)
+        {
+            SpellNotAvailable();
+        }
+        else
+        {
+            foreach (Spell spell in Spellbook.spells)
+            {
+                if (spell.name == gameObject.name)
+                {
+                    AttackStyles.currentSpellOnAutocast = spell;
+                }
+            }
+        }
+
+        attackStyleScript.SelectedAutocastSpell();
+    }
+    public void UseRunes()
+    {
+        if (available == false)
+        {
+            Debug.Log("ERROR: got to subtract runes while spell was not available somehow");
+            return;
+        }
+
+        for (int i = 0; i < runes.Length; i++)
+        {
+            foreach (StackableItem rune in Spellbook.runesInInventory)
+            {
+                if (runes[i] == rune.name)
+                {
+                    if (Spellbook.runeSource != null)
+                    {
+                        if (Spellbook.runeSource.infiniteSupply && (rune.name.ToLower().Contains(Spellbook.runeSource.runeToSupply) || string.IsNullOrEmpty(Spellbook.runeSource.runeToSupply)))
+                        {
+
+                        }
+                        else if (Spellbook.runeSource.saveRunes && (Spellbook.runeSource.runeToSave == rune.name || string.IsNullOrEmpty(Spellbook.runeSource.runeToSave)))
+                        {
+                            float rand = Random.Range(0f, 1f);
+                            if (rand > Spellbook.runeSource.saveChance)
+                            {
+                                rune.AddToQuantity(-quantities[i]);
+                            }
+                        }
+                        else
+                        {
+                            rune.AddToQuantity(-quantities[i]);
+                        }
+                    }
+                    else
+                    {
+                        rune.AddToQuantity(-quantities[i]);
+                    }
+                }
+            }
+        }
+    }
 
     void Enable()
     {
@@ -178,11 +332,14 @@ public class Spell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        tooltip.ShowSpellInfo(this);
+        if (tooltip != null)
+        {
+            tooltip.ShowSpellInfo(this);
+        }
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (tooltip.currentSpell == this)
+        if (tooltip != null && tooltip.currentSpell == this)
         {
             tooltip.currentSpell = null;
         }

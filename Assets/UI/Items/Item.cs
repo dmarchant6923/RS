@@ -11,19 +11,23 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     bool useActive = false;
 
     [HideInInspector] public RawImage itemImage;
+    public Texture itemTexture;
     GameObject mask;
     Shadow shadow;
     Outline outline;
+    public delegate void ItemClicked();
+    public event ItemClicked darkenItem;
+    public event ItemClicked undarkenItem;
 
     [HideInInspector] public bool clickHeld = false;
 
-    public Inventory inventory;
+    [HideInInspector] public Inventory inventory;
 
     [System.NonSerialized] public string[] menuTexts = new string[9];
 
     bool dropped;
 
-    public GameObject groundItemsParent;
+    [HideInInspector] public GameObject groundItemsParent;
     public GameObject groundPrefab;
     Player player;
 
@@ -32,16 +36,28 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     bool isEquipment = false;
     Equipment equipScript;
 
+    bool isStackable = false;
+    StackableItem stackScript;
+
+    bool isChargeable = false;
+    ChargeItem chargeScript;
+
     public static bool shiftClickToDrop;
+
+    public float groundSizeFactor = 0.8f;
 
     private void Start()
     {
         itemAction = GetComponent<Action>();
+        inventory = UIManager.staticInventory;
+        groundItemsParent = UIManager.staticGroundItemsParent;
 
         itemImage = transform.GetChild(1).GetComponent<RawImage>();
         mask = transform.GetChild(0).gameObject;
         shadow = itemImage.GetComponent<Shadow>();
         outline = itemImage.GetComponent<Outline>();
+        itemImage.texture = itemTexture;
+        mask.GetComponent<RawImage>().texture = itemTexture;
 
         itemAction.objectName = "<color=orange>" + gameObject.name + "</color>";
         itemAction.addObjectName = true;
@@ -64,6 +80,16 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             isEquipment = true;
             equipScript = GetComponent<Equipment>();
+        }
+        if (GetComponent<StackableItem>() != null)
+        {
+            isStackable = true;
+            stackScript = GetComponent<StackableItem>();
+        }
+        if (GetComponent<ChargeItem>() != null)
+        {
+            isChargeable = true;
+            chargeScript = GetComponent<ChargeItem>();
         }
     }
 
@@ -102,18 +128,41 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     }
     void Drop()
     {
-        if (gameObject.activeSelf)
+        SpawnGroundItem(player.trueTile, true);
+    }
+
+    public GameObject SpawnGroundItem(Vector2 tile, bool removeFromInventory)
+    {
+        GameObject newItem = Instantiate(groundPrefab, tile, Quaternion.identity);
+        newItem.gameObject.name = gameObject.name;
+        newItem.GetComponent<Action>().examineText = itemAction.examineText;
+        GroundItem groundScript = newItem.GetComponent<GroundItem>();
+        groundScript.itemTexture = itemTexture;
+        groundScript.trueTile = tile;
+        if (isEquipment)
         {
-            GameObject newItem = Instantiate(groundPrefab, player.trueTile, Quaternion.identity);
-            newItem.gameObject.name = itemAction.objectName;
-            newItem.GetComponent<GroundItem>().item = gameObject;
-            newItem.GetComponent<GroundItem>().trueTile = player.trueTile;
-            newItem.GetComponent<Action>().examineText = itemAction.examineText;
-            transform.SetParent(groundItemsParent.transform);
-            transform.position = groundItemsParent.transform.position;
-            inventory.SortInventory();
-            gameObject.SetActive(false);
+            groundScript.equipment = true;
         }
+        if (isChargeable)
+        {
+            groundScript.chargeItem = true;
+            groundScript.charges = chargeScript.charges;
+        }
+        if (isStackable)
+        {
+            StackableGroundItem groundStackScript = newItem.AddComponent<StackableGroundItem>();
+            groundStackScript.quantity = stackScript.quantity;
+            groundStackScript.textures = stackScript.images;
+            groundStackScript.thresholds = stackScript.thresholds;
+        }
+        groundScript.GetComponent<SpriteRenderer>().size = Vector2.one * groundSizeFactor;
+
+        if (removeFromInventory)
+        {
+            Destroy(gameObject);
+        }
+
+        return newItem;
     }
 
     private void Update()
@@ -133,12 +182,14 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             Color color = itemImage.color;
             color.a = 0.6f;
             itemImage.color = color;
+            darkenItem?.Invoke();
         }
         else if (clickHeld == false && itemImage.color.a != 1)
         {
             Color color = itemImage.color;
             color.a = 1;
             itemImage.color = color;
+            undarkenItem?.Invoke();
         }
 
         if (shiftClickToDrop)
@@ -221,7 +272,7 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             if (failed == false)
             {
                 float minDist = 10000;
-                foreach (GameObject slot in inventory.inventorySlots)
+                foreach (GameObject slot in Inventory.inventorySlots)
                 {
                     RectTransform rt = slot.GetComponent<RectTransform>();
                     minDist = Mathf.Min((Input.mousePosition - rt.position).magnitude, minDist);
@@ -241,5 +292,10 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
         yield return new WaitForSeconds(0.1f);
         clickHeld = false;
+    }
+
+    private void OnDestroy()
+    {
+        inventory.SortInventory();
     }
 }
