@@ -13,7 +13,7 @@ public class CameraScript : MonoBehaviour
     float camSpeed;
 
     Camera cam;
-    Player player;
+    [HideInInspector] public Player player;
 
     void Start()
     {

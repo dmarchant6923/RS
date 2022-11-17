@@ -47,6 +47,8 @@ public class NPC : MonoBehaviour
     [HideInInspector] public int freezeTicks;
     [HideInInspector] public bool frozen = false;
 
+    public Transform minimapIcon;
+
     void Start()
     {
         centerOffset = -Vector2.one * ((float)tileSize - 1) * 0.5f;
@@ -84,6 +86,8 @@ public class NPC : MonoBehaviour
         npcArrow = transform.GetChild(0);
         arrowColor = npcArrow.GetChild(0).GetComponent<SpriteRenderer>();
         freezeTicks = -5;
+
+        minimapIcon.localScale *= 1 /transform.localScale.x;
     }
 
     public void UpdateActions(string name, bool enemy)
