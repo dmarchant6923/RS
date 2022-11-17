@@ -71,12 +71,12 @@ public class XPDrop : MonoBehaviour
             SpawnXPDrop(instance.strength, damage * 1.33f * mult);
             SpawnXPDrop(instance.defense, damage * 1.33f * mult);
         }
-        else if (type == AttackStyles.longrangeType)
+        else if (style == AttackStyles.rangedStyle && type == AttackStyles.longrangeType)
         {
             SpawnXPDrop(instance.range, damage * 2f * mult);
             SpawnXPDrop(instance.defense, damage * 2f * mult);
         }
-        else if (style == AttackStyles.magicStyle && type == AttackStyles.defensiveType)
+        else if (style == AttackStyles.magicStyle && type == AttackStyles.longrangeType)
         {
             SpawnXPDrop(instance.mage, damage * 1.33f * mult);
             SpawnXPDrop(instance.defense, damage * 1f * mult);

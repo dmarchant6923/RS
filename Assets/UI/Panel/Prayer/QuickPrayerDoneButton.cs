@@ -41,7 +41,7 @@ public class QuickPrayerDoneButton : MonoBehaviour, IPointerEnterHandler, IPoint
         button.texture = buttonOff;
         buttonText.color = textColor;
 
-        foreach (GameObject prayer in Prayer.prayers)
+        foreach (GameObject prayer in Prayer.prayerObjects)
         {
             PlayerPrefs.SetInt(prayer.name, prayer.GetComponent<ActivatePrayer>().QPeffectiveActive ? 1 : 0);
         }

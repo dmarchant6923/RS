@@ -10,7 +10,8 @@ public class Prayer : MonoBehaviour
     float panelScale;
 
     public GameObject prayerParent;
-    public static GameObject[] prayers = new GameObject[29];
+    public static GameObject[] prayerObjects = new GameObject[29];
+    public static ActivatePrayer[] prayers = new ActivatePrayer[29];
 
     float panelWidthScale = 0.89f;
     float panelHeightScale = 0.92f;
@@ -41,6 +42,8 @@ public class Prayer : MonoBehaviour
     public static bool smite;
     public static string currentOverhead;
 
+    public static bool preserve;
+
     public static float[] bonuses = new float[6];
 
 
@@ -48,7 +51,8 @@ public class Prayer : MonoBehaviour
     {
         for (int i = 0; i < prayerParent.GetComponentsInChildren<RawImage>().Length; i++)
         {
-            prayers[i] = prayerParent.GetComponentsInChildren<RawImage>()[i].gameObject;
+            prayerObjects[i] = prayerParent.GetComponentsInChildren<RawImage>()[i].gameObject;
+            prayers[i] = prayerObjects[i].GetComponent<ActivatePrayer>();
         }
 
         panelScale = panel.transform.localScale.x;
@@ -72,7 +76,7 @@ public class Prayer : MonoBehaviour
                 float height = br.y + (6 - j) * heightIncrement;
                 float width = br.x - (4 - i) * widthIncrement;
                 Vector2 position = new Vector2(width, height);
-                prayers[index].GetComponent<RectTransform>().position = position;
+                prayerObjects[index].GetComponent<RectTransform>().position = position;
             }
         }
 
@@ -114,14 +118,13 @@ public class Prayer : MonoBehaviour
             smite = false;
 
             bool overhead = false;
-            foreach (GameObject prayer in prayers)
+            foreach (ActivatePrayer prayer in prayers)
             {
-                ActivatePrayer prayerScript = prayer.GetComponent<ActivatePrayer>();
-                if (prayerScript.active)
+                if (prayer.active)
                 {
-                    drainRate += prayerScript.drainRate;
+                    drainRate += prayer.drainRate;
 
-                    if (prayerScript.overhead)
+                    if (prayer.overhead)
                     {
                         if (prayer.name == "Protect from Melee")
                         {
@@ -149,7 +152,7 @@ public class Prayer : MonoBehaviour
                         }
                         currentOverhead = prayer.name;
 
-                        UpdateOverhead(prayerScript);
+                        UpdateOverhead(prayer);
                         overhead = true;
                     }
                 }
@@ -173,17 +176,16 @@ public class Prayer : MonoBehaviour
         }
 
 
-        foreach (GameObject prayer in prayers)
+        foreach (ActivatePrayer prayer in prayers)
         {
-            ActivatePrayer script = prayer.GetComponent<ActivatePrayer>();
-            if (script.QPeffectiveActive == false)
+            if (prayer.QPeffectiveActive == false)
             {
                 continue;
             }
 
-            if (script.active == false)
+            if (prayer.active == false)
             {
-                script.ServerClickPrayer();
+                prayer.ServerClickPrayer();
             }
         }
     }
@@ -194,12 +196,12 @@ public class Prayer : MonoBehaviour
             panelButtons.ForceOpen("Prayer");
             quickPrayerBackground.SetActive(true);
             doneButton.SetActive(true);
-            foreach (GameObject prayer in prayers)
+            foreach (ActivatePrayer prayer in prayers)
             {
-                prayer.GetComponent<ActivatePrayer>().newCheck.enabled = true;
-                prayer.GetComponent<ActivatePrayer>().selectQuickPrayer = true;
-                prayer.GetComponent<ActivatePrayer>().ChangeColors(false);
-                prayer.GetComponent<ActivatePrayer>().CheckOnOff(prayer.GetComponent<ActivatePrayer>().QPeffectiveActive);
+                prayer.newCheck.enabled = true;
+                prayer.selectQuickPrayer = true;
+                prayer.ChangeColors(false);
+                prayer.CheckOnOff(prayer.QPeffectiveActive);
             }
             prayerText.transform.parent.gameObject.SetActive(false);
         }
@@ -210,11 +212,11 @@ public class Prayer : MonoBehaviour
         {
             quickPrayerBackground.SetActive(false);
             doneButton.SetActive(false);
-            foreach (GameObject prayer in prayers)
+            foreach (ActivatePrayer prayer in prayers)
             {
-                prayer.GetComponent<ActivatePrayer>().newCheck.enabled = false;
-                prayer.GetComponent<ActivatePrayer>().selectQuickPrayer = false;
-                prayer.GetComponent<ActivatePrayer>().ChangeColors(prayer.GetComponent<ActivatePrayer>().active);
+                prayer.newCheck.enabled = false;
+                prayer.selectQuickPrayer = false;
+                prayer.ChangeColors(prayer.active);
             }
             prayerText.transform.parent.gameObject.SetActive(true);
         }
@@ -222,9 +224,9 @@ public class Prayer : MonoBehaviour
 
     static public void DeactivatePrayers()
     {
-        foreach (GameObject prayer in prayers)
+        foreach (ActivatePrayer prayer in prayers)
         {
-            prayer.GetComponent<ActivatePrayer>().ForceDeactivate(false);
+            prayer.ForceDeactivate(false);
         }
         drainRate = 0;
     }
@@ -238,12 +240,12 @@ public class Prayer : MonoBehaviour
         }
     }
 
-    public static List<GameObject> CheckActivePrayers()
+    public static List<ActivatePrayer> CheckActivePrayers()
     {
-        List<GameObject> activePrayers = new List<GameObject>();
-        foreach (GameObject prayer in prayers)
+        List<ActivatePrayer> activePrayers = new List<ActivatePrayer>();
+        foreach (ActivatePrayer prayer in prayers)
         {
-            if (prayer.GetComponent<ActivatePrayer>().active)
+            if (prayer.active)
             {
                 activePrayers.Add(prayer);
             }
@@ -258,15 +260,13 @@ public class Prayer : MonoBehaviour
             bonuses[i] = 1;
         }
 
-        foreach (GameObject prayer in CheckActivePrayers())
+        foreach (ActivatePrayer prayer in CheckActivePrayers())
         {
-            ActivatePrayer prayerScript = prayer.GetComponent<ActivatePrayer>();
-
-            for (int i = 0; i < prayerScript.bonuses.Length; i++)
+            for (int i = 0; i < prayer.bonuses.Length; i++)
             {
-                if (prayerScript.bonuses[i] > 1)
+                if (prayer.bonuses[i] > 1)
                 {
-                    bonuses[i] = prayerScript.bonuses[i];
+                    bonuses[i] = prayer.bonuses[i];
                 }
             }
         }

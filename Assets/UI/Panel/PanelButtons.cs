@@ -79,7 +79,7 @@ public class PanelButtons : MonoBehaviour
             {
                 if (Input.GetKeyDown(hotkeys[i]))
                 {
-                    OnClick(buttons[i], false);
+                    OnClick(buttons[i], true);
                 }
             }
         }

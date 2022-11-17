@@ -85,6 +85,11 @@ public class ActivatePrayer : MonoBehaviour
             PlayerStats.prayersOnForATick = false;
         }
         prayerScript.prayerChanged = true;
+
+        if (gameObject.name == "Preserve")
+        {
+            Prayer.preserve = active;
+        }
     }
 
 
@@ -199,9 +204,8 @@ public class ActivatePrayer : MonoBehaviour
 
     void AvoidConflictingPrayers(bool QP)
     {
-        foreach (GameObject prayer in Prayer.prayers)
+        foreach (ActivatePrayer script in Prayer.prayers)
         {
-            ActivatePrayer script = prayer.GetComponent<ActivatePrayer>();
             if (script == this || (QP == false && script.active == false) || (QP && script.QPeffectiveActive == false))
             {
                 continue;

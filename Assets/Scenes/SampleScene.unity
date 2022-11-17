@@ -922,14 +922,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5722916845030512515, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.29719925
-      objectReference: {fileID: 0}
-    - target: {fileID: 8290443388638054242, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0.000030517578
-      objectReference: {fileID: 0}
+    - target: {fileID: 5051562675395762498, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: image
+      value: 
+      objectReference: {fileID: 6157065514541354170, guid: a1450c17158aee1498fc01d8575c096a, type: 3}
+    - target: {fileID: 5051562675395762498, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: texture1
+      value: 
+      objectReference: {fileID: 21300000, guid: 6392e120eee364a4e96be77a828d0fdf, type: 3}
+    - target: {fileID: 5051562675395762498, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: texture2
+      value: 
+      objectReference: {fileID: 21300000, guid: ef1d9b99607c2e44985d171f5b577f68, type: 3}
+    - target: {fileID: 6149905034106046074, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 519420031}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
 --- !u!1 &519420028
@@ -1235,11 +1243,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5385707279894170823, guid: 31206990f9470e34b9b0b025054cadf7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 5385707279894170823, guid: 31206990f9470e34b9b0b025054cadf7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.04
       objectReference: {fileID: 0}
     - target: {fileID: 5385707279894170823, guid: 31206990f9470e34b9b0b025054cadf7, type: 3}
       propertyPath: m_LocalPosition.z

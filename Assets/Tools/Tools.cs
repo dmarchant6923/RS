@@ -126,14 +126,14 @@ public class Tools : MonoBehaviour
     public static string SecondsToMinutes(float seconds)
     {
         float minutes = Mathf.Floor(seconds / 60);
-        seconds = seconds % (minutes * 60);
         if (minutes == 0)
         {
-            return Mathf.Floor(seconds).ToString();
+            return Mathf.Floor(seconds).ToString("00");
         }
         else
         {
-            return minutes.ToString() + ":" + Mathf.Floor(seconds).ToString();
+            seconds = seconds % (minutes * 60);
+            return minutes.ToString() + ":" + Mathf.Floor(seconds).ToString("00");
         }
     }
 }

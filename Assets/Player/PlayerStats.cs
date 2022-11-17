@@ -41,6 +41,7 @@ public class PlayerStats : MonoBehaviour
     int initialTickTimer = 100;
     int tickTimer;
     float timer;
+    bool preserve = false;
 
     public static int divineTicks = 500;
 
@@ -62,7 +63,7 @@ public class PlayerStats : MonoBehaviour
     //static bool ignoreRangeDecrease = false;
     //static bool ignoreMagicDecrease = false;
 
-    private void Start()
+    private IEnumerator Start()
     {
         instance = this;
 
@@ -82,6 +83,8 @@ public class PlayerStats : MonoBehaviour
         currentHitpoints = hitpoints;
         currentPrayer = prayer;
 
+        preserve = false;
+
         truePrayer = prayer * 100;
         TickManager.beforeTick += BoostTimer;
         TickManager.onTick += PrayerDrain;
@@ -91,6 +94,8 @@ public class PlayerStats : MonoBehaviour
         float rangelvl = (13f / 40f) * ((float) ranged * 3 / 2);
         float magelvl = (13f / 40f) * ((float) magic * 3 / 2);
         combatLevel = baselvl + Mathf.Max(meleelvl, rangelvl, magelvl);
+
+        yield return null;
 
         BuffBar.instance.UpdateBaseStats();
     }
