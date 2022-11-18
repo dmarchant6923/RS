@@ -18,6 +18,7 @@ public class TrueTile : MonoBehaviour
 
     [HideInInspector] public Vector2 currentTile;
     [HideInInspector] public Vector2 destinationTile;
+    [HideInInspector] public Vector2 serverDestinationTile;
     List<Vector2> path;
     [HideInInspector] public bool moving;
     [HideInInspector] public bool oddTilesInPath = false;
@@ -29,7 +30,7 @@ public class TrueTile : MonoBehaviour
     public delegate void TrueTileMoved();
     public static event TrueTileMoved afterMovement;
 
-    Action walkHereAction;
+    [HideInInspector] public Action walkHereAction;
 
     IEnumerator Start()
     {
@@ -48,6 +49,8 @@ public class TrueTile : MonoBehaviour
         path = new List<Vector2>();
 
         yield return null;
+
+        player.trueTile = currentTile;
         walkHereAction.clientAction0 += ClientClick;
         walkHereAction.serverAction0 += ServerClick;
         walkHereAction.menuTexts[0] = "walk here";
@@ -72,7 +75,14 @@ public class TrueTile : MonoBehaviour
 
     void ClientClick()
     {
-        destinationTile = MouseManager.mouseCoordinate;
+        ClientClick(MouseManager.mouseCoordinate);
+    }
+    public void ClientClick(Vector2 coordinate)
+    {
+        Minimap.PlaceFlag(coordinate);
+        coordinate = TileManager.FindTile(coordinate);
+        destinationTile = coordinate;
+        StartCoroutine(ServerClickedTile(destinationTile));
         if (newClickedTile != null)
         {
             Destroy(newClickedTile);
@@ -82,37 +92,32 @@ public class TrueTile : MonoBehaviour
             newClickedTile = Instantiate(clickedTile, destinationTile, Quaternion.identity);
         }
     }
-    public void ClientClick(Vector2 coordinate)
+
+    IEnumerator ServerClickedTile(Vector2 position)
     {
-        destinationTile = coordinate;
-        if (newClickedTile != null)
-        {
-            Destroy(newClickedTile);
-        }
-        if (showClickedTile)
-        {
-            newClickedTile = Instantiate(clickedTile, destinationTile, Quaternion.identity);
-        }
+        yield return new WaitForSeconds(TickManager.simLatency);
+        serverDestinationTile = position;
     }
 
     public void ExternalMovement(Vector2 coordinate)
     {
-        destinationTile = coordinate;
+        serverDestinationTile = TileManager.FindTile(coordinate);
         ServerClick();
     }
     void ServerClick()
     {
+        Minimap.PlaceFlag(serverDestinationTile);
         if (newClickedTile != null)
         {
             Destroy(newClickedTile);
         }
         if (showClickedTile)
         {
-            newClickedTile = Instantiate(clickedTile, destinationTile, Quaternion.identity);
+            newClickedTile = Instantiate(clickedTile, serverDestinationTile, Quaternion.identity);
         }
 
 
-        path = pathFinder.FindAStarPath(currentTile, destinationTile);
+        path = pathFinder.FindAStarPath(currentTile, serverDestinationTile);
 
 
         if (showClickedTile)

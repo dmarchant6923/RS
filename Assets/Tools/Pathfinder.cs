@@ -155,7 +155,7 @@ public class Pathfinder : MonoBehaviour
 
 
 
-        //  [G]    [H]
+        //  [G]     [H]
         //      [F]
         //int[2]: G = distance from start tile
         //int[1]: H = distance from end tile
@@ -401,27 +401,22 @@ public class Pathfinder : MonoBehaviour
         }
 
         bool endLoop = false;
-        while (selectedTile != endTile && endLoop == false)
+        while (selectedTile != endTile)
         {
             ExamineNewTiles(selectedTile);
             examinedTiles.Add(selectedTile, availableTiles[selectedTile]);
 
             SpawnDebugMarkers();
 
-            selectedTile = SelectNewTile();
+            Debug.Log(availableTiles.Count + " " + examinedTiles.Count);
 
-            //float timer = 0;
-            //float window = 0.2f;
-            //while (timer < window)
-            //{
-            //    timer += Time.deltaTime;
-            //    yield return null;
-            //    if (Input.GetMouseButtonDown(0))
-            //    {
-            //        endLoop = true;
-            //        break;
-            //    }
-            //}
+            if (availableTiles.Count == examinedTiles.Count || examinedTiles.Count > 100)
+            {
+                Debug.Log("available tiles: " + availableTiles.Count + ". examined tiles: " + examinedTiles.Count);
+                endLoop = true;
+                break;
+            }
+            selectedTile = SelectNewTile();
         }
 
         List<Vector2> finalPath = new List<Vector2>();

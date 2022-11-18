@@ -18,6 +18,9 @@ public class Combat : MonoBehaviour
 
     public GameObject projectile;
 
+    public bool debug;
+    LineRenderer line;
+
     bool melee;
     bool mage;
     bool range;
@@ -31,6 +34,11 @@ public class Combat : MonoBehaviour
 
         specialEffects = false;
         effects = null;
+
+        if (debug)
+        {
+            line = GetComponent<LineRenderer>();
+        }
     }
     public void PlayerAttack()
     {
@@ -97,7 +105,7 @@ public class Combat : MonoBehaviour
             float maxAttRoll = PlayerAttackRoll();
             if (specialEffects)
             {
-                maxAttRoll *= Mathf.Floor(effects.AttackRollMult());
+                maxAttRoll = Mathf.Floor(maxAttRoll * effects.AttackRollMult());
             }
             float maxDefRoll = EnemyDefenseRoll(Player.targetedNPC.GetComponent<Enemy>(), AttackStyles.attackStyle);
             float attRoll = Random.Range(0, (int) maxAttRoll);
@@ -485,7 +493,7 @@ public class Combat : MonoBehaviour
         float closestX = Mathf.Clamp(playerTile.x, NPCSWTile.x, NPCSWTile.x + (NPCSize - 1));
         float closestY = Mathf.Clamp(playerTile.y, NPCSWTile.y, NPCSWTile.y + (NPCSize - 1));
         Vector2 closestTile = new Vector2(closestX, closestY);
-
+        Debug.Log(playerTile + " " + closestTile + " " + attackRange);
         if (attackRange == 1)
         {
             if ((closestTile - playerTile).magnitude < 1.1f)
@@ -659,6 +667,14 @@ public class Combat : MonoBehaviour
             }
         }
 
+        if (targetTile == NPCStart + Vector2.up || targetTile == NPCStart + Vector2.down)
+        {
+            if (TileDataManager.GetTileData(NPCStart + Vector2.right * Mathf.Sign(playerTile.x - NPCStart.x)).obstacle)
+            {
+                targetTile = NPCStart;
+            }
+        }
+
         return targetTile;
     }
 
@@ -716,11 +732,26 @@ public class Combat : MonoBehaviour
 
             if ((Prayer.protectFromMelee && melee) || (Prayer.protectFromMissiles && range) || (Prayer.protectFromMagic && mage))
             {
-                hitRoll = 0;
+                if (enemyScript.typelessAttack == false)
+                {
+                    hitRoll = Mathf.FloorToInt((float) hitRoll * (1 - enemyScript.overheadProtectionMult));
+                }
             }
 
-            playerScript.AddToDamageQueue(hitRoll, 1, enemyScript);
-            //Player.targetedNPC.GetComponent<Enemy>().DealDamageToEnemy(hitRoll, 1, true, (int)maxHit);
+            int dist = TileManager.TileDistance(playerScript.trueTile, enemyScript.npcScript.trueTile);
+            int delay = 1;
+            if (range)
+            {
+                delay = 1 + Mathf.FloorToInt((3 + dist) / 6);
+                SpawnProjectile(playerScript.gameObject, enemyScript.gameObject, delay, enemyScript.projectileColor, WornEquipment.bowCategory);
+            }
+            else if (mage)
+            {
+                delay = 1 + Mathf.FloorToInt((1 + dist) / 3);
+                SpawnProjectile(playerScript.gameObject, enemyScript.gameObject, delay, enemyScript.projectileColor, "");
+            }
+
+            playerScript.AddToDamageQueue(hitRoll, delay, enemyScript);
             enemyScript.attackThisTick = true;
 
             float hitChance;
@@ -809,7 +840,7 @@ public class Combat : MonoBehaviour
         else
         {
             effectiveStrength = Mathf.Floor(Mathf.Floor(enemyScript.magic) + 8);
-            maxHit = Mathf.Floor(Mathf.Floor(0.5f + effectiveStrength / 640) * (1 + enemyScript.magicDamage));
+            maxHit = Mathf.Floor(0.5f + effectiveStrength / 5 * (1 + enemyScript.magicDamage/100));
         }
 
         return Mathf.Floor(maxHit);
@@ -845,5 +876,164 @@ public class Combat : MonoBehaviour
         CombatInfo.EnemyDefense(enemyScript.defence, (int)defenseBonus, (int)roll, magic, style.ToLower());
 
         return roll;
+    }
+
+    public bool LineOfSight(NPC npcScript)
+    {
+        float NPCClosestTileX = Mathf.Clamp(Player.player.trueTile.x, npcScript.trueTile.x, npcScript.trueTile.x + npcScript.tileSize - 1);
+        float NPCClosestTiley = Mathf.Clamp(Player.player.trueTile.y, npcScript.trueTile.y, npcScript.trueTile.y + npcScript.tileSize - 1);
+        Vector2 NPCtile = new Vector2(NPCClosestTileX, NPCClosestTiley);
+        Vector2 relativeTile = NPCtile - Player.player.trueTile;
+
+        if (relativeTile == Vector2.zero)
+        {
+            Debug.Log("line of sight starts and ends on the same tile");
+            return false;
+        }
+
+        Vector2 lineStart;
+        //prioritize up / down borders when it's perfectly diagonal
+        if (Mathf.Abs(relativeTile.x) > Mathf.Abs(relativeTile.y))
+        {
+            lineStart = new Vector2(Mathf.Sign(relativeTile.x) * 0.5f, 0);
+        }
+        else
+        {
+            lineStart = new Vector2(0, Mathf.Sign(relativeTile.y) * 0.5f);
+        }
+
+        float slope = relativeTile.y / relativeTile.x;
+        float b = 0; //slope
+        if (relativeTile.x != 0 && lineStart.x != 0)
+        {
+            b = -lineStart.x * slope;
+        }
+
+        if (debug)
+        {
+            line.SetPosition(0, Player.player.trueTile + lineStart);
+            line.SetPosition(1, Player.player.trueTile + relativeTile + lineStart);
+            line.startColor = Color.red;
+            line.endColor = Color.red;
+        }
+
+        Vector2 CoordinateFromX(float x)
+        {
+            //make sure not to do this when slope = infinity;
+            Vector2 coordinate = Player.player.trueTile + new Vector2(x, slope * x + b);
+            return coordinate;
+        }
+        Vector2 CoordinateFromY(float y)
+        {
+            //make sure not to do this when slope = 0;
+            Vector2 coordinate = Player.player.trueTile + new Vector2((y - b) / slope, y);
+            return coordinate;
+        }
+
+        List<Vector2> verticalIntersections = new List<Vector2>();
+        List<Vector2> horizontalIntersections = new List<Vector2>();
+        List<Vector2> cornerIntersections = new List<Vector2>();
+
+        //gather list of vertical intersections and corner intersections. ignore section if slope is infinity.
+        float i = 0;
+        while (i != relativeTile.x && relativeTile.x != 0)
+        {
+            float x = i + Mathf.Sign(relativeTile.x) * 0.5f;
+            Vector2 coordinate = CoordinateFromX(x);
+            if (coordinate.y - Mathf.Floor(coordinate.y) == 0.5f && cornerIntersections.Contains(coordinate) == false)
+            {
+                cornerIntersections.Add(coordinate);
+            }
+            else
+            {
+                verticalIntersections.Add(coordinate);
+            }
+            i += Mathf.Sign(relativeTile.x);
+        }
+        //gather list of horizontal intersections and corner intersections. ignore section if slope is 0.
+        float j = 0;
+        while (j != relativeTile.y && relativeTile.y != 0)
+        {
+            float y = j + Mathf.Sign(relativeTile.y) * 0.5f;
+            Vector2 coordinate = CoordinateFromY(y);
+            if (coordinate.x - Mathf.Floor(coordinate.x) == 0.5f && cornerIntersections.Contains(coordinate) == false)
+            {
+                cornerIntersections.Add(coordinate);
+            }
+            else
+            {
+                horizontalIntersections.Add(coordinate);
+            }
+            j += Mathf.Sign(relativeTile.y);
+        }
+
+        List<Vector2> searchedTiles = new List<Vector2>();
+        //go through each vertical intersection, get tile data from left and right tiles. If either are obstacles, return false. Ignore tiles already examined.
+        foreach (Vector2 intersection in verticalIntersections)
+        {
+            for (i = -1; i < 2; i += 2)
+            {
+                Vector2 tile = TileManager.FindTile(intersection + Vector2.right * i * 0.5f);
+                if (searchedTiles.Contains(tile) == false)
+                {
+                    if (TileDataManager.GetTileData(tile).tallObstacle)
+                    {
+                        return false;
+                    }
+                    searchedTiles.Add(tile);
+                }
+            }
+        }
+
+        //same for horizontal intersections, up and down tiles.
+        foreach (Vector2 intersection in horizontalIntersections)
+        {
+            for (i = -1; i < 2; i += 2)
+            {
+                Vector2 tile = TileManager.FindTile(intersection + Vector2.up * i * 0.5f);
+                if (searchedTiles.Contains(tile) == false)
+                {
+                    if (TileDataManager.GetTileData(tile).tallObstacle)
+                    {
+                        return false;
+                    }
+                    searchedTiles.Add(tile);
+                }
+            }
+        }
+
+        if (cornerIntersections.Count > 0)
+        {
+            Debug.Log("there are some corner intersections to be accounted for");
+        }
+
+        if (debug)
+        {
+            line.startColor = Color.green;
+            line.endColor = Color.green;
+        }
+
+        return true;
+    }
+
+    public bool CapableOfAttacking(Vector2 playerTile, Vector2 NPCPreviousTile, NPC NPCScript, int attackRange, bool ignoreLOS)
+    {
+        if (InAttackRange(playerTile, NPCPreviousTile, attackRange, NPCScript.tileSize) == false)
+        {
+            Debug.Log("failed InAttackRange");
+            return false;
+        }
+        if (PlayerInsideEnemy(NPCScript.GetComponent<Enemy>()))
+        {
+            Debug.Log("failed PlayerInsideEnemy");
+            return false;
+        }
+        if (ignoreLOS == false && LineOfSight(NPCScript) == false)
+        {
+            Debug.Log("failed LineOfSight");
+            return false;
+        }
+
+        return true;
     }
 }

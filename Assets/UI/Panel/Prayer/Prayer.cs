@@ -43,6 +43,7 @@ public class Prayer : MonoBehaviour
     public static string currentOverhead;
 
     public static bool preserve;
+    public static bool rapidHeal;
 
     public static float[] bonuses = new float[6];
 

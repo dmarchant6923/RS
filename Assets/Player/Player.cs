@@ -46,6 +46,8 @@ public class Player : MonoBehaviour
 
     public static Player player;
 
+    public GameObject minimapIcon;
+
     public bool debugEnabled = false;
 
     void Start()
@@ -121,6 +123,8 @@ public class Player : MonoBehaviour
 
         angleFacing = Mathf.MoveTowardsAngle(angleFacing, targetAngle, rotationSpeed * Time.deltaTime);
         playerArrow.transform.eulerAngles = new Vector3(0, 0, angleFacing);
+
+        minimapIcon.transform.localEulerAngles = Camera.main.transform.localEulerAngles;
     }
 
     void BeforeTick()
@@ -242,7 +246,7 @@ public class Player : MonoBehaviour
         {
             range = 10;
         }
-        if (combatScript.InAttackRange(trueTile, targetNPCPreviousTile, range, enemy.npcScript.tileSize) && combatScript.PlayerInsideEnemy(enemy) == false)
+        if (combatScript.CapableOfAttacking(trueTile, targetNPCPreviousTile, targetedNPC, range, false))
         {
             if (trueTileScript.moving)
             {
@@ -277,7 +281,7 @@ public class Player : MonoBehaviour
             range = 10;
         }
 
-        if (combatScript.InAttackRange(trueTile, targetNPCPreviousTile, range, targetedNPC.tileSize) && combatScript.PlayerInsideEnemy(targetedNPC.GetComponent<Enemy>()) == false)
+        if (combatScript.CapableOfAttacking(trueTile, targetNPCPreviousTile, targetedNPC, range, false))
         {
             if (attackUsingSpell && spellBeingUsed != null)
             {
@@ -303,5 +307,10 @@ public class Player : MonoBehaviour
     {
         targetedNPC = null;
         attackTargetedNPC = false;
+    }
+
+    public void ClearDamageQueue()
+    {
+        damageQueue = new List<IncomingDamage>();
     }
 }

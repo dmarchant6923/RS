@@ -13,6 +13,7 @@ public class BuffBar : MonoBehaviour
 
     public GameObject[] extras;
     public float[] timers;
+    public string[] names;
 
     public GameObject buffTimer;
     public Text buffTimerText;
@@ -23,6 +24,7 @@ public class BuffBar : MonoBehaviour
     {
         instance = this;
         timers = new float[extras.Length];
+        names = new string[extras.Length];
     }
 
     private void Update()
@@ -40,6 +42,7 @@ public class BuffBar : MonoBehaviour
             else
             {
                 timers[i] = 0;
+                names[i] = "";
                 extras[i].SetActive(false);
             }
         }
@@ -85,12 +88,11 @@ public class BuffBar : MonoBehaviour
         buffTimer.SetActive(false);
     }
 
-    public void CreateExtraTimer(Texture texture, float time, Color color)
+    public void CreateExtraTimer(Texture texture, float time, string name)
     {
         for (int i = 0; i < extras.Length; i++)
         {
-            if (extras[i].activeSelf && extras[i].transform.GetChild(0).GetComponent<RawImage>().texture == texture &&
-                extras[i].transform.GetChild(0).GetComponent<RawImage>().color == color)
+            if (extras[i].activeSelf && names[i] == name)
             {
                 if (timers[i] < time)
                 {
@@ -107,9 +109,9 @@ public class BuffBar : MonoBehaviour
             {
                 extras[i].SetActive(true);
                 extras[i].transform.GetChild(0).GetComponent<RawImage>().texture = texture;
-                extras[i].transform.GetChild(0).GetComponent<RawImage>().color = color;
                 extras[i].GetComponentInChildren<Text>().text = Tools.SecondsToMinutes(time);
                 timers[i] = time;
+                names[i] = name;
                 return;
             }
         }

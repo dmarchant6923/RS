@@ -22,6 +22,7 @@ public class NPC : MonoBehaviour
     public bool runEnabled = false;
     [System.NonSerialized] public bool forceWalk = false;
     [HideInInspector] public bool moving = false;
+    public bool stationary = false;
 
     public bool showTrueTile = false;
     public bool showSizeTile = false;
@@ -117,6 +118,10 @@ public class NPC : MonoBehaviour
 
     public void ExternalMovement(Vector2 destination)
     {
+        if (stationary)
+        {
+            return;
+        }
         path = new List<Vector2>();
         path = pathFinder.FindNPCPath(this, trueTile, destination, tileSize);
     }
@@ -130,7 +135,7 @@ public class NPC : MonoBehaviour
         else
         {
             //stuff for periodic random NPC movement
-            if (moving == false && wanderRange > 0)
+            if (stationary == false && moving == false && wanderRange > 0)
             {
                 pathTick++;
             }
@@ -158,7 +163,7 @@ public class NPC : MonoBehaviour
 
         beforeMovement();
 
-        if (path.Count > 0 && frozen == false)
+        if (stationary == false && path.Count > 0 && frozen == false)
         {
             moving = true;
             int i = 1;

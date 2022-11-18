@@ -20,15 +20,13 @@ public class PotionStatBuff : MonoBehaviour
     public float baseBoost;
     public float percentage;
 
-    Potion potionScript;
-
-    [HideInInspector] public Texture dose4;
+    [HideInInspector] public Potion potionScript;
 
     private void Start()
     {
         potionScript = GetComponent<Potion>();
         potionScript.potionDrank += Buff;
-        dose4 = potionScript.dose4;
+        potionScript.divine = divine;
     }
 
     public int CalcBoost(int initialStat, int currentStat)

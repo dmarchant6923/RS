@@ -40,6 +40,13 @@ public class Enemy : MonoBehaviour
     public bool willOverrideMaxHit = false;
     public int newMaxHit;
 
+    public bool ignoreLineOfSight = false;
+
+
+    public bool typelessAttack = false;
+    public int overheadProtectionMult = 1;
+    public Color projectileColor;
+
     [HideInInspector] bool inCombat;
 
     [HideInInspector] public float combatLevel;
@@ -250,29 +257,25 @@ public class Enemy : MonoBehaviour
         npcScript.externalTarget = true;
         isAttackingPlayer = true;
         playerPreviousTile = playerScript.trueTile;
-        if (combatScript.InAttackRange(playerPreviousTile, npcScript.trueTile, attackDistance, npcScript.tileSize))
+        if (combatScript.CapableOfAttacking(playerPreviousTile, npcScript.trueTile, npcScript, attackDistance, ignoreLineOfSight))
         {
-            if (combatScript.PlayerInsideEnemy(this))
+            npcScript.StopMovement();
+        }
+        else if (combatScript.PlayerInsideEnemy(this))
+        {
+            int randX = Random.Range(0, (int)2);
+            int randY = Random.Range(0, (int)5);
+            Vector2 target = Vector2.zero;
+            if (randX == 0 && randY != 4)
             {
-                int randX = Random.Range(0, (int)2);
-                int randY = Random.Range(0, (int)5);
-                Vector2 target = Vector2.zero;
-                if (randX == 0 && randY != 4)
-                {
-                    target = new Vector2(Random.Range(0, (int) 2) * 2 - 1, 0);
-                }
-                else if (randY != 4)
-                {
-                    target = new Vector2(0, Random.Range(0, (int)2) * 2 - 1);
-                }
-
-                npcScript.ExternalMovement(npcScript.trueTile + target);
+                target = new Vector2(Random.Range(0, (int)2) * 2 - 1, 0);
             }
-            else
+            else if (randY != 4)
             {
-                npcScript.StopMovement();
+                target = new Vector2(0, Random.Range(0, (int)2) * 2 - 1);
             }
 
+            npcScript.ExternalMovement(npcScript.trueTile + target);
         }
         else
         {
@@ -291,7 +294,7 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        if (combatScript.InAttackRange(playerPreviousTile, npcScript.trueTile, attackDistance, npcScript.tileSize) && combatScript.PlayerInsideEnemy(this) == false)
+        if (combatScript.CapableOfAttacking(playerPreviousTile, npcScript.trueTile, npcScript, attackDistance, ignoreLineOfSight))
         {
             combatScript.EnemyAttack(this);
         }

@@ -27,7 +27,7 @@ public class PrayerToggle : MonoBehaviour
         prayerToggle = GetComponent<Toggle>();
 
         startPosition = flickInidcator.position.x;
-        distance = Mathf.Abs(flickInidcator.localPosition.x) * 1.3f;
+        distance = Mathf.Abs(flickInidcator.localPosition.x) * 2f;
         speed = distance / TickManager.maxTickTime;
 
         TickManager.onTick += OnTick;

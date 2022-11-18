@@ -11,6 +11,8 @@ public class TickManager : MonoBehaviour
     public static event TickAction afterTick;
 
     public const float maxTickTime = 0.6f;
+    public static float maxTickVariance = 0.07f;
+    float currentVariance = 0;
     public static int tickCount;
     float tickTimer;
     public static float simLatency = 0.2f;
@@ -24,9 +26,9 @@ public class TickManager : MonoBehaviour
     private void Update()
     {
         tickTimer += Time.deltaTime;
-        if (tickTimer >= maxTickTime)
+        if (tickTimer >= maxTickTime + currentVariance)
         {
-            tickTimer -= maxTickTime;
+            tickTimer -= maxTickTime + currentVariance;
             tickCount++;
             if (cancelBeforeTick != null)
             {
@@ -44,6 +46,8 @@ public class TickManager : MonoBehaviour
             {
                 afterTick();
             }
+
+            currentVariance = Random.Range(-maxTickVariance, maxTickVariance);
         }
     }
 }

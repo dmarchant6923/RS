@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class Compass : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     Button compassButton;
-    public Camera cam;
+    Camera cam;
     Transform compassMiddle;
 
     Action compassAction;
@@ -22,6 +22,8 @@ public class Compass : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             image.alphaHitTestMinimumThreshold = 0.5f;
         }
+
+        cam = Camera.main;
 
         compassMiddle = transform.GetChild(0);
 

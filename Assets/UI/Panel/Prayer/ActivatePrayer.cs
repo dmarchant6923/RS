@@ -90,6 +90,10 @@ public class ActivatePrayer : MonoBehaviour
         {
             Prayer.preserve = active;
         }
+        if (gameObject.name == "Rapid Heal")
+        {
+            Prayer.rapidHeal = active;
+        }
     }
 
 

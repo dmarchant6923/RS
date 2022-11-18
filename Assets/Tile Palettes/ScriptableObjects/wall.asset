@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d89a2ab6ea5f7174ca72543c8dc30280, type: 3}
-  m_Name: rocks
+  m_Name: wall
   m_EditorClassIdentifier: 
   tiles:
-  - {fileID: 11400000, guid: cc91b3b96f51a0b4f97c6af7e6a267da, type: 2}
+  - {fileID: 11400000, guid: c29d1087d5ef5cb468e2b8e53e3ce546, type: 2}
   obstacle: 1
-  examineText: It's a pile of rocks.
+  tallObstacle: 1
+  examineText: A brick wall.

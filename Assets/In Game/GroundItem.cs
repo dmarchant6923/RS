@@ -22,6 +22,8 @@ public class GroundItem : MonoBehaviour
 
     public static GameObject itemToTake;
 
+    public int doses = 0;
+
 
     private void Start()
     {
@@ -107,13 +109,13 @@ public class GroundItem : MonoBehaviour
                 }
             }
 
-            string path = "Items/" + gameObject.name;
-            if (equipment)
+            string name = gameObject.name;
+            if (doses > 0)
             {
-                path = "Equipment/" + gameObject.name;
+                name = name.Remove(name.Length - 3);
             }
 
-            newItem = Tools.LoadFromResource(gameObject.name);
+            newItem = Tools.LoadFromResource(name);
             if (chargeItem)
             {
                 newItem.GetComponent<ChargeItem>().charges = charges;
@@ -121,6 +123,10 @@ public class GroundItem : MonoBehaviour
             if (GetComponent<StackableGroundItem>() != null)
             {
                 newItem.GetComponent<StackableItem>().quantity = GetComponent<StackableGroundItem>().quantity;
+            }
+            if (doses > 0)
+            {
+                newItem.GetComponent<Potion>().startingDose = doses;
             }
             inventory.PlaceInInventory(newItem);
             Destroy(gameObject);

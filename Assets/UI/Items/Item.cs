@@ -155,6 +155,10 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             groundStackScript.textures = stackScript.images;
             groundStackScript.thresholds = stackScript.thresholds;
         }
+        if (GetComponent<Potion>() != null)
+        {
+            GetComponent<Potion>().DropPotion(groundScript);
+        }
         groundScript.GetComponent<SpriteRenderer>().size = Vector2.one * groundSizeFactor;
 
         if (removeFromInventory)

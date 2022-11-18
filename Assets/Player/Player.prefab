@@ -195,6 +195,7 @@ MonoBehaviour:
   showClickedTile: 0
   targetNPCPreviousTile: {x: 0, y: 0}
   attackThisTick: 0
+  minimapIcon: {fileID: 7298516019385278622}
   debugEnabled: 0
 --- !u!114 &5435353179154756461
 MonoBehaviour:
@@ -251,11 +252,13 @@ MonoBehaviour:
   tileMarker: {fileID: 7259498458452835272, guid: 66a1d7b163a109b458137626bcf52314, type: 3}
   currentTile: {x: 0, y: 0}
   destinationTile: {x: 0, y: 0}
+  serverDestinationTile: {x: 0, y: 0}
   moving: 0
   oddTilesInPath: 0
   showTrueTile: 0
   showClickedTile: 0
   debugEnabled: 0
+  walkHereAction: {fileID: 0}
 --- !u!114 &4140966173132359281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -446,6 +449,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7a5d1e4c925e6f458594ab78ff1d9af, type: 3}
+--- !u!1 &7298516019385278622 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5942293282744259809, guid: e7a5d1e4c925e6f458594ab78ff1d9af, type: 3}
+  m_PrefabInstance: {fileID: 3980845514003084415}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7038401588384353024 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6238507013189255039, guid: e7a5d1e4c925e6f458594ab78ff1d9af, type: 3}

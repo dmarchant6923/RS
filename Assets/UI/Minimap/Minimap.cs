@@ -15,39 +15,80 @@ public class Minimap : MonoBehaviour, IPointerClickHandler
     public GameObject inGameFlag;
     GameObject newInGameFlag;
 
+    Vector2 serverClickedPosition;
+
+    public static Minimap instance;
+    Action mapAction;
+
     private void Start()
     {
+        instance = this;
+        mapAction = GetComponent<Action>();
+        mapAction.serverAction0 += ServerClick;
+
         mainCamera = Camera.main.GetComponent<CameraScript>();
         newMinimapCam = Instantiate(minimapCam, Vector3.back * -10, Quaternion.identity);
 
         mapArea = GetComponent<Image>();
         mapArea.alphaHitTestMinimumThreshold = 0.5f;
+
+        TickManager.beforeTick += BeforeTick;
     }
 
     private void Update()
     {
         newMinimapCam.transform.position = mainCamera.player.transform.position + Vector3.back * 10;
         newMinimapCam.transform.eulerAngles = mainCamera.transform.eulerAngles;
+        if (newInGameFlag != null)
+        {
+            newInGameFlag.transform.eulerAngles = mainCamera.transform.eulerAngles;
+        }
     }
-
 
     public void OnPointerClick(PointerEventData pointerEventData)
     {
         Vector2 relPos = Input.mousePosition - mapArea.rectTransform.position;
-        Vector3 camScreenPos = (relPos / (mapArea.rectTransform.rect.width / 2)) * newMinimapCam.orthographicSize;
-        Vector3 worldPosition = camScreenPos + minimapCam.transform.position + Vector3.forward * 10;
-        Debug.Log(relPos + " " + camScreenPos + " " + worldPosition);
+        float angleToImageCenter = Tools.VectorToAngle(relPos);
+        Debug.Log(angleToImageCenter + " " + newMinimapCam.transform.eulerAngles.z);
+        float worldSpaceAngle = angleToImageCenter + newMinimapCam.transform.eulerAngles.z;
+        Vector2 newPos = Tools.AngleToVector(worldSpaceAngle) * relPos.magnitude;
 
-        if (newInGameFlag == null)
+        Vector3 camScreenPos = (newPos / (mapArea.rectTransform.rect.width / 2)) * newMinimapCam.orthographicSize;
+        Vector3 worldPosition = camScreenPos + newMinimapCam.transform.position + Vector3.forward * 10;
+
+        Player.player.trueTileScript.ClientClick(worldPosition);
+        mapAction.PickAction(0);
+        StartCoroutine(ServerPosition(worldPosition));
+    }
+
+    IEnumerator ServerPosition(Vector2 position)
+    {
+        yield return new WaitForSeconds(TickManager.simLatency);
+        serverClickedPosition = position;
+    }
+
+    void ServerClick()
+    {
+        Player.player.trueTileScript.ExternalMovement(serverClickedPosition);
+    }
+
+    void BeforeTick()
+    {
+        if (newInGameFlag != null)
         {
-            newInGameFlag = Instantiate(inGameFlag, worldPosition, Quaternion.identity);
+            if (Player.player.trueTile == TileManager.FindTile(newInGameFlag.transform.position))
+            {
+                Destroy(newInGameFlag);
+            }
         }
-        newInGameFlag.transform.position = worldPosition +  Vector3.up * 0.8f;
+    }
 
-        //if (newFlag == null)
-        //{
-        //    newFlag = Instantiate(flag, transform.parent);
-        //}
-        //newFlag.rectTransform.position = Input.mousePosition;
+    public static void PlaceFlag(Vector2 worldPosition)
+    {
+        if (instance.newInGameFlag == null)
+        {
+            instance.newInGameFlag = Instantiate(instance.inGameFlag, worldPosition, Quaternion.identity);
+        }
+        instance.newInGameFlag.transform.position = worldPosition;
     }
 }

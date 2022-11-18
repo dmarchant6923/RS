@@ -88,6 +88,7 @@ public class PlayerStats : MonoBehaviour
         truePrayer = prayer * 100;
         TickManager.beforeTick += BoostTimer;
         TickManager.onTick += PrayerDrain;
+        TickManager.afterTick += Redemption;
 
         float baselvl = 0.25f * ((float) defence + hitpoints + (prayer * 0.5f));
         float meleelvl = (13f / 40f) * ((float) attack + strength);
@@ -104,13 +105,27 @@ public class PlayerStats : MonoBehaviour
     {
         if (timerActive)
         {
-            if (tickTimer == 0)
+            if (tickTimer <= 0)
             {
                 StatRestoreTick();
                 tickTimer = initialTickTimer;
                 timer = (float)initialTickTimer * TickManager.maxTickTime;
             }
             tickTimer--;
+            if (Prayer.preserve && preserve == false && tickTimer > 25)
+            {
+                preserve = true;
+                initialTickTimer = 150;
+                tickTimer += 50;
+                timer += 30;
+            }
+            if (Prayer.preserve == false && preserve)
+            {
+                preserve = false;
+                initialTickTimer = 100;
+                tickTimer -= 50;
+                timer -= 30;
+            }
         }
         else
         {
@@ -218,6 +233,16 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    void Redemption()
+    {
+        if (Prayer.redemption && currentHitpoints <= (float)initialHitpoints / 10)
+        {
+            currentPrayer = 0;
+            Prayer.DeactivatePrayers();
+            PlayerHeal(Mathf.FloorToInt((float)initialPrayer / 4));
+        }
+    }
+
     public static void PlayerHeal(int amount)
     {
         PlayerHeal(amount, 0);
@@ -270,7 +295,7 @@ public class PlayerStats : MonoBehaviour
         {
             NewDivineTimer(potion);
         }
-        else
+        else if (instance.timerActive == false)
         {
             instance.timerActive = true;
             instance.tickTimer = instance.initialTickTimer;
@@ -332,7 +357,9 @@ public class PlayerStats : MonoBehaviour
         divineDefenseTimer = buffScript.defense ? divineTicks : divineDefenseTimer;
         divineRangedTimer = buffScript.range ? divineTicks : divineRangedTimer;
         divineMagicTimer = buffScript.mage ? divineTicks : divineMagicTimer;
+        Texture texture = buffScript.potionScript.CreatePotionTexture(4);
+        string name = buffScript.name.Remove(buffScript.name.Length - 3);
 
-        BuffBar.instance.CreateExtraTimer(buffScript.dose4, (float)divineTicks * TickManager.maxTickTime, buffScript.GetComponent<Potion>().potionColor);
+        BuffBar.instance.CreateExtraTimer(texture, (float)divineTicks * TickManager.maxTickTime, name);
     }
 }

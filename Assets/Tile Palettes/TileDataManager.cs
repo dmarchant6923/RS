@@ -33,6 +33,7 @@ public class TileDataManager : MonoBehaviour
         }
 
         examineTileAction = GetComponent<Action>();
+        examineTileAction.clientActionExamine += ExamineTile;
     }
 
     private void Update()
@@ -44,7 +45,7 @@ public class TileDataManager : MonoBehaviour
             if (examineText != "")
             {
                 menuText = "Examine " + GetTileName(MouseManager.mouseCoordinate);
-                examineTileAction.menuTexts[5] = menuText;
+                examineTileAction.menuTexts[8] = menuText;
                 examineTileAction.examineText = examineText;
                 examineTileAction.objectName = GetTileName(MouseManager.mouseCoordinate);
                 if (RightClickMenu.tileActions.Contains(examineTileAction) == false)
