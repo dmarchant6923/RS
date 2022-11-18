@@ -34,6 +34,7 @@ public class Enemy : MonoBehaviour
     public int attackDistance = 1;
     public string attackStyle;
 
+    public bool autoRetaliate = true;
     public bool aggro;
     public int aggroRange = 3;
 
@@ -41,11 +42,15 @@ public class Enemy : MonoBehaviour
     public int newMaxHit;
 
     public bool ignoreLineOfSight = false;
-
+    public bool ignoreAccuracyCheck = false;
 
     public bool typelessAttack = false;
     public int overheadProtectionMult = 1;
     public Color projectileColor;
+    public bool slowProjectile = false;
+    public Sprite customProjectile;
+
+    public int customCombatLvl;
 
     [HideInInspector] bool inCombat;
 
@@ -85,12 +90,18 @@ public class Enemy : MonoBehaviour
 
         playerScript = FindObjectOfType<Player>();
         combatScript = GetComponent<Combat>();
+        combatScript.attackCooldown = attackSpeed;
 
         float baselvl = 0.25f * ((float)defence + hitpoints + (1 * 0.5f));
         float meleelvl = (13f / 40f) * ((float)attack + strength);
         float rangelvl = (13f / 40f) * ((float)ranged * 3 / 2);
         float magelvl = (13f / 40f) * ((float)magic * 3 / 2);
         combatLevel = baselvl + Mathf.Max(meleelvl, rangelvl, magelvl);
+
+        if (customCombatLvl > 0)
+        {
+            combatLevel = customCombatLvl;
+        }
 
         if (combatLevel >= PlayerStats.combatLevel + 10)
         {
@@ -127,6 +138,27 @@ public class Enemy : MonoBehaviour
         else
         {
             combatLevelColor = "#00ff00";
+        }
+
+        if (attackStyle.ToLower().Contains("slash"))
+        {
+            attackStyle = AttackStyles.slashStyle;
+        }
+            if (attackStyle.ToLower().Contains("range"))
+        {
+            attackStyle = AttackStyles.rangedStyle;
+        }
+        else if (attackStyle.ToLower().Contains("mag"))
+        {
+            attackStyle = AttackStyles.magicStyle;
+        }
+        else if (attackStyle.ToLower().Contains("stab"))
+        {
+            attackStyle = AttackStyles.stabStyle;
+        }
+        else if (attackStyle.ToLower().Contains("crush"))
+        {
+            attackStyle = AttackStyles.crushStyle;
         }
 
         yield return null;
@@ -218,7 +250,7 @@ public class Enemy : MonoBehaviour
             healthScript.UpdateHealth(hitpoints);
         }
 
-        if (damage.fromPlayer && isAttackingPlayer == false)
+        if (damage.fromPlayer && isAttackingPlayer == false && autoRetaliate)
         {
             AttackPlayer();
             if (inCombat == false)
@@ -302,5 +334,10 @@ public class Enemy : MonoBehaviour
         {
             attackThisTick = false;
         }
+    }
+
+    public void StopAttacking()
+    {
+        isAttackingPlayer = false;
     }
 }

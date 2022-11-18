@@ -27,7 +27,9 @@ public class Overhead : MonoBehaviour
 
     private void Update()
     {
-        transform.position = Camera.main.WorldToScreenPoint(objectWithOverhead.transform.position + Tools.AngleToVector3(Camera.main.transform.eulerAngles.z) * worldSpaceOffset);
+        //transform.position = Camera.main.WorldToScreenPoint(objectWithOverhead.transform.position + Tools.AngleToVector3(Camera.main.transform.eulerAngles.z) * worldSpaceOffset);
+        transform.position = Camera.main.WorldToScreenPoint(objectWithOverhead.transform.position + Tools.AngleToVector3(Camera.main.transform.eulerAngles.z) * worldSpaceOffset) + Vector3.up * 60;
+
     }
 
     public void SwitchOverhead(string overhead)

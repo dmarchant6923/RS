@@ -29,7 +29,9 @@ public class HealthBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = Camera.main.WorldToScreenPoint(objectWithHealth.transform.position + Tools.AngleToVector3(Camera.main.transform.eulerAngles.z) * worldSpaceOffset);
+        //transform.position = Camera.main.WorldToScreenPoint(objectWithHealth.transform.position + Tools.AngleToVector3(Camera.main.transform.eulerAngles.z) * worldSpaceOffset);
+        transform.position = Camera.main.WorldToScreenPoint(objectWithHealth.transform.position + Tools.AngleToVector3(Camera.main.transform.eulerAngles.z) * worldSpaceOffset) + Vector3.up * 20;
+
     }
 
     void AfterTick()

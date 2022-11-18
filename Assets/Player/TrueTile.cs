@@ -120,6 +120,11 @@ public class TrueTile : MonoBehaviour
         path = pathFinder.FindAStarPath(currentTile, serverDestinationTile);
 
 
+        if (path.Count == 0)
+        {
+            return;
+        }
+
         if (showClickedTile)
         {
             newClickedTile.transform.position = path[path.Count - 1];

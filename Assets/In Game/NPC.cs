@@ -89,6 +89,9 @@ public class NPC : MonoBehaviour
         freezeTicks = -5;
 
         minimapIcon.localScale *= 1 /transform.localScale.x;
+
+        angleFacing = npcArrow.eulerAngles.z;
+        targetAngle = angleFacing;
     }
 
     public void UpdateActions(string name, bool enemy)
@@ -194,16 +197,13 @@ public class NPC : MonoBehaviour
 
     void AfterTick()
     {
-        if (isTargetingPlayer)
+        if (GetComponent<Enemy>() != null && GetComponent<Enemy>().attackThisTick)
         {
-            if (GetComponent<Enemy>() != null && GetComponent<Enemy>().attackThisTick)
-            {
-                arrowColor.color = Color.red;
-            }
-            else
-            {
-                arrowColor.color = Color.yellow;
-            }
+            arrowColor.color = Color.red;
+        }
+        else if (isTargetingPlayer)
+        {
+            arrowColor.color = Color.yellow;
         }
         else
         {

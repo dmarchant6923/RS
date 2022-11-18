@@ -19,6 +19,8 @@ public class Projectile : MonoBehaviour
     public Sprite arrowSprite;
     public Sprite dartSprite;
 
+    public Sprite customSprite;
+
     private void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
@@ -27,13 +29,20 @@ public class Projectile : MonoBehaviour
         airborneTime -= 0.5f;
         sprite.enabled = false;
 
-        if (arrow)
+        if (customSprite != null)
         {
-            sprite.sprite = arrowSprite;
+            sprite.sprite = customSprite;
         }
-        else if (dart)
+        else
         {
-            sprite.sprite = dartSprite;
+            if (arrow)
+            {
+                sprite.sprite = arrowSprite;
+            }
+            else if (dart)
+            {
+                sprite.sprite = dartSprite;
+            }
         }
 
         TickManager.beforeTick += BeforeTick;
@@ -43,7 +52,12 @@ public class Projectile : MonoBehaviour
     {
         if (sprite.enabled == false)
         {
-            initialPosition = transform.position + (target.transform.position - transform.position).normalized * 0.4f;
+            float mult = 0.4f;
+            if (source.GetComponent<NPC>() != null)
+            {
+                mult *= (float)source.GetComponent<NPC>().tileSize;
+            }
+            initialPosition = transform.position + (target.transform.position - transform.position).normalized * mult;
             sprite.enabled = true;
         }
     }

@@ -400,7 +400,6 @@ public class Pathfinder : MonoBehaviour
             Destroy(newAStarDebug.transform.GetChild(1).gameObject);
         }
 
-        bool endLoop = false;
         while (selectedTile != endTile)
         {
             ExamineNewTiles(selectedTile);
@@ -408,13 +407,10 @@ public class Pathfinder : MonoBehaviour
 
             SpawnDebugMarkers();
 
-            Debug.Log(availableTiles.Count + " " + examinedTiles.Count);
-
-            if (availableTiles.Count == examinedTiles.Count || examinedTiles.Count > 100)
+            if (availableTiles.Count == examinedTiles.Count || examinedTiles.Count > 150)
             {
-                Debug.Log("available tiles: " + availableTiles.Count + ". examined tiles: " + examinedTiles.Count);
-                endLoop = true;
-                break;
+                //Debug.Log("limit reached; used simple path instead");
+                return FindSimplePath(startTile, endTile);
             }
             selectedTile = SelectNewTile();
         }
@@ -463,6 +459,53 @@ public class Pathfinder : MonoBehaviour
 
     }
 
+    public List<Vector2> FindSimplePath(Vector2 startTile, Vector2 endTile)
+    {
+        List<Vector2> path = new List<Vector2>();
+        Vector2 currentTile = startTile;
+        while (currentTile != endTile)
+        {
+            Vector2 newTile;
+            if (Mathf.Abs(currentTile.x - endTile.x) > 0 && Mathf.Abs(currentTile.y - endTile.y) > 0)
+            {
+                Vector2 moveX = Vector2.right * Mathf.Sign(endTile.x - currentTile.x);
+                Vector2 moveY = Vector2.up * Mathf.Sign(endTile.y - currentTile.y);
+                newTile = currentTile + new Vector2(Mathf.Sign(endTile.x - currentTile.x), Mathf.Sign(endTile.y - currentTile.y));
+                if (TileDataManager.GetTileData(newTile).obstacle == false &&
+                    TileDataManager.GetTileData(currentTile + moveX).obstacle == false && TileDataManager.GetTileData(currentTile + moveY).obstacle == false)
+                {
+                    path.Add(newTile);
+                    currentTile = newTile;
+                    continue;
+                }
+            }
+            if (Mathf.Abs(currentTile.x - endTile.x) > 0)
+            {
+                newTile = currentTile + Vector2.right * Mathf.Sign(endTile.x - currentTile.x);
+                if (TileDataManager.GetTileData(newTile).obstacle == false)
+                {
+                    path.Add(newTile);
+                    currentTile = newTile;
+                    continue;
+                }
+            }
+            if (Mathf.Abs(currentTile.y - endTile.y) > 0)
+            {
+                newTile = currentTile + Vector2.up * Mathf.Sign(endTile.y - currentTile.y);
+                if (TileDataManager.GetTileData(newTile).obstacle == false)
+                {
+                    path.Add(newTile);
+                    currentTile = newTile;
+                    continue;
+                }
+            }
+
+            endTile = currentTile;
+        }
+
+        return path;
+    }
+
     public List<Vector2> FindNPCPath(NPC npcScript, Vector2 startTile, Vector2 endTile, int npcSize)
     {
         List<Vector2> path = new List<Vector2>();
@@ -472,8 +515,8 @@ public class Pathfinder : MonoBehaviour
             Vector2 newTile;
             if (Mathf.Abs(currentTile.x - endTile.x) > 0 && Mathf.Abs(currentTile.y - endTile.y) > 0)
             {
-                Vector2 moveX = Vector2.right * Mathf.Sign(Mathf.Sign(endTile.x - currentTile.x));
-                Vector2 moveY = Vector2.up * Mathf.Sign(Mathf.Sign(endTile.y - currentTile.y));
+                Vector2 moveX = Vector2.right * Mathf.Sign(endTile.x - currentTile.x);
+                Vector2 moveY = Vector2.up * Mathf.Sign(endTile.y - currentTile.y);
                 newTile = currentTile + new Vector2(Mathf.Sign(endTile.x - currentTile.x), Mathf.Sign(endTile.y - currentTile.y));
                 if (Tools.BlockNPCMovement(npcScript, newTile, npcSize) == false && 
                     Tools.BlockNPCMovement(npcScript, currentTile + moveX, npcSize) == false && Tools.BlockNPCMovement(npcScript, currentTile + moveY, npcSize) == false)

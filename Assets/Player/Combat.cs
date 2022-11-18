@@ -20,6 +20,10 @@ public class Combat : MonoBehaviour
 
     public bool debug;
     LineRenderer line;
+    public GameObject LOSIntersection;
+    List<GameObject> intersections = new List<GameObject>();
+    public GameObject checkedTileMarker;
+    List<GameObject> checkedTileMarkers = new List<GameObject>();
 
     bool melee;
     bool mage;
@@ -493,7 +497,6 @@ public class Combat : MonoBehaviour
         float closestX = Mathf.Clamp(playerTile.x, NPCSWTile.x, NPCSWTile.x + (NPCSize - 1));
         float closestY = Mathf.Clamp(playerTile.y, NPCSWTile.y, NPCSWTile.y + (NPCSize - 1));
         Vector2 closestTile = new Vector2(closestX, closestY);
-        Debug.Log(playerTile + " " + closestTile + " " + attackRange);
         if (attackRange == 1)
         {
             if ((closestTile - playerTile).magnitude < 1.1f)
@@ -686,14 +689,22 @@ public class Combat : MonoBehaviour
         script.target = target;
         script.color = color;
         script.source = source;
-        if (WeaponCategory == WornEquipment.bowCategory)
+        if (onPlayer == false && source.GetComponent<Enemy>().customProjectile != null)
         {
-            script.arrow = true;
-            newProjectile.transform.localScale *= 0.8f;
+            script.customSprite = source.GetComponent<Enemy>().customProjectile;
         }
-        if (WeaponCategory == WornEquipment.thrownCategory)
+        else
         {
-            script.dart = true;
+
+            if (WeaponCategory == WornEquipment.bowCategory)
+            {
+                script.arrow = true;
+                newProjectile.transform.localScale *= 0.8f;
+            }
+            if (WeaponCategory == WornEquipment.thrownCategory)
+            {
+                script.dart = true;
+            }
         }
     }
 
@@ -718,7 +729,7 @@ public class Combat : MonoBehaviour
             float attRoll = Random.Range(0, (int)maxAttRoll);
             float defRoll = Random.Range(0, (int)maxDefRoll);
             bool success = false;
-            if (attRoll > defRoll)
+            if (attRoll > defRoll || enemyScript.ignoreAccuracyCheck)
             {
                 success = true;
             }
@@ -740,12 +751,12 @@ public class Combat : MonoBehaviour
 
             int dist = TileManager.TileDistance(playerScript.trueTile, enemyScript.npcScript.trueTile);
             int delay = 1;
-            if (range)
+            if (range && enemyScript.slowProjectile == false)
             {
                 delay = 1 + Mathf.FloorToInt((3 + dist) / 6);
                 SpawnProjectile(playerScript.gameObject, enemyScript.gameObject, delay, enemyScript.projectileColor, WornEquipment.bowCategory);
             }
-            else if (mage)
+            else if (mage || enemyScript.slowProjectile)
             {
                 delay = 1 + Mathf.FloorToInt((1 + dist) / 3);
                 SpawnProjectile(playerScript.gameObject, enemyScript.gameObject, delay, enemyScript.projectileColor, "");
@@ -903,7 +914,7 @@ public class Combat : MonoBehaviour
         }
 
         float slope = relativeTile.y / relativeTile.x;
-        float b = 0; //slope
+        float b = lineStart.y;
         if (relativeTile.x != 0 && lineStart.x != 0)
         {
             b = -lineStart.x * slope;
@@ -915,6 +926,16 @@ public class Combat : MonoBehaviour
             line.SetPosition(1, Player.player.trueTile + relativeTile + lineStart);
             line.startColor = Color.red;
             line.endColor = Color.red;
+            foreach(GameObject intersection in intersections)
+            {
+                Destroy(intersection);
+            }
+            intersections = new List<GameObject>();
+            foreach (GameObject tile in checkedTileMarkers)
+            {
+                Destroy(tile);
+            }
+            checkedTileMarkers = new List<GameObject>();
         }
 
         Vector2 CoordinateFromX(float x)
@@ -940,9 +961,12 @@ public class Combat : MonoBehaviour
         {
             float x = i + Mathf.Sign(relativeTile.x) * 0.5f;
             Vector2 coordinate = CoordinateFromX(x);
-            if (coordinate.y - Mathf.Floor(coordinate.y) == 0.5f && cornerIntersections.Contains(coordinate) == false)
+            if (Mathf.Abs(coordinate.y - Mathf.Floor(coordinate.y) - 0.5f) < 0.01f)
             {
-                cornerIntersections.Add(coordinate);
+                if (cornerIntersections.Contains(coordinate) == false)
+                {
+                    cornerIntersections.Add(coordinate);
+                }
             }
             else
             {
@@ -956,9 +980,12 @@ public class Combat : MonoBehaviour
         {
             float y = j + Mathf.Sign(relativeTile.y) * 0.5f;
             Vector2 coordinate = CoordinateFromY(y);
-            if (coordinate.x - Mathf.Floor(coordinate.x) == 0.5f && cornerIntersections.Contains(coordinate) == false)
+            if (Mathf.Abs(coordinate.x - Mathf.Floor(coordinate.x) - 0.5f) < 0.01f)
             {
-                cornerIntersections.Add(coordinate);
+                if (cornerIntersections.Contains(coordinate) == false)
+                {
+                    cornerIntersections.Add(coordinate);
+                }
             }
             else
             {
@@ -971,13 +998,31 @@ public class Combat : MonoBehaviour
         //go through each vertical intersection, get tile data from left and right tiles. If either are obstacles, return false. Ignore tiles already examined.
         foreach (Vector2 intersection in verticalIntersections)
         {
+            if (debug)
+            {
+                GameObject newIntersection = Instantiate(LOSIntersection, intersection, Quaternion.identity);
+                intersections.Add(newIntersection);
+            }
+
             for (i = -1; i < 2; i += 2)
             {
                 Vector2 tile = TileManager.FindTile(intersection + Vector2.right * i * 0.5f);
                 if (searchedTiles.Contains(tile) == false)
                 {
+                    if (debug)
+                    {
+                        GameObject newTile = Instantiate(checkedTileMarker, tile, Quaternion.identity);
+                        checkedTileMarkers.Add(newTile);
+                    }
+
                     if (TileDataManager.GetTileData(tile).tallObstacle)
                     {
+                        if (debug)
+                        {
+                            checkedTileMarkers[checkedTileMarkers.Count - 1].GetComponent<SpriteRenderer>().color = Color.red;
+                            intersections[intersections.Count - 1].GetComponent<SpriteRenderer>().color = Color.red;
+                        }
+
                         return false;
                     }
                     searchedTiles.Add(tile);
@@ -988,13 +1033,31 @@ public class Combat : MonoBehaviour
         //same for horizontal intersections, up and down tiles.
         foreach (Vector2 intersection in horizontalIntersections)
         {
+            if (debug)
+            {
+                GameObject newIntersection = Instantiate(LOSIntersection, intersection, Quaternion.identity);
+                intersections.Add(newIntersection);
+            }
+
             for (i = -1; i < 2; i += 2)
             {
                 Vector2 tile = TileManager.FindTile(intersection + Vector2.up * i * 0.5f);
                 if (searchedTiles.Contains(tile) == false)
                 {
+                    if (debug)
+                    {
+                        GameObject newTile = Instantiate(checkedTileMarker, tile, Quaternion.identity);
+                        checkedTileMarkers.Add(newTile);
+                    }
+
                     if (TileDataManager.GetTileData(tile).tallObstacle)
                     {
+                        if (debug)
+                        {
+                            checkedTileMarkers[checkedTileMarkers.Count - 1].GetComponent<SpriteRenderer>().color = Color.red;
+                            intersections[intersections.Count - 1].GetComponent<SpriteRenderer>().color = Color.red;
+                        }
+
                         return false;
                     }
                     searchedTiles.Add(tile);
@@ -1002,9 +1065,37 @@ public class Combat : MonoBehaviour
             }
         }
 
-        if (cornerIntersections.Count > 0)
+        foreach (Vector2 intersection in cornerIntersections)
         {
-            Debug.Log("there are some corner intersections to be accounted for");
+            if (debug)
+            {
+                GameObject newIntersection = Instantiate(LOSIntersection, intersection, Quaternion.identity);
+                intersections.Add(newIntersection);
+            }
+
+            for (i = 45; i < 360; i += 90)
+            {
+                Vector2 tile = TileManager.FindTile(intersection + Tools.AngleToVector(i));
+                if (searchedTiles.Contains(tile) == false)
+                {
+                    if (debug)
+                    {
+                        GameObject newTile = Instantiate(checkedTileMarker, tile, Quaternion.identity);
+                        checkedTileMarkers.Add(newTile);
+                    }
+
+                    if (TileDataManager.GetTileData(tile).tallObstacle)
+                    {
+                        if (debug)
+                        {
+                            checkedTileMarkers[checkedTileMarkers.Count - 1].GetComponent<SpriteRenderer>().color = Color.yellow;
+                            intersections[intersections.Count - 1].GetComponent<SpriteRenderer>().color = Color.yellow;
+                        }
+
+                        Debug.Log("there are corners that need to be accounted for");
+                    }
+                }
+            }
         }
 
         if (debug)
@@ -1020,17 +1111,17 @@ public class Combat : MonoBehaviour
     {
         if (InAttackRange(playerTile, NPCPreviousTile, attackRange, NPCScript.tileSize) == false)
         {
-            Debug.Log("failed InAttackRange");
+            //Debug.Log("failed InAttackRange");
             return false;
         }
         if (PlayerInsideEnemy(NPCScript.GetComponent<Enemy>()))
         {
-            Debug.Log("failed PlayerInsideEnemy");
+            //Debug.Log("failed PlayerInsideEnemy");
             return false;
         }
         if (ignoreLOS == false && LineOfSight(NPCScript) == false)
         {
-            Debug.Log("failed LineOfSight");
+            //Debug.Log("failed LineOfSight");
             return false;
         }
 

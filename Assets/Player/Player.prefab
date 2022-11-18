@@ -234,6 +234,9 @@ MonoBehaviour:
   attackCooldown: 0
   minCoolDown: -7
   projectile: {fileID: 6025835048010670392, guid: 5b5b57d91dfa50f43ba55ef8df626e95, type: 3}
+  debug: 0
+  LOSIntersection: {fileID: 1569941437318096177, guid: 71312f94cab06184b830080749e95b33, type: 3}
+  checkedTileMarker: {fileID: 6542302095627379823, guid: a3c20cf03d9487a4d8e63fbc499ea5ef, type: 3}
 --- !u!114 &981017874431734
 MonoBehaviour:
   m_ObjectHideFlags: 0
