@@ -20,6 +20,7 @@ public class XPDrop : MonoBehaviour
     {
         public Texture tex;
         public int number;
+        public bool offensivePrayer = false;
     }
     public static List<LoadedDrop> loadedXPDrops = new List<LoadedDrop>();
 
@@ -51,6 +52,10 @@ public class XPDrop : MonoBehaviour
             GameObject newDrop = Instantiate(instance.xpDrop, instance.transform);
             newDrop.transform.localPosition = Vector2.up * i * 30;
             newDrop.GetComponentInChildren<Text>().text = loadedXPDrops[i].number.ToString();
+            if (loadedXPDrops[i].offensivePrayer)
+            {
+                newDrop.GetComponentInChildren<Text>().color = Color.cyan;
+            }
             newDrop.GetComponent<RawImage>().texture = loadedXPDrops[i].tex;
             activeXPDrops.Add(newDrop);
         }
@@ -58,49 +63,49 @@ public class XPDrop : MonoBehaviour
         loadedXPDrops = new List<LoadedDrop>();
     }
 
-    public static void CombatXPDrop(string style, string type, int damage)
+    public static void CombatXPDrop(string style, string type, int damage, bool offensivePrayer)
     {
-        CombatXPDrop(style, type, damage, 1);
+        CombatXPDrop(style, type, damage, 1, offensivePrayer);
     }
-    public static void CombatXPDrop(string style, string type, float damage, float mult)
+    public static void CombatXPDrop(string style, string type, float damage, float mult, bool offensivePrayer)
     {
-        SpawnXPDrop(instance.hitpoints, damage * 1.33f * mult);
+        SpawnXPDrop(instance.hitpoints, damage * 1.33f * mult, offensivePrayer);
         if (type == AttackStyles.controlledType)
         {
-            SpawnXPDrop(instance.attack, damage * 1.33f * mult);
-            SpawnXPDrop(instance.strength, damage * 1.33f * mult);
-            SpawnXPDrop(instance.defense, damage * 1.33f * mult);
+            SpawnXPDrop(instance.attack, damage * 1.33f * mult, offensivePrayer);
+            SpawnXPDrop(instance.strength, damage * 1.33f * mult, offensivePrayer);
+            SpawnXPDrop(instance.defense, damage * 1.33f * mult, offensivePrayer);
         }
         else if (style == AttackStyles.rangedStyle && type == AttackStyles.longrangeType)
         {
-            SpawnXPDrop(instance.range, damage * 2f * mult);
-            SpawnXPDrop(instance.defense, damage * 2f * mult);
+            SpawnXPDrop(instance.range, damage * 2f * mult, offensivePrayer);
+            SpawnXPDrop(instance.defense, damage * 2f * mult, offensivePrayer);
         }
         else if (style == AttackStyles.magicStyle && type == AttackStyles.longrangeType)
         {
-            SpawnXPDrop(instance.mage, damage * 1.33f * mult);
-            SpawnXPDrop(instance.defense, damage * 1f * mult);
+            SpawnXPDrop(instance.mage, damage * 1.33f * mult, offensivePrayer);
+            SpawnXPDrop(instance.defense, damage * 1f * mult, offensivePrayer);
         }
 
         else if (style == AttackStyles.magicStyle)
         {
-            SpawnXPDrop(instance.mage, damage * 2f * mult);
+            SpawnXPDrop(instance.mage, damage * 2f * mult, offensivePrayer);
         }
         else if (style == AttackStyles.rangedStyle)
         {
-            SpawnXPDrop(instance.range, damage * 4f * mult);
+            SpawnXPDrop(instance.range, damage * 4f * mult, offensivePrayer);
         }
         else if (type == AttackStyles.accurateType)
         {
-            SpawnXPDrop(instance.attack, damage * 4f * mult);
+            SpawnXPDrop(instance.attack, damage * 4f * mult, offensivePrayer);
         }
         else if (type == AttackStyles.aggressiveType)
         {
-            SpawnXPDrop(instance.strength, damage * 4f * mult);
+            SpawnXPDrop(instance.strength, damage * 4f * mult, offensivePrayer);
         }
         else if (type == AttackStyles.defensiveType)
         {
-            SpawnXPDrop(instance.defense, damage * 4f * mult);
+            SpawnXPDrop(instance.defense, damage * 4f * mult, offensivePrayer);
         }
     }
     public static void SkillXPDrop(string skill, float number)
@@ -133,11 +138,20 @@ public class XPDrop : MonoBehaviour
 
     public static void SpawnXPDrop(Texture tex, float number)
     {
+        SpawnXPDrop(tex, number, false);
+    }
+
+    public static void SpawnXPDrop(Texture tex, float number, bool offensivePrayer)
+    {
         foreach (LoadedDrop drop in loadedXPDrops)
         {
             if (drop.tex == tex)
             {
                 drop.number += Mathf.FloorToInt(number);
+                if (drop.offensivePrayer == false)
+                {
+                    drop.offensivePrayer = offensivePrayer;
+                }
                 return;
             }
         }
@@ -145,6 +159,7 @@ public class XPDrop : MonoBehaviour
         LoadedDrop newDrop = new LoadedDrop();
         newDrop.tex = tex;
         newDrop.number = Mathf.FloorToInt(number);
+        newDrop.offensivePrayer = offensivePrayer;
         loadedXPDrops.Add(newDrop);
     }
 }

@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour
     public bool arrow;
     public bool dart;
     public GameObject target;
+    Vector3 targetPosition;
     public GameObject source;
     public float airborneTicks;
     Vector3 initialPosition;
@@ -21,13 +22,13 @@ public class Projectile : MonoBehaviour
 
     public Sprite customSprite;
 
+    public bool appearInstantly = false;
+
     private void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
         sprite.color = color;
         airborneTime = airborneTicks * 0.6f;
-        airborneTime -= 0.5f;
-        sprite.enabled = false;
 
         if (customSprite != null)
         {
@@ -43,6 +44,22 @@ public class Projectile : MonoBehaviour
             {
                 sprite.sprite = dartSprite;
             }
+        }
+
+        if (appearInstantly == false)
+        {
+            airborneTime -= 0.5f;
+            sprite.enabled = false;
+        }
+        else
+        {
+            float mult = 0.4f;
+            if (source.GetComponent<NPC>() != null)
+            {
+                mult *= (float)source.GetComponent<NPC>().tileSize;
+            }
+            initialPosition = transform.position + (target.transform.position - transform.position).normalized * mult;
+            sprite.enabled = true;
         }
 
         TickManager.beforeTick += BeforeTick;
@@ -71,7 +88,10 @@ public class Projectile : MonoBehaviour
         }
 
         float percent = timer / airborneTime;
-        Vector3 targetPosition = target.transform.position + (initialPosition - target.transform.position).normalized * 0.3f;
+        if (target != null)
+        {
+            targetPosition = target.transform.position + (initialPosition - target.transform.position).normalized * 0.3f;
+        }
         Vector3 totalDistance = targetPosition - initialPosition;
         transform.position = initialPosition + totalDistance.normalized * totalDistance.magnitude * percent;
         transform.eulerAngles = new Vector3(0, 0, Tools.VectorToAngle(totalDistance));

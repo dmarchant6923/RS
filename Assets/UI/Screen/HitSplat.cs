@@ -19,6 +19,7 @@ public class HitSplat : MonoBehaviour
     void Start()
     {
         transform.SetParent(FindObjectOfType<Canvas>().transform);
+        transform.SetAsFirstSibling();
     }
 
     // Update is called once per frame
@@ -79,6 +80,7 @@ public class HitSplat : MonoBehaviour
             if (activeHitSplats[i] == null)
             {
                 GameObject newHitSplat = Instantiate(hitSplat, transform);
+                newHitSplat.transform.SetAsLastSibling();
                 if (damage == 0)
                 {
                     newHitSplat.GetComponent<RawImage>().texture = blueHitSplat;
@@ -91,7 +93,7 @@ public class HitSplat : MonoBehaviour
 
                 activeHitSplats[i] = newHitSplat;
                 timers[i] = timer;
-                numActive++;
+                numActive = Mathf.Min(numActive + 1, 4);
                 break;
             }
         }

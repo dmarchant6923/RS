@@ -135,8 +135,8 @@ public class WornEquipment : MonoBehaviour
         head = headSlot.GetComponentInChildren<Equipment>();
         cape = capeSlot.GetComponentInChildren<Equipment>();
         neck = neckSlot.GetComponentInChildren<Equipment>();
-        ammo = ammoSlot.GetComponentInChildren<Equipment>();
         weapon = weaponSlot.GetComponentInChildren<Equipment>();
+        ammo = ammoSlot.GetComponentInChildren<Equipment>();
         body = bodySlot.GetComponentInChildren<Equipment>();
         shield = shieldSlot.GetComponentInChildren<Equipment>();
         leg = legSlot.GetComponentInChildren<Equipment>();
@@ -152,6 +152,11 @@ public class WornEquipment : MonoBehaviour
         {
             if (slot.GetComponentInChildren<Equipment>() != null)
             {
+                if (slot == ammoSlot && weapon != null && weapon.GetComponent<BlowPipe>() != null)
+                {
+                    continue;
+                }
+
                 Equipment item = slot.GetComponentInChildren<Equipment>();
                 attackStab += item.attackStab;
                 attackSlash += item.attackSlash;

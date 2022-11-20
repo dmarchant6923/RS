@@ -18,7 +18,7 @@ public class NPC : MonoBehaviour
     List<Vector2> path = new List<Vector2>();
     List<Vector2> npcPath = new List<Vector2>();
     Vector2 npcPosition;
-    float moveSpeed = 3f;
+    float moveSpeed = 3.3f;
     public bool runEnabled = false;
     [System.NonSerialized] public bool forceWalk = false;
     [HideInInspector] public bool moving = false;
@@ -35,15 +35,17 @@ public class NPC : MonoBehaviour
 
     [HideInInspector] public bool isTargetingPlayer;
     float angleFacing;
-    float targetAngle;
+    [HideInInspector] public float targetAngle;
     Transform npcArrow;
     SpriteRenderer arrowColor;
     float rotationSpeed = 300;
 
     [HideInInspector] public bool externalTarget;
+    [HideInInspector] public bool externalFocus;
 
     public delegate void TrueTileMoved();
     public event TrueTileMoved beforeMovement;
+    public event TrueTileMoved afterMovement;
 
     [HideInInspector] public int freezeTicks;
     [HideInInspector] public bool frozen = false;
@@ -72,7 +74,7 @@ public class NPC : MonoBehaviour
         }
         if (showSizeTile == false)
         {
-            newTrueTileMarker.GetComponent<SpriteRenderer>().enabled = false;
+            newSizeTileMarker.GetComponent<SpriteRenderer>().enabled = false;
         }
 
         TickManager.beforeTick += BeforeTick;
@@ -164,7 +166,7 @@ public class NPC : MonoBehaviour
             }
         }
 
-        beforeMovement();
+        beforeMovement?.Invoke();
 
         if (stationary == false && path.Count > 0 && frozen == false)
         {
@@ -193,6 +195,8 @@ public class NPC : MonoBehaviour
                 i--;
             }
         }
+
+        afterMovement?.Invoke();
     }
 
     void AfterTick()
@@ -201,7 +205,7 @@ public class NPC : MonoBehaviour
         {
             arrowColor.color = Color.red;
         }
-        else if (isTargetingPlayer)
+        else if (isTargetingPlayer || externalFocus)
         {
             arrowColor.color = Color.yellow;
         }
@@ -241,19 +245,27 @@ public class NPC : MonoBehaviour
             }
             else
             {
-                if (isTargetingPlayer == false)
+                if (isTargetingPlayer == false && externalFocus == false)
                 {
                     targetAngle = Tools.VectorToAngle(npcPath[0] - npcPosition);
                 }
             }
         }
 
-        if (isTargetingPlayer && (Player.player.transform.position - transform.position).magnitude > 0.1f)
+        if (isTargetingPlayer && (Player.player.transform.position - transform.position).magnitude > 0.1f && externalFocus == false)
         {
             targetAngle = Tools.VectorToAngle(Player.player.transform.position - transform.position);
         }
 
         angleFacing = Mathf.MoveTowardsAngle(angleFacing, targetAngle, rotationSpeed * Time.deltaTime);
         npcArrow.transform.eulerAngles = new Vector3(0, 0, angleFacing);
+    }
+
+    private void OnDestroy()
+    {
+        TickManager.beforeTick -= BeforeTick;
+        TickManager.afterTick -= AfterTick;
+        Destroy(newSizeTileMarker);
+        Destroy(newTrueTileMarker);
     }
 }

@@ -87,6 +87,10 @@ PrefabInstance:
       propertyPath: willOverrideMaxHit
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2226116103530974621, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: examineText
+      value: Goodness, gracious, great balls of fire!
+      objectReference: {fileID: 0}
     - target: {fileID: 6343085593206809457, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: m_Name
       value: Jal-Zek

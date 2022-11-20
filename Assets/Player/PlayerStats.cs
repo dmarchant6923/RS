@@ -241,6 +241,11 @@ public class PlayerStats : MonoBehaviour
             Prayer.DeactivatePrayers();
             PlayerHeal(Mathf.FloorToInt((float)initialPrayer / 4));
         }
+
+        if (currentHitpoints <= 0)
+        {
+            currentHitpoints = 0;
+        }
     }
 
     public static void PlayerHeal(int amount)
@@ -284,7 +289,9 @@ public class PlayerStats : MonoBehaviour
         }
         if (potion.prayer)
         {
+            Debug.Log(currentPrayer + " " + initialPrayer);
             currentPrayer = potion.CalcBoost(initialPrayer, currentPrayer);
+            Debug.Log(currentPrayer + " " + initialPrayer);
         }
         if (potion.hitpoints)
         {

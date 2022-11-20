@@ -369,6 +369,37 @@ public class AttackStyles : MonoBehaviour
                 attackType = longrangeType;
             }
         }
+        else if (category == WornEquipment.thrownCategory)
+        {
+            setActive[0] = true;
+            setActive[1] = true;
+            setActive[2] = true;
+
+            style1.transform.GetChild(0).GetComponent<RawImage>().texture = thrownAccurate;
+            style1.GetComponentInChildren<Text>().text = "Accurate";
+
+            style2.transform.GetChild(0).GetComponent<RawImage>().texture = thrownRapid;
+            style2.GetComponentInChildren<Text>().text = "Rapid";
+
+            style3.transform.GetChild(0).GetComponent<RawImage>().texture = thrownLongrange;
+            style3.GetComponentInChildren<Text>().text = "Longrange";
+
+            selectedStyle = PlayerPrefs.GetInt(WornEquipment.thrownCategory, 1);
+
+            attackStyle = rangedStyle;
+            if (selectedStyle == 1)
+            {
+                attackType = accurateType;
+            }
+            else if (selectedStyle == 2)
+            {
+                attackType = rapidType;
+            }
+            else
+            {
+                attackType = longrangeType;
+            }
+        }
 
 
 

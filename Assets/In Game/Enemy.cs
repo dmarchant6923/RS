@@ -5,14 +5,14 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public int hitpoints = 10;
-    int initialHitpoints;
+    [HideInInspector] public int initialHitpoints;
 
     public int attack = 1;
     public int strength = 1;
     public int defence = 1;
     int initialDefence;
-    public int ranged = 1;
     public int magic = 1;
+    public int ranged = 1;
 
     public int attackStab;
     public int attackSlash;
@@ -48,11 +48,12 @@ public class Enemy : MonoBehaviour
     public int overheadProtectionMult = 1;
     public Color projectileColor;
     public bool slowProjectile = false;
+    public int uniformProjectileDelay = 0;
     public Sprite customProjectile;
 
     public int customCombatLvl;
 
-    [HideInInspector] bool inCombat;
+    [HideInInspector] public bool inCombat;
 
     [HideInInspector] public float combatLevel;
     [HideInInspector] public string combatLevelColor;
@@ -67,6 +68,14 @@ public class Enemy : MonoBehaviour
     Vector2 playerPreviousTile;
 
     GameObject newHealthBar;
+    GameObject newHitSplat;
+
+    [HideInInspector] public bool death;
+    int deathTicks = 4;
+
+    public delegate void EnemyCombat();
+    public event EnemyCombat tookDamage;
+    public event EnemyCombat beforeAttack;
 
 
     public class IncomingDamage
@@ -194,6 +203,16 @@ public class Enemy : MonoBehaviour
 
     void BeforeTick()
     {
+        if (death)
+        {
+            deathTicks--;
+            if (deathTicks == 0)
+            {
+                Destroy(gameObject);
+            }
+            return;
+        }
+
         foreach (IncomingDamage damage in damageQueue)
         {
             damage.ticks--;
@@ -219,6 +238,11 @@ public class Enemy : MonoBehaviour
 
     public void AddToDamageQueue(int damage, int tickDelay, bool fromPlayer, int maxHit)
     {
+        if (death)
+        {
+            return;
+        }
+
         IncomingDamage newDamage = new IncomingDamage();
         newDamage.damage = damage;
         newDamage.ticks = tickDelay;
@@ -229,11 +253,19 @@ public class Enemy : MonoBehaviour
     void TakeDamage(IncomingDamage damage)
     {
         hitpoints -= damage.damage;
-        GameObject newHitSplat = Instantiate(UIManager.staticHitSplat, Camera.main.WorldToScreenPoint(transform.position), Quaternion.identity);
-        HitSplat splatScript = newHitSplat.GetComponent<HitSplat>();
-        splatScript.objectGettingHit = gameObject;
-        splatScript.showMaxHitSplat = damage.fromPlayer;
-        splatScript.NewHitSplat(damage.damage, damage.maxHit);
+
+        if (newHitSplat == null)
+        {
+            newHitSplat = Instantiate(UIManager.staticHitSplat, Camera.main.WorldToScreenPoint(transform.position), Quaternion.identity);
+            HitSplat splatScript = newHitSplat.GetComponent<HitSplat>();
+            splatScript.NewHitSplat(damage.damage, 0);
+            splatScript.objectGettingHit = gameObject;
+        }
+        else
+        {
+            newHitSplat.GetComponent<HitSplat>().NewHitSplat(damage.damage, 0);
+        }
+
 
         if (newHealthBar == null)
         {
@@ -259,7 +291,28 @@ public class Enemy : MonoBehaviour
                 inCombat = true;
             }
         }
+
+        tookDamage?.Invoke();
+
+        if (hitpoints <= 0)
+        {
+            Death();
+        }
     }
+
+    void Death()
+    {
+        death = true;
+        hitpoints = 0;
+        npcAction.serverAction0 -= PlayerAttack;
+        isAttackingPlayer = false;
+        npcScript.isTargetingPlayer = false;
+        npcScript.StopMovement();
+        damageQueue = new List<IncomingDamage>();
+        CancelPlayerAttack();
+        TickManager.onTick -= PerformAttack;
+    }
+
     public void SpellEffects(Spell spell)
     {
         if (spell.freeze)
@@ -285,6 +338,7 @@ public class Enemy : MonoBehaviour
 
     public void AttackPlayer()
     {
+        beforeAttack?.Invoke();
         npcScript.isTargetingPlayer = true;
         npcScript.externalTarget = true;
         isAttackingPlayer = true;
@@ -339,5 +393,12 @@ public class Enemy : MonoBehaviour
     public void StopAttacking()
     {
         isAttackingPlayer = false;
+    }
+
+    private void OnDestroy()
+    {
+        Action.cancel1 -= CancelPlayerAttack;
+
+        TickManager.beforeTick -= BeforeTick;
     }
 }

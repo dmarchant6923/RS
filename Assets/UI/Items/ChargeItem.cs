@@ -176,7 +176,6 @@ public class ChargeItem : MonoBehaviour
         itemScript.itemImage.color = new Color(0.7f, 0.7f, 0.7f, 1);
         itemScript.UpdateActions(initialName + " (uncharged)");
         gameObject.name = initialName + " (uncharged)";
-
     }
     void UnchargedToCharged()
     {
@@ -333,11 +332,19 @@ public class ChargeItem : MonoBehaviour
 
     void Check()
     {
-        string end = "s.";
-        if (charges == 1)
+        string end = ".";
+        if (GetComponent<BlowPipe>() != null)
         {
-            end = ".";
+            BlowPipe pipeScript = GetComponent<BlowPipe>();
+            if (GetComponent<BlowPipe>().ammoLoaded != null)
+            {
+                end = " and " + GetComponent<BlowPipe>().numberLoaded + " " + GetComponent<BlowPipe>().ammoLoaded.name + "s.";
+            }
+            else
+            {
+                end = " and no loaded darts.";
+            }
         }
-        Debug.Log("Your " + gameObject.name + " has " + charges + " charge" + end);
+        Debug.Log("Your " + gameObject.name + " has " + charges + " charges" + end);
     }
 }

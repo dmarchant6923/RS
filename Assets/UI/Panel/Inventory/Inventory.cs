@@ -25,8 +25,12 @@ public class Inventory : MonoBehaviour
     public static event EquipAction UpdateEquippedItems;
     public static event EquipAction ReadEquippedItems;
 
+    public static Inventory instance;
+
     private void Start()
     {
+        instance = this;
+
         items = new Item[28];
         itemRTs = new RectTransform[28];
 

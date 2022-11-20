@@ -14,7 +14,7 @@ public class HealthBar : MonoBehaviour
     public GameObject objectWithHealth;
     public float worldSpaceOffset;
 
-    int ticksToDelete = 11;
+    int ticksToDelete = 20;
     int ticks;
     void Start()
     {
@@ -22,6 +22,7 @@ public class HealthBar : MonoBehaviour
         greenBarFullXWidth = greenBar.rect.width;
         transform.SetParent(FindObjectOfType<Canvas>().transform);
         UpdateHealth(currentHealth);
+        transform.SetAsFirstSibling();
 
         TickManager.afterTick += AfterTick;
     }
@@ -29,7 +30,11 @@ public class HealthBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //transform.position = Camera.main.WorldToScreenPoint(objectWithHealth.transform.position + Tools.AngleToVector3(Camera.main.transform.eulerAngles.z) * worldSpaceOffset);
+        if (objectWithHealth == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
         transform.position = Camera.main.WorldToScreenPoint(objectWithHealth.transform.position + Tools.AngleToVector3(Camera.main.transform.eulerAngles.z) * worldSpaceOffset) + Vector3.up * 20;
 
     }
@@ -45,6 +50,12 @@ public class HealthBar : MonoBehaviour
 
     public void UpdateHealth(float number)
     {
+        if (greenBar == null)
+        {
+            greenBar = transform.GetChild(0).GetComponent<RectTransform>();
+            greenBarFullXWidth = greenBar.rect.width;
+            transform.SetParent(FindObjectOfType<Canvas>().transform);
+        }
         currentHealth = number;
         ticks = 0;
         float percent = Mathf.Clamp(1 - (maxHealth - currentHealth) / maxHealth, 0, 1);

@@ -49,7 +49,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: attackSpeed
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: attackStyle
@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: overheadProtectionMult
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: uniformProjectileDelay
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2226116103530974621, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: examineText
       value: An ancient adversary to the TzHaar.
@@ -152,12 +156,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6343085593206809487, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6343085593206809487, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6343085593206809487, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.060224295
       objectReference: {fileID: 0}
     - target: {fileID: 6343085593206809487, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6343085593206809487, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -225,7 +237,11 @@ PrefabInstance:
       objectReference: {fileID: 748612718186064544}
     - target: {fileID: 9070045363155394625, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: showSizeTile
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9070045363155394625, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: showTrueTile
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
@@ -251,5 +267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18c6b8c96694a614da7e0d084509643b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ranger: {fileID: 7134805324762833742, guid: 854956062721da94db97faeba373efe0, type: 3}
-  mager: {fileID: 1810105923148477099, guid: f203d555be9bd8c40932899ab809be7a, type: 3}
+  rangerPrefab: {fileID: 0}
+  magerPrefab: {fileID: 0}
+  healerPrefab: {fileID: 0}
+  shieldScript: {fileID: 0}

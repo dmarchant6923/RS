@@ -70,6 +70,8 @@ public class Action : MonoBehaviour
     bool validAction = false;
     bool topActionPicked = false;
 
+    [HideInInspector] public bool useActionSuccessful;
+
     private IEnumerator Start()
     {
         menuTexts = new string[9];
@@ -447,6 +449,7 @@ public class Action : MonoBehaviour
         }
         if (actionNumber == 9)
         {
+            useActionSuccessful = false;
             if (serverActionUse != null && actionUsedOnThis != null)
             {
                 serverActionUse();

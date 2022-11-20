@@ -21,6 +21,7 @@ public class Overhead : MonoBehaviour
     {
         image = GetComponent<RawImage>();
         transform.SetParent(FindObjectOfType<Canvas>().transform);
+        transform.SetAsFirstSibling();
         SwitchOverhead(initialOverhead);
         image.enabled = true;
     }

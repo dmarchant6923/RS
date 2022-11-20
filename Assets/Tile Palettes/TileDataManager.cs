@@ -34,13 +34,21 @@ public class TileDataManager : MonoBehaviour
 
         examineTileAction = GetComponent<Action>();
         examineTileAction.clientActionExamine += ExamineTile;
+        examineTileAction.orderLevels[8] = -1;
     }
 
     private void Update()
     {
         if (RightClickMenu.menuOpen == false)
         {
-            examineText = GetTileData(MouseManager.mouseCoordinate).examineText;
+            if (MouseManager.isOverGame)
+            {
+                examineText = GetTileData(MouseManager.mouseCoordinate).examineText;
+            }
+            else
+            {
+                examineText = "";
+            }
 
             if (examineText != "")
             {

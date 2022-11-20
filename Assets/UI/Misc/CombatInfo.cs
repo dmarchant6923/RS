@@ -8,6 +8,7 @@ public class CombatInfo : MonoBehaviour
     public Text playerAttack;
     public Text enemyDefense;
     public Text playerAttackResult;
+    public Text enemyName;
     public Text enemyAttack;
     public Text playerDefense;
     public Text enemyAttackResult;
@@ -51,8 +52,10 @@ public class CombatInfo : MonoBehaviour
         "Damage per second: " + dps;
 
     }
-    public static void EnemyAttack(string attackStyle, int styleLevel, int attackBonus, int attackRoll)
+    public static void EnemyAttack(string name, string attackStyle, int styleLevel, int attackBonus, int attackRoll)
     {
+        instance.enemyName.text = "DEFENDING (" + name + ")";
+
         string skill = "attack";
         if (attackStyle == AttackStyles.rangedStyle)
         {

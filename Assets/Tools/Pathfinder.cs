@@ -14,38 +14,38 @@ public class Pathfinder : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && debugEnabled)
-        {
-            if (startTileFound == false)
-            {
-                startTile = MouseManager.mouseCoordinate;
-                startTileFound = true;
-            }
-            else
-            {
-                List<Vector2> path = FindAStarPath(startTile, MouseManager.mouseCoordinate);
-                for (int i = 0; i < path.Count; i++)
-                {
-                    newAStarDebug = Instantiate(AStarDebug, path[i], Quaternion.identity);
-                    newAStarDebug.GetComponent<SpriteRenderer>().color = Color.blue;
-                    newAStarDebug.GetComponentInChildren<TMP_Text>().text = i.ToString();
-                    Destroy(newAStarDebug.transform.GetChild(1).gameObject);
-                    newAStarDebug.GetComponent<SpriteRenderer>().sortingOrder = 1;
-                }
-                startTileFound = false;
-            }
-        }
+        //if (Input.GetMouseButtonDown(0) && debugEnabled)
+        //{
+        //    if (startTileFound == false)
+        //    {
+        //        startTile = MouseManager.mouseCoordinate;
+        //        startTileFound = true;
+        //    }
+        //    else
+        //    {
+        //        List<Vector2> path = FindAStarPath(startTile, MouseManager.mouseCoordinate);
+        //        for (int i = 0; i < path.Count; i++)
+        //        {
+        //            newAStarDebug = Instantiate(AStarDebug, path[i], Quaternion.identity);
+        //            newAStarDebug.GetComponent<SpriteRenderer>().color = Color.blue;
+        //            newAStarDebug.GetComponentInChildren<TMP_Text>().text = i.ToString();
+        //            Destroy(newAStarDebug.transform.GetChild(1).gameObject);
+        //            newAStarDebug.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        //        }
+        //        startTileFound = false;
+        //    }
+        //}
     }
 
     public List<Vector2> FindAStarPath(Vector2 startTile, Vector2 endTile)
     {
-        if (debugEnabled)
-        {
-            foreach (TMP_Text item in FindObjectsOfType<TMP_Text>())
-            {
-                Destroy(item.transform.root.gameObject);
-            }
-        }
+        //if (debugEnabled)
+        //{
+        //    foreach (TMP_Text item in FindObjectsOfType<TMP_Text>())
+        //    {
+        //        Destroy(item.transform.root.gameObject);
+        //    }
+        //}
 
 
         List<Vector2> closedTiles = new List<Vector2>();
@@ -359,53 +359,53 @@ public class Pathfinder : MonoBehaviour
             }
         }
 
-        void SpawnDebugMarkers()
-        {
-            if (debugEnabled == false)
-            {
-                return;
-            }
-            foreach (Vector2 tile in availableTiles.Keys)
-            {
-                RaycastHit2D[] cc = Physics2D.CircleCastAll(tile, 0.2f, Vector2.zero, 0);
-                foreach (RaycastHit2D item in cc)
-                {
-                    if (item.collider != null)
-                    {
-                        Destroy(item.collider.gameObject);
-                    }
-                }
-                newAStarDebug = Instantiate(AStarDebug, tile, Quaternion.identity);
-                newAStarDebug.GetComponent<SpriteRenderer>().color = Color.green;
-                newAStarDebug.GetComponentInChildren<TMP_Text>().text =
-                    "G: " + availableTiles[tile][2] + "\nH: " + availableTiles[tile][1] + "\nF: " + availableTiles[tile][0];
-                newAStarDebug.transform.GetChild(1).eulerAngles = new Vector3(0, 0, VectorToAngle(previousTile[tile] - tile));
-            }
-            foreach (Vector2 tile in examinedTiles.Keys)
-            {
-                if (Physics2D.CircleCast(tile, 0.2f, Vector2.zero, 0).collider != null)
-                {
-                    Destroy(Physics2D.CircleCast(tile, 0.2f, Vector2.zero, 0).collider.gameObject);
-                }
-                newAStarDebug = Instantiate(AStarDebug, tile, Quaternion.identity);
-                newAStarDebug.GetComponent<SpriteRenderer>().color = Color.red;
-                newAStarDebug.GetComponentInChildren<TMP_Text>().text =
-                    "G: " + examinedTiles[tile][2] + "\nH: " + examinedTiles[tile][1] + "\nF: " + examinedTiles[tile][0];
-                newAStarDebug.transform.GetChild(1).eulerAngles = new Vector3(0, 0, VectorToAngle(previousTile[tile] - tile));
-            }
-            newAStarDebug = Instantiate(AStarDebug, selectedTile, Quaternion.identity);
-            newAStarDebug.GetComponentInChildren<TMP_Text>().text =
-                "G: " + availableTiles[selectedTile][2] + "\nH: " + availableTiles[selectedTile][1] + "\nF: " + availableTiles[selectedTile][0];
-            newAStarDebug.GetComponent<SpriteRenderer>().sortingOrder = 1;
-            Destroy(newAStarDebug.transform.GetChild(1).gameObject);
-        }
+        //void SpawnDebugMarkers()
+        //{
+        //    if (debugEnabled == false)
+        //    {
+        //        return;
+        //    }
+        //    foreach (Vector2 tile in availableTiles.Keys)
+        //    {
+        //        RaycastHit2D[] cc = Physics2D.CircleCastAll(tile, 0.2f, Vector2.zero, 0);
+        //        foreach (RaycastHit2D item in cc)
+        //        {
+        //            if (item.collider != null)
+        //            {
+        //                Destroy(item.collider.gameObject);
+        //            }
+        //        }
+        //        newAStarDebug = Instantiate(AStarDebug, tile, Quaternion.identity);
+        //        newAStarDebug.GetComponent<SpriteRenderer>().color = Color.green;
+        //        newAStarDebug.GetComponentInChildren<TMP_Text>().text =
+        //            "G: " + availableTiles[tile][2] + "\nH: " + availableTiles[tile][1] + "\nF: " + availableTiles[tile][0];
+        //        newAStarDebug.transform.GetChild(1).eulerAngles = new Vector3(0, 0, VectorToAngle(previousTile[tile] - tile));
+        //    }
+        //    foreach (Vector2 tile in examinedTiles.Keys)
+        //    {
+        //        if (Physics2D.CircleCast(tile, 0.2f, Vector2.zero, 0).collider != null)
+        //        {
+        //            Destroy(Physics2D.CircleCast(tile, 0.2f, Vector2.zero, 0).collider.gameObject);
+        //        }
+        //        newAStarDebug = Instantiate(AStarDebug, tile, Quaternion.identity);
+        //        newAStarDebug.GetComponent<SpriteRenderer>().color = Color.red;
+        //        newAStarDebug.GetComponentInChildren<TMP_Text>().text =
+        //            "G: " + examinedTiles[tile][2] + "\nH: " + examinedTiles[tile][1] + "\nF: " + examinedTiles[tile][0];
+        //        newAStarDebug.transform.GetChild(1).eulerAngles = new Vector3(0, 0, VectorToAngle(previousTile[tile] - tile));
+        //    }
+        //    newAStarDebug = Instantiate(AStarDebug, selectedTile, Quaternion.identity);
+        //    newAStarDebug.GetComponentInChildren<TMP_Text>().text =
+        //        "G: " + availableTiles[selectedTile][2] + "\nH: " + availableTiles[selectedTile][1] + "\nF: " + availableTiles[selectedTile][0];
+        //    newAStarDebug.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        //    Destroy(newAStarDebug.transform.GetChild(1).gameObject);
+        //}
 
         while (selectedTile != endTile)
         {
             ExamineNewTiles(selectedTile);
             examinedTiles.Add(selectedTile, availableTiles[selectedTile]);
 
-            SpawnDebugMarkers();
+            //SpawnDebugMarkers();
 
             if (availableTiles.Count == examinedTiles.Count || examinedTiles.Count > 150)
             {
@@ -420,15 +420,15 @@ public class Pathfinder : MonoBehaviour
         finalPath.Add(path);
         while (path != startTile)
         {
-            if (debugEnabled)
-            {
-                newAStarDebug = Instantiate(AStarDebug, path, Quaternion.identity);
-                newAStarDebug.GetComponent<SpriteRenderer>().color = Color.blue;
-                newAStarDebug.GetComponentInChildren<TMP_Text>().text =
-                    "G: " + availableTiles[path][2] + "\nH: " + availableTiles[path][1] + "\nF: " + availableTiles[path][0];
-                newAStarDebug.transform.GetChild(1).eulerAngles = new Vector3(0, 0, VectorToAngle(previousTile[path] - path));
-                newAStarDebug.GetComponent<SpriteRenderer>().sortingOrder = 1;
-            }
+            //if (debugEnabled)
+            //{
+            //    newAStarDebug = Instantiate(AStarDebug, path, Quaternion.identity);
+            //    newAStarDebug.GetComponent<SpriteRenderer>().color = Color.blue;
+            //    newAStarDebug.GetComponentInChildren<TMP_Text>().text =
+            //        "G: " + availableTiles[path][2] + "\nH: " + availableTiles[path][1] + "\nF: " + availableTiles[path][0];
+            //    newAStarDebug.transform.GetChild(1).eulerAngles = new Vector3(0, 0, VectorToAngle(previousTile[path] - path));
+            //    newAStarDebug.GetComponent<SpriteRenderer>().sortingOrder = 1;
+            //}
             path = previousTile[path];
             if (path == startTile)
             {
@@ -437,15 +437,15 @@ public class Pathfinder : MonoBehaviour
             finalPath.Add(path);
             //yield return new WaitForSeconds(0.1f);
         }
-        if (debugEnabled)
-        {
-            newAStarDebug = Instantiate(AStarDebug, path, Quaternion.identity);
-            newAStarDebug.GetComponent<SpriteRenderer>().color = Color.blue;
-            newAStarDebug.GetComponentInChildren<TMP_Text>().text =
-                "G: " + availableTiles[path][2] + "\nH: " + availableTiles[path][1] + "\nF: " + availableTiles[path][0];
-            Destroy(newAStarDebug.transform.GetChild(1).gameObject);
-            newAStarDebug.GetComponent<SpriteRenderer>().sortingOrder = 1;
-        }
+        //if (debugEnabled)
+        //{
+        //    newAStarDebug = Instantiate(AStarDebug, path, Quaternion.identity);
+        //    newAStarDebug.GetComponent<SpriteRenderer>().color = Color.blue;
+        //    newAStarDebug.GetComponentInChildren<TMP_Text>().text =
+        //        "G: " + availableTiles[path][2] + "\nH: " + availableTiles[path][1] + "\nF: " + availableTiles[path][0];
+        //    Destroy(newAStarDebug.transform.GetChild(1).gameObject);
+        //    newAStarDebug.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        //}
 
         List<Vector2> reversePath = new List<Vector2>();
         for (int i = finalPath.Count - 1; i >= 0; i--)
