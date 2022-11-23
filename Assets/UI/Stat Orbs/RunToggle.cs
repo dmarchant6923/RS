@@ -8,11 +8,17 @@ public class RunToggle : MonoBehaviour
     Toggle runToggle;
     Player player;
     Text numberText;
+    public RawImage runIcon;
 
     StatOrbManager orbManager;
 
+    public Color staminaColor;
+
+    public static RunToggle instance;
+
     void Start()
     {
+        instance = this;
         runToggle = GetComponent<Toggle>();
         player = FindObjectOfType<Player>();
         orbManager = GetComponentInChildren<StatOrbManager>();
@@ -49,5 +55,17 @@ public class RunToggle : MonoBehaviour
         }
 
         numberText.text = Mathf.Round(player.runEnergy / 100).ToString();
+    }
+
+    public void Stamina(bool active)
+    {
+        if (active)
+        {
+            runIcon.color = staminaColor;
+        }
+        else
+        {
+            runIcon.color = Color.white;
+        }
     }
 }

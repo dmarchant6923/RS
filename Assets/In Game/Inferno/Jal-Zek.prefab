@@ -44,6 +44,10 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: meleeStyle
+      value: Stab
+      objectReference: {fileID: 0}
+    - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: attackMagic
       value: 80
       objectReference: {fileID: 0}

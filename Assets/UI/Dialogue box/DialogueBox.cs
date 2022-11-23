@@ -15,7 +15,7 @@ public class DialogueBox : MonoBehaviour
     public static bool dialogueActive = false;
 
     public delegate void DialogueAction();
-    public static event DialogueAction DialogueCanceled;
+    //public static event DialogueAction DialogueCanceled;
     public static event DialogueAction InputSubmitted;
     public static string InputString;
 

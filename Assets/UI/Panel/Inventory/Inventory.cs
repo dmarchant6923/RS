@@ -113,13 +113,6 @@ public class Inventory : MonoBehaviour
 
     public void PlaceInInventory(GameObject item)
     {
-        if (slotsTaken == 28)
-        {
-            Destroy(item);
-            Debug.Log("ERROR item destroyed");
-            return;
-        }
-
         if (item.GetComponent<StackableItem>() != null)
         {
             GameObject existingItem = ScanForItem(item.name);
@@ -129,6 +122,13 @@ public class Inventory : MonoBehaviour
                 Destroy(item);
                 return;
             }
+        }
+
+        if (slotsTaken == 28)
+        {
+            Destroy(item);
+            Debug.Log("ERROR item destroyed");
+            return;
         }
 
         item.transform.SetParent(unsortedItems.transform);

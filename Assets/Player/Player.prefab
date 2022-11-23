@@ -191,6 +191,8 @@ MonoBehaviour:
   playerPath: []
   trueTile: {x: 0, y: 0}
   runEnergy: 10000
+  stamina: 0
+  staminaTicks: 0
   showTrueTile: 0
   showClickedTile: 0
   targetNPCPreviousTile: {x: 0, y: 0}
@@ -234,9 +236,12 @@ MonoBehaviour:
   attackCooldown: 0
   minCoolDown: -7
   projectile: {fileID: 6025835048010670392, guid: 5b5b57d91dfa50f43ba55ef8df626e95, type: 3}
+  projectileSize: 1
   debug: 0
   LOSIntersection: {fileID: 1569941437318096177, guid: 71312f94cab06184b830080749e95b33, type: 3}
   checkedTileMarker: {fileID: 6542302095627379823, guid: a3c20cf03d9487a4d8e63fbc499ea5ef, type: 3}
+  projectileSpawnsImmediately: 0
+  attackEffect: {fileID: 2639870101485629893, guid: f4e6b8bc2f94d7d40887fbf0dc934dd2, type: 3}
 --- !u!114 &981017874431734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,6 +287,7 @@ MonoBehaviour:
   redClick: 1
   actionUsedOnThis: {fileID: 0}
   actionOnPointerUp: 0
+  useActionSuccessful: 0
 --- !u!1 &5795649407363136618
 GameObject:
   m_ObjectHideFlags: 0

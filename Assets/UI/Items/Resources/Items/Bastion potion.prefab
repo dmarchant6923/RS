@@ -1,0 +1,168 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6135832637376516089
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 304.40015
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -228.19998
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290241488556928074, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6664825932183672666, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: m_Name
+      value: Bastion potion
+      objectReference: {fileID: 0}
+    - target: {fileID: 7066636311975655336, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: potionColor.b
+      value: 0.18382876
+      objectReference: {fileID: 0}
+    - target: {fileID: 7066636311975655336, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: potionColor.g
+      value: 0.42689565
+      objectReference: {fileID: 0}
+    - target: {fileID: 7066636311975655336, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+      propertyPath: potionColor.r
+      value: 0.764151
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+--- !u!1 &673548290218645667 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6664825932183672666, guid: 56c62b7e9b03fcd489e8c0467f66d318, type: 3}
+  m_PrefabInstance: {fileID: 6135832637376516089}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1945976575320047039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673548290218645667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d48109f1beb26dd41a6326af766af284, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack: 0
+  strength: 0
+  defense: 1
+  range: 0
+  mage: 0
+  prayer: 0
+  hitpoints: 0
+  runEnergy: 0
+  stamina: 0
+  divine: 0
+  boostOverBase: 1
+  baseBoost: 5
+  percentage: 15
+  potionScript: {fileID: 0}
+--- !u!114 &3032782982356124754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673548290218645667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d48109f1beb26dd41a6326af766af284, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack: 0
+  strength: 0
+  defense: 0
+  range: 1
+  mage: 0
+  prayer: 0
+  hitpoints: 0
+  runEnergy: 0
+  stamina: 0
+  divine: 0
+  boostOverBase: 1
+  baseBoost: 4
+  percentage: 10
+  potionScript: {fileID: 0}

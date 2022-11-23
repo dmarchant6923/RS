@@ -14,6 +14,7 @@ public class HitSplat : MonoBehaviour
     [HideInInspector] public GameObject objectGettingHit;
     public Texture blueHitSplat;
     public Texture maxHitSplat;
+    public Texture purpleHitSplat;
 
     float timer = 1;
     void Start()
@@ -25,6 +26,11 @@ public class HitSplat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (objectGettingHit == null)
+        {
+            Destroy(gameObject);
+        }
+
         bool destroy = true;
         for (int i = 0; i < activeHitSplats.Length; i++)
         {
@@ -88,6 +94,11 @@ public class HitSplat : MonoBehaviour
                 if (showMaxHitSplat && damage == maxHit && damage > 1)
                 {
                     newHitSplat.GetComponent<RawImage>().texture = maxHitSplat;
+                }
+                if (damage < 0)
+                {
+                    newHitSplat.GetComponent<RawImage>().texture = purpleHitSplat;
+                    damage = Mathf.Abs(damage);
                 }
                 newHitSplat.GetComponentInChildren<Text>().text = damage.ToString();
 

@@ -8,7 +8,8 @@ public class SpecialEffects : MonoBehaviour
     public bool crystalBow;
     public bool rerollAttMult;
     public bool rerollDefMult;
-    public bool TumekensShadow;
+    public bool tumekensShadow;
+    public bool zaryteCrossbow;
 
     public float GearBonusMult()
     {

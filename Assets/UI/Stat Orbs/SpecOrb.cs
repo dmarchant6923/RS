@@ -7,19 +7,28 @@ public class SpecOrb : MonoBehaviour
 {
     [HideInInspector] public StatOrbManager orbManager;
     Toggle orbToggle;
-    public SpecBar specBar;
-    
+
+    public Transform regenIndicator;
+    float startPosition;
+    float distance;
+
     void Start()
     {
         orbManager = GetComponent<StatOrbManager>();
         orbManager.orbAction.menuTexts[0] = "Use <color=orange>Special Attack</color>";
         orbToggle = GetComponent<Toggle>();
         orbManager.orbAction.serverAction0 += Toggle;
+
+        startPosition = regenIndicator.position.x;
+        distance = Mathf.Abs(regenIndicator.localPosition.x) * 2f;
+        regenIndicator.gameObject.SetActive(false);
+
+        TickManager.afterTick += UpdateIndicator;
     }
 
     void Toggle()
     {
-        specBar.UpdateSpec();
+        SpecBar.instance.UpdateSpecActive();
     }
 
     public void ToggleEnabled(bool enabled)
@@ -37,5 +46,24 @@ public class SpecOrb : MonoBehaviour
             orbManager.orbAction.menuTexts[0] = "";
             orbManager.SwitchSprites(false);
         }
+    }
+
+    public void UpdateOrb()
+    {
+        orbManager.number.text = Mathf.Floor(SpecBar.specPercentage).ToString();
+    }
+
+    void UpdateIndicator()
+    {
+        if (regenIndicator.gameObject.activeSelf && SpecBar.specPercentage == 100)
+        {
+            regenIndicator.gameObject.SetActive(false);
+        }
+        else if (regenIndicator.gameObject.activeSelf == false && SpecBar.specPercentage != 100)
+        {
+            regenIndicator.gameObject.SetActive(true);
+        }
+
+        regenIndicator.position = new Vector2(startPosition + distance * ((float)SpecBar.instance.ticks / (float)SpecBar.instance.regenTicks), regenIndicator.position.y);
     }
 }

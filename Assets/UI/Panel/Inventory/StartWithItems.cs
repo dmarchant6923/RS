@@ -7,17 +7,18 @@ public class StartWithItems : MonoBehaviour
     public List<GameObject> items = new List<GameObject>();
     public List<int> quantities = new List<int>();
 
-    public Inventory inventory;
+    Inventory inventory;
 
     private IEnumerator Start()
     {
         yield return null;
 
+        inventory = Inventory.instance;
         for (int i = 0; i < items.Count; i++)
         {
             if (items[i] != null)
             {
-                GameObject newItem = Instantiate(items[i], transform);
+                GameObject newItem = Instantiate(items[i], Inventory.instance.unsortedItems.transform);
                 if (newItem.GetComponent<StackableItem>() != null)
                 {
                     if (quantities[i] != 0)

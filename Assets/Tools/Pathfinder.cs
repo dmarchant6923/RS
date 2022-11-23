@@ -10,7 +10,6 @@ public class Pathfinder : MonoBehaviour
     GameObject newAStarDebug;
 
     Vector2 startTile;
-    bool startTileFound = false;
 
     private void Update()
     {

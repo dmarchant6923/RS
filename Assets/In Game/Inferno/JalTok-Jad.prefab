@@ -126,6 +126,10 @@ PrefabInstance:
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: meleeStyle
+      value: Stab
+      objectReference: {fileID: 0}
+    - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: attackMagic
       value: 100
       objectReference: {fileID: 0}
@@ -257,6 +261,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6428832248520485119, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: projectileSize
+      value: 1.6
+      objectReference: {fileID: 0}
     - target: {fileID: 9070045363155394625, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: tileSize
       value: 5
@@ -293,6 +301,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75504981d219680479386db33c22f1fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyScript: {fileID: 0}
+  npcScript: {fileID: 0}
   mageProjectile: {fileID: 21300000, guid: 45097ad376af55f4ab4e092972b95871, type: 3}
   rangeProjectile: {fileID: 21300000, guid: a57b047449a7f8d4789581ecab3377dd, type: 3}
   mageProjectileColor: {r: 1, g: 0.418, b: 0, a: 1}
@@ -300,3 +310,5 @@ MonoBehaviour:
   protectFromRange: {fileID: 21300000, guid: 798ee79c15a66ef46b07b237ecaf76ef, type: 3}
   protectFromMage: {fileID: 21300000, guid: ef58b4318dd19e1498f17b3fdce35708, type: 3}
   signalSprite: {fileID: 6080521058263350475}
+  healerPrefab: {fileID: 31989251100283336, guid: 81f14d5f669a0ca4abf15f4a722d160d, type: 3}
+  numberOfHealers: 3

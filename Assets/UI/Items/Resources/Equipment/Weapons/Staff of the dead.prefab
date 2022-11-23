@@ -157,3 +157,29 @@ PrefabInstance:
       objectReference: {fileID: 2800000, guid: 3d919c43c61e6ee4ca89060d108473cb, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b947440a119e9040b006cd247117587, type: 3}
+--- !u!1 &2231019192461514508 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 106661373814431635, guid: 3b947440a119e9040b006cd247117587, type: 3}
+  m_PrefabInstance: {fileID: 2273407239107217567}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9006751132071051258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2231019192461514508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c3539fac5e7e084da824b409f035b13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  specCost: 0
+  specDescription: 
+  customProjectile: {fileID: 0}
+  customProjectileColor: {r: 0, g: 0, b: 0, a: 0}
+  guaranteeHit: 0
+  slowProjectile: 0
+  blowPipe: 0
+  armadylCrossbow: 0
+  zaryteCrossbow: 0

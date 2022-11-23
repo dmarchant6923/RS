@@ -62,7 +62,6 @@ public class WornEquipment : MonoBehaviour
 
     public static int attackSpeed;
     public static int attackDistance = 1;
-    public static int specCost;
 
     public static bool voidMelee;
     public static bool voidRange;
@@ -71,8 +70,18 @@ public class WornEquipment : MonoBehaviour
     public static bool slayerHelm;
     public static bool accumulator;
     public static bool assembler;
+    public static float crystalBonus;
+    public static bool crystalWeapon;
+    public static bool lightBearer;
+    public static bool recoil;
 
+    public static bool diamondBoltsE;
+    public static bool rubyBoltsE;
+
+    public GameObject statPanel;
     public Text statPanelText;
+    public OpenCloseButton panelCloseButton;
+    public OpenCloseButton panelOpenButton;
 
     public static string slashSwordCategory = "Slash Sword";
     public static string stabSwordCategory = "Stab Sword";
@@ -128,6 +137,9 @@ public class WornEquipment : MonoBehaviour
         Inventory.UpdateEquippedItems += UpdateStats;
 
         wornEquipment = this;
+
+        panelCloseButton.buttonClicked += StatsPanelActivate;
+        panelOpenButton.buttonClicked += StatsPanelActivate;
     }
 
     public static void UpdateStats()
@@ -152,7 +164,7 @@ public class WornEquipment : MonoBehaviour
         {
             if (slot.GetComponentInChildren<Equipment>() != null)
             {
-                if (slot == ammoSlot && weapon != null && weapon.GetComponent<BlowPipe>() != null)
+                if (slot == ammoSlot && weapon != null && weapon.GetComponent<Equipment>().addAmmoRangedStats == false)
                 {
                     continue;
                 }
@@ -161,7 +173,6 @@ public class WornEquipment : MonoBehaviour
                 attackStab += item.attackStab;
                 attackSlash += item.attackSlash;
                 attackCrush += item.attackCrush;
-                attackRange += item.attackRange;
                 attackMagic += item.attackMagic;
 
                 defenceStab += item.defenceStab;
@@ -171,9 +182,18 @@ public class WornEquipment : MonoBehaviour
                 defenceMagic += item.defenceMagic;
 
                 meleeStrength += item.meleeStrength;
-                rangedStrength += item.rangedStrength;
                 magicDamage += item.magicDamage;
                 prayer += item.prayer;
+
+                if (slot == ammoSlot && weapon != null && weapon.GetComponent<Equipment>().addAmmoRangedStats == false)
+                {
+
+                }
+                else
+                {
+                    attackRange += item.attackRange;
+                    rangedStrength += item.rangedStrength;
+                }
 
                 if (slot == weaponSlot)
                 {
@@ -191,14 +211,12 @@ public class WornEquipment : MonoBehaviour
                     {
                         Spellbook.runeSource = null;
                     }
-                    specCost = item.specCost;
                 }
             }
             else if (slot == weaponSlot)
             {
                 attackSpeed = 4;
                 attackDistance = 1;
-                specCost = 0;
             }
         }
 
@@ -262,10 +280,55 @@ public class WornEquipment : MonoBehaviour
             accumulator = true;
         }
 
-        if (weapon != null && weapon.GetComponent<SpecialEffects>() != null && weapon.GetComponent<SpecialEffects>().TumekensShadow)
+        if (weapon != null && weapon.GetComponent<SpecialEffects>() != null && weapon.GetComponent<SpecialEffects>().tumekensShadow)
         {
             attackMagic *= 3;
             magicDamage *= 3;
+        }
+
+        crystalBonus = 0;
+        crystalWeapon = false;
+        if (head != null && head.name == "Crystal helm")
+        {
+            crystalBonus += 0.05f;
+        }
+        if (body != null && body.name == "Crystal body")
+        {
+            crystalBonus += 0.15f;
+        }
+        if (leg != null && leg.name == "Crystal legs")
+        {
+            crystalBonus += 0.1f;
+        }
+        if (weapon != null && (weapon.name == "Bow of faerdhinen" || weapon.name == "Crystal bow"))
+        {
+            crystalWeapon = true;
+        }
+
+        diamondBoltsE = false;
+        rubyBoltsE = false;
+        if (weapon != null && weapon.weaponCategory == crossbowCategory)
+        {
+            if (ammo != null && ammo.name.ToLower().Contains("diamond"))
+            {
+                diamondBoltsE = true;
+            }
+            else if (ammo != null && ammo.name.ToLower().Contains("ruby"))
+            {
+                rubyBoltsE = true;
+            }
+        }
+
+        lightBearer = false;
+        if (ring != null && ring.name == "Lightbearer")
+        {
+            lightBearer = true;
+        }
+
+        recoil = false;
+        if (ring != null && (ring.name.Contains("suffering") || ring.name.Contains("recoil")))
+        {
+            recoil = true;
         }
     }
     public void UpdateText()
@@ -288,5 +351,10 @@ public class WornEquipment : MonoBehaviour
             "    Magic Damage: +" + magicDamage + "%\n" +
             "    prayer: " + prayer + "\n" + 
             "    Weapon Range: " + attackDistance;
+    }
+
+    void StatsPanelActivate()
+    {
+        statPanel.SetActive(!statPanel.activeSelf);
     }
 }

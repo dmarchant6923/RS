@@ -18,15 +18,16 @@ public class Zuk : MonoBehaviour
     bool thresh1Passed;
     int threshold2 = 480; //480;
     bool thresh2Passed;
-    int threshold3 = 240;
+    int threshold3 = 240; //240
     bool thresh3Passed;
 
     NPC NPCScript;
-    Enemy enemyScript;
+    [HideInInspector] public Enemy enemyScript;
     Combat combatScript;
     public ZukShield shieldScript;
 
     int timer = 75; //75
+    float floatTimer;
     bool timerPaused = false;
 
     IEnumerator Start()
@@ -48,6 +49,9 @@ public class Zuk : MonoBehaviour
         }
 
         yield return null;
+
+        floatTimer = (float)timer * TickManager.maxTickTime;
+        CustomHUD.instance.Activate("Set Timer", Tools.SecondsToMinutes(floatTimer, true));
 
         combatScript.attackCooldown = 13;
     }
@@ -74,6 +78,7 @@ public class Zuk : MonoBehaviour
         {
             thresh1Passed = true;
             timerPaused = true;
+            CustomHUD.instance.UpdateText("Set Timer (paused)", Tools.SecondsToMinutes(floatTimer, true));
         }
         if (enemyScript.hitpoints < threshold2 && thresh2Passed == false)
         {
@@ -81,21 +86,40 @@ public class Zuk : MonoBehaviour
             timerPaused = false;
             timer += 175;
             JadSpawn();
+            CustomHUD.instance.UpdateText("Set Timer", Tools.SecondsToMinutes(floatTimer, true));
         }
         if (enemyScript.hitpoints < threshold3 && thresh3Passed == false)
         {
             thresh3Passed = true;
+            HealerSpawn();
+            enemyScript.attackSpeed = 6;
         }
 
         if (timerPaused == false)
         {
             timer--;
+            floatTimer = (float)timer * TickManager.maxTickTime;
             if (timer <= 0)
             {
-                timer = 350;
+                timer = 350; //350
+                floatTimer = (float)timer * TickManager.maxTickTime;
                 SetSpawn();
             }
         }
+    }
+
+    private void Update()
+    {
+        if (timerPaused)
+        {
+            return;
+        }
+
+        if (Mathf.Floor(floatTimer) > Mathf.Floor(floatTimer - Time.deltaTime))
+        {
+            CustomHUD.instance.UpdateText(Tools.SecondsToMinutes(floatTimer, true));
+        }
+        floatTimer = Mathf.Max(floatTimer - Time.deltaTime, 0);
     }
 
     void AfterTick()
@@ -105,13 +129,13 @@ public class Zuk : MonoBehaviour
 
     void SetSpawn()
     {
-        GameObject newRanger = Instantiate(rangerPrefab, rangeSpawnTile.position + Vector3.one * 1.5f, Quaternion.identity);
+        GameObject newRanger = Instantiate(rangerPrefab, rangeSpawnTile.position + Vector3.one, Quaternion.identity);
         newRanger.name = rangerPrefab.name;
         SetSpawn spawnScript = newRanger.AddComponent<SetSpawn>();
         spawnScript.shieldScript = shieldScript;
         spawnScript.attackSpeed = 4;
 
-        GameObject newMager = Instantiate(magerPrefab, mageSpawnTile.position + Vector3.one * 2f, Quaternion.identity);
+        GameObject newMager = Instantiate(magerPrefab, mageSpawnTile.position + Vector3.one * 1.5f, Quaternion.identity);
         newMager.name = magerPrefab.name;
         spawnScript = newMager.AddComponent<SetSpawn>();
         spawnScript.shieldScript = shieldScript;
@@ -120,11 +144,30 @@ public class Zuk : MonoBehaviour
 
     void JadSpawn()
     {
-        GameObject newJad = Instantiate(jadPrefab, jadSpawnTile.position + Vector3.one * 2.5f, Quaternion.identity);
+        GameObject newJad = Instantiate(jadPrefab, jadSpawnTile.position + Vector3.one * 2f, Quaternion.identity);
         newJad.name = jadPrefab.name;
         SetSpawn spawnScript = newJad.AddComponent<SetSpawn>();
         spawnScript.shieldScript = shieldScript;
         spawnScript.Jad = true;
         spawnScript.attackSpeed = 8;
+    }
+
+    void HealerSpawn()
+    {
+        for (int i = 0; i < healerSpawnTiles.Length; i++)
+        {
+            GameObject newHealer = Instantiate(healerPrefab, healerSpawnTiles[i].position, Quaternion.identity);
+            newHealer.name = healerPrefab.name;
+            ZukHealer script = newHealer.GetComponent<ZukHealer>();
+            script.zukScript = this;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        foreach (Enemy enemy in FindObjectsOfType<Enemy>())
+        {
+            Destroy(enemy.gameObject);
+        }
     }
 }

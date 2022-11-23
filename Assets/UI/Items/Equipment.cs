@@ -40,22 +40,27 @@ public class Equipment : MonoBehaviour
 
     public int attackSpeed;
     public int attackDistance = 1;
-    public bool hasSpec = false;
-    public int specCost;
-    public string specDescription;
 
     bool chargeItem;
     ChargeItem chargeScript;
 
+    public bool addAmmoRangedStats = true;
+    public Color overrideProjectileColor;
+
+    [HideInInspector] public SpecialAttack spec;
+
     private IEnumerator Start()
     {
         itemAction = GetComponent<Action>();
+
+        yield return null; 
 
         for (int i = 0; i < WornEquipment.wornEquipment.transform.childCount; i++)
         {
             if (equipSlotName.ToLower() == WornEquipment.wornEquipment.transform.GetChild(i).name.ToLower())
             {
                 equipSlot = WornEquipment.wornEquipment.transform.GetChild(i);
+                break;
             }
         }
 
@@ -65,6 +70,7 @@ public class Equipment : MonoBehaviour
         }
 
         itemScript = GetComponent<Item>();
+        spec = GetComponent<SpecialAttack>();
 
         yield return null;
 

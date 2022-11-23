@@ -33,6 +33,9 @@ public class Enemy : MonoBehaviour
     public int attackSpeed;
     public int attackDistance = 1;
     public string attackStyle;
+    public bool useMeleeUpClose;
+    public string meleeStyle = "Slash";
+    public float percentMeleeUpClose;
 
     public bool autoRetaliate = true;
     public bool aggro;
@@ -59,7 +62,7 @@ public class Enemy : MonoBehaviour
     [HideInInspector] public string combatLevelColor;
 
     [HideInInspector] public NPC npcScript;
-    Action npcAction;
+    [HideInInspector] public Action npcAction;
 
     Player playerScript;
     Combat combatScript;
@@ -152,22 +155,25 @@ public class Enemy : MonoBehaviour
         if (attackStyle.ToLower().Contains("slash"))
         {
             attackStyle = AttackStyles.slashStyle;
+            useMeleeUpClose = false;
         }
-            if (attackStyle.ToLower().Contains("range"))
+        else if (attackStyle.ToLower().Contains("stab"))
+        {
+            attackStyle = AttackStyles.stabStyle;
+            useMeleeUpClose = false;
+        }
+        else if (attackStyle.ToLower().Contains("crush"))
+        {
+            attackStyle = AttackStyles.crushStyle;
+            useMeleeUpClose = false;
+        }
+        else if (attackStyle.ToLower().Contains("range"))
         {
             attackStyle = AttackStyles.rangedStyle;
         }
         else if (attackStyle.ToLower().Contains("mag"))
         {
             attackStyle = AttackStyles.magicStyle;
-        }
-        else if (attackStyle.ToLower().Contains("stab"))
-        {
-            attackStyle = AttackStyles.stabStyle;
-        }
-        else if (attackStyle.ToLower().Contains("crush"))
-        {
-            attackStyle = AttackStyles.crushStyle;
         }
 
         yield return null;
@@ -187,7 +193,7 @@ public class Enemy : MonoBehaviour
         npcScript.beforeMovement += BeforeMovement;
     }
 
-    void PlayerAttack()
+    public void PlayerAttack()
     {
         playerAttackingEnemy = true;
         playerScript.AttackEnemy(this);
@@ -252,7 +258,16 @@ public class Enemy : MonoBehaviour
     }
     void TakeDamage(IncomingDamage damage)
     {
+        if (damage.damage > hitpoints)
+        {
+            damage.damage = hitpoints;
+        }
+
         hitpoints -= damage.damage;
+        if (hitpoints > initialHitpoints)
+        {
+            hitpoints = initialHitpoints;
+        }
 
         if (newHitSplat == null)
         {
@@ -338,6 +353,11 @@ public class Enemy : MonoBehaviour
 
     public void AttackPlayer()
     {
+        if (npcScript == null)
+        {
+            return;
+        }
+
         beforeAttack?.Invoke();
         npcScript.isTargetingPlayer = true;
         npcScript.externalTarget = true;
@@ -400,5 +420,6 @@ public class Enemy : MonoBehaviour
         Action.cancel1 -= CancelPlayerAttack;
 
         TickManager.beforeTick -= BeforeTick;
+        TickManager.onTick -= PerformAttack;
     }
 }

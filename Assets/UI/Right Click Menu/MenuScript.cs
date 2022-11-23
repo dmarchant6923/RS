@@ -88,7 +88,7 @@ public class MenuScript : MonoBehaviour, IPointerExitHandler, IPointerClickHandl
             {
                 if (RightClickMenu.openActions[i].ignoreUse == false)
                 {
-                    if (RightClickMenu.openActions[i] == RightClickMenu.itemBeingUsed.GetComponent<Action>())
+                    if (RightClickMenu.isUsingItem && RightClickMenu.openActions[i] == RightClickMenu.itemBeingUsed.GetComponent<Action>())
                     {
                         continue;
                     }

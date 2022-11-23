@@ -47,6 +47,10 @@ PrefabInstance:
       propertyPath: rangedStrength
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 79437354327222573, guid: 3b947440a119e9040b006cd247117587, type: 3}
+      propertyPath: examineText
+      value: Fortified armour once worn by a powerful ranger.
+      objectReference: {fileID: 0}
     - target: {fileID: 106661373814431635, guid: 3b947440a119e9040b006cd247117587, type: 3}
       propertyPath: m_Name
       value: Masori body (f)

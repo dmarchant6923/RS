@@ -33,7 +33,7 @@ public class SetSpawn : MonoBehaviour
         combatScript.attackCooldown = 5;
         if (Jad)
         {
-            combatScript.attackCooldown = 8;
+            combatScript.attackCooldown = 12;
         }
 
         TickManager.beforeTick += BeforeTick;
@@ -93,7 +93,6 @@ public class SetSpawn : MonoBehaviour
         switchAggroOnAttack = false;
         attackPlayer = true;
         combatScript.attackCooldown = attackSpeed;
-        Debug.Log(combatScript.attackCooldown);
         npcScript.externalFocus = false;
         enemyScript.AttackPlayer();
     }
@@ -101,7 +100,7 @@ public class SetSpawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (attackPlayer == false)
+        if (attackPlayer == false && shieldScript != null)
         {
             npcScript.targetAngle = Tools.VectorToAngle(shieldScript.transform.position - transform.position);
         }

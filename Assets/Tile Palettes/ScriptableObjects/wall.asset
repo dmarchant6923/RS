@@ -16,4 +16,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c29d1087d5ef5cb468e2b8e53e3ce546, type: 2}
   obstacle: 1
   tallObstacle: 1
-  examineText: A brick wall.
+  examineText: 

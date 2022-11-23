@@ -17,8 +17,6 @@ public class SpellTooltip : MonoBehaviour
 
     public Texture[] runeTextures = new Texture[9];
 
-    float imageDist = 70;
-
 
     Vector3 onPositionLow;
     Vector3 onPositionHigh;

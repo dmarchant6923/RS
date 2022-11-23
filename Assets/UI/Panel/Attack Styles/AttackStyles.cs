@@ -130,7 +130,7 @@ public class AttackStyles : MonoBehaviour
         {
             weaponText.text = WornEquipment.weapon.name;
             categoryText.text = "Category: " + WornEquipment.weapon.weaponCategory;
-            if (WornEquipment.weapon.hasSpec)
+            if (WornEquipment.weapon.spec != null)
             {
                 hasSpec = true;
             }

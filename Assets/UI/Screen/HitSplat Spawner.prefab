@@ -62,3 +62,4 @@ MonoBehaviour:
   objectGettingHit: {fileID: 0}
   blueHitSplat: {fileID: 2800000, guid: 2fe0f5a26e857894e98b4f01c40394d0, type: 3}
   maxHitSplat: {fileID: 2800000, guid: 73f534c0c2494ff4d80ed75d5deb15a7, type: 3}
+  purpleHitSplat: {fileID: 2800000, guid: 0c0255bd7fc54284093c05411cf26c23, type: 3}

@@ -5,9 +5,10 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public bool arrow;
+    public bool bolt;
     public bool dart;
     public GameObject target;
-    Vector3 targetPosition;
+    [HideInInspector] public Vector3 targetPosition;
     public GameObject source;
     public float airborneTicks;
     Vector3 initialPosition;
@@ -18,6 +19,7 @@ public class Projectile : MonoBehaviour
     SpriteRenderer sprite;
     public Sprite magicSprite;
     public Sprite arrowSprite;
+    public Sprite boltSprite;
     public Sprite dartSprite;
 
     public Sprite customSprite;
@@ -39,6 +41,10 @@ public class Projectile : MonoBehaviour
             if (arrow)
             {
                 sprite.sprite = arrowSprite;
+            }
+            else if (bolt)
+            {
+                sprite.sprite = boltSprite;
             }
             else if (dart)
             {
@@ -70,24 +76,29 @@ public class Projectile : MonoBehaviour
         if (sprite.enabled == false)
         {
             float mult = 0.4f;
-            if (source.GetComponent<NPC>() != null)
+            if (source != null && source.GetComponent<NPC>() != null)
             {
                 mult *= (float)source.GetComponent<NPC>().tileSize;
             }
-            initialPosition = transform.position + (target.transform.position - transform.position).normalized * mult;
+            if (target != null)
+            {
+                targetPosition = target.transform.position;
+            }
+            initialPosition = transform.position + (targetPosition - transform.position).normalized * mult;
             sprite.enabled = true;
         }
     }
 
     private void Update()
     {
-        if (sprite.enabled == false)
+        if (sprite.enabled == false && source != null)
         {
             transform.position = source.transform.position;
             return;
         }
 
         float percent = timer / airborneTime;
+
         if (target != null)
         {
             targetPosition = target.transform.position + (initialPosition - target.transform.position).normalized * 0.3f;

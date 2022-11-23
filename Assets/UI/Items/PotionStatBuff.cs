@@ -11,9 +11,10 @@ public class PotionStatBuff : MonoBehaviour
     public bool mage;
     public bool prayer;
     public bool hitpoints;
+    public int runEnergy;
+    public bool stamina;
 
     public bool divine;
-    int divineTimer = 500;
 
     public bool boostOverBase = true;
 
@@ -65,6 +66,10 @@ public class PotionStatBuff : MonoBehaviour
         else
         {
             currentStat += boost;
+            if (currentStat < 1)
+            {
+                currentStat = 1;
+            }
         }
 
         return currentStat;
@@ -77,6 +82,21 @@ public class PotionStatBuff : MonoBehaviour
         if (divine)
         {
             Player.player.AddToDamageQueue(10, 1, null);
+        }
+        if (runEnergy > 0)
+        {
+            Player.player.runEnergy += (float)runEnergy * 100;
+        }
+        if (stamina)
+        {
+            RunToggle.instance.Stamina(true);
+            Player.player.stamina = true;
+            Player.player.staminaTicks = 200;
+
+            Texture texture = potionScript.CreatePotionTexture(4);
+            string name = gameObject.name.Remove(gameObject.name.Length - 3);
+
+            BuffBar.instance.CreateExtraTimer(texture, (float)200 * TickManager.maxTickTime, name);
         }
     }
 }

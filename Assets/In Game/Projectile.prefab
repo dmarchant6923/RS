@@ -95,13 +95,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f43fce27370f2da4f992e8c4b984d0ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magic: 0
   arrow: 0
+  bolt: 0
   dart: 0
   target: {fileID: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
   source: {fileID: 0}
   airborneTicks: 0
   color: {r: 0, g: 0, b: 0, a: 0}
   magicSprite: {fileID: 21300000, guid: 45097ad376af55f4ab4e092972b95871, type: 3}
   arrowSprite: {fileID: 21300000, guid: 6a173fcbcd77bb447a8b285f98c24cee, type: 3}
+  boltSprite: {fileID: 21300000, guid: e226c28fcc4de78438594889f2f2b25f, type: 3}
   dartSprite: {fileID: 21300000, guid: e90d9494df9d6f440b5bd883414b1b0c, type: 3}
+  customSprite: {fileID: 0}
+  appearInstantly: 0

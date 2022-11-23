@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Jad : MonoBehaviour
 {
-    Enemy enemyScript;
-    NPC npcScript;
+    [HideInInspector] public Enemy enemyScript;
+    [HideInInspector] public NPC npcScript;
     Combat combatScript;
 
     public Sprite mageProjectile;
@@ -19,6 +19,10 @@ public class Jad : MonoBehaviour
     public SpriteRenderer signalSprite;
 
     int currentStyle;
+
+    public GameObject healerPrefab;
+    bool healersSpawned = false;
+    public int numberOfHealers = 3;
 
     private void Start()
     {
@@ -58,6 +62,39 @@ public class Jad : MonoBehaviour
                 enemyScript.projectileColor = mageProjectileColor;
             }
         }
+
+        if (healersSpawned == false && (float)enemyScript.hitpoints <= (float)enemyScript.initialHitpoints / 2)
+        {
+            SpawnHealers();
+        }
+    }
+
+    void SpawnHealers()
+    {
+        healersSpawned = true;
+        if (numberOfHealers == 3)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Vector2 position = npcScript.trueTile + Vector2.up * npcScript.tileSize;
+                if (i == 1)
+                {
+                    position += Vector2.up;
+                }
+                if (i == 2)
+                {
+                    position += Vector2.left;
+                }
+                GameObject newHealer = Instantiate(healerPrefab, position, Quaternion.identity);
+                newHealer.name = healerPrefab.name;
+                newHealer.GetComponent<JadHealer>().jadScript = this;
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        TickManager.afterTick -= AfterTick;
     }
 
 }

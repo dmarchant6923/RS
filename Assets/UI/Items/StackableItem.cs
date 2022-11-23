@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class StackableItem : MonoBehaviour
 {
+    public bool useRangeAmmoScript = false;
+
     public RawImage maskImage;
     public RawImage itemImage;
 
@@ -13,7 +15,7 @@ public class StackableItem : MonoBehaviour
     public Texture image3;
     public Texture image4;
     public Texture image5;
-    [System.NonSerialized] public Texture[] images = new Texture[5];
+    [System.NonSerialized] public Texture[] textures = new Texture[5];
 
     public int threshold2;
     public int threshold3;
@@ -38,11 +40,14 @@ public class StackableItem : MonoBehaviour
 
     private void Start()
     {
-        images[0] = image1;
-        images[1] = image2;
-        images[2] = image3;
-        images[3] = image4;
-        images[4] = image5;
+        if (useRangeAmmoScript == false)
+        {
+            textures[0] = image1;
+            textures[1] = image2;
+            textures[2] = image3;
+            textures[3] = image4;
+            textures[4] = image5;
+        }
 
         thresholds[0] = threshold2;
         thresholds[1] = threshold3;
@@ -56,6 +61,14 @@ public class StackableItem : MonoBehaviour
         TickManager.beforeTick += BeforeTick;
     }
 
+    public void SetImages(Texture2D[] newTextures)
+    {
+        for (int i = 0; i < newTextures.Length; i++)
+        {
+            textures[i] = newTextures[i];
+        }
+        ChooseImage();
+    }
     void ChooseImage()
     {
         if (quantity <= 0)
@@ -71,13 +84,13 @@ public class StackableItem : MonoBehaviour
         {
             if (i == 0)
             {
-                maskImage.texture = images[i];
-                itemImage.texture = images[i];
+                maskImage.texture = textures[i];
+                itemImage.texture = textures[i];
             }
-            else if (images[i] != null && quantity >= thresholds[i - 1])
+            else if (textures[i] != null && quantity >= thresholds[i - 1])
             {
-                maskImage.texture = images[i];
-                itemImage.texture = images[i];
+                maskImage.texture = textures[i];
+                itemImage.texture = textures[i];
                 break;
             }
         }

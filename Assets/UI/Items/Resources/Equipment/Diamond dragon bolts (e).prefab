@@ -1,0 +1,127 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4163496392941468859
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4444367679955311804, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: colors.Array.data[2].b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4444367679955311804, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: colors.Array.data[2].g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4444367679955311804, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: colors.Array.data[2].r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7365907216575350836, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: examineText
+      value: Enchanted Dragon crossbow bolts, tipped with diamond.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7374694659518447242, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_Name
+      value: Diamond dragon bolts (e)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 304.40015
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -228.19998
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551362494319013110, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: ammoCategory
+      value: bolt
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551362494319013110, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: equipSlotName
+      value: ammo
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551362494319013110, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: rangedStrength
+      value: 122
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}

@@ -152,7 +152,7 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             StackableGroundItem groundStackScript = newItem.AddComponent<StackableGroundItem>();
             groundStackScript.quantity = stackScript.quantity;
-            groundStackScript.textures = stackScript.images;
+            groundStackScript.textures = stackScript.textures;
             groundStackScript.thresholds = stackScript.thresholds;
         }
         if (GetComponent<Potion>() != null)

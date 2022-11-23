@@ -17,6 +17,7 @@ public class Combat : MonoBehaviour
     [HideInInspector] public int minCoolDown = -7;
 
     public GameObject projectile;
+    public float projectileSize = 1;
 
     public bool debug;
     LineRenderer line;
@@ -29,9 +30,21 @@ public class Combat : MonoBehaviour
     bool mage;
     bool range;
 
+    string style;
+
     bool offensivePrayerOn = false;
 
     [HideInInspector] public bool projectileSpawnsImmediately = false;
+
+    public GameObject attackEffect;
+
+    [HideInInspector] public float diamondBoltProcChance = 0.1f;
+    [HideInInspector] public float rubyBoltProcChance = 0.11f;
+    float realDiamondBoltChance;
+    float realRubyBoltChance;
+
+    [HideInInspector] public bool useSpec;
+    SpecialAttack specScript;
 
     private void Start()
     {
@@ -47,6 +60,15 @@ public class Combat : MonoBehaviour
         {
             line = GetComponent<LineRenderer>();
         }
+
+        if (playerScript.kandarinHard)
+        {
+            diamondBoltProcChance *= 1.1f;
+            rubyBoltProcChance *= 1.1f;
+        }
+
+        realDiamondBoltChance = diamondBoltProcChance;
+        realRubyBoltChance = rubyBoltProcChance;
     }
     public void PlayerAttack()
     {
@@ -59,7 +81,7 @@ public class Combat : MonoBehaviour
 
         if (AttackStyles.attackStyle == AttackStyles.rangedStyle)
         {
-            if (WornEquipment.weapon.weaponCategory != WornEquipment.thrownCategory)
+            if (WornEquipment.weapon.addAmmoRangedStats)
             {
                 if (WornEquipment.ammo == null)
                 {
@@ -67,13 +89,13 @@ public class Combat : MonoBehaviour
                     playerScript.RemoveFocus();
                     return;
                 }
-                if (WornEquipment.weapon.weaponCategory == WornEquipment.bowCategory && WornEquipment.ammo.ammoCategory != "Arrow")
+                if (WornEquipment.weapon.weaponCategory == WornEquipment.bowCategory && WornEquipment.ammo.ammoCategory.ToLower().Contains("arrow") == false)
                 {
                     Debug.Log("You can't use that ammo with your bow.");
                     playerScript.RemoveFocus();
                     return;
                 }
-                if (WornEquipment.weapon.weaponCategory == WornEquipment.crossbowCategory && WornEquipment.ammo.ammoCategory != "Bolt")
+                if (WornEquipment.weapon.weaponCategory == WornEquipment.crossbowCategory && WornEquipment.ammo.ammoCategory.ToLower().Contains("bolt") == false)
                 {
                     Debug.Log("You can't use that ammo with your crossbow.");
                     playerScript.RemoveFocus();
@@ -101,9 +123,12 @@ public class Combat : MonoBehaviour
         }
 
         Prayer.UpdatePrayerBonuses();
+        SpecBar.instance.CheckSpec();
+
 
         if (attackCooldown <= 0)
         {
+            playerScript.attackThisTick = true;
             attackCooldown = WornEquipment.attackSpeed;
             if (AttackStyles.attackStyle == AttackStyles.rangedStyle && AttackStyles.attackType == AttackStyles.rapidType)
             {
@@ -112,6 +137,8 @@ public class Combat : MonoBehaviour
             HealthHUD.Activate(Player.targetedNPC.GetComponent<Enemy>());
 
 
+
+            
             specialEffects = false;
             effects = null;
             if (WornEquipment.weapon != null && WornEquipment.weapon.GetComponent<SpecialEffects>() != null)
@@ -119,51 +146,79 @@ public class Combat : MonoBehaviour
                 specialEffects = true;
                 effects = WornEquipment.weapon.GetComponent<SpecialEffects>();
             }
+            if (useSpec && WornEquipment.weapon.spec == null)
+            {
+                specScript = null;
+                useSpec = false;
+            }
+            else if (useSpec)
+            {
+                specScript = WornEquipment.weapon.spec;
+            }
 
 
 
             float maxAttRoll = PlayerAttackRoll();
-            if (specialEffects)
-            {
-                maxAttRoll = Mathf.Floor(maxAttRoll * effects.AttackRollMult());
-            }
             float maxDefRoll = EnemyDefenseRoll(Player.targetedNPC.GetComponent<Enemy>(), AttackStyles.attackStyle);
-            float attRoll = Random.Range(0, (int) maxAttRoll);
-            float defRoll = Random.Range(0, (int) maxDefRoll);
-            bool success = false;
-            if (attRoll > defRoll)
-            {
-                success = true;
-            }
-            else if (specialEffects && (effects.rerollAttMult || effects.rerollDefMult))
-            {
-                if (effects.rerollAttMult)
-                {
-                    attRoll = Random.Range(0, (int)maxAttRoll);
-                }
-                if (effects.rerollDefMult)
-                {
-                    defRoll = Random.Range(0, (int)maxDefRoll);
-                }
-
-                if (attRoll > defRoll)
-                {
-                    success = true;
-                }
-            }
-
-
-
+            bool success = SuccessfulAttack(maxAttRoll, maxDefRoll);
             float maxHit = PlayerMaxHit();
-            if (specialEffects)
-            {
-                maxHit = Mathf.Floor(maxHit * effects.MaxHitMult());
-            }
-            int hitRoll = 0;
 
+            int hitRoll = 0;
             if (success)
             {
                 hitRoll = Random.Range(0, (int)maxHit + 1);
+            }
+
+
+            if (WornEquipment.diamondBoltsE)
+            {
+                realDiamondBoltChance = diamondBoltProcChance;
+                if (useSpec)
+                {
+                    realDiamondBoltChance = specScript.EnchantedBoltChance(realDiamondBoltChance, true);
+                }
+                float rand = Random.Range(0f, 1f);
+                if (rand <= realDiamondBoltChance) //0.11f
+                {
+                    success = true;
+                    float mult = 1.15f;
+                    if (specialEffects && effects.zaryteCrossbow)
+                    {
+                        mult = 1.25f;
+                    }
+                    hitRoll = Random.Range(0, Mathf.FloorToInt(maxHit * mult) + 1);
+                    GameObject newEffect = Instantiate(attackEffect, Player.player.trueTile, Quaternion.identity);
+                    newEffect.GetComponent<Explosion>().followObject = playerScript.gameObject;
+                    newEffect.GetComponent<SpriteRenderer>().color = Color.white;
+                    newEffect.GetComponent<Explosion>().decaySpeed = 0.4f;
+                    newEffect.GetComponent<Explosion>().rotate = true;
+
+                }
+            }
+            if (WornEquipment.rubyBoltsE)
+            {
+                realRubyBoltChance = rubyBoltProcChance;
+                if (useSpec)
+                {
+                    realRubyBoltChance = specScript.EnchantedBoltChance(realRubyBoltChance, success);
+                }
+                float rand = Random.Range(0f, 1f);
+                if (rand <= realRubyBoltChance) //0.121f
+                {
+                    success = true;
+                    float mult = 0.2f;
+                    if (specialEffects && effects.zaryteCrossbow)
+                    {
+                        mult = 0.22f;
+                    }
+                    hitRoll = (int)Mathf.Min(100, Mathf.Floor((float)Player.targetedNPC.GetComponent<Enemy>().hitpoints * mult));
+                    Player.player.AddToDamageQueue((int) Mathf.Floor((float)PlayerStats.currentHitpoints * 0.1f), 0, null);
+                    GameObject newEffect = Instantiate(attackEffect, Player.player.trueTile, Quaternion.identity);
+                    newEffect.GetComponent<Explosion>().followObject = playerScript.gameObject;
+                    newEffect.GetComponent<SpriteRenderer>().color = Color.red;
+                    newEffect.GetComponent<Explosion>().decaySpeed = 0.4f;
+                    newEffect.GetComponent<Explosion>().rotate = true;
+                }
             }
 
             if (hitRoll > 0)
@@ -171,17 +226,35 @@ public class Combat : MonoBehaviour
                 XPDrop.CombatXPDrop(AttackStyles.attackStyle, AttackStyles.attackType, hitRoll, offensivePrayerOn);
             }
 
-
-            int dist = TileManager.TileDistance(playerScript.trueTile, Player.targetedNPC.trueTile);
-            int delay = 1;
-            if (AttackStyles.attackStyle == AttackStyles.rangedStyle)
+            int delay = CalculateDelay();
+            if (useSpec && specScript.customProjectile != null)
             {
-                delay = 1 + Mathf.FloorToInt((3 + dist) / 6);
+                SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, specScript.customProjectileColor, specScript.customProjectile);
+            }
+            else if (AttackStyles.attackStyle == AttackStyles.rangedStyle)
+            {
+                if (WornEquipment.weapon.addAmmoRangedStats && WornEquipment.weapon.overrideProjectileColor.a == 0)
+                {
+                    SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, WornEquipment.ammo.GetComponent<StackableItem>().projectileColor, WornEquipment.weapon.weaponCategory);
+                }
+                else
+                {
+                    SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, WornEquipment.weapon.overrideProjectileColor, WornEquipment.weapon.weaponCategory);
+                }
             }
             else if (AttackStyles.attackStyle == AttackStyles.magicStyle)
             {
-                delay = 1 + Mathf.FloorToInt((1 + dist) / 3);
+                SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, WornEquipment.weapon.GetComponent<PoweredStaff>().projectileColor, WornEquipment.weapon.weaponCategory);
+                WornEquipment.weapon.GetComponent<ChargeItem>().UseCharge();
             }
+
+            if (useSpec && specScript.leech)
+            {
+                PlayerStats.PlayerHeal(Mathf.FloorToInt((float)hitRoll * specScript.leechPercent));
+            }
+
+
+
 
             if (AttackStyles.attackStyle == AttackStyles.magicStyle && success == false)
             {
@@ -191,12 +264,11 @@ public class Combat : MonoBehaviour
             {
                 Player.targetedNPC.GetComponent<Enemy>().AddToDamageQueue(hitRoll, delay, true, (int)maxHit);
             }
-            playerScript.attackThisTick = true;
 
 
             if (AttackStyles.attackStyle == AttackStyles.rangedStyle)
             {
-                if (WornEquipment.weapon.weaponCategory != WornEquipment.thrownCategory)
+                if (WornEquipment.weapon.addAmmoRangedStats)
                 {
                     WornEquipment.ammo.GetComponent<StackableItem>().UseRangedAmmo(playerScript.targetNPCPreviousTile, delay);
                 }
@@ -206,23 +278,10 @@ public class Combat : MonoBehaviour
                 }
             }
 
-            if (AttackStyles.attackStyle == AttackStyles.rangedStyle)
+            if (useSpec)
             {
-                if (WornEquipment.weapon.weaponCategory != WornEquipment.thrownCategory)
-                {
-                    SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, WornEquipment.ammo.GetComponent<StackableItem>().projectileColor, WornEquipment.weapon.weaponCategory);
-                }
-                else
-                {
-                    SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, WornEquipment.weapon.GetComponent<BlowPipe>().projectileColor, WornEquipment.weapon.weaponCategory);
-                }
+                SpecBar.instance.UseSpec();
             }
-            if (AttackStyles.attackStyle == AttackStyles.magicStyle)
-            {
-                SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, WornEquipment.weapon.GetComponent<PoweredStaff>().projectileColor, WornEquipment.weapon.weaponCategory);
-                WornEquipment.weapon.GetComponent<ChargeItem>().UseCharge();
-            }
-
 
 
 
@@ -237,6 +296,25 @@ public class Combat : MonoBehaviour
             }
 
             float dps = (maxHit / 2) * hitChance / attackCooldown / 0.6f;
+
+            if (WornEquipment.rubyBoltsE)
+            {
+                float mult = 0.2f;
+                if (specialEffects && effects.zaryteCrossbow)
+                {
+                    mult = 0.22f;
+                }
+                dps = (dps * (1 - rubyBoltProcChance)) + (rubyBoltProcChance * (int)Mathf.Min(100, Mathf.Floor((float)Player.targetedNPC.GetComponent<Enemy>().hitpoints * mult)) / attackCooldown / 0.6f);
+            }
+            else if (WornEquipment.diamondBoltsE)
+            {
+                float mult = 1.15f;
+                if (specialEffects && effects.zaryteCrossbow)
+                {
+                    mult = 1.25f;
+                }
+                dps = (dps * (1 - diamondBoltProcChance)) + (diamondBoltProcChance * Mathf.Floor(maxHit * 1.15f) / attackCooldown / 0.6f);
+            }
 
             CombatInfo.PlayerAttack(AttackStyles.attackStyle, (int)maxAttRoll);
             CombatInfo.PlayerAttackResult(hitChance, (int)maxHit, dps);
@@ -286,68 +364,95 @@ public class Combat : MonoBehaviour
             {
                 maxAttRoll *= Mathf.Floor(effects.AttackRollMult());
             }
-            float maxDefRoll = EnemyDefenseRoll(Player.targetedNPC.GetComponent<Enemy>(), AttackStyles.magicStyle);
-            float attRoll = Random.Range(0, (int)maxAttRoll);
-            float defRoll = Random.Range(0, (int)maxDefRoll);
-            bool success = false;
-            if (attRoll > defRoll)
-            {
-                success = true;
-            }
-            else if (specialEffects && (effects.rerollAttMult || effects.rerollDefMult))
-            {
-                if (effects.rerollAttMult)
-                {
-                    attRoll = Random.Range(0, (int)maxAttRoll);
-                }
-                if (effects.rerollDefMult)
-                {
-                    defRoll = Random.Range(0, (int)maxDefRoll);
-                }
 
-                if (attRoll > defRoll)
+
+            List<Enemy> enemies = new List<Enemy>();
+            enemies.Add(Player.targetedNPC.GetComponent<Enemy>());
+            if (spell.aoeSize > 1)
+            {
+                RaycastHit2D[] cast = Physics2D.BoxCastAll(Player.targetedNPC.transform.position, Vector2.one * 5, 0, Vector2.zero);
+                foreach (RaycastHit2D enemy in cast)
                 {
-                    success = true;
+                    if (enemy.collider.GetComponent<Enemy>() != null)
+                    {
+                        Enemy script = enemy.collider.GetComponent<Enemy>();
+                        if ((script.npcScript.trueTile - Player.targetedNPC.trueTile).magnitude < 1.8f && enemies.Count < 9 && enemies.Contains(script) == false)
+                        {
+                            enemies.Add(script);
+                        }
+                    }
                 }
             }
 
-
-
-            float maxHit = Mathf.Floor((float)spell.maxDamage *(1 + ((float)WornEquipment.magicDamage / 100)));
-            int hitRoll = 0;
-            if (success)
+            playerScript.attackThisTick = true;
+            int dist = TileManager.TileDistance(playerScript.trueTile, Player.targetedNPC.trueTile);
+            int delay = 1 + Mathf.FloorToInt((1 + dist) / 3);
+            XPDrop.SkillXPDrop("Magic", Mathf.FloorToInt((spell.levelReq / 2) + 5));
+            spell.UseRunes();
+            SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, spell.projectileColor, "");
+            float maxHit = 0;
+            foreach (Enemy enemy in enemies)
             {
+                float maxDefRoll = EnemyDefenseRoll(enemy, AttackStyles.magicStyle);
+                float attRoll = Random.Range(0, (int)maxAttRoll);
+                float defRoll = Random.Range(0, (int)maxDefRoll);
+                bool success = false;
+                maxHit = Mathf.Floor((float)spell.maxDamage * (1 + ((float)WornEquipment.magicDamage / 100)));
                 if (specialEffects)
                 {
                     maxHit = Mathf.Floor(maxHit * effects.MaxHitMult());
                 }
-
-                hitRoll = Random.Range(0, (int)maxHit + 1);
-            }
-
-            XPDrop.SkillXPDrop("Magic", Mathf.FloorToInt((spell.levelReq / 2) + 5));
-            if (hitRoll > 0)
-            {
-                XPDrop.CombatXPDrop(AttackStyles.attackStyle, AttackStyles.attackType, hitRoll, offensivePrayerOn);
-            }
-
-
-
-            int dist = TileManager.TileDistance(playerScript.trueTile, Player.targetedNPC.trueTile);
-            int delay = 1 + Mathf.FloorToInt((1 + dist) / 3);
-            if (success)
-            {
-                Player.targetedNPC.GetComponent<Enemy>().AddToDamageQueue(hitRoll, delay, true, (int)maxHit);
-                Player.targetedNPC.GetComponent<Enemy>().SpellEffects(spell);
-                if (spell.leech)
+                if (attRoll > defRoll)
                 {
-                    int heal = (int)Mathf.Floor((float)hitRoll * (float)spell.leechPercent / 100);
-                    PlayerStats.PlayerHeal(heal);
+                    success = true;
+                }
+                else if (specialEffects && (effects.rerollAttMult || effects.rerollDefMult))
+                {
+                    if (effects.rerollAttMult)
+                    {
+                        attRoll = Random.Range(0, (int)maxAttRoll);
+                    }
+                    if (effects.rerollDefMult)
+                    {
+                        defRoll = Random.Range(0, (int)maxDefRoll);
+                    }
+
+                    if (attRoll > defRoll)
+                    {
+                        success = true;
+                    }
+                }
+
+                int hitRoll = 0;
+                if (success)
+                {
+                    hitRoll = Random.Range(0, (int)maxHit + 1);
+                }
+
+                if (hitRoll > 0)
+                {
+                    XPDrop.CombatXPDrop(AttackStyles.attackStyle, AttackStyles.attackType, hitRoll, offensivePrayerOn);
+                    Debug.Log(AttackStyles.attackStyle + " " + AttackStyles.attackType);
+                }
+
+                if (success)
+                {
+                    enemy.AddToDamageQueue(hitRoll, delay, true, (int)maxHit);
+                    enemy.SpellEffects(spell);
+                    if (spell.leech)
+                    {
+                        int heal = (int)Mathf.Floor((float)hitRoll * (float)spell.leechPercent / 100);
+                        PlayerStats.PlayerHeal(heal);
+                    }
+                }
+                else
+                {
+                    if (enemy.autoRetaliate)
+                    {
+                        enemy.AttackPlayer();
+                    }
                 }
             }
-            playerScript.attackThisTick = true;
-            spell.UseRunes();
-            SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, spell.projectileColor, "");
 
             if (playerScript.attackUsingSpell && playerScript.spellBeingUsed == spell)
             {
@@ -357,13 +462,14 @@ public class Combat : MonoBehaviour
             playerScript.spellBeingUsed = null;
 
             float hitChance;
-            if (maxAttRoll > maxDefRoll)
+            float calcDefRoll = EnemyDefenseRoll(enemies[0], AttackStyles.magicStyle);
+            if (maxAttRoll > calcDefRoll)
             {
-                hitChance = 1 - (maxDefRoll + 2) / (2 * (maxAttRoll + 1));
+                hitChance = 1 - (calcDefRoll + 2) / (2 * (maxAttRoll + 1));
             }
             else
             {
-                hitChance = maxAttRoll / (2 * (maxDefRoll + 1));
+                hitChance = maxAttRoll / (2 * (calcDefRoll + 1));
             }
 
             float dps = (maxHit / 2) * hitChance / attackCooldown / 0.6f;
@@ -397,6 +503,11 @@ public class Combat : MonoBehaviour
                 offensivePrayerOn = true;
             }
 
+            if (WornEquipment.slayerHelm)
+            {
+                gearBonus += 0.1667f;
+            }
+
             effectiveLevel = Mathf.Floor((Mathf.Floor(PlayerStats.currentAttack * Prayer.attackPrayerBonus) + AttackStyles.attBonus + 8) * voidBonus);
             styleBonus = WornEquipment.attackCrush;
             if (AttackStyles.attackStyle == AttackStyles.slashStyle)
@@ -420,6 +531,16 @@ public class Combat : MonoBehaviour
                 offensivePrayerOn = true;
             }
 
+            if (WornEquipment.slayerHelm)
+            {
+                gearBonus += 0.15f;
+            }
+
+            if (WornEquipment.crystalWeapon)
+            {
+                gearBonus += WornEquipment.crystalBonus;
+            }
+
             effectiveLevel = Mathf.Floor((Mathf.Floor(PlayerStats.currentRanged * Prayer.rangedAttackPrayerBonus) + AttackStyles.rangedBonus + 8) * voidBonus);
             styleBonus = WornEquipment.attackRange;
         }
@@ -435,13 +556,60 @@ public class Combat : MonoBehaviour
                 offensivePrayerOn = true;
             }
 
+            if (WornEquipment.slayerHelm)
+            {
+                gearBonus += 0.15f;
+            }
+
             effectiveLevel = Mathf.Floor(Mathf.Floor(PlayerStats.currentMagic * Prayer.magicAttackPrayerBonus) * voidBonus + AttackStyles.magicBonus + 9);
             styleBonus = WornEquipment.attackMagic;
         }
 
+
         roll = Mathf.Floor(effectiveLevel * (styleBonus + 64) * gearBonus);
 
+        if (specialEffects)
+        {
+            roll = Mathf.Floor(roll * effects.AttackRollMult());
+        }
+        if (useSpec)
+        {
+            roll = Mathf.Floor(roll * specScript.AccuracyRollMult());
+        }
+
         return roll;
+    }
+    bool SuccessfulAttack(float maxAttRoll, float maxDefRoll)
+    {
+        float attRoll = Random.Range(0, (int)maxAttRoll);
+        float defRoll = Random.Range(0, (int)maxDefRoll);
+
+        if (attRoll > defRoll)
+        {
+            return true;
+        }
+        if (useSpec && specScript.guaranteeHit)
+        {
+            return true;
+        }
+        if (specialEffects && (effects.rerollAttMult || effects.rerollDefMult))
+        {
+            if (effects.rerollAttMult)
+            {
+                attRoll = Random.Range(0, (int)maxAttRoll);
+            }
+            if (effects.rerollDefMult)
+            {
+                defRoll = Random.Range(0, (int)maxDefRoll);
+            }
+
+            if (attRoll > defRoll)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
     float PlayerMaxHit()
     {
@@ -476,6 +644,16 @@ public class Combat : MonoBehaviour
                 }
             }
 
+            if (WornEquipment.slayerHelm)
+            {
+                gearBonus += 0.15f;
+            }
+
+            if (WornEquipment.crystalWeapon)
+            {
+                gearBonus += WornEquipment.crystalBonus / 2;
+            }
+
             effectiveStrength = Mathf.Floor((Mathf.Floor(PlayerStats.currentRanged * Prayer.rangedStrengthPrayerBonus) + AttackStyles.rangedBonus + 8) * voidBonus);
             maxHit = Mathf.Floor(0.5f + (effectiveStrength * (WornEquipment.rangedStrength + 64)) / 640) * gearBonus;
         }
@@ -485,11 +663,41 @@ public class Combat : MonoBehaviour
             {
                 voidBonus = 1.025f;
             }
+
+            if (WornEquipment.slayerHelm)
+            {
+                gearBonus += 0.15f;
+            }
+            gearBonus--;
+
             float baseMaxHit = WornEquipment.weapon.GetComponent<PoweredStaff>().BaseMaxHit(PlayerStats.currentMagic);
-            maxHit = Mathf.Floor(baseMaxHit * (voidBonus + (WornEquipment.magicDamage / 100)));
+            maxHit = Mathf.Floor(baseMaxHit * (voidBonus + (WornEquipment.magicDamage / 100) + gearBonus));
+        }
+
+        if (specialEffects)
+        {
+            maxHit = Mathf.Floor(maxHit * effects.MaxHitMult());
+        }
+        if (useSpec)
+        {
+            maxHit = Mathf.Floor(maxHit * specScript.MaxHitMult());
         }
 
         return Mathf.Floor(maxHit);
+    }
+    int CalculateDelay()
+    {
+        int dist = TileManager.TileDistance(playerScript.trueTile, Player.targetedNPC.trueTile);
+        if (AttackStyles.attackStyle == AttackStyles.rangedStyle)
+        {
+            return 1 + Mathf.FloorToInt((3 + dist) / 6);
+        }
+        else if (AttackStyles.attackStyle == AttackStyles.magicStyle || (useSpec && specScript.slowProjectile))
+        {
+            return 1 + Mathf.FloorToInt((1 + dist) / 3);
+        }
+
+        return 1;
     }
     float PlayerDefenseRoll(string style)   
     {
@@ -732,6 +940,18 @@ public class Combat : MonoBehaviour
         return targetTile;
     }
 
+    public void SpawnProjectile(Vector2 target, GameObject source, int airborneTicks, Color color, Sprite projectileSprite)
+    {
+        GameObject newProjectile = Instantiate(projectile, transform.position, Quaternion.identity);
+        Projectile script = newProjectile.GetComponent<Projectile>();
+        script.airborneTicks = airborneTicks;
+        script.targetPosition = target;
+        script.color = color;
+        script.source = source;
+        script.customSprite = projectileSprite;
+        script.appearInstantly = projectileSpawnsImmediately;
+        script.transform.localScale *= projectileSize;
+    }
     public void SpawnProjectile(GameObject target, GameObject source, int airborneTicks, Color color, Sprite projectileSprite)
     {
         GameObject newProjectile = Instantiate(projectile, transform.position, Quaternion.identity);
@@ -742,6 +962,7 @@ public class Combat : MonoBehaviour
         script.source = source;
         script.customSprite = projectileSprite;
         script.appearInstantly = projectileSpawnsImmediately;
+        script.transform.localScale *= projectileSize;
     }
     public void SpawnProjectile(GameObject target, GameObject source, int airborneTicks, Color color, string WeaponCategory)
     {
@@ -763,11 +984,16 @@ public class Combat : MonoBehaviour
                 script.arrow = true;
                 newProjectile.transform.localScale *= 0.8f;
             }
+            if (WeaponCategory == WornEquipment.crossbowCategory)
+            {
+                script.bolt = true;
+            }
             if (WeaponCategory == WornEquipment.thrownCategory)
             {
                 script.dart = true;
             }
         }
+        script.transform.localScale *= projectileSize;
     }
 
 
@@ -784,10 +1010,20 @@ public class Combat : MonoBehaviour
 
         if (attackCooldown <= 0)
         {
+            style = enemyScript.attackStyle;
+            if (enemyScript.useMeleeUpClose && DistanceToCombat(playerScript.trueTile, enemyScript.npcScript.trueTile, enemyScript.npcScript.tileSize) == 1)
+            {
+                float rand = Random.Range(0f, 1f);
+                if (rand < enemyScript.percentMeleeUpClose)
+                {
+                    style = enemyScript.meleeStyle;
+                }
+            }
+
             attackCooldown = enemyScript.attackSpeed;
 
             float maxAttRoll = EnemyAttackRoll(enemyScript);
-            float maxDefRoll = PlayerDefenseRoll(enemyScript.attackStyle);
+            float maxDefRoll = PlayerDefenseRoll(style);
             float attRoll = Random.Range(0, (int)maxAttRoll);
             float defRoll = Random.Range(0, (int)maxDefRoll);
             bool success = false;
@@ -819,15 +1055,18 @@ public class Combat : MonoBehaviour
                 delay = 1 + Mathf.FloorToInt((3 + dist) / 6);
                 type = WornEquipment.bowCategory;
             }
-            else if (mage || enemyScript.slowProjectile)
+            else if ((mage || enemyScript.slowProjectile) && melee == false)
             {
                 delay = 1 + Mathf.FloorToInt((1 + dist) / 3);
             }
-            if (enemyScript.uniformProjectileDelay > 0)
+            if (enemyScript.uniformProjectileDelay > 0 && melee == false)
             {
                 delay = enemyScript.uniformProjectileDelay;
             }
-            SpawnProjectile(playerScript.gameObject, enemyScript.gameObject, delay, enemyScript.projectileColor, type);
+            if (melee == false)
+            {
+                SpawnProjectile(playerScript.gameObject, enemyScript.gameObject, delay, enemyScript.projectileColor, type);
+            }
 
             playerScript.AddToDamageQueue(hitRoll, delay, enemyScript);
             enemyScript.attackThisTick = true;
@@ -863,15 +1102,15 @@ public class Combat : MonoBehaviour
         int level = enemyScript.attack;
         effectiveLevel = Mathf.Floor(Mathf.Floor(enemyScript.attack) + 8);
         styleBonus = enemyScript.attackCrush;
-        if (enemyScript.attackStyle == AttackStyles.slashStyle)
+        if (style == AttackStyles.slashStyle)
         {
             styleBonus = enemyScript.attackSlash;
         }
-        else if (enemyScript.attackStyle == AttackStyles.stabStyle)
+        else if (style == AttackStyles.stabStyle)
         {
             styleBonus = enemyScript.attackStab;
         }
-        else if (enemyScript.attackStyle == AttackStyles.rangedStyle)
+        else if (style == AttackStyles.rangedStyle)
         {
             range = true;
             melee = false;
@@ -879,7 +1118,7 @@ public class Combat : MonoBehaviour
             effectiveLevel = Mathf.Floor(Mathf.Floor(enemyScript.ranged) + 8);
             styleBonus = enemyScript.attackRange;
         }
-        else if (enemyScript.attackStyle == AttackStyles.magicStyle)
+        else if (style == AttackStyles.magicStyle)
         {
             mage = true;
             melee = false;
@@ -890,7 +1129,7 @@ public class Combat : MonoBehaviour
 
         roll = Mathf.Floor(effectiveLevel * (styleBonus + 64));
 
-        CombatInfo.EnemyAttack(enemyScript.name, enemyScript.attackStyle, level, (int)styleBonus, (int)roll);
+        CombatInfo.EnemyAttack(enemyScript.name, style, level, (int)styleBonus, (int)roll);
 
         return roll;
     }
@@ -904,11 +1143,11 @@ public class Combat : MonoBehaviour
             return enemyScript.newMaxHit;
         }
 
-        if (enemyScript.attackStyle != AttackStyles.magicStyle)
+        if (style != AttackStyles.magicStyle)
         {
             float level = enemyScript.strength;
             float strength = enemyScript.meleeStrength;
-            if (enemyScript.attackStyle == AttackStyles.rangedStyle)
+            if (style == AttackStyles.rangedStyle)
             {
                 level = enemyScript.ranged;
                 strength = enemyScript.rangedStrength;

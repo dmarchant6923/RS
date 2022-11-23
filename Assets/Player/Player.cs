@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
 
     public float runEnergy = 500;
     [System.NonSerialized] public float weight = 40;
+    [HideInInspector] public bool stamina;
+    [HideInInspector] public int staminaTicks;
 
     [HideInInspector] public bool showTrueTile = false;
     [HideInInspector] public bool showClickedTile = false;
@@ -47,6 +49,8 @@ public class Player : MonoBehaviour
     public static Player player;
 
     public GameObject minimapIcon;
+
+    public bool kandarinHard = true;
 
     public bool debugEnabled = false;
 
@@ -133,6 +137,27 @@ public class Player : MonoBehaviour
         {
             targetNPCPreviousTile = targetedNPC.trueTile;
         }
+    }
+    void OnTick()
+    {
+        if (trueTileScript.moving && runEnabled && forceWalk == false)
+        {
+            float runDrain = 67 + (67 * Mathf.Clamp(weight, 0, 64) / 64);
+            if (stamina)
+            {
+                runDrain *= 0.3f;
+            }
+            runEnergy -= runDrain;
+            if (runEnergy < 0)
+            {
+                runEnergy = 0;
+                runEnabled = false;
+            }
+        }
+        else
+        {
+            runEnergy = Mathf.Min(10000, runEnergy + (99 / 6) + 8);
+        }
 
         foreach (IncomingDamage damage in damageQueue)
         {
@@ -149,22 +174,6 @@ public class Player : MonoBehaviour
                 damageQueue.Remove(damageQueue[i]);
                 i--;
             }
-        }
-    }
-    void OnTick()
-    {
-        if (trueTileScript.moving && runEnabled && forceWalk == false)
-        {
-            runEnergy -= 67 + (67 * Mathf.Clamp(weight, 0, 64) / 64);
-            if (runEnergy < 0)
-            {
-                runEnergy = 0;
-                runEnabled = false;
-            }
-        }
-        else
-        {
-            runEnergy = Mathf.Min(10000, runEnergy + (99 / 6) + 8);
         }
 
         if (targetedNPC != null && attackTargetedNPC)
@@ -189,6 +198,16 @@ public class Player : MonoBehaviour
         {
             arrowColor.color = Color.green;
         }
+
+        if (staminaTicks > 0)
+        {
+            staminaTicks--;
+        }
+        if (stamina && staminaTicks == 0)
+        {
+            RunToggle.instance.Stamina(false);
+            stamina = false;
+        }
     }
 
     public void AddToDamageQueue(int damage, int tickDelay, Enemy enemyAttacking)
@@ -199,8 +218,13 @@ public class Player : MonoBehaviour
         newDamage.enemyAttacking = enemyAttacking;
         damageQueue.Add(newDamage);
     }
-    void TakeDamage(IncomingDamage damage)
+    public void TakeDamage(IncomingDamage damage)
     {
+        if (damage.damage > PlayerStats.currentHitpoints)
+        {
+            damage.damage = PlayerStats.currentHitpoints;
+        }
+
         PlayerStats.currentHitpoints -= damage.damage;
         if (newHitSplat == null)
         {
@@ -232,6 +256,12 @@ public class Player : MonoBehaviour
         if (AutoRetaliate.active && damage.enemyAttacking != null)
         {
             AttackEnemy(damage.enemyAttacking);
+        }
+
+        if (damage.damage > 0 && WornEquipment.recoil && damage.enemyAttacking != null)
+        {
+            int recoilDamage = Mathf.FloorToInt((float)damage.damage * 0.1f + 1);
+            damage.enemyAttacking.AddToDamageQueue(recoilDamage, 0, false, 0);
         }
     }
 

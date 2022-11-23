@@ -151,6 +151,26 @@ PrefabInstance:
       propertyPath: weaponCategory
       value: Thrown
       objectReference: {fileID: 0}
+    - target: {fileID: 8609742374551197549, guid: 8015afd1acb07b6429420431f92b511f, type: 3}
+      propertyPath: addAmmoRangedStats
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8609742374551197549, guid: 8015afd1acb07b6429420431f92b511f, type: 3}
+      propertyPath: overrideProjectileColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8609742374551197549, guid: 8015afd1acb07b6429420431f92b511f, type: 3}
+      propertyPath: overrideProjectileColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8609742374551197549, guid: 8015afd1acb07b6429420431f92b511f, type: 3}
+      propertyPath: overrideProjectileColor.g
+      value: 0.94515234
+      objectReference: {fileID: 0}
+    - target: {fileID: 8609742374551197549, guid: 8015afd1acb07b6429420431f92b511f, type: 3}
+      propertyPath: overrideProjectileColor.r
+      value: 0.4575472
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8015afd1acb07b6429420431f92b511f, type: 3}
 --- !u!1 &6831268384428611144 stripped
@@ -158,6 +178,25 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4749363891991590433, guid: 8015afd1acb07b6429420431f92b511f, type: 3}
   m_PrefabInstance: {fileID: 2244106724099285097}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &91430440398635201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6831268384428611144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c3539fac5e7e084da824b409f035b13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  specCost: 50
+  specDescription: 
+  customProjectile: {fileID: 21300000, guid: 45097ad376af55f4ab4e092972b95871, type: 3}
+  customProjectileColor: {r: 0.41037738, g: 1, b: 0.6953771, a: 1}
+  blowPipe: 1
+  armadylCrossbow: 0
+  zaryteCrossbow: 0
 --- !u!114 &6111148215138046795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,5 +209,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4995b312319353e4984e58bbd08a613d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammoLoaded: {fileID: 7591405421336944047, guid: f13774f4ea731f6408c7f62fcdbb5027, type: 3}
+  ammoLoaded: {fileID: 7265912869553050834, guid: aa88c24479481b846b51567e3e5539c6, type: 3}
   numberLoaded: 2000

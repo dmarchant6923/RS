@@ -10,7 +10,6 @@ public class BlowPipe : MonoBehaviour
     Item itemScript;
     Action itemAction;
     Equipment equipScript;
-    public Color projectileColor;
 
     private IEnumerator Start()
     {
@@ -29,7 +28,6 @@ public class BlowPipe : MonoBehaviour
         else
         {
             itemScript.menuTexts[5] = "Unload ";
-            projectileColor = ammoLoaded.GetComponent<StackableItem>().projectileColor;
             AddDartStats();
         }
 
@@ -162,6 +160,7 @@ public class BlowPipe : MonoBehaviour
     void AddDartStats()
     {
         equipScript.rangedStrength += ammoLoaded.GetComponent<Equipment>().rangedStrength;
+        equipScript.overrideProjectileColor = ammoLoaded.GetComponent<StackableItem>().projectileColor;
     }
 
     public void UseRangedAmmo(Vector2 targetTile, int delay)

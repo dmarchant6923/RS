@@ -67,13 +67,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -7992168296455138489, guid: 23339714d51375142b814ae821deac9a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 23339714d51375142b814ae821deac9a, type: 3}
 --- !u!1 &6343085593206809457 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4371471395131933091, guid: 23339714d51375142b814ae821deac9a, type: 3}
   m_PrefabInstance: {fileID: 7254662038031672018}
   m_PrefabAsset: {fileID: 0}
+--- !u!58 &8551679301441481438
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6343085593206809457}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.49999997
 --- !u!114 &-3399557333580251665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,11 +104,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitpoints: 60
+  initialHitpoints: 0
   attack: 100
   strength: 70
   defence: 100
-  ranged: 1
   magic: 150
+  ranged: 1
   attackStab: 0
   attackSlash: 0
   attackCrush: 0
@@ -108,15 +126,31 @@ MonoBehaviour:
   attackSpeed: 4
   attackDistance: 1
   attackStyle: Slash
+  useMeleeUpClose: 1
+  meleeStyle: Slash
+  percentMeleeUpClose: 0.5
+  autoRetaliate: 1
   aggro: 0
   aggroRange: 3
   willOverrideMaxHit: 0
   newMaxHit: 0
+  ignoreLineOfSight: 0
+  ignoreAccuracyCheck: 0
+  typelessAttack: 0
+  overheadProtectionMult: 1
+  projectileColor: {r: 0, g: 0, b: 0, a: 0}
+  slowProjectile: 0
+  uniformProjectileDelay: 0
+  customProjectile: {fileID: 0}
+  customCombatLvl: 0
+  inCombat: 0
   combatLevel: 0
   combatLevelColor: 
   npcScript: {fileID: 0}
+  npcAction: {fileID: 0}
   isAttackingPlayer: 0
   attackThisTick: 0
+  death: 0
 --- !u!114 &6428832248520485119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,3 +168,8 @@ MonoBehaviour:
   attackCooldown: 0
   minCoolDown: -7
   projectile: {fileID: 6025835048010670392, guid: 5b5b57d91dfa50f43ba55ef8df626e95, type: 3}
+  projectileSize: 1
+  debug: 0
+  LOSIntersection: {fileID: 0}
+  checkedTileMarker: {fileID: 0}
+  projectileSpawnsImmediately: 0

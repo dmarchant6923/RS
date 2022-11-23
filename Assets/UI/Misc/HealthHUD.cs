@@ -45,7 +45,7 @@ public class HealthHUD : MonoBehaviour
         {
             int max = currentEnemy.initialHitpoints;
             int current = currentEnemy.hitpoints;
-            healthText.text = max + " / " + current;
+            healthText.text = current + " / " + max;
             float percent = (float)current / (float)max;
             greenBar.sizeDelta = new Vector2(percent * greenBarFullXWidth, greenBar.rect.height);
             greenBar.rect.Set(greenBar.position.x, greenBar.position.y, percent * greenBarFullXWidth, greenBar.rect.height);

@@ -289,9 +289,7 @@ public class PlayerStats : MonoBehaviour
         }
         if (potion.prayer)
         {
-            Debug.Log(currentPrayer + " " + initialPrayer);
-            currentPrayer = potion.CalcBoost(initialPrayer, currentPrayer);
-            Debug.Log(currentPrayer + " " + initialPrayer);
+            truePrayer = Mathf.Min(truePrayer + (potion.CalcBoost(initialPrayer, currentPrayer) - currentPrayer) * 100, initialPrayer * 100);
         }
         if (potion.hitpoints)
         {

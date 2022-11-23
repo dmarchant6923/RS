@@ -118,7 +118,6 @@ public class Spell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void CastSpell(GameObject target)
     {
-        Debug.Log("cast spell on " + target.name);
         if (target.GetComponent<Enemy>() == null)
         {
             Debug.Log("You can't attack this.");

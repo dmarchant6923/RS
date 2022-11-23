@@ -10,10 +10,12 @@ public class OpenCloseButton : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public Texture buttonOn;
     public RawImage image;
 
-    public GameObject targetObject;
     public string actionText;
 
     Action buttonAction;
+
+    public delegate void closeButton();
+    public event closeButton buttonClicked;
 
     private void Start()
     {
@@ -24,7 +26,8 @@ public class OpenCloseButton : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     void ClickButton()
     {
-        targetObject.SetActive(!targetObject.activeSelf);
+        //targetObject.SetActive(!targetObject.activeSelf);
+        buttonClicked?.Invoke();
     }
 
     public void OnPointerEnter(PointerEventData eventData)

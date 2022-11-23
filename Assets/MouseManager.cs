@@ -33,6 +33,8 @@ public class MouseManager : MonoBehaviour
             mouseTileSprite.enabled = false;
         }
         spriteColor = mouseTileSprite.color;
+
+
     }
 
     private void Update()
@@ -67,7 +69,8 @@ public class MouseManager : MonoBehaviour
             {
                 foreach (RaycastHit2D cast in castAll)
                 {
-                    if (cast.collider.GetComponent<Action>() != null && gameActions.Contains(cast.collider.GetComponent<Action>()) == false && cast.collider.GetComponent<SpriteRenderer>().sortingOrder == i)
+                    if (cast.collider.GetComponent<Action>() != null && gameActions.Contains(cast.collider.GetComponent<Action>()) == false && 
+                        cast.collider.GetComponent<SpriteRenderer>() != null && cast.collider.GetComponent<SpriteRenderer>().sortingOrder == i)
                     {
                         //Debug.Log(cast.collider.GetComponent<SpriteRenderer>().sortingOrder + " " + cast.collider.gameObject + " " + i);
                         gameActions.Add(cast.collider.GetComponent<Action>());

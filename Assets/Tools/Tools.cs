@@ -125,9 +125,17 @@ public class Tools : MonoBehaviour
 
     public static string SecondsToMinutes(float seconds)
     {
+        return SecondsToMinutes(seconds, false);
+    }
+    public static string SecondsToMinutes(float seconds, bool keepMinutesPlace)
+    {
         float minutes = Mathf.Floor(seconds / 60);
         if (minutes == 0)
         {
+            if (keepMinutesPlace)
+            {
+                return "0:" + Mathf.Floor(seconds).ToString("00");
+            }
             return Mathf.Floor(seconds).ToString("00");
         }
         else
@@ -135,5 +143,33 @@ public class Tools : MonoBehaviour
             seconds = seconds % (minutes * 60);
             return minutes.ToString() + ":" + Mathf.Floor(seconds).ToString("00");
         }
+    }
+
+    public static bool PlayerIsAdjacentToLargeObject(Vector2 swTile, int size, bool allowCorners)
+    {
+        Vector2 nearestTile = NearestTileToPlayer(swTile, size);
+
+        if (TileManager.TileDistance(Player.player.trueTile, nearestTile) == 1)
+        {
+            if (allowCorners)
+            {
+                return true;
+            }
+            else if ((Player.player.trueTile - nearestTile).magnitude < 1.1f)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static Vector2 NearestTileToPlayer(Vector2 swTile, int size)
+    {
+        int nearestX = (int)Mathf.Clamp(Player.player.trueTile.x, swTile.x, swTile.x + size - 1);
+        int nearestY = (int)Mathf.Clamp(Player.player.trueTile.y, swTile.y, swTile.y + size - 1);
+        Vector2 nearestTile = new Vector2(nearestX, nearestY);
+
+        return nearestTile;
     }
 }

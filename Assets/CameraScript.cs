@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
-    float maxCamSize = 12;
+    float maxCamSize = 13;
     float minCamSize = 3;
     float camSize;
 
