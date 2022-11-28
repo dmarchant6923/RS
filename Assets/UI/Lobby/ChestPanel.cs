@@ -24,6 +24,8 @@ public class ChestPanel : MonoBehaviour
 
     private IEnumerator Start()
     {
+        PanelButtons.instance.ForceOpen("Inventory");
+
         yield return null;
 
         foreach (GameObject item in items)
@@ -81,6 +83,14 @@ public class ChestPanel : MonoBehaviour
 
         panelButton.buttonClicked += ClosePanel;
         Action.cancel1 += ClosePanel;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ClosePanel();
+        }
     }
 
     void ClosePanel()

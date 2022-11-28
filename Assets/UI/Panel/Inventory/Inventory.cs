@@ -80,12 +80,13 @@ public class Inventory : MonoBehaviour
     {
         foreach (Item item in unsortedItems.GetComponentsInChildren<Item>())
         {
-            for (int i = 0; i < 28; i++)
+            for (int i = 27; i >= 0; i--)
             {
                 if (inventorySlots[i].GetComponentInChildren<Item>() == null)
                 {
                     item.transform.SetParent(inventorySlots[i].transform);
                     item.transform.position = item.transform.parent.position;
+                    break;
                 }
             }
         }

@@ -218,110 +218,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 677526595305660113, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: leg
-      value: 
-      objectReference: {fileID: 3677308570660130599, guid: 0987ce4b1660fbe49b6ef61113f78487, type: 3}
-    - target: {fileID: 677526595305660113, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: ammo
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 677526595305660113, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: body
-      value: 
-      objectReference: {fileID: 4986298525998278930, guid: 1689d386eab7feb43a523ab0c68d78cf, type: 3}
-    - target: {fileID: 677526595305660113, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: boot
-      value: 
-      objectReference: {fileID: 5552490832456701644, guid: 15228613d3b02e44e9ee28d0e95cc631, type: 3}
-    - target: {fileID: 677526595305660113, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: head
-      value: 
-      objectReference: {fileID: 6690046197250412742, guid: 7b7b95bc2a505ee44afe80f686ff130f, type: 3}
-    - target: {fileID: 677526595305660113, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: ring
-      value: 
-      objectReference: {fileID: 4408761124927417181, guid: 75e737491aec9c942a3b1a0d04dd908d, type: 3}
-    - target: {fileID: 677526595305660113, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: glove
-      value: 
-      objectReference: {fileID: 1008861261826153604, guid: 916ee2e1bd730a24a9ca5c4b17821a82, type: 3}
-    - target: {fileID: 677526595305660113, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: weapon
-      value: 
-      objectReference: {fileID: 4039766573882526097, guid: 7c1cc3eade2584d4886e99b5362dda81, type: 3}
-    - target: {fileID: 4208822823963225216, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.000022888184
-      objectReference: {fileID: 0}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: inventory
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: items.Array.data[0]
-      value: 
-      objectReference: {fileID: 673548290218645667, guid: 294cb564d25fab34c83cb4f31bb2f458, type: 3}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: items.Array.data[9]
-      value: 
-      objectReference: {fileID: 1812052502709451034, guid: 5ec3aed58d5f1af42977b502cdb9314f, type: 3}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: items.Array.data[13]
-      value: 
-      objectReference: {fileID: 4878197503779084377, guid: 1b624bd8d33130f47bc677eb9fb6d840, type: 3}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: items.Array.data[14]
-      value: 
-      objectReference: {fileID: 6890393430027158065, guid: 21c1db0309a439d45a5b65c8318a765f, type: 3}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: items.Array.data[15]
-      value: 
-      objectReference: {fileID: 2382930606627354480, guid: af8be4bf3ab4a8c4a8e547e30e34b455, type: 3}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: items.Array.data[16]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: items.Array.data[17]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: items.Array.data[18]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: items.Array.data[19]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: quantities.Array.data[9]
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: quantities.Array.data[13]
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: quantities.Array.data[14]
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: quantities.Array.data[15]
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: quantities.Array.data[17]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: quantities.Array.data[18]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
-      propertyPath: quantities.Array.data[19]
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
 --- !u!4 &114938193 stripped
@@ -1851,7 +1747,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1283031812}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.4743, y: 19.2744, z: 0}
+  m_LocalPosition: {x: -4.41, y: 20.23, z: 0}
   m_LocalScale: {x: 82.99379, y: 13.192513, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

@@ -23,6 +23,7 @@ public class CameraScript : MonoBehaviour
         cam.orthographicSize = camSize;
 
         player = FindObjectOfType<Player>();
+        cam.transform.position = player.transform.position + Vector3.back * 10;
     }
 
     // Update is called once per frame

@@ -13,6 +13,7 @@ public class ChooseSpell : MonoBehaviour
 
     private IEnumerator Start()
     {
+        combatSpells = new List<Spell>();
         yield return null;
 
         foreach (Spell spell in Spellbook.spells)

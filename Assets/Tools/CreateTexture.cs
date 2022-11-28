@@ -66,11 +66,6 @@ public class CreateTexture : MonoBehaviour
 
 
 
-
-
-
-
-
     public static Texture2D CreateLayeredTexture(List<Sprite> sprites, List<Color> colors, List<Vector3> offsets)
     {
         GameObject cam = Instantiate(instance.cam, Vector3.back * 10 + instance.currentPosition, Quaternion.identity);
@@ -97,6 +92,7 @@ public class CreateTexture : MonoBehaviour
             GameObject image = Instantiate(instance.image);
             image.GetComponent<SpriteRenderer>().sprite = sprites[i];
             image.GetComponent<SpriteRenderer>().color = colors[i];
+            image.GetComponent<SpriteRenderer>().sortingOrder = i;
             image.transform.position = instance.currentPosition + offsets[i];
             newImages.Add(image);
         }

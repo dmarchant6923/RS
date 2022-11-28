@@ -20,6 +20,7 @@ public class SupplyChest : MonoBehaviour
         chestAction.serverAction0 += OpenChest;
         chestAction.orderLevels[0] = -1;
         chestAction.menuPriorities[0] = 1;
+        chestAction.cancelLevels[0] = 1;
         chestAction.inGame = true;
         chestAction.UpdateName();
 
@@ -49,8 +50,14 @@ public class SupplyChest : MonoBehaviour
         if (willOpenChest && Tools.PlayerIsAdjacentToLargeObject(swTile, size, false))
         {
             chestPanel.SetActive(true);
+            PanelButtons.instance.ForceOpen("Inventory");
             willOpenChest = false;
         }
+    }
+
+    private void Update()
+    {
+        
     }
 
     void Cancel()

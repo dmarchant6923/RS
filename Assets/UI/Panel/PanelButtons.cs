@@ -35,8 +35,12 @@ public class PanelButtons : MonoBehaviour
     public static KeyCode spellbookHotKey;
     static KeyCode[] hotkeys = new KeyCode[5];
 
+    public static PanelButtons instance;
+
     private IEnumerator Start()
     {
+        instance = this;
+
         buttons[0] = attackStyles;
         buttons[1] = inventory;
         buttons[2] = wornEquipment;
@@ -89,7 +93,7 @@ public class PanelButtons : MonoBehaviour
     {
         foreach (Transform button in buttons)
         {
-            if (button.name == buttonName)
+            if (button.name.ToLower() == buttonName.ToLower())
             {
                 OnClick(button, true);
                 return;

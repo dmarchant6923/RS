@@ -107,6 +107,11 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         itemAction.UpdateName();
     }
 
+    public void UpdateImage()
+    {
+        itemImage.texture = itemTexture;
+    }
+
     void Use()
     {
         useActive = !useActive;

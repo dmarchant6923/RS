@@ -551,12 +551,15 @@ public class AttackStyles : MonoBehaviour
     {
         foreach (GameObject style in styles)
         {
-            style.GetComponent<RawImage>().texture = styleOff;
+            if (style != null)
+            {
+                style.GetComponent<RawImage>().texture = styleOff;
+            }
         }
 
         for (int i = 0; i < styles.Length; i++)
         {
-            if (i + 1 == selectedStyle)
+            if (i + 1 == selectedStyle && styles[i] != null)
             {
                 styles[i].GetComponent<RawImage>().texture = styleOn;
             }

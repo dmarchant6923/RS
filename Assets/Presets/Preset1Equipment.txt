@@ -1,0 +1,1 @@
+{"filled":true,"equipment":["Crystal helm","Masori assembler","Necklace of anguish","","Bow of faerdhinen","Crystal body","","Crystal legs","Zaryte vambraces","Pegasian boots","Lightbearer"],"blowpipeAmmo":""}

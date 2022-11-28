@@ -72,4 +72,10 @@ public class PrayerToggle : MonoBehaviour
         numberText.text = Mathf.Round(PlayerStats.currentPrayer).ToString();
         orbManager.UpdateMask();
     }
+
+    private void OnDestroy()
+    {
+        TickManager.onTick -= OnTick;
+        TickManager.afterTick -= ReadPrayer;
+    }
 }

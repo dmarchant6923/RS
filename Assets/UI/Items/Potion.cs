@@ -9,7 +9,6 @@ public class Potion : MonoBehaviour
     public Texture dose3;
     public Texture dose2;
     public Texture dose1;
-    public RawImage doseImage;
     public Color potionColor;
 
     public int startingDose = 4;
@@ -28,11 +27,12 @@ public class Potion : MonoBehaviour
     {
         potionAction = GetComponent<Action>();
         itemScript = GetComponent<Item>();
-        doseImage.color = potionColor;
         initialName = gameObject.name;
 
-        itemScript.darkenItem += DarkenItem;
-        itemScript.undarkenItem += UndarkenItem;
+        dose4 = CreatePotionTexture(4);
+        dose3 = CreatePotionTexture(3);
+        dose2 = CreatePotionTexture(2);
+        dose1 = CreatePotionTexture(1);
 
         yield return null;
         currentDose = startingDose;
@@ -70,38 +70,25 @@ public class Potion : MonoBehaviour
         potionAction.examineText = currentDose + word + initialName.ToLower() + " potion.";
         if (currentDose == 4)
         {
-            doseImage.texture = dose4;
+            itemScript.itemTexture = dose4;
         }
         else if (currentDose == 3)
         {
-            doseImage.texture = dose3;
+            itemScript.itemTexture = dose3;
         }
         else if (currentDose == 2)
         {
-            doseImage.texture = dose2;
+            itemScript.itemTexture = dose2;
         }
         else if (currentDose == 1)
         {
-            doseImage.texture = dose1;
+            itemScript.itemTexture = dose1;
         }
-    }
-
-    void DarkenItem()
-    {
-        Color color = doseImage.color;
-        color.a = 0.6f;
-        doseImage.color = color;
-    }
-    void UndarkenItem()
-    {
-        Color color = doseImage.color;
-        color.a = 1f;
-        doseImage.color = color;
+        itemScript.UpdateImage();
     }
 
     public void DropPotion(GroundItem newItem)
     {
-        newItem.itemTexture = CreatePotionTexture(currentDose);
         newItem.doses = currentDose;
         newItem.name += "(" + currentDose + ")";
     }
@@ -125,10 +112,11 @@ public class Potion : MonoBehaviour
         }
 
         textures.Add((Texture2D)itemScript.itemTexture); colors.Add(Color.white);
-        textures.Add((Texture2D) texture); colors.Add(doseImage.color);
+        textures.Add((Texture2D) texture); colors.Add(potionColor);
         if (divine)
         {
-            textures.Add((Texture2D)transform.GetChild(3).GetComponent<RawImage>().texture); colors.Add(Color.white);
+            textures.Add((Texture2D)transform.GetChild(3).GetComponent<RawImage>().texture); 
+            colors.Add(Color.white);
         }
 
         return CreateTexture.CreateLayeredTexture(textures, colors);

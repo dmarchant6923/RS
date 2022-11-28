@@ -1,0 +1,1 @@
+{"filled":true,"equipment":["Masori mask (f)","Masori assembler","Necklace of anguish","Dragon arrow","Twisted bow","Masori body (f)","","Masori chaps (f)","Zaryte vambraces","Pegasian boots","Lightbearer"],"blowpipeAmmo":""}

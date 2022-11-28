@@ -41,7 +41,7 @@ public class WornEquipment : MonoBehaviour
     public static Equipment boot;
     public static Equipment ring;
 
-    static List<Transform> slots = new List<Transform>();
+    public static List<Transform> slots = new List<Transform>();
 
     public static int attackStab;
     public static int attackSlash;
@@ -120,6 +120,7 @@ public class WornEquipment : MonoBehaviour
         boot = bootSlot.GetComponentInChildren<Equipment>();
         ring = ringSlot.GetComponentInChildren<Equipment>();
 
+        slots = new List<Transform>();
         slots.Add(headSlot);
         slots.Add(capeSlot);
         slots.Add(neckSlot);

@@ -23,7 +23,7 @@ public class ChestPanelItem : MonoBehaviour, IPointerClickHandler
 
     void TakeItem()
     {
-        GameObject newItem = Instantiate(Tools.LoadFromResource(gameObject.name));
+        GameObject newItem = Tools.LoadFromResource(gameObject.name);
         newItem.name = gameObject.name;
         if (newItem.GetComponent<StackableItem>() != null)
         {

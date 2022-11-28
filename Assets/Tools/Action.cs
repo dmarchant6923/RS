@@ -21,6 +21,8 @@ public class Action : MonoBehaviour
     public bool inGame = false;
     [HideInInspector] public bool redClick = true;
 
+    public static bool ignoreAllActions = false;
+
 
     public delegate void ObjectAction();
 

@@ -20,6 +20,7 @@ public class Wardrobe : MonoBehaviour
         wardrobeAction.serverAction0 += OpenWardrobe;
         wardrobeAction.orderLevels[0] = -1;
         wardrobeAction.menuPriorities[0] = 1;
+        wardrobeAction.cancelLevels[0] = 1;
         wardrobeAction.inGame = true;
         wardrobeAction.UpdateName();
 
@@ -53,6 +54,7 @@ public class Wardrobe : MonoBehaviour
     {
         if (willOpenWardrobe && Tools.PlayerIsAdjacentToLargeObject(swTile, size, false))
         {
+            PanelButtons.instance.ForceOpen("Inventory");
             presetPanel.SetActive(true);
             willOpenWardrobe = false;
         }

@@ -343,4 +343,11 @@ public class Player : MonoBehaviour
     {
         damageQueue = new List<IncomingDamage>();
     }
+
+    private void OnDestroy()
+    {
+        TickManager.beforeTick -= BeforeTick;
+        TickManager.onTick -= OnTick;
+        TickManager.afterTick -= AfterTick;
+    }
 }
