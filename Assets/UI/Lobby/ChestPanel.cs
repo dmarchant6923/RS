@@ -97,4 +97,9 @@ public class ChestPanel : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    private void OnDestroy()
+    {
+        Action.cancel1 -= ClosePanel;
+    }
 }

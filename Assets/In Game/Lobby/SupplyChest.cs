@@ -37,9 +37,9 @@ public class SupplyChest : MonoBehaviour
     void OpenChest()
     {
         willOpenChest = true;
-        if (Tools.PlayerIsAdjacentToLargeObject(swTile, size, false) == false)
+        if (Tools.PlayerIsAdjacentToLargeObject(swTile, size, size, false) == false)
         {
-            Player.player.trueTileScript.ExternalMovement(Tools.NearestTileToPlayer(swTile, size));
+            Player.player.trueTileScript.ExternalMovement(Tools.NearestTileToPlayer(swTile, size, size));
             return;
         }
         BeforeTick();
@@ -47,7 +47,7 @@ public class SupplyChest : MonoBehaviour
 
     void BeforeTick()
     {
-        if (willOpenChest && Tools.PlayerIsAdjacentToLargeObject(swTile, size, false))
+        if (willOpenChest && Tools.PlayerIsAdjacentToLargeObject(swTile, size, size, false))
         {
             chestPanel.SetActive(true);
             PanelButtons.instance.ForceOpen("Inventory");
@@ -63,5 +63,10 @@ public class SupplyChest : MonoBehaviour
     void Cancel()
     {
         willOpenChest = false;
+    }
+
+    private void OnDestroy()
+    {
+        Action.cancel1 -= Cancel;
     }
 }

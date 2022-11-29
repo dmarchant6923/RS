@@ -48,6 +48,41 @@ public class TickManager : MonoBehaviour
             }
 
             currentVariance = Random.Range(-maxTickVariance, maxTickVariance);
+        }   
+    }
+
+    private void OnDestroy()
+    {
+        if (cancelBeforeTick != null)
+        {
+            foreach (var d in cancelBeforeTick.GetInvocationList())
+            {
+                cancelBeforeTick -= d as TickAction;
+            }
+        }
+
+        if (beforeTick != null)
+        {
+            foreach (var d in beforeTick.GetInvocationList())
+            {
+                beforeTick -= d as TickAction;
+            }
+        }
+
+        if (onTick != null)
+        {
+            foreach (var d in onTick.GetInvocationList())
+            {
+                onTick -= d as TickAction;
+            }
+        }
+
+        if (afterTick != null)
+        {
+            foreach (var d in afterTick.GetInvocationList())
+            {
+                afterTick -= d as TickAction;
+            }
         }
     }
 }

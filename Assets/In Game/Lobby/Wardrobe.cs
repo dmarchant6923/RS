@@ -37,9 +37,9 @@ public class Wardrobe : MonoBehaviour
     void OpenWardrobe()
     {
         willOpenWardrobe = true;
-        if (Tools.PlayerIsAdjacentToLargeObject(swTile, size, false) == false)
+        if (Tools.PlayerIsAdjacentToLargeObject(swTile, size, size, false) == false)
         {
-            Player.player.trueTileScript.ExternalMovement(Tools.NearestTileToPlayer(swTile, size));
+            Player.player.trueTileScript.ExternalMovement(Tools.NearestTileToPlayer(swTile, size, size));
             return;
         }
         BeforeTick();
@@ -52,11 +52,16 @@ public class Wardrobe : MonoBehaviour
 
     void BeforeTick()
     {
-        if (willOpenWardrobe && Tools.PlayerIsAdjacentToLargeObject(swTile, size, false))
+        if (willOpenWardrobe && Tools.PlayerIsAdjacentToLargeObject(swTile, size, size, false))
         {
             PanelButtons.instance.ForceOpen("Inventory");
             presetPanel.SetActive(true);
             willOpenWardrobe = false;
         }
+    }
+
+    private void OnDestroy()
+    {
+        Action.cancel1 -= Cancel;
     }
 }

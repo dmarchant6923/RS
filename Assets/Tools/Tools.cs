@@ -145,9 +145,9 @@ public class Tools : MonoBehaviour
         }
     }
 
-    public static bool PlayerIsAdjacentToLargeObject(Vector2 swTile, int size, bool allowCorners)
+    public static bool PlayerIsAdjacentToLargeObject(Vector2 swTile, int sizeX, int sizeY, bool allowCorners)
     {
-        Vector2 nearestTile = NearestTileToPlayer(swTile, size);
+        Vector2 nearestTile = NearestTileToPlayer(swTile, sizeX, sizeY);
 
         if (TileManager.TileDistance(Player.player.trueTile, nearestTile) == 1)
         {
@@ -164,10 +164,10 @@ public class Tools : MonoBehaviour
         return false;
     }
 
-    public static Vector2 NearestTileToPlayer(Vector2 swTile, int size)
+    public static Vector2 NearestTileToPlayer(Vector2 swTile, int sizeX, int sizeY)
     {
-        int nearestX = (int)Mathf.Clamp(Player.player.trueTile.x, swTile.x, swTile.x + size - 1);
-        int nearestY = (int)Mathf.Clamp(Player.player.trueTile.y, swTile.y, swTile.y + size - 1);
+        int nearestX = (int)Mathf.Clamp(Player.player.trueTile.x, swTile.x, swTile.x + sizeX - 1);
+        int nearestY = (int)Mathf.Clamp(Player.player.trueTile.y, swTile.y, swTile.y + sizeY - 1);
         Vector2 nearestTile = new Vector2(nearestX, nearestY);
 
         return nearestTile;

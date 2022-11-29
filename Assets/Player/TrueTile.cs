@@ -209,4 +209,15 @@ public class TrueTile : MonoBehaviour
             Destroy(newClickedTile);
         }
     }
+
+    private void OnDestroy()
+    {
+        if (afterMovement != null)
+        {
+            foreach (var d in afterMovement.GetInvocationList())
+            {
+                afterMovement -= d as TrueTileMoved;
+            }
+        }
+    }
 }

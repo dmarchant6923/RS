@@ -473,4 +473,38 @@ public class Action : MonoBehaviour
     {
         Debug.Log(examineText);
     }
+
+    private void OnDestroy()
+    {
+        //if (cancel1 != null)
+        //{
+        //    foreach (var d in cancel1.GetInvocationList())
+        //    {
+        //        cancel1 -= d as ObjectAction;
+        //    }
+        //}
+
+        //if (cancel2 != null)
+        //{
+        //    foreach (var d in cancel2.GetInvocationList())
+        //    {
+        //        cancel2 -= d as ObjectAction;
+        //    }
+        //}
+
+        //if (cancel3 != null)
+        //{
+        //    foreach (var d in cancel3.GetInvocationList())
+        //    {
+        //        cancel3 -= d as ObjectAction;
+        //    }
+        //}
+
+        beforeTickActions = new List<Action>();
+        onTickActions = new List<Action>();
+        afterTickActions = new List<Action>();
+        staticPlayerAction = null;
+        staticActionNum = -1;
+        staticEventsAddedToTickManager = false;
+    }
 }

@@ -8,18 +8,6 @@ public class PresetsPanel : MonoBehaviour
 {
     public OpenCloseButton closeButton;
 
-    [System.NonSerialized] public PresetEquipment[] presetEquipment = new PresetEquipment[3];
-    [System.NonSerialized] public PresetInventory[] presetInventory = new PresetInventory[3];
-
-    public bool IgnoreActions = false;
-    bool endIgnoreActions;
-
-    public Text[] presetTexts = new Text[3];
-
-    public PresetsPanelButton[] saveButtons = new PresetsPanelButton[3];
-    public PresetsPanelButton[] loadButtons = new PresetsPanelButton[3];
-    public PresetsPanelButton[] clearButtons = new PresetsPanelButton[3];
-
     public class PresetEquipment
     {
         public bool filled = false;
@@ -37,6 +25,18 @@ public class PresetsPanel : MonoBehaviour
 
         public string blowpipeAmmo;
     }
+
+    [System.NonSerialized] public PresetEquipment[] presetEquipment = new PresetEquipment[3];
+    [System.NonSerialized] public PresetInventory[] presetInventory = new PresetInventory[3];
+
+    public bool IgnoreActions = false;
+    bool endIgnoreActions;
+
+    public Text[] presetTexts = new Text[3];
+
+    public PresetsPanelButton[] saveButtons = new PresetsPanelButton[3];
+    public PresetsPanelButton[] loadButtons = new PresetsPanelButton[3];
+    public PresetsPanelButton[] clearButtons = new PresetsPanelButton[3];
 
     string folder = "/Presets/";
     string extension = ".txt";
@@ -175,9 +175,10 @@ public class PresetsPanel : MonoBehaviour
 
         endIgnoreActions = true;
     }
-    public void LoadPreset(int presetNumber)
+    public void LoadPreset(int num)
     {
-        StartCoroutine(LoadPresetEnum(presetNumber));
+        StartCoroutine(LoadPlayerAttributes.LoadPresetEnum(presetEquipment[num].equipment, presetEquipment[num].blowpipeAmmo, presetInventory[num].items, presetInventory[num].blowpipeAmmo));
+        endIgnoreActions = true;
     }
     public IEnumerator LoadPresetEnum(int presetNumber)
     {
@@ -308,5 +309,10 @@ public class PresetsPanel : MonoBehaviour
     void ClosePanel()
     {
         gameObject.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        Action.cancel1 -= ClosePanel;
     }
 }

@@ -25,6 +25,7 @@ public class Minimap : MonoBehaviour, IPointerClickHandler
         instance = this;
         mapAction = GetComponent<Action>();
         mapAction.serverAction0 += ServerClick;
+        mapAction.cancelLevels[0] = 1;
 
         mainCamera = Camera.main.GetComponent<CameraScript>();
         newMinimapCam = Instantiate(minimapCam, Vector3.back * -10, Quaternion.identity);

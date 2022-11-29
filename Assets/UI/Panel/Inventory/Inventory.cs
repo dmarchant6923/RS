@@ -163,4 +163,23 @@ public class Inventory : MonoBehaviour
 
         return item;
     }
+
+    private void OnDestroy()
+    {
+        if (UpdateEquippedItems != null)
+        {
+            foreach (var d in UpdateEquippedItems.GetInvocationList())
+            {
+                UpdateEquippedItems -= d as EquipAction;
+            }
+        }
+
+        if (ReadEquippedItems != null)
+        {
+            foreach (var d in ReadEquippedItems.GetInvocationList())
+            {
+                ReadEquippedItems -= d as EquipAction;
+            }
+        }
+    }
 }

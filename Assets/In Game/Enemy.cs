@@ -418,8 +418,5 @@ public class Enemy : MonoBehaviour
     private void OnDestroy()
     {
         Action.cancel1 -= CancelPlayerAttack;
-
-        TickManager.beforeTick -= BeforeTick;
-        TickManager.onTick -= PerformAttack;
     }
 }

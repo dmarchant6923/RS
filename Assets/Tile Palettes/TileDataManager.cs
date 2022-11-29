@@ -119,4 +119,12 @@ public class TileDataManager : MonoBehaviour
             return "";
         }
     }
+
+    private void OnDestroy()
+    {
+        if (RightClickMenu.tileActions.Contains(examineTileAction))
+        {
+            RightClickMenu.tileActions.Remove(examineTileAction);
+        }
+    }
 }

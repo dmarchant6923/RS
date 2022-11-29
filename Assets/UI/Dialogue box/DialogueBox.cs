@@ -95,4 +95,9 @@ public class DialogueBox : MonoBehaviour
         rt.localPosition = offPosition;
         dialogueActive = false;
     }
+
+    private void OnDestroy()
+    {
+        Action.cancel1 -= EndEdit;
+    }
 }

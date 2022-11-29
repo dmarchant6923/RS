@@ -103,6 +103,8 @@ public class AttackStyles : MonoBehaviour
 
     private IEnumerator Start()
     {
+        instance = this;
+
         currentSpellOnAutocast = null;
         styles[0] = style1; styles[1] = style2; styles[2] = style3; styles[3] = style4;
         styles[4] = mageStyle5; styles[5] = mageStyle6; styles[6] = mageStyle7; styles[7] = mageStyleDefensiveCast8; styles[8] = mageStyleCast9;
@@ -115,8 +117,6 @@ public class AttackStyles : MonoBehaviour
 
         defaultDefensiveCastTexture = defensiveCastImage.texture;
         defaultNormalCastTexture = normalCastImage.texture;
-
-        instance = this;
 
         yield return null;
 

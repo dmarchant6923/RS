@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -342,12 +343,5 @@ public class Player : MonoBehaviour
     public void ClearDamageQueue()
     {
         damageQueue = new List<IncomingDamage>();
-    }
-
-    private void OnDestroy()
-    {
-        TickManager.beforeTick -= BeforeTick;
-        TickManager.onTick -= OnTick;
-        TickManager.afterTick -= AfterTick;
     }
 }

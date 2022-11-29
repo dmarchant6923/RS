@@ -169,4 +169,25 @@ public class RightClickMenu : MonoBehaviour
             }
         }
     }
+
+    private void OnDestroy()
+    {
+        newMenu = null;
+        menuOpen = false;
+
+        UIAction = null;
+        tileActions = new List<Action>();
+        gameActions = new List<Action>();
+
+        actions = new List<Action>();
+        openActions = new List<Action>();
+
+        isUsingItem = false;
+        itemBeingUsed = null;
+        usingItemString = null;
+
+        isCastingSpell = false;
+        spellBeingCast = null;
+        castingSpellString = null;
+    }
 }
