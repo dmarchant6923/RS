@@ -68,7 +68,7 @@ public class ActivatePrayer : MonoBehaviour
 
 
 
-    void ClientClickPrayer()
+    public void ClientClickPrayer()
     {
         ChangeColors();
     }

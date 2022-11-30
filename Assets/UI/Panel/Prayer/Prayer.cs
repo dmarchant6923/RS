@@ -50,6 +50,8 @@ public class Prayer : MonoBehaviour
 
     private void Start()
     {
+        drainRate = 0;
+
         for (int i = 0; i < prayerParent.GetComponentsInChildren<RawImage>().Length; i++)
         {
             prayerObjects[i] = prayerParent.GetComponentsInChildren<RawImage>()[i].gameObject;

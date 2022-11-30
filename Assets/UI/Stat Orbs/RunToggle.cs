@@ -10,7 +10,7 @@ public class RunToggle : MonoBehaviour
     Text numberText;
     public RawImage runIcon;
 
-    StatOrbManager orbManager;
+    [HideInInspector] public StatOrbManager orbManager;
 
     public Color staminaColor;
 
@@ -32,7 +32,7 @@ public class RunToggle : MonoBehaviour
         orbManager.orbAction.orderLevels[0] = -1;
     }
 
-    void ToggleRun()
+    public void ToggleRun()
     {
         if (player.runEnergy > 100)
         {

@@ -11,12 +11,18 @@ public class SelectSkillsPanel : MonoBehaviour
 
     public OpenCloseButton closeButton;
 
+    public ButtonScript resetButton;
+    public ButtonScript applyButton;
+
     private void Start()
     {
         InitializeStats();
 
         closeButton.buttonClicked += ClosePanel;
         Action.cancel1 += ClosePanel;
+
+        applyButton.buttonClicked += ApplySkills;
+        resetButton.buttonClicked += ResetSkills;
     }
 
     public void IncrementSkill(RawImage skillImage, bool increase)

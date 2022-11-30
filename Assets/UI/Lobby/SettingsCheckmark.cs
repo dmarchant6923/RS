@@ -19,10 +19,10 @@ public class SettingsCheckmark : MonoBehaviour
     private void Awake()
     {
         checkImage = GetComponent<RawImage>();
+        checkAction = GetComponent<Action>();
     }
     private void Start()
     {
-        checkAction = GetComponent<Action>();
         checkAction.menuTexts[0] = check ? "Disable" : "Enable";
         checkAction.clientAction0 += Check;
         if (warning != null)
@@ -35,18 +35,21 @@ public class SettingsCheckmark : MonoBehaviour
     void Check()
     {
         check = !check;
-        checkImage.texture = check ? checkOn : checkOff;
-        checkAction.menuTexts[0] = check ? "Disable" : "Enable";
-        if (warning != null)
-        {
-            panelScript.CheckWarning();
-            warning.SetActive(check);
-        }
+        Check(check);
     }
 
     public void Check(bool on)
     {
         check = on;
-        checkImage.texture = check ? checkOn : checkOff;
+        if (checkImage != null)
+        {
+            checkImage.texture = check ? checkOn : checkOff;
+            checkAction.menuTexts[0] = check ? "Disable" : "Enable";
+        }
+        if (warning != null)
+        {
+            panelScript.CheckWarning();
+            warning.SetActive(check);
+        }
     }
 }

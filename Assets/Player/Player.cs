@@ -55,8 +55,14 @@ public class Player : MonoBehaviour
 
     public bool debugEnabled = false;
 
+    bool dead = false;
+    public delegate void PlayerEvents();
+    public event PlayerEvents playerDeath;
+
     void Start()
     {
+        Action.ignoreAllActions = false;
+
         Vector2 startTile = TileManager.FindTile(transform.position);
         transform.position = startTile;
 
@@ -263,6 +269,19 @@ public class Player : MonoBehaviour
             int recoilDamage = Mathf.FloorToInt((float)damage.damage * 0.1f + 1);
             damage.enemyAttacking.AddToDamageQueue(recoilDamage, 0, false, 0);
         }
+
+        if (PlayerStats.currentHitpoints <= 0 && dead == false)
+        {
+            dead = true;
+            Death();
+        }
+    }
+
+    void Death()
+    {
+        playerDeath?.Invoke();
+        damageQueue = new List<IncomingDamage>();
+        Action.ignoreAllActions = true;
     }
 
     public void AttackEnemy(Enemy enemy)
@@ -343,4 +362,6 @@ public class Player : MonoBehaviour
     {
         damageQueue = new List<IncomingDamage>();
     }
+
+
 }

@@ -151,6 +151,16 @@ public class Action : MonoBehaviour
     }
     public void PickAction(int actionNumber)
     {
+        if (inGame)
+        {
+            UIManager.ClickX(redClick);
+        }
+
+        if (ignoreAllActions)
+        {
+            return;
+        }
+
         if (actionNumber == 0)
         {
             clientAction0?.Invoke();
@@ -278,10 +288,6 @@ public class Action : MonoBehaviour
             return;
         }
         validAction = false;
-        if (inGame)
-        {
-            UIManager.ClickX(redClick);
-        }
 
         if (cancelLevels[actionNumber] > 0)
         {

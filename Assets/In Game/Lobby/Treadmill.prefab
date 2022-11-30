@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6321509784711097313}
   - component: {fileID: 3553256408259427530}
   - component: {fileID: 257322338598532227}
+  - component: {fileID: 1126531513}
   m_Layer: 0
   m_Name: Treadmill
   m_TagString: Untagged
@@ -97,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb052c7c144e434faa341fa30a01e28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chestPanel: {fileID: 0}
+  skillsPanel: {fileID: 0}
 --- !u!114 &3553256408259427530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,3 +146,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.81}
   m_EdgeRadius: 0
+--- !u!114 &1126531513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6321509784711097318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 718907ff6487e874fbac41de0eb6c8eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectAction: {fileID: 0}
+  sizeX: 4
+  sizeY: 2

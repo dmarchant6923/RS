@@ -79,6 +79,7 @@ public class Enemy : MonoBehaviour
     public delegate void EnemyCombat();
     public event EnemyCombat tookDamage;
     public event EnemyCombat beforeAttack;
+    public event EnemyCombat enemyDied;
 
 
     public class IncomingDamage
@@ -317,6 +318,7 @@ public class Enemy : MonoBehaviour
 
     void Death()
     {
+        enemyDied?.Invoke();
         death = true;
         hitpoints = 0;
         npcAction.serverAction0 -= PlayerAttack;
@@ -418,5 +420,7 @@ public class Enemy : MonoBehaviour
     private void OnDestroy()
     {
         Action.cancel1 -= CancelPlayerAttack;
+        TickManager.beforeTick -= BeforeTick;
+        TickManager.onTick -= PerformAttack;
     }
 }

@@ -21,8 +21,14 @@ public class OptionManager : MonoBehaviour
 
     public static OptionManager instance;
 
+    public static bool keepRunOn = false;
+    public static bool keepPrayersOn = false;
+    public static List<int> prayerToKeepActive = new List<int>();
 
-    void Start()
+    public static bool ignorePlayerDeath;
+
+
+    IEnumerator Start()
     {
         instance = this;
 
@@ -39,9 +45,30 @@ public class OptionManager : MonoBehaviour
         PanelButtons.wornEquipmentHotKey = wornEquipmentHotKey;
         PanelButtons.prayerHotKey = prayerHotKey;
         PanelButtons.spellbookHotKey = spellbookHotKey;
+
+        yield return null;
+
+        if (keepRunOn)
+        {
+            RunToggle.instance.ToggleRun();
+            RunToggle.instance.orbManager.ClientClickedToggle();
+            keepRunOn = false;
+        }
+
+        yield return null;
+        yield return null;
+        if (keepPrayersOn)
+        {
+            foreach (int num in prayerToKeepActive)
+            {
+                Prayer.prayers[num].ServerClickPrayer();
+            }
+            prayerToKeepActive = new List<int>();
+            keepPrayersOn = false;
+        }
     }
 
-    public static void UpdateGameSettings(bool[] settings, float simLatency)
+    public static void UpdateGameSettings(bool[] settings, float simLatency, float uiScale)
     {
         CombatInfo.instance.gameObject.SetActive(settings[0]);
 
@@ -65,8 +92,11 @@ public class OptionManager : MonoBehaviour
 
         ZukShield.showSafeSpot = settings[6];
 
+        ignorePlayerDeath = settings[7];
 
         TickManager.simLatency = simLatency / 1000;
+
+        FindObjectOfType<CanvasScaler>().scaleFactor = uiScale / 100;
     }
 
 

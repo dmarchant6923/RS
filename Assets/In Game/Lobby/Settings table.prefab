@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -8962608477952045441}
   - component: {fileID: -1405247590480557042}
   - component: {fileID: -1977119487850317031}
+  - component: {fileID: 551511099549510621}
   m_Layer: 0
   m_Name: Settings table
   m_TagString: Untagged
@@ -138,10 +139,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   examineText: Modify your settings.
   objectName: 
-  addObjectName: 0
+  addObjectName: 1
   ignoreUse: 0
   inGame: 1
   redClick: 1
   actionUsedOnThis: {fileID: 0}
   actionOnPointerUp: 0
   useActionSuccessful: 0
+--- !u!114 &551511099549510621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8640970387250580896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 718907ff6487e874fbac41de0eb6c8eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectAction: {fileID: 0}
+  sizeX: 2
+  sizeY: 4

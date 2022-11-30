@@ -25,9 +25,9 @@ public class DialogueBox : MonoBehaviour
         textInput = GetComponentInChildren<InputField>();
         prompt = transform.GetChild(0).GetComponent<Text>();
 
-        onPosition = rt.localPosition;
+        onPosition = rt.position;
         offPosition = onPosition + Vector3.left * 1500;
-        rt.localPosition = offPosition;
+        rt.position = offPosition;
 
         dialogueActive = false;
         textInput.text = "";
@@ -66,7 +66,7 @@ public class DialogueBox : MonoBehaviour
         }
 
         dialogueActive = true;
-        rt.localPosition = onPosition;
+        rt.position = onPosition;
         prompt.text = textPrompt;
         textInput.ActivateInputField();
         textInput.interactable = false;
@@ -97,7 +97,7 @@ public class DialogueBox : MonoBehaviour
         InputString = "";
         textInput.text = "";
         textInput.DeactivateInputField();
-        rt.localPosition = offPosition;
+        rt.position = offPosition;
         dialogueActive = false;
     }
 

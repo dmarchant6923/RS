@@ -34,9 +34,9 @@ public class PresetsPanel : MonoBehaviour
 
     public Text[] presetTexts = new Text[3];
 
-    public PresetsPanelButton[] saveButtons = new PresetsPanelButton[3];
-    public PresetsPanelButton[] loadButtons = new PresetsPanelButton[3];
-    public PresetsPanelButton[] clearButtons = new PresetsPanelButton[3];
+    public ButtonScript[] saveButtons = new ButtonScript[3];
+    public ButtonScript[] loadButtons = new ButtonScript[3];
+    public ButtonScript[] clearButtons = new ButtonScript[3];
 
     string folder = "/SaveData/";
     string extension = ".txt";
@@ -46,6 +46,34 @@ public class PresetsPanel : MonoBehaviour
 
     private void Start()
     {
+        for (int i = 0; i < 3; i++)
+        {
+            saveButtons[i].buttonAction.menuTexts[0] = "Save preset " + (i + 1);
+            loadButtons[i].buttonAction.menuTexts[0] = "Load preset " + (i + 1);
+            clearButtons[i].buttonAction.menuTexts[0] = "Clear preset " + (i + 1);
+            if (i == 0)
+            {
+                saveButtons[i].buttonClicked += SavePreset1;
+                loadButtons[i].buttonClicked += LoadPreset1;
+                clearButtons[i].buttonClicked += ClearPreset1;
+            }
+            if (i == 1)
+            {
+                saveButtons[i].buttonClicked += SavePreset2;
+                loadButtons[i].buttonClicked += LoadPreset2;
+                clearButtons[i].buttonClicked += ClearPreset2;
+            }
+            if (i == 2)
+            {
+                saveButtons[i].buttonClicked += SavePreset3;
+                loadButtons[i].buttonClicked += LoadPreset3;
+                clearButtons[i].buttonClicked += ClearPreset3;
+            }
+            saveButtons[i].buttonAction.UpdateName();
+            loadButtons[i].buttonAction.UpdateName();
+            clearButtons[i].buttonAction.UpdateName();
+        }
+
         dir = Application.dataPath + folder;
         closeButton.buttonClicked += ClosePanel;
         Action.cancel1 += ClosePanel;
@@ -89,14 +117,14 @@ public class PresetsPanel : MonoBehaviour
             if (presetEquipment[i].filled == false && presetInventory[i].filled == false)
             {
                 presetTexts[i].text = "Preset " + (i + 1) + "\n(empty)";
-                loadButtons[i].SetActive(false);
-                clearButtons[i].SetActive(false);
+                loadButtons[i].ActivateButton(false);
+                clearButtons[i].ActivateButton(false);
             }
             else
             {
                 presetTexts[i].text = "Preset " + (i + 1);
-                loadButtons[i].SetActive(true);
-                clearButtons[i].SetActive(true);
+                loadButtons[i].ActivateButton(true);
+                clearButtons[i].ActivateButton(true);
             }
         }
     }
@@ -152,14 +180,14 @@ public class PresetsPanel : MonoBehaviour
         if (presetInventory[presetNumber].filled == false && presetEquipment[presetNumber].filled == false)
         {
             presetTexts[presetNumber].text = "Preset " + (presetNumber + 1) + "\n(empty)";
-            loadButtons[presetNumber].SetActive(false);
-            clearButtons[presetNumber].SetActive(false);
+            loadButtons[presetNumber].ActivateButton(false);
+            clearButtons[presetNumber].ActivateButton(false);
         }
         else
         {
             presetTexts[presetNumber].text = "Preset " + (presetNumber + 1);
-            loadButtons[presetNumber].SetActive(true);
-            clearButtons[presetNumber].SetActive(true);
+            loadButtons[presetNumber].ActivateButton(true);
+            clearButtons[presetNumber].ActivateButton(true);
         }
 
 
@@ -273,8 +301,8 @@ public class PresetsPanel : MonoBehaviour
         presetEquipment[presetNumber] = new PresetEquipment();
         presetInventory[presetNumber] = new PresetInventory();
         presetTexts[presetNumber].text = "Preset " + (presetNumber + 1) + "\n(empty)";
-        loadButtons[presetNumber].SetActive(false);
-        clearButtons[presetNumber].SetActive(false);
+        loadButtons[presetNumber].ActivateButton(false);
+        clearButtons[presetNumber].ActivateButton(false);
 
         string fileName = "Preset" + presetNumber + "Inventory";
         string fullPath = dir + fileName + extension;
@@ -315,4 +343,51 @@ public class PresetsPanel : MonoBehaviour
     {
         Action.cancel1 -= ClosePanel;
     }
+
+
+
+
+
+
+
+
+
+
+    void SavePreset1()
+    {
+        SavePreset(0);
+    }
+    void SavePreset2()
+    {
+        SavePreset(1);
+    }
+    void SavePreset3()
+    {
+        SavePreset(2);
+    }
+    void LoadPreset1()
+    {
+        LoadPreset(0);
+    }
+    void LoadPreset2()
+    {
+        LoadPreset(1);
+    }
+    void LoadPreset3()
+    {
+        LoadPreset(2);
+    }
+    void ClearPreset1()
+    {
+        ClearPreset(0);
+    }
+    void ClearPreset2()
+    {
+        ClearPreset(1);
+    }
+    void ClearPreset3()
+    {
+        ClearPreset(2);
+    }
+
 }

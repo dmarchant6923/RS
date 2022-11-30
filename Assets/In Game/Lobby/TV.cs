@@ -2,24 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SettingsTable : MonoBehaviour
+public class TV : MonoBehaviour
 {
-    Action settingsAction;
-    public SettingsPanel settingsPanel;
+    Action tvAction;
+    public GameObject statsPanel;
     InteractableObject objectScript;
 
     private void Start()
     {
-        settingsAction = GetComponent<Action>();
+        tvAction = GetComponent<Action>();
         objectScript = GetComponent<InteractableObject>();
 
-        settingsAction.menuTexts[0] = "Change-settings ";
-        settingsAction.UpdateName();
+        tvAction.menuTexts[0] = "Stats ";
+        tvAction.UpdateName();
         objectScript.interaction += OpenSettings;
     }
 
     void OpenSettings()
     {
-        settingsPanel.OpenPanel();
+        statsPanel.SetActive(true);
     }
 }
