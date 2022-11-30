@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TrueTile : MonoBehaviour
 {
     public GameObject clickedTile;
-    GameObject newClickedTile;
+    [HideInInspector] public GameObject newClickedTile;
     public GameObject debugTile;
     GameObject newDebugTile;
     List<GameObject> debugTiles = new List<GameObject>();
@@ -14,7 +14,7 @@ public class TrueTile : MonoBehaviour
     [HideInInspector] public Player player;
     Pathfinder pathFinder;
     public Transform tileMarker;
-    Transform newTileMarker;
+    [HideInInspector] public Transform newTileMarker;
 
     [HideInInspector] public Vector2 currentTile;
     [HideInInspector] public Vector2 destinationTile;
@@ -24,7 +24,7 @@ public class TrueTile : MonoBehaviour
     [HideInInspector] public bool oddTilesInPath = false;
 
     [HideInInspector] public bool showTrueTile = false;
-    [HideInInspector] public bool showClickedTile = false;
+    public bool showClickedTile = true;
     [HideInInspector] public bool debugEnabled = false;
 
     public delegate void TrueTileMoved();
@@ -39,9 +39,10 @@ public class TrueTile : MonoBehaviour
         walkHereAction = GetComponent<Action>();
         pathFinder = FindObjectOfType<Pathfinder>();
 
+        newTileMarker = Instantiate(tileMarker, TileManager.FindTile(transform.position), Quaternion.identity);
         if (showTrueTile)
         {
-            newTileMarker = Instantiate(tileMarker, TileManager.FindTile(transform.position), Quaternion.identity);
+            newTileMarker.GetComponent<SpriteRenderer>().enabled = false;
         }
 
         currentTile = TileManager.FindTile(transform.position);

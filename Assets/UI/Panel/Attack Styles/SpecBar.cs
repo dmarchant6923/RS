@@ -128,7 +128,7 @@ public class SpecBar : MonoBehaviour
 
     public void CheckSpec()
     {
-        if (WornEquipment.weapon.spec != null)
+        if (WornEquipment.weapon != null && WornEquipment.weapon.spec != null)
         {
             if (enoughSpec && specPercentage < WornEquipment.weapon.spec.specCost)
             {

@@ -66,6 +66,8 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         TickManager.afterTick += AfterTick;
 
+        PlayerStats.newStats += ChangeInitialStats;
+
         orbAction = GetComponent<Action>();
         if (orbAction != null)
         {
@@ -130,11 +132,12 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         orbToggle.isOn = active;
         SwitchSprites(active);
 
-        value = float.Parse(number.text);
         UpdateMask();
     }
     public void UpdateMask()
     {
+        value = float.Parse(number.text);
+
         currentScale = minScale + ((initialScale - minScale) * value / initialValue);
         currentPosition = minPosition + ((initialPosition - minPosition) * value / initialValue) - 7f;
 
@@ -165,6 +168,18 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if (canBeToggled)
         {
             panelSprite.sprite = panelNotHighlighted;
+        }
+    }
+
+    public void ChangeInitialStats()
+    {
+        if (GetComponent<HealthOrb>() != null)
+        {
+            initialValue = PlayerStats.initialHitpoints;
+        }
+        else if (GetComponent<PrayerToggle>() != null)
+        {
+            initialValue = PlayerStats.initialPrayer;
         }
     }
 }

@@ -59,11 +59,11 @@ public class HealthBar : MonoBehaviour
         currentHealth = number;
         ticks = 0;
         float percent = Mathf.Clamp(1 - (maxHealth - currentHealth) / maxHealth, 0.05f, 0.95f);
-        if (currentHealth == maxHealth)
+        if (currentHealth >= maxHealth)
         {
             percent = 1;
         }
-        if (currentHealth == 0)
+        if (currentHealth <= 0)
         {
             percent = 0;
         }

@@ -24,7 +24,7 @@ public class NPC : MonoBehaviour
     [HideInInspector] public bool moving = false;
     public bool stationary = false;
 
-    public bool showTrueTile = false;
+    public static bool showTrueTile = true;
     public bool showSizeTile = false;
     public GameObject trueTileMarker;
     GameObject newTrueTileMarker;
@@ -72,10 +72,10 @@ public class NPC : MonoBehaviour
         {
             newTrueTileMarker.GetComponent<SpriteRenderer>().enabled = false;
         }
-        if (showSizeTile == false)
-        {
+        //if (showSizeTile == false)
+        //{
             newSizeTileMarker.GetComponent<SpriteRenderer>().enabled = false;
-        }
+        //}
 
         TickManager.beforeTick += BeforeTick;
         TickManager.afterTick += AfterTick;

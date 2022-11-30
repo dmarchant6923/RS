@@ -1,1 +1,0 @@
-{"filled":true,"items":["","","","","","","","","","","","","Water rune","Death rune","Chaos rune","Blood rune","Super restore","Super restore","Super restore","Super restore","Saradomin brew","Saradomin brew","Saradomin brew","Saradomin brew","Saradomin brew","Stamina potion","Bastion potion","Toxic blowpipe"],"blowpipeAmmo":"Dragon dart"}

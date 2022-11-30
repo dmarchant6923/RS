@@ -21,6 +21,7 @@ public class SupplyChest : MonoBehaviour
         chestAction.orderLevels[0] = -1;
         chestAction.menuPriorities[0] = 1;
         chestAction.cancelLevels[0] = 1;
+        chestAction.staticPlayerActions[0] = true;
         chestAction.inGame = true;
         chestAction.UpdateName();
 
@@ -53,11 +54,6 @@ public class SupplyChest : MonoBehaviour
             PanelButtons.instance.ForceOpen("Inventory");
             willOpenChest = false;
         }
-    }
-
-    private void Update()
-    {
-        
     }
 
     void Cancel()

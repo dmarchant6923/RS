@@ -98,9 +98,9 @@ MonoBehaviour:
   examineText: 
   objectName: 
   addObjectName: 0
-  itemAction: 0
   ignoreUse: 1
   inGame: 0
   redClick: 1
   actionUsedOnThis: {fileID: 0}
   actionOnPointerUp: 0
+  useActionSuccessful: 0

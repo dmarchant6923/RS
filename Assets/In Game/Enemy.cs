@@ -395,7 +395,7 @@ public class Enemy : MonoBehaviour
     }
     void PerformAttack()
     {
-        if (isAttackingPlayer == false || npcScript.isTargetingPlayer == false)
+        if (npcScript == null || isAttackingPlayer == false || npcScript.isTargetingPlayer == false || death)
         {
             return;
         }

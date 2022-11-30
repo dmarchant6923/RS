@@ -38,7 +38,7 @@ public class PresetsPanel : MonoBehaviour
     public PresetsPanelButton[] loadButtons = new PresetsPanelButton[3];
     public PresetsPanelButton[] clearButtons = new PresetsPanelButton[3];
 
-    string folder = "/Presets/";
+    string folder = "/SaveData/";
     string extension = ".txt";
     string dir;
 

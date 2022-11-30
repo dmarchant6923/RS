@@ -71,8 +71,13 @@ public class DialogueBox : MonoBehaviour
         textInput.ActivateInputField();
         textInput.interactable = false;
     }
+    public static void CancelEdit()
+    {
+        InputString = "";
+        EndEdit();
+    }
 
-    static void EndEdit()
+    public static void EndEdit()
     {
         textInput.interactable = true;
         if ((Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
@@ -87,7 +92,7 @@ public class DialogueBox : MonoBehaviour
         CloseDialogue();
     }
 
-    static void CloseDialogue()
+    public static void CloseDialogue()
     {
         InputString = "";
         textInput.text = "";

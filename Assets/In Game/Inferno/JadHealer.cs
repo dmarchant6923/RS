@@ -88,7 +88,7 @@ public class JadHealer : MonoBehaviour
 
     void Update()
     {
-        if (healInterrupted == false)
+        if (healInterrupted == false && jadScript != null)
         {
             npcScript.targetAngle = Tools.VectorToAngle(jadScript.transform.position - transform.position);
         }

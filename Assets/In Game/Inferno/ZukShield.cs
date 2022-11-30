@@ -18,8 +18,9 @@ public class ZukShield : MonoBehaviour
 
     public Action shieldAction;
 
-    public bool showSafeSpot;
+    public static bool showSafeSpot;
     public GameObject safeSpotMarker;
+    public Vector3 relativePosition;
 
     private IEnumerator Start()
     {
@@ -44,6 +45,7 @@ public class ZukShield : MonoBehaviour
         {
             safeSpotMarker.SetActive(true);
         }
+        relativePosition = safeSpotMarker.transform.position - npcScript.newSizeTileMarker.transform.position;
     }
 
     void AfterMovement()
@@ -56,6 +58,7 @@ public class ZukShield : MonoBehaviour
                 npcScript.ExternalMovement(new Vector2(absolutePosition.x * currentDirection, absolutePosition.y) + Vector2.left);
                 moving = true;
             }
+
         }
         else
         {
@@ -69,13 +72,13 @@ public class ZukShield : MonoBehaviour
 
         safeSpotRange[0] = npcScript.trueTile.x - 1;
         safeSpotRange[1] = npcScript.trueTile.x + 3;
-        if (npcScript.trueTile == new Vector2(absolutePosition.x * -1, absolutePosition.y) + Vector2.left)
-        {
-            safeSpotRange[1]++;
-        }
-        else if (npcScript.trueTile == new Vector2(absolutePosition.x, absolutePosition.y) + Vector2.left)
-        {
-            safeSpotRange[0]--;
-        }
+        //if (npcScript.trueTile == new Vector2(absolutePosition.x * -1, absolutePosition.y) + Vector2.left)
+        //{
+        //    safeSpotRange[1]++;
+        //}
+        //else if (npcScript.trueTile == new Vector2(absolutePosition.x, absolutePosition.y) + Vector2.left)
+        //{
+        //    safeSpotRange[0]--;
+        //}
     }
 }

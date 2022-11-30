@@ -30,21 +30,31 @@ public class BuffIcon : MonoBehaviour
 
     public void UpdateStats(int current, int baseLevel)
     {
-        currentLvl = current;
         baseLvl = baseLevel;
-        currentText.text = currentLvl.ToString();
         baseText.text = baseLvl.ToString();
+        UpdateStats(current);
+    }
+
+    public void UpdatePrayerHitpoints(int current)
+    {
+        currentLvl = current;
+        currentText.text = currentLvl.ToString();
         if (currentLvl > baseLvl)
         {
             currentText.color = Color.green;
         }
-        else if (currentLvl == baseLvl)
+        else
         {
-            currentText.color = Color.yellow;
+            float g = (float)current / (float)baseLvl;
+            Color color = new Color(1, g, 0);
+            currentText.color = color;
         }
-        else if (currentLvl < baseLvl)
-        {
-            currentText.color = Color.red;
-        }
+    }
+
+    public void UpdatePrayerHitpoints(int current, int baseLevel)
+    {
+        baseLvl = baseLevel;
+        baseText.text = baseLvl.ToString();
+        UpdatePrayerHitpoints(current);
     }
 }

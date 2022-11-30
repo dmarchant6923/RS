@@ -20,7 +20,6 @@ public class PlayerStats : MonoBehaviour
     public static int initialMagic;
     public static int initialHitpoints;
     public static int initialPrayer;
-    public static int[] initialStats = new int[7];
 
     public static int currentAttack;
     public static int currentStrength;
@@ -29,7 +28,8 @@ public class PlayerStats : MonoBehaviour
     public static int currentMagic;
     public static int currentHitpoints;
     public static int currentPrayer;
-    public static int[] currentStats = new int[7];
+
+    public static int[] setInitialStats = new int[7];
 
     public static float combatLevel;
 
@@ -63,29 +63,46 @@ public class PlayerStats : MonoBehaviour
     //static bool ignoreRangeDecrease = false;
     //static bool ignoreMagicDecrease = false;
 
+    public delegate void ChangeStats();
+    public static event ChangeStats newStats;
+
     private IEnumerator Start()
     {
         instance = this;
 
-        initialAttack = attack;
-        initialStrength = strength;
-        initialDefence = defence;
-        initialRanged = ranged;
-        initialMagic = magic;
-        initialHitpoints = hitpoints;
-        initialPrayer = prayer;
+        if (setInitialStats[0] > 0)
+        {
+            initialAttack = setInitialStats[0];
+            initialStrength = setInitialStats[1];
+            initialDefence = setInitialStats[2];
+            initialRanged = setInitialStats[3];
+            initialMagic = setInitialStats[4];
+            initialHitpoints = setInitialStats[5];
+            initialPrayer = setInitialStats[6];
+            setInitialStats = new int[7];
+        }
+        else
+        {
+            initialAttack = attack;
+            initialStrength = strength;
+            initialDefence = defence;
+            initialRanged = ranged;
+            initialMagic = magic;
+            initialHitpoints = hitpoints;
+            initialPrayer = prayer;
+        }
 
-        currentAttack = attack;
-        currentStrength = strength;
-        currentDefence = defence;
-        currentRanged = ranged;
-        currentMagic = magic;
-        currentHitpoints = hitpoints;
-        currentPrayer = prayer;
+        currentAttack = initialAttack;
+        currentStrength = initialStrength;
+        currentDefence = initialDefence;
+        currentRanged = initialRanged;
+        currentMagic = initialMagic;
+        currentHitpoints = initialHitpoints;
+        currentPrayer = initialPrayer;
 
         preserve = false;
 
-        truePrayer = prayer * 100;
+        truePrayer = (float) initialPrayer * 100;
         TickManager.beforeTick += BoostTimer;
         TickManager.onTick += PrayerDrain;
         TickManager.afterTick += Redemption;
@@ -366,5 +383,30 @@ public class PlayerStats : MonoBehaviour
         string name = buffScript.name.Remove(buffScript.name.Length - 3);
 
         BuffBar.instance.CreateExtraTimer(texture, (float)divineTicks * TickManager.maxTickTime, name);
+    }
+
+    public static void ReinitializeStats()
+    {
+        currentAttack = initialAttack;
+        currentStrength = initialStrength;
+        currentDefence = initialDefence;
+        currentRanged = initialRanged;
+        currentMagic = initialMagic;
+        currentHitpoints = initialHitpoints;
+        currentPrayer = initialPrayer;
+        truePrayer = (float)initialPrayer * 100;
+
+        newStats?.Invoke();
+    }
+
+    private void OnDestroy()
+    {
+        if (newStats != null)
+        {
+            foreach (var d in newStats.GetInvocationList())
+            {
+                newStats -= d as ChangeStats;
+            }
+        }
     }
 }

@@ -21,10 +21,12 @@ public class Treadmill : MonoBehaviour
         treadmillAction.orderLevels[0] = -1;
         treadmillAction.menuPriorities[0] = 1;
         treadmillAction.cancelLevels[0] = 1;
+        treadmillAction.staticPlayerActions[0] = true;
         treadmillAction.inGame = true;
         treadmillAction.UpdateName();
 
         Action.cancel1 += Cancel;
+        TickManager.beforeTick += BeforeTick;
 
         Vector2 position = transform.position;
         swTile = TileManager.FindTile(position - new Vector2((float)sizeX / 2, (float)sizeY / 2) + Vector2.one * 0.5f);

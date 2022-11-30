@@ -19,8 +19,12 @@ public class PrayerToggle : MonoBehaviour
 
     Text numberText;
 
+    public static PrayerToggle instance;
+
     void Start()
     {
+        instance = this;
+
         orbManager = GetComponent<StatOrbManager>();
         orbManager.initialValue = PlayerStats.initialPrayer;
 

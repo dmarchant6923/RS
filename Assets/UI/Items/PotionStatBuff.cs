@@ -93,7 +93,7 @@ public class PotionStatBuff : MonoBehaviour
             Player.player.stamina = true;
             Player.player.staminaTicks = 200;
 
-            Texture texture = potionScript.CreatePotionTexture(4);
+            Texture texture = potionScript.dose4;
             string name = gameObject.name.Remove(gameObject.name.Length - 3);
 
             BuffBar.instance.CreateExtraTimer(texture, (float)200 * TickManager.maxTickTime, name);

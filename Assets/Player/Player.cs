@@ -64,7 +64,6 @@ public class Player : MonoBehaviour
         trueTileScript.player = this;
         trueTileScript.debugEnabled = debugEnabled;
         trueTileScript.showTrueTile = showTrueTile;
-        trueTileScript.showClickedTile = showClickedTile;
 
         runEnabled = false;
 

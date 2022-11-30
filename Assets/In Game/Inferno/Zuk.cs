@@ -14,6 +14,8 @@ public class Zuk : MonoBehaviour
     public Transform jadSpawnTile;
     public Transform[] healerSpawnTiles = new Transform[4];
 
+    public GameObject tileMarkerParent;
+
     int threshold1 = 600;
     bool thresh1Passed;
     int threshold2 = 480; //480;
@@ -29,6 +31,9 @@ public class Zuk : MonoBehaviour
     int timer = 75; //75
     float floatTimer;
     bool timerPaused = false;
+
+    public static bool showZukTileMarkers = true;
+    public static bool showSetTimer = true;
 
     IEnumerator Start()
     {
@@ -51,7 +56,15 @@ public class Zuk : MonoBehaviour
         yield return null;
 
         floatTimer = (float)timer * TickManager.maxTickTime;
-        CustomHUD.instance.Activate("Set Timer", Tools.SecondsToMinutes(floatTimer, true));
+        if (showSetTimer)
+        {
+            CustomHUD.instance.Activate("Set Timer", Tools.SecondsToMinutes(floatTimer, true));
+        }
+
+        if (showZukTileMarkers == false)
+        {
+            tileMarkerParent.SetActive(false);
+        }
 
         combatScript.attackCooldown = 13;
     }
@@ -78,7 +91,10 @@ public class Zuk : MonoBehaviour
         {
             thresh1Passed = true;
             timerPaused = true;
-            CustomHUD.instance.UpdateText("Set Timer (paused)", Tools.SecondsToMinutes(floatTimer, true));
+            if (showSetTimer)
+            {
+                CustomHUD.instance.UpdateText("Set Timer (paused)", Tools.SecondsToMinutes(floatTimer, true));
+            }
         }
         if (enemyScript.hitpoints < threshold2 && thresh2Passed == false)
         {
@@ -86,7 +102,10 @@ public class Zuk : MonoBehaviour
             timerPaused = false;
             timer += 175;
             JadSpawn();
-            CustomHUD.instance.UpdateText("Set Timer", Tools.SecondsToMinutes(floatTimer, true));
+            if (showSetTimer)
+            {
+                CustomHUD.instance.UpdateText("Set Timer", Tools.SecondsToMinutes(floatTimer, true));
+            }
         }
         if (enemyScript.hitpoints < threshold3 && thresh3Passed == false)
         {
@@ -115,7 +134,7 @@ public class Zuk : MonoBehaviour
             return;
         }
 
-        if (Mathf.Floor(floatTimer) > Mathf.Floor(floatTimer - Time.deltaTime))
+        if (showSetTimer && Mathf.Floor(floatTimer) > Mathf.Floor(floatTimer - Time.deltaTime))
         {
             CustomHUD.instance.UpdateText(Tools.SecondsToMinutes(floatTimer, true));
         }

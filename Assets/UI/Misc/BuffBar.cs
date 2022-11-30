@@ -10,6 +10,8 @@ public class BuffBar : MonoBehaviour
     public BuffIcon defense;
     public BuffIcon range;
     public BuffIcon mage;
+    public BuffIcon hitpoints;
+    public BuffIcon prayer;
 
     public GameObject[] extras;
     public float[] timers;
@@ -25,6 +27,8 @@ public class BuffBar : MonoBehaviour
         instance = this;
         timers = new float[extras.Length];
         names = new string[extras.Length];
+        PlayerStats.newStats += UpdateBaseStats;
+        TickManager.afterTick += UpdatePrayHitpoints;
     }
 
     private void Update()
@@ -39,7 +43,7 @@ public class BuffBar : MonoBehaviour
                 }
                 timers[i] -= Time.deltaTime;
             }
-            else
+            else if (extras[i].activeSelf)
             {
                 timers[i] = 0;
                 names[i] = "";
@@ -55,6 +59,8 @@ public class BuffBar : MonoBehaviour
         defense.UpdateStats(PlayerStats.currentDefence);
         range.UpdateStats(PlayerStats.currentRanged);
         mage.UpdateStats(PlayerStats.currentMagic);
+        hitpoints.UpdatePrayerHitpoints(PlayerStats.currentHitpoints);
+        prayer.UpdatePrayerHitpoints(PlayerStats.currentPrayer);
     }
 
     public void UpdateBaseStats()
@@ -64,6 +70,14 @@ public class BuffBar : MonoBehaviour
         defense.UpdateStats(PlayerStats.currentDefence, PlayerStats.initialDefence);
         range.UpdateStats(PlayerStats.currentRanged, PlayerStats.initialRanged);
         mage.UpdateStats(PlayerStats.currentMagic, PlayerStats.initialMagic);
+        hitpoints.UpdatePrayerHitpoints(PlayerStats.currentHitpoints, PlayerStats.initialHitpoints);
+        prayer.UpdatePrayerHitpoints(PlayerStats.currentPrayer, PlayerStats.initialPrayer);
+    }
+
+    void UpdatePrayHitpoints()
+    {
+        hitpoints.UpdatePrayerHitpoints(PlayerStats.currentHitpoints);
+        prayer.UpdatePrayerHitpoints(PlayerStats.currentPrayer);
     }
 
     public void UpdateTimer(float time)

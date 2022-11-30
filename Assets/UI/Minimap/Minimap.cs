@@ -29,7 +29,7 @@ public class Minimap : MonoBehaviour, IPointerClickHandler
 
         mainCamera = Camera.main.GetComponent<CameraScript>();
         newMinimapCam = Instantiate(minimapCam, Vector3.back * -10, Quaternion.identity);
-        minimapCam.backgroundColor = Camera.main.backgroundColor;
+        //minimapCam.backgroundColor = Camera.main.backgroundColor;
 
         mapArea = GetComponent<Image>();
         mapArea.alphaHitTestMinimumThreshold = 0.5f;

@@ -18,12 +18,15 @@ public class MouseManager : MonoBehaviour
 
     public static bool showMouseTile;
     public GameObject mouseTile;
-    GameObject newMouseTile;
+    [HideInInspector] public GameObject newMouseTile;
     SpriteRenderer mouseTileSprite;
     Color spriteColor;
 
+    public static MouseManager instance;
+
     void Start()
     {
+        instance = this;
         mouseOnScreen = false;
 
         newMouseTile = Instantiate(mouseTile, mouseCoordinate, Quaternion.identity);

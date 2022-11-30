@@ -21,6 +21,7 @@ public class Wardrobe : MonoBehaviour
         wardrobeAction.orderLevels[0] = -1;
         wardrobeAction.menuPriorities[0] = 1;
         wardrobeAction.cancelLevels[0] = 1;
+        wardrobeAction.staticPlayerActions[0] = true;
         wardrobeAction.inGame = true;
         wardrobeAction.UpdateName();
 
