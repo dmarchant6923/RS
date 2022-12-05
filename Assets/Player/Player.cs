@@ -280,8 +280,11 @@ public class Player : MonoBehaviour
     void Death()
     {
         playerDeath?.Invoke();
+    }
+
+    public void ClearDamageQueue()
+    {
         damageQueue = new List<IncomingDamage>();
-        Action.ignoreAllActions = true;
     }
 
     public void AttackEnemy(Enemy enemy)
@@ -356,11 +359,6 @@ public class Player : MonoBehaviour
     {
         targetedNPC = null;
         attackTargetedNPC = false;
-    }
-
-    public void ClearDamageQueue()
-    {
-        damageQueue = new List<IncomingDamage>();
     }
 
 

@@ -16,6 +16,8 @@ public class SettingsCheckmark : MonoBehaviour
 
     public GameObject warning;
 
+    [HideInInspector] public int checkNumber;
+
     private void Awake()
     {
         checkImage = GetComponent<RawImage>();
@@ -30,6 +32,8 @@ public class SettingsCheckmark : MonoBehaviour
             panelScript.CheckWarning();
             warning.SetActive(check);
         }
+
+        Check(panelScript.settings.bools[checkNumber]);
     }
 
     void Check()

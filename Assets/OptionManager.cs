@@ -26,6 +26,9 @@ public class OptionManager : MonoBehaviour
     public static List<int> prayerToKeepActive = new List<int>();
 
     public static bool ignorePlayerDeath;
+    public static bool ignoreHiscores;
+
+    public static bool showManualSetTimer;
 
 
     IEnumerator Start()
@@ -88,15 +91,24 @@ public class OptionManager : MonoBehaviour
 
         NPC.showTrueTile = settings[4];
 
-        Zuk.showSetTimer = settings[5];
+        showManualSetTimer = settings[5];
+        Debug.Log(settings[5]);
 
-        ZukShield.showSafeSpot = settings[6];
+        Zuk.showSetTimer = settings[6];
 
-        ignorePlayerDeath = settings[7];
+        ZukShield.showSafeSpot = settings[7];
+
+        ignorePlayerDeath = settings[8];
 
         TickManager.simLatency = simLatency / 1000;
 
         FindObjectOfType<CanvasScaler>().scaleFactor = uiScale / 100;
+
+        ignoreHiscores = false;
+        if (settings[5] || settings[6] || settings[7])
+        {
+            ignoreHiscores = true;
+        }
     }
 
 

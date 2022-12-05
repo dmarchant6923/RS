@@ -29,15 +29,22 @@ public class InfernoManager : MonoBehaviour
         {
             return;
         }
-
-        HiscoresPanel.UpdateDeaths();
+        Action.ignoreAllActions = true;
+        Player.player.ClearDamageQueue();
+        if (OptionManager.ignoreHiscores == false)
+        {
+            HiscoresPanel.UpdateDeaths();
+        }
         StartCoroutine(ReturnToLobby(2));
     }
 
     void ZukDeath()
     {
-        HiscoresPanel.UpdateCompletions();
-        HiscoresPanel.UpdateFastestTime(encounterTicks);
+        if (OptionManager.ignoreHiscores == false)
+        {
+            HiscoresPanel.UpdateCompletions();
+            HiscoresPanel.UpdateFastestTime(encounterTicks);
+        }
         StartCoroutine(ReturnToLobby(5));
     }
 

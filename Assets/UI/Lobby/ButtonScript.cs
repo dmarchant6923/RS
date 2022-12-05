@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
 {
     Image buttonImage;
-    Text buttonText;
+    [HideInInspector] public Text buttonText;
 
     public Sprite onSprite;
     public Sprite offSprite;

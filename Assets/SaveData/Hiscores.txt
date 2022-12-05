@@ -1,1 +1,1 @@
-{"deaths":2,"completions":2,"fastestTicks":47}
+{"deaths":0,"completions":1,"fastestTicks":779}

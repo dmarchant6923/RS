@@ -6,7 +6,7 @@ using System.IO;
 public class SettingsPanel : MonoBehaviour
 {
     public OpenCloseButton closeButton;
-    public SettingsCheckmark[] checkmarks = new SettingsCheckmark[8];
+    public SettingsCheckmark[] checkmarks = new SettingsCheckmark[9];
     public SettingsNumber latency;
     public SettingsNumber uiScale;
     public GameObject warningText;
@@ -21,7 +21,7 @@ public class SettingsPanel : MonoBehaviour
 
     public class GameSettings
     {
-        public bool[] bools = new bool[8];
+        public bool[] bools = new bool[9];
 
         public float latency = 200;
         public float uiScale;
@@ -34,6 +34,10 @@ public class SettingsPanel : MonoBehaviour
     {
         gameObject.SetActive(true);
         parent.SetActive(false);
+        for (int i = 0; i < checkmarks.Length; i++)
+        {
+            checkmarks[i].checkNumber = i;
+        }
     }
 
     IEnumerator Start()
@@ -41,18 +45,19 @@ public class SettingsPanel : MonoBehaviour
         closeButton.buttonClicked += ClosePanel;
         Action.cancel1 += ClosePanel;
         dir = Application.dataPath + folder;
-        InitializeSettings(false);
         applyButton.buttonClicked += ApplySettings;
         resetButton.buttonClicked += ResetToDefault;
 
         yield return null;
+
+        InitializeSettings(false);
 
         ApplySettings();
     }
 
     public void ResetToDefault()
     {
-        InitializeSettings(false);
+        InitializeSettings(true);
     }
 
     public void InitializeSettings(bool setToDefault)
@@ -72,9 +77,10 @@ public class SettingsPanel : MonoBehaviour
             settings.bools[2] = true;
             settings.bools[3] = true;
             settings.bools[4] = true;
-            settings.bools[5] = false;
+            settings.bools[5] = true;
             settings.bools[6] = false;
             settings.bools[7] = false;
+            settings.bools[8] = false;
             settings.latency = 200;
             settings.uiScale = 100;
             string jsonString = JsonUtility.ToJson(settings);
@@ -87,6 +93,8 @@ public class SettingsPanel : MonoBehaviour
         }
         latency.SetValue(settings.latency);
         uiScale.SetValue(settings.uiScale);
+
+        OptionManager.UpdateGameSettings(settings.bools, settings.latency, settings.uiScale);
     }
 
     void SaveSettings()

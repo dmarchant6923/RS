@@ -26,6 +26,7 @@ public class XPDrop : MonoBehaviour
 
     private void Start()
     {
+        activeXPDrops = new List<GameObject>();
         instance = this;
 
         TickManager.afterTick += AfterTick;
