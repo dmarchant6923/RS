@@ -19,6 +19,10 @@ public class DialogueBox : MonoBehaviour
     public static event DialogueAction InputSubmitted;
     public static string InputString;
 
+    private void Awake()
+    {
+        gameObject.SetActive(true);
+    }
     private void Start()
     {
         rt = GetComponent<RectTransform>();

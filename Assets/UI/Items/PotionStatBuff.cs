@@ -78,7 +78,6 @@ public class PotionStatBuff : MonoBehaviour
     void Buff()
     {
         PlayerStats.PotionStatBoost(this);
-
         if (divine)
         {
             Player.player.AddToDamageQueue(10, 1, null);
@@ -91,12 +90,12 @@ public class PotionStatBuff : MonoBehaviour
         {
             RunToggle.instance.Stamina(true);
             Player.player.stamina = true;
-            Player.player.staminaTicks = 200;
+            Player.player.staminaTicks = 200; //200
 
             Texture texture = potionScript.dose4;
-            string name = gameObject.name.Remove(gameObject.name.Length - 3);
+            string name = gameObject.name;
 
-            BuffBar.instance.CreateExtraTimer(texture, (float)200 * TickManager.maxTickTime, name);
+            BuffBar.instance.CreateExtraTimer(texture, (float)Player.player.staminaTicks * TickManager.maxTickTime, name);
         }
     }
 }

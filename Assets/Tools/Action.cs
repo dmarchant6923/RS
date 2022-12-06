@@ -472,12 +472,12 @@ public class Action : MonoBehaviour
 
     public void DefaultUseAction()
     {
-        Debug.Log("Nothing interesting happens.");
+        GameLog.Log("Nothing interesting happens.");
     }
 
     void Examine()
     {
-        Debug.Log(examineText);
+        GameLog.Log(examineText);
     }
 
     private void OnDestroy()

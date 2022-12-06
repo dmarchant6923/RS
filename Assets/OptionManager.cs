@@ -77,7 +77,7 @@ public class OptionManager : MonoBehaviour
 
         PrayerToggle.instance.flickInidcator.GetComponent<RawImage>().enabled = settings[1];
 
-        Zuk.showZukTileMarkers = settings[2];
+        InfernoManager.showZukTileMarkers = settings[2];
 
         instance.showTrueTile = settings[3];
         instance.showClickedTile = settings[3];

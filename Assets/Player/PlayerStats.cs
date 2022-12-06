@@ -80,7 +80,7 @@ public class PlayerStats : MonoBehaviour
             initialMagic = setInitialStats[4];
             initialHitpoints = setInitialStats[5];
             initialPrayer = setInitialStats[6];
-            setInitialStats = new int[7];
+            //setInitialStats = new int[7];
         }
         else
         {
@@ -107,6 +107,7 @@ public class PlayerStats : MonoBehaviour
         TickManager.beforeTick += BoostTimer;
         TickManager.onTick += PrayerDrain;
         TickManager.afterTick += Redemption;
+        prayersOnForATick = false;
 
         float baselvl = 0.25f * ((float) defence + hitpoints + (prayer * 0.5f));
         float meleelvl = (13f / 40f) * ((float) attack + strength);
@@ -267,7 +268,7 @@ public class PlayerStats : MonoBehaviour
 
     void Redemption()
     {
-        if (Prayer.redemption && currentHitpoints <= (float)initialHitpoints / 10)
+        if (Prayer.redemption && currentHitpoints > 0 && currentHitpoints <= (float)initialHitpoints / 10)
         {
             currentPrayer = 0;
             Prayer.DeactivatePrayers();
@@ -299,32 +300,40 @@ public class PlayerStats : MonoBehaviour
 
     public static void PotionStatBoost(PotionStatBuff potion)
     {
+        bool showTimer = false;
         if (potion.attack)
         {
+            showTimer = true;
             currentAttack = potion.CalcBoost(initialAttack, currentAttack);
         }
         if (potion.strength)
         {
+            showTimer = true;
             currentStrength = potion.CalcBoost(initialStrength, currentStrength);
         }
         if (potion.defense)
         {
+            showTimer = true;
             currentDefence = potion.CalcBoost(initialDefence, currentDefence);
         }
         if (potion.range)
         {
+            showTimer = true;
             currentRanged = potion.CalcBoost(initialRanged, currentRanged);
         }
         if (potion.mage)
         {
+            showTimer = true;
             currentMagic = potion.CalcBoost(initialMagic, currentMagic);
         }
         if (potion.prayer)
         {
+            showTimer = true;
             truePrayer = Mathf.Min(truePrayer + (potion.CalcBoost(initialPrayer, currentPrayer) - currentPrayer) * 100, initialPrayer * 100);
         }
         if (potion.hitpoints)
         {
+            showTimer = true;
             currentHitpoints = potion.CalcBoost(initialHitpoints, currentHitpoints);
         }
 
@@ -332,7 +341,7 @@ public class PlayerStats : MonoBehaviour
         {
             NewDivineTimer(potion);
         }
-        else if (instance.timerActive == false)
+        else if (showTimer && instance.timerActive == false)
         {
             instance.timerActive = true;
             instance.tickTimer = instance.initialTickTimer;
@@ -395,7 +404,7 @@ public class PlayerStats : MonoBehaviour
         divineRangedTimer = buffScript.range ? divineTicks : divineRangedTimer;
         divineMagicTimer = buffScript.mage ? divineTicks : divineMagicTimer;
         Texture texture = buffScript.potionScript.CreatePotionTexture(4);
-        string name = buffScript.name.Remove(buffScript.name.Length - 3);
+        string name = buffScript.name;
 
         BuffBar.instance.CreateExtraTimer(texture, (float)divineTicks * TickManager.maxTickTime, name);
     }

@@ -7,6 +7,7 @@ public class ActivatePrayer : MonoBehaviour
 {
     Action prayerAction;
     RawImage image;
+    RawImage backgroundImage;
     Prayer prayerScript;
     [HideInInspector] public bool active = false;
 
@@ -16,7 +17,9 @@ public class ActivatePrayer : MonoBehaviour
     [HideInInspector] public RawImage newCheck;
     public Texture checkOff;
     public Texture checkOn;
-    public Transform prayerIcons;
+    public Transform iconsParent;
+    public Transform backgroundsParent;
+    public GameObject background;
 
     public bool offensiveMeleeStr;
     public bool offensiveMeleeAtt;
@@ -26,6 +29,7 @@ public class ActivatePrayer : MonoBehaviour
     public bool overhead;
 
     public float drainRate;
+    public int levelReq;
 
     [HideInInspector] public bool selectQuickPrayer;
     [HideInInspector] public int isQuickPrayer;
@@ -33,9 +37,13 @@ public class ActivatePrayer : MonoBehaviour
 
     public float[] bonuses = new float[6];
 
+    bool locked;
+
     private void Start()
     {
         image = GetComponent<RawImage>();
+        backgroundImage = Instantiate(background, backgroundsParent).GetComponent<RawImage>();
+        backgroundImage.transform.position = transform.position;
         prayerAction = GetComponent<Action>();
         prayerScript = FindObjectOfType<Prayer>();
         prayerAction.menuTexts[0] = "Activate <color=orange>" + gameObject.name + "</color>";
@@ -47,15 +55,17 @@ public class ActivatePrayer : MonoBehaviour
         prayerAction.orderLevels[0] = -1;
         prayerAction.orderLevels[1] = -1;
 
-        if (image.color.a == 1)
+        if (backgroundImage.color.a == 1)
         {
             prayerAction.menuTexts[0] = "Deactivate <color=orange>" + gameObject.name + "</color>";
             active = true;
         }
 
         newCheck = Instantiate(check, transform);
-        newCheck.transform.SetParent(prayerIcons);
+        newCheck.transform.SetParent(iconsParent);
         newCheck.enabled = false;
+
+        SetPrayerUnlocked();
 
         isQuickPrayer = PlayerPrefs.GetInt(gameObject.name, 0);
         if (isQuickPrayer == 1)
@@ -66,14 +76,44 @@ public class ActivatePrayer : MonoBehaviour
         selectQuickPrayer = false;
     }
 
-
+    public void SetPrayerUnlocked()
+    {
+        if (PlayerStats.initialPrayer < levelReq)
+        {
+            if (active)
+            {
+                ForceDeactivate(false);
+            }
+            locked = true;
+            isQuickPrayer = 0;
+            QPeffectiveActive = false;
+            PlayerPrefs.SetInt(gameObject.name, 0);
+            Color color = new Color(0.2f, 0.2f, 0.2f, 1);
+            image.color = color;
+        }
+        else
+        {
+            locked = false;
+            image.color = Color.white;
+        }
+    }
 
     public void ClientClickPrayer()
     {
+        if (locked)
+        {
+            return;
+        }
         ChangeColors();
     }
     public void ServerClickPrayer()
     {
+        if (locked)
+        {
+            GameLog.Log("Your prayer level is too low to use this prayer.");
+            return;
+        }
+
         active = !active;
         ChangeColors(active);
         if (active)
@@ -99,10 +139,19 @@ public class ActivatePrayer : MonoBehaviour
 
     void ClientSelectQuickPrayer()
     {
+        if (locked)
+        {
+            return;
+        }
         CheckOnOff();
     }
     void ServerSelectQuickPrayer()
     {
+        if (locked)
+        {
+            GameLog.Log("Your prayer level is too low to use this prayer.");
+            return;
+        }
         QPeffectiveActive = !QPeffectiveActive;
         CheckOnOff(QPeffectiveActive);
         if (QPeffectiveActive)
@@ -129,6 +178,11 @@ public class ActivatePrayer : MonoBehaviour
 
     public void QPActivate()
     {
+        if (locked)
+        {
+            return;
+        }
+
         QPeffectiveActive = !QPeffectiveActive;
         CheckOnOff(QPeffectiveActive);
         if (QPeffectiveActive)
@@ -139,13 +193,18 @@ public class ActivatePrayer : MonoBehaviour
 
     public void ChangeColors(bool on)
     {
-        Color color = image.color;
+        if (locked)
+        {
+            return;
+        }
+
+        Color color = backgroundImage.color;
         if (selectQuickPrayer)
         {
             prayerAction.menuTexts[1] = "Toggle <color=orange>" + gameObject.name + "</color>";
             prayerAction.menuTexts[0] = "";
             color.a = 0;
-            image.color = color;
+            backgroundImage.color = color;
             return;
         }
 
@@ -159,12 +218,17 @@ public class ActivatePrayer : MonoBehaviour
             prayerAction.menuTexts[0] = "Deactivate <color=orange>" + gameObject.name + "</color>";
             color.a = 1;
         }
-        image.color = color;
+        backgroundImage.color = color;
     }
 
     void ChangeColors()
     {
-        Color color = image.color;
+        if (locked)
+        {
+            return;
+        }
+
+        Color color = backgroundImage.color;
         if (color.a == 1)
         {
             prayerAction.menuTexts[0] = "Activate <color=orange>" + gameObject.name + "</color>";
@@ -175,12 +239,12 @@ public class ActivatePrayer : MonoBehaviour
             prayerAction.menuTexts[0] = "Deactivate <color=orange>" + gameObject.name + "</color>";
             color.a = 1;
         }
-        image.color = color;
+        backgroundImage.color = color;
     }
 
     public void CheckOnOff(bool on)
     {
-        if (on)
+        if (on && locked == false)
         {
             newCheck.texture = checkOn;
         }
@@ -196,14 +260,12 @@ public class ActivatePrayer : MonoBehaviour
     {
         if (newCheck.texture == checkOff)
         {
-            newCheck.texture = checkOn;
+            CheckOnOff(true);
         }
         else
         {
-            newCheck.texture = checkOff;
+            CheckOnOff(false);
         }
-        prayerAction.menuTexts[1] = "Toggle <color=orange>" + gameObject.name + "</color>";
-        prayerAction.menuTexts[0] = "";
     }
 
     void AvoidConflictingPrayers(bool QP)

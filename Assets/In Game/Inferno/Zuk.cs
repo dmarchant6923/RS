@@ -14,8 +14,6 @@ public class Zuk : MonoBehaviour
     public Transform jadSpawnTile;
     public Transform[] healerSpawnTiles = new Transform[4];
 
-    public GameObject tileMarkerParent;
-
     int threshold1 = 600;
     bool thresh1Passed;
     int threshold2 = 480; //480;
@@ -32,7 +30,6 @@ public class Zuk : MonoBehaviour
     float floatTimer;
     bool timerPaused = false;
 
-    public static bool showZukTileMarkers = true;
     public static bool showSetTimer = true;
 
     IEnumerator Start()
@@ -59,11 +56,6 @@ public class Zuk : MonoBehaviour
         if (showSetTimer)
         {
             CustomHUD.instance.Activate("Set Timer", Tools.SecondsToMinutes(floatTimer, true));
-        }
-
-        if (showZukTileMarkers == false)
-        {
-            tileMarkerParent.SetActive(false);
         }
 
         combatScript.attackCooldown = 13;

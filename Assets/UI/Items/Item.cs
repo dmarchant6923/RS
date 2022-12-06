@@ -305,6 +305,9 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void OnDestroy()
     {
-        inventory.SortInventory();
+        if (inventory != null)
+        {
+            inventory.SortInventory();
+        }
     }
 }

@@ -112,9 +112,9 @@ public class LoadPlayerAttributes : MonoBehaviour
             Inventory.instance.PlaceInInventory(item);
         }
 
-        _equipment = new string[11];
-        _equipBlowpipeAmmo = null;
-        _items = new string[28];
-        _inventoryBlowpipeAmmo = null;
+        //_equipment = new string[11];
+        //_equipBlowpipeAmmo = null;
+        //_items = new string[28];
+        //_inventoryBlowpipeAmmo = null;
     }
 }

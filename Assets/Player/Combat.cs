@@ -82,19 +82,19 @@ public class Combat : MonoBehaviour
             {
                 if (WornEquipment.ammo == null)
                 {
-                    Debug.Log("There is no ammo left in your quiver.");
+                    GameLog.Log("There is no ammo left in your quiver.");
                     playerScript.RemoveFocus();
                     return;
                 }
                 if (WornEquipment.weapon.weaponCategory == WornEquipment.bowCategory && WornEquipment.ammo.ammoCategory.ToLower().Contains("arrow") == false)
                 {
-                    Debug.Log("You can't use that ammo with your bow.");
+                    GameLog.Log("You can't use that ammo with your bow.");
                     playerScript.RemoveFocus();
                     return;
                 }
                 if (WornEquipment.weapon.weaponCategory == WornEquipment.crossbowCategory && WornEquipment.ammo.ammoCategory.ToLower().Contains("bolt") == false)
                 {
-                    Debug.Log("You can't use that ammo with your crossbow.");
+                    GameLog.Log("You can't use that ammo with your crossbow.");
                     playerScript.RemoveFocus();
                     return;
                 }
@@ -103,7 +103,7 @@ public class Combat : MonoBehaviour
             {
                 if (WornEquipment.weapon.GetComponent<BlowPipe>() != null && WornEquipment.weapon.GetComponent<BlowPipe>().numberLoaded <= 0)
                 {
-                    Debug.Log("Your weapon has no ammo.");
+                    GameLog.Log("Your weapon has no ammo.");
                     return;
                 }
             }
@@ -113,7 +113,7 @@ public class Combat : MonoBehaviour
         {
             if (WornEquipment.weapon.GetComponent<ChargeItem>().charges <= 0)
             {
-                Debug.Log("The " + WornEquipment.weapon.name + " has no charges left.");
+                GameLog.Log("The " + WornEquipment.weapon.name + " has no charges left.");
                 playerScript.RemoveFocus();
                 return;
             }
@@ -1050,7 +1050,7 @@ public class Combat : MonoBehaviour
             }
 
             int dist = TileManager.TileDistance(playerScript.trueTile, enemyScript.npcScript.trueTile);
-            int delay = 1;
+            int delay = 0;
             string type = "";
             if (range && enemyScript.slowProjectile == false)
             {
@@ -1070,7 +1070,7 @@ public class Combat : MonoBehaviour
                 SpawnProjectile(playerScript.gameObject, enemyScript.gameObject, delay, enemyScript.projectileColor, type);
             }
 
-            playerScript.AddToDamageQueue(hitRoll, delay, enemyScript);
+            playerScript.AddToDamageQueue(hitRoll, delay, enemyScript, enemyScript.overkill);
             enemyScript.attackThisTick = true;
 
             float hitChance;

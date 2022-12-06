@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
         public int ticks;
         public Enemy enemyAttacking;
         public bool overkill;
+        public bool canTickEat = true;
     }
     GameObject newHitSplat;
     List<IncomingDamage> damageQueue = new List<IncomingDamage>();
@@ -56,7 +57,7 @@ public class Player : MonoBehaviour
 
     public bool debugEnabled = false;
 
-    bool dead = false;
+    [HideInInspector] public bool dead = false;
     public delegate void PlayerEvents();
     public event PlayerEvents playerDeath;
 
@@ -169,27 +170,6 @@ public class Player : MonoBehaviour
             runEnergy = Mathf.Min(10000, runEnergy + (99 / 6) + 8);
         }
 
-        foreach (IncomingDamage damage in damageQueue)
-        {
-            damage.ticks--;
-            if (damage.ticks == 1 && damage.overkill == false)
-            {
-                damage.damage = Mathf.Min(PlayerStats.currentHitpoints, damage.damage);
-            }
-            if (damage.ticks <= 0)
-            {
-                TakeDamage(damage);
-            }
-        }
-        for (int i = 0; i < damageQueue.Count; i++)
-        {
-            if (damageQueue[i].ticks <= 0)
-            {
-                damageQueue.Remove(damageQueue[i]);
-                i--;
-            }
-        }
-
         if (targetedNPC != null && attackTargetedNPC)
         {
             AttackEnemy(targetedNPC.GetComponent<Enemy>());
@@ -222,6 +202,32 @@ public class Player : MonoBehaviour
             RunToggle.instance.Stamina(false);
             stamina = false;
         }
+
+        foreach (IncomingDamage damage in damageQueue)
+        {
+            if (damage.ticks == 1 && damage.overkill == false && damage.canTickEat)
+            {
+                damage.damage = Mathf.Min(PlayerStats.currentHitpoints, damage.damage);
+            }
+            if (damage.ticks <= 0)
+            {
+                TakeDamage(damage);
+            }
+        }
+
+        for (int i = 0; i < damageQueue.Count; i++)
+        {
+            if (damageQueue[i].ticks <= 0)
+            {
+                damageQueue.Remove(damageQueue[i]);
+                i--;
+            }
+        }
+
+        foreach (IncomingDamage damage in damageQueue)
+        {
+            damage.ticks--;
+        }
     }
 
     public void AddToDamageQueue(int damage, int tickDelay, Enemy enemyAttacking, bool overkill)
@@ -229,6 +235,15 @@ public class Player : MonoBehaviour
         IncomingDamage newDamage = new IncomingDamage();
         newDamage.damage = damage;
         newDamage.ticks = tickDelay;
+        if (tickDelay == 0)
+        {
+            newDamage.ticks = 1;
+            newDamage.canTickEat = false;
+        }
+        else
+        {
+            newDamage.canTickEat = true;
+        }
         newDamage.enemyAttacking = enemyAttacking;
         newDamage.overkill = overkill;
         damageQueue.Add(newDamage);
@@ -239,10 +254,10 @@ public class Player : MonoBehaviour
     }
     public void TakeDamage(IncomingDamage damage)
     {
-        //if (damage.damage > PlayerStats.currentHitpoints)
-        //{
-        //    damage.damage = PlayerStats.currentHitpoints;
-        //}
+        if (damage.canTickEat == false)
+        {
+            damage.damage = Mathf.Min(PlayerStats.currentHitpoints, damage.damage);
+        }
 
         tookDamage?.Invoke(damage.damage);
 
@@ -324,7 +339,7 @@ public class Player : MonoBehaviour
         {
             if (combatScript.AdjacentTileAvailable(targetNPCPreviousTile, enemy.npcScript.tileSize) == false && range == 1)
             {
-                Debug.Log("I can't reach that!");
+                GameLog.Log("I can't reach that!");
                 targetedNPC = null;
                 attackTargetedNPC = false;
             }
@@ -375,5 +390,13 @@ public class Player : MonoBehaviour
     {
         targetedNPC = null;
         attackTargetedNPC = false;
+    }
+
+    public void StandardDeath()
+    {
+        ClearDamageQueue();
+        trueTileScript.StopMovement();
+        RemoveFocus();
+        Action.ignoreAllActions = true;
     }
 }

@@ -197,6 +197,10 @@ public class Enemy : MonoBehaviour
 
     public void PlayerAttack()
     {
+        if (death)
+        {
+            return;
+        }
         playerAttackingEnemy = true;
         playerScript.AttackEnemy(this);
     }
@@ -316,13 +320,16 @@ public class Enemy : MonoBehaviour
             Death();
         }
     }
+    public void ClearDamageQueue()
+    {
+        damageQueue = new List<IncomingDamage>();
+    }
 
     void Death()
     {
         enemyDied?.Invoke();
         death = true;
         hitpoints = 0;
-        npcAction.serverAction0 -= PlayerAttack;
         isAttackingPlayer = false;
         npcScript.isTargetingPlayer = false;
         npcScript.StopMovement();

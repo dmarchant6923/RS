@@ -16,6 +16,9 @@ public class InfernoManager : MonoBehaviour
 
     public Image fadeBox;
 
+    public static bool showZukTileMarkers;
+    public GameObject tileMarkerParent;
+
     void Start()
     {
         Player.player.playerDeath += PlayerDeath;
@@ -23,6 +26,11 @@ public class InfernoManager : MonoBehaviour
         zukScript.enemyDied += ZukDeath;
 
         TickManager.afterTick += AfterTick;
+
+        if (showZukTileMarkers == false)
+        {
+            tileMarkerParent.SetActive(false);
+        }
     }
 
     void PlayerDeath()
@@ -31,8 +39,8 @@ public class InfernoManager : MonoBehaviour
         {
             return;
         }
-        Action.ignoreAllActions = true;
-        Player.player.ClearDamageQueue();
+        Player.player.StandardDeath();
+        zukScript.ClearDamageQueue();
         if (OptionManager.ignoreHiscores == false)
         {
             HiscoresPanel.UpdateDeaths();
@@ -42,15 +50,13 @@ public class InfernoManager : MonoBehaviour
 
     void DamageCounter(int damage)
     {
-        Debug.Log(damage);
         damageTaken += damage;
     }
 
     void ZukDeath()
     {
-        if (OptionManager.ignoreHiscores == false)
+        if (OptionManager.ignoreHiscores == false && Player.player.dead == false)
         {
-            Debug.Log(damageTaken);
             HiscoresPanel.UpdateSuccessStats(PlayerStats.totalLevel, damageTaken, encounterTicks);
         }
         StartCoroutine(ReturnToLobby(5));
@@ -77,6 +83,7 @@ public class InfernoManager : MonoBehaviour
             yield return null;
         }
 
+        OptionManager.keepRunOn = Player.player.runEnabled;
         SceneManager.LoadScene("Lobby");
     }
 }

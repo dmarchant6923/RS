@@ -13,9 +13,15 @@ public class BuffBar : MonoBehaviour
     public BuffIcon hitpoints;
     public BuffIcon prayer;
 
+    class ExtraTimer
+    {
+        public string name;
+        public float timer = 0;
+        public bool warningGiven;
+    }
+
+    ExtraTimer[] extraTimers;
     public GameObject[] extras;
-    public float[] timers;
-    public string[] names;
 
     public GameObject buffTimer;
     public Text buffTimerText;
@@ -25,8 +31,13 @@ public class BuffBar : MonoBehaviour
     private void Start()
     {
         instance = this;
-        timers = new float[extras.Length];
-        names = new string[extras.Length];
+
+        extraTimers = new ExtraTimer[extras.Length];
+        for (int i = 0; i < extraTimers.Length; i++)
+        {
+            extraTimers[i] = new ExtraTimer();
+        }
+
         PlayerStats.newStats += UpdateBaseStats;
         TickManager.afterTick += UpdatePrayHitpoints;
     }
@@ -35,18 +46,18 @@ public class BuffBar : MonoBehaviour
     {
         for (int i = 0; i < extras.Length; i++)
         {
-            if (timers[i] > 0)
+            if (extraTimers[i].timer > 0)
             {
-                if (Mathf.Floor(timers[i]) > Mathf.Floor(timers[i] - Time.deltaTime))
+                if (Mathf.Floor(extraTimers[i].timer) > Mathf.Floor(extraTimers[i].timer - Time.deltaTime))
                 {
-                    UpdateExtraTimer(i, timers[i] - Time.deltaTime);
+                    UpdateExtraTimer(i, extraTimers[i].timer - Time.deltaTime);
                 }
-                timers[i] -= Time.deltaTime;
+                extraTimers[i].timer -= Time.deltaTime;
             }
             else if (extras[i].activeSelf)
             {
-                timers[i] = 0;
-                names[i] = "";
+                GameLog.Log("<color=red>Your " + extraTimers[i].name + " has run out.</color>");
+                extraTimers[i] = new ExtraTimer();
                 extras[i].SetActive(false);
             }
         }
@@ -104,28 +115,28 @@ public class BuffBar : MonoBehaviour
 
     public void CreateExtraTimer(Texture texture, float time, string name)
     {
-        for (int i = 0; i < extras.Length; i++)
+        for (int i = 0; i < extraTimers.Length; i++)
         {
-            if (extras[i].activeSelf && names[i] == name)
+            if (extras[i].activeSelf && extraTimers[i].name == name)
             {
-                if (timers[i] < time)
+                if (extraTimers[i].timer < time)
                 {
-                    timers[i] = time;
+                    extraTimers[i].timer = time;
                     extras[i].GetComponentInChildren<Text>().text = Tools.SecondsToMinutes(time);
                     return;
                 }
             }
         }
 
-        for (int i = 0; i < extras.Length; i++)
+        for (int i = 0; i < extraTimers.Length; i++)
         {
             if (extras[i].activeSelf == false)
             {
                 extras[i].SetActive(true);
                 extras[i].transform.GetChild(0).GetComponent<RawImage>().texture = texture;
                 extras[i].GetComponentInChildren<Text>().text = Tools.SecondsToMinutes(time);
-                timers[i] = time;
-                names[i] = name;
+                extraTimers[i].timer = time;
+                extraTimers[i].name = name;
                 return;
             }
         }
@@ -134,5 +145,10 @@ public class BuffBar : MonoBehaviour
     public void UpdateExtraTimer(int i, float time)
     {
         extras[i].GetComponentInChildren<Text>().text = Tools.SecondsToMinutes(time);
+        if (extraTimers[i].timer < 11 && extraTimers[i].warningGiven == false)
+        {
+            extraTimers[i].warningGiven = true;
+            GameLog.Log("<color=red>Your " + extraTimers[i].name + " is about to run out!</color>");
+        }
     }
 }

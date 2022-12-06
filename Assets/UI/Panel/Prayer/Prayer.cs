@@ -52,9 +52,9 @@ public class Prayer : MonoBehaviour
     {
         drainRate = 0;
 
-        for (int i = 0; i < prayerParent.GetComponentsInChildren<RawImage>().Length; i++)
+        for (int i = 0; i < prayerParent.GetComponentsInChildren<ActivatePrayer>().Length; i++)
         {
-            prayerObjects[i] = prayerParent.GetComponentsInChildren<RawImage>()[i].gameObject;
+            prayerObjects[i] = prayerParent.GetComponentsInChildren<ActivatePrayer>()[i].gameObject;
             prayers[i] = prayerObjects[i].GetComponent<ActivatePrayer>();
         }
 
@@ -85,6 +85,7 @@ public class Prayer : MonoBehaviour
 
         TickManager.beforeTick += Activate;
         TickManager.afterTick += UpdateText;
+        PlayerStats.newStats += UpdatePrayerReqs;
 
         quickPrayerBackground.SetActive(false);
         doneButton.SetActive(false);
@@ -307,6 +308,14 @@ public class Prayer : MonoBehaviour
             {
                 Destroy(UIManager.newOverhead);
             }
+        }
+    }
+
+    void UpdatePrayerReqs()
+    {
+        foreach (ActivatePrayer prayer in prayers)
+        {
+            prayer.SetPrayerUnlocked();
         }
     }
 }

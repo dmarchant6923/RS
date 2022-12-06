@@ -67,7 +67,7 @@ public class Potion : MonoBehaviour
         {
             word = " dose of ";
         }
-        potionAction.examineText = currentDose + word + initialName.ToLower() + " potion.";
+        potionAction.examineText = currentDose + word + initialName.ToLower() + ".";
         if (currentDose == 4)
         {
             itemScript.itemTexture = dose4;

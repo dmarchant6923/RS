@@ -47,11 +47,16 @@ public class ZukHealer : MonoBehaviour
 
     void SwitchAggro()
     {
+        enemyScript.tookDamage -= SwitchAggro;
         healInterrupted = true;
         combatScript.attackCooldown = 3;
         npcScript.targetAngle = Tools.VectorToAngle(Vector2.down);
         enemyScript.inCombat = true;
         enemyScript.AttackPlayer();
+        if (Player.targetedNPC == enemyScript.npcScript)
+        {
+            Player.player.RemoveFocus();
+        }
         enemyScript.npcAction.serverAction0 -= enemyScript.PlayerAttack;
         enemyScript.npcAction.serverAction0 += DummyMethod;
     }
@@ -106,7 +111,7 @@ public class ZukHealer : MonoBehaviour
         }
         else
         {
-            if (combatScript.attackCooldown <= 2 && addedAttackActionBack == false)
+            if (combatScript.attackCooldown < 2 && addedAttackActionBack == false)
             {
                 enemyScript.npcAction.serverAction0 += enemyScript.PlayerAttack;
                 enemyScript.npcAction.serverAction0 -= DummyMethod;

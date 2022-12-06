@@ -120,7 +120,7 @@ public class Spell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if (target.GetComponent<Enemy>() == null)
         {
-            Debug.Log("You can't attack this.");
+            GameLog.Log("You can't attack this.");
             return;
         }
         Player.player.attackUsingSpell = true;
@@ -238,7 +238,7 @@ public class Spell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
             if (string.IsNullOrEmpty(missingRune) == false)
             {
-                Debug.Log("You do not have enough " + missingRune + "s to cast this spell.");
+                GameLog.Log("You do not have enough " + missingRune + "s to cast this spell.");
             }
         }
     }

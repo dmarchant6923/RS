@@ -1342,6 +1342,18 @@ PrefabInstance:
       propertyPath: quantities.Array.data[10]
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: items.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: items.Array.data[0]
+      value: 
+      objectReference: {fileID: 4998910436100586714, guid: 8762c0ca9b4ccee4698bdb0f98bb19a1, type: 3}
+    - target: {fileID: 5748298791734505306, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: items.Array.data[1]
+      value: 
+      objectReference: {fileID: 4998910436100586714, guid: 8762c0ca9b4ccee4698bdb0f98bb19a1, type: 3}
     - target: {fileID: 6012686397870672621, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1506,6 +1518,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseTile: {fileID: 7780688113115077117, guid: d6b6d60afa7ed6440a063a2bb66d4b67, type: 3}
+  newMouseTile: {fileID: 0}
 --- !u!114 &563199569
 MonoBehaviour:
   m_ObjectHideFlags: 0

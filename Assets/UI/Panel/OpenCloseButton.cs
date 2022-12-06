@@ -8,17 +8,18 @@ public class OpenCloseButton : MonoBehaviour, IPointerEnterHandler, IPointerExit
 {
     public Texture buttonOff;
     public Texture buttonOn;
-    public RawImage image;
+    [HideInInspector] public RawImage image;
 
     public string actionText;
 
-    Action buttonAction;
+    [HideInInspector] public Action buttonAction;
 
     public delegate void closeButton();
     public event closeButton buttonClicked;
 
     private void Start()
     {
+        image = GetComponent<RawImage>();
         buttonAction = GetComponent<Action>();
         buttonAction.menuTexts[0] = actionText;
         buttonAction.clientAction0 += ClickButton;

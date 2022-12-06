@@ -114,7 +114,6 @@ public class InfernoPortal : MonoBehaviour
         {
             if (Prayer.prayers[i].active)
             {
-                //Debug.Log(Prayer.prayers[i].name);
                 OptionManager.prayerToKeepActive.Add(i);
             }
         }

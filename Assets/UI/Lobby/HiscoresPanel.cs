@@ -106,12 +106,10 @@ public class HiscoresPanel : MonoBehaviour
         {
             scores.lowestLevel = level;
         }
-        Debug.Log(scores.leastDamage + " " + damage);
         if (damage < scores.leastDamage || scores.leastDamage == -1)
         {
             scores.leastDamage = damage;
         }
-        Debug.Log(scores.leastDamage);
         if (ticks < scores.fastestTicks || scores.fastestTicks == 0)
         {
             scores.fastestTicks = ticks;
