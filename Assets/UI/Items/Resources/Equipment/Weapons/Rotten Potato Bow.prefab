@@ -37,7 +37,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5194834354910527777, guid: 3b947440a119e9040b006cd247117587, type: 3}
       propertyPath: rangedStrength
-      value: 400
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: -5194834354910527777, guid: 3b947440a119e9040b006cd247117587, type: 3}
       propertyPath: weaponCategory

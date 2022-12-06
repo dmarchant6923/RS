@@ -60,6 +60,9 @@ public class Player : MonoBehaviour
     public delegate void PlayerEvents();
     public event PlayerEvents playerDeath;
 
+    public delegate void PlayerHealth(int damage);
+    public event PlayerHealth tookDamage;
+
     void Start()
     {
         Action.ignoreAllActions = false;
@@ -240,6 +243,8 @@ public class Player : MonoBehaviour
         //{
         //    damage.damage = PlayerStats.currentHitpoints;
         //}
+
+        tookDamage?.Invoke(damage.damage);
 
         PlayerStats.currentHitpoints -= damage.damage;
         if (newHitSplat == null)

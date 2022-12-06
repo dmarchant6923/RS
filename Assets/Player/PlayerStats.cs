@@ -11,7 +11,6 @@ public class PlayerStats : MonoBehaviour
     public int magic = 1;
     public int hitpoints = 10;
     public int prayer = 1;
-    public int agility = 1;
 
     public static int initialAttack;
     public static int initialStrength;
@@ -20,6 +19,8 @@ public class PlayerStats : MonoBehaviour
     public static int initialMagic;
     public static int initialHitpoints;
     public static int initialPrayer;
+
+    public static int totalLevel;
 
     public static int currentAttack;
     public static int currentStrength;
@@ -116,6 +117,20 @@ public class PlayerStats : MonoBehaviour
         yield return null;
 
         BuffBar.instance.UpdateBaseStats();
+
+        SetTotalLevel();
+    }
+
+    public static void SetTotalLevel()
+    {
+        totalLevel = 0;
+        totalLevel += initialAttack;
+        totalLevel += initialStrength;
+        totalLevel += initialDefence;
+        totalLevel += initialRanged;
+        totalLevel += initialMagic;
+        totalLevel += initialHitpoints;
+        totalLevel += initialPrayer;
     }
 
     void BoostTimer()

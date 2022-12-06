@@ -14,6 +14,10 @@ public class SelectSkillsPanel : MonoBehaviour
     public ButtonScript resetButton;
     public ButtonScript applyButton;
 
+    public Text totalLevelText;
+
+    int totalLevel;
+
     private void Start()
     {
         InitializeStats();
@@ -34,10 +38,10 @@ public class SelectSkillsPanel : MonoBehaviour
                 skillLevels[i] = increase ? skillLevels[i] + 1 : skillLevels[i] - 1;
                 skillLevels[i] = Mathf.Clamp(skillLevels[i], 1, 99);
                 skillTexts[i].text = skillLevels[i].ToString();
-
-                return;
             }
         }
+
+        SetTotalLevel();
     }
 
     public void SetSkill(RawImage skillImage, int number)
@@ -49,10 +53,10 @@ public class SelectSkillsPanel : MonoBehaviour
                 skillLevels[i] = number;
                 skillLevels[i] = Mathf.Clamp(skillLevels[i], 1, 99);
                 skillTexts[i].text = skillLevels[i].ToString();
-
-                return;
             }
         }
+
+        SetTotalLevel();
     }
 
     public void ResetSkills()
@@ -62,6 +66,23 @@ public class SelectSkillsPanel : MonoBehaviour
             skillLevels[i] = 99;
             skillTexts[i].text = skillLevels[i].ToString();
         }
+
+        SetTotalLevel();
+    }
+
+    void SetTotalLevel()
+    {
+        totalLevel = 0;
+        for (int i = 0; i < 7; i++)
+        {
+            totalLevel += skillLevels[i];
+        }
+        totalLevelText.text = "Total level: " + totalLevel;
+    }
+    public void SetRealTotalLevel()
+    {
+        PlayerStats.SetTotalLevel();
+        totalLevelText.text = "Total level: " + PlayerStats.totalLevel;
     }
 
 
@@ -105,6 +126,13 @@ public class SelectSkillsPanel : MonoBehaviour
             skillTexts[i] = skillImages[i].GetComponentInChildren<Text>();
             skillTexts[i].text = skillLevels[i].ToString();
         }
+
+        SetRealTotalLevel();
+    }
+
+    private void OnEnable()
+    {
+        SetTotalLevel();
     }
 
     private void OnDisable()

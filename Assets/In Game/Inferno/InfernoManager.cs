@@ -12,12 +12,14 @@ public class InfernoManager : MonoBehaviour
     int fadeTicks = 0;
 
     int encounterTicks = 0;
+    int damageTaken;
 
     public Image fadeBox;
 
     void Start()
     {
         Player.player.playerDeath += PlayerDeath;
+        Player.player.tookDamage += DamageCounter;
         zukScript.enemyDied += ZukDeath;
 
         TickManager.afterTick += AfterTick;
@@ -38,12 +40,18 @@ public class InfernoManager : MonoBehaviour
         StartCoroutine(ReturnToLobby(2));
     }
 
+    void DamageCounter(int damage)
+    {
+        Debug.Log(damage);
+        damageTaken += damage;
+    }
+
     void ZukDeath()
     {
         if (OptionManager.ignoreHiscores == false)
         {
-            HiscoresPanel.UpdateCompletions();
-            HiscoresPanel.UpdateFastestTime(encounterTicks);
+            Debug.Log(damageTaken);
+            HiscoresPanel.UpdateSuccessStats(PlayerStats.totalLevel, damageTaken, encounterTicks);
         }
         StartCoroutine(ReturnToLobby(5));
     }

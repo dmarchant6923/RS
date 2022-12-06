@@ -11,6 +11,9 @@ public class HiscoresPanel : MonoBehaviour
 
     public Text deathValue;
     public Text completionValue;
+    public Text kdValue;
+    public Text lowestLevelValue;
+    public Text leastDamageValue;
     public Text timeValue;
 
     public static string folder = "/SaveData/";
@@ -21,6 +24,8 @@ public class HiscoresPanel : MonoBehaviour
     {
         public int deaths;
         public int completions;
+        public int lowestLevel;
+        public int leastDamage = -1;
         public int fastestTicks;
     }
     public static Hiscores scores = new Hiscores();
@@ -51,7 +56,22 @@ public class HiscoresPanel : MonoBehaviour
 
         deathValue.text = scores.deaths.ToString();
         completionValue.text = scores.completions.ToString();
-        timeValue.text = "---";
+        kdValue.text = "-";
+        if (scores.completions > 0)
+        {
+            kdValue.text = (scores.deaths > 0) ? ((float)scores.completions / (float)scores.deaths).ToString("F3") : scores.completions.ToString();
+        }
+        lowestLevelValue.text = "-";
+        if (scores.lowestLevel > 0)
+        {
+            lowestLevelValue.text = scores.lowestLevel.ToString();
+        }
+        leastDamageValue.text = "-";
+        if (scores.leastDamage > -1)
+        {
+            leastDamageValue.text = scores.leastDamage.ToString();
+        }
+        timeValue.text = "-";
         if (scores.fastestTicks > 0)
         {
             float seconds = (float)scores.fastestTicks * TickManager.maxTickTime;
@@ -78,19 +98,26 @@ public class HiscoresPanel : MonoBehaviour
         SaveScores();
     }
 
-    public static void UpdateCompletions()
+
+    public static void UpdateSuccessStats(int level, int damage, int ticks)
     {
         scores.completions++;
-        SaveScores();
-    }
-
-    public static void UpdateFastestTime(int ticks)
-    {
+        if (level < scores.lowestLevel || scores.lowestLevel == 0)
+        {
+            scores.lowestLevel = level;
+        }
+        Debug.Log(scores.leastDamage + " " + damage);
+        if (damage < scores.leastDamage || scores.leastDamage == -1)
+        {
+            scores.leastDamage = damage;
+        }
+        Debug.Log(scores.leastDamage);
         if (ticks < scores.fastestTicks || scores.fastestTicks == 0)
         {
             scores.fastestTicks = ticks;
-            SaveScores();
         }
+
+        SaveScores();
     }
 
     public static void SaveScores()
