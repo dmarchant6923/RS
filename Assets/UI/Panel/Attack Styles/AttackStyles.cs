@@ -123,7 +123,7 @@ public class AttackStyles : MonoBehaviour
         UpdateWeapon();
     }
 
-    void UpdateWeapon()
+    public void UpdateWeapon()
     {
         bool hasSpec = false;
         if (WornEquipment.weapon != null)

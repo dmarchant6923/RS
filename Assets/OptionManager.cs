@@ -92,7 +92,6 @@ public class OptionManager : MonoBehaviour
         NPC.showTrueTile = settings[4];
 
         showManualSetTimer = settings[5];
-        Debug.Log(settings[5]);
 
         Zuk.showSetTimer = settings[6];
 
@@ -105,7 +104,7 @@ public class OptionManager : MonoBehaviour
         FindObjectOfType<CanvasScaler>().scaleFactor = uiScale / 100;
 
         ignoreHiscores = false;
-        if (settings[5] || settings[6] || settings[7])
+        if (settings[6] || settings[7] || settings[8])
         {
             ignoreHiscores = true;
         }

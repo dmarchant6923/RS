@@ -11,14 +11,13 @@ public class ManualSetTimer : MonoBehaviour
 
     int step;
 
-    float timer = 75;
+    float timer = 210;
     bool timerPaused = false;
 
     private IEnumerator Start()
     {
-        if (OptionManager.showManualSetTimer == false)
+        if (OptionManager.showManualSetTimer == false || FindObjectOfType<Zuk>() == null)
         {
-            Debug.Log("you are here");
             gameObject.SetActive(false);
         }
         step = -1;
@@ -53,7 +52,7 @@ public class ManualSetTimer : MonoBehaviour
 
         if (step == 0)
         {
-            timer = 75;
+            timer = 210;
             timerPaused = true;
             button.buttonAction.menuTexts[0] = "Start timer";
             timerText.text = Tools.SecondsToMinutes(timer, true);

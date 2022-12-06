@@ -20,7 +20,7 @@ public class SpecialEffects : MonoBehaviour
     {
         float mult = 1;
 
-        if (twistedBow)
+        if (twistedBow && AttackStyles.attackStyle == AttackStyles.rangedStyle)
         {
             float magicLvl = Mathf.Max(Player.targetedNPC.GetComponent<Enemy>().magic, Player.targetedNPC.GetComponent<Enemy>().attackMagic);
             magicLvl = Mathf.Clamp(magicLvl, 0, 250);
@@ -35,7 +35,7 @@ public class SpecialEffects : MonoBehaviour
     {
         float mult = 1;
 
-        if (twistedBow)
+        if (twistedBow && AttackStyles.attackStyle == AttackStyles.rangedStyle)
         {
             float magicLvl = Mathf.Max(Player.targetedNPC.GetComponent<Enemy>().magic, Player.targetedNPC.GetComponent<Enemy>().attackMagic);
             magicLvl = Mathf.Clamp(magicLvl, 0, 250);

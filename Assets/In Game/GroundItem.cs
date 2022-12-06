@@ -154,5 +154,6 @@ public class GroundItem : MonoBehaviour
     private void OnDestroy()
     {
         Action.cancel1 -= CancelTake;
+        TickManager.afterTick -= RenderSprite;
     }
 }

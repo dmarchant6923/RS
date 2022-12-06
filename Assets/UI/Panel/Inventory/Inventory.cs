@@ -33,6 +33,7 @@ public class Inventory : MonoBehaviour
 
         items = new Item[28];
         itemRTs = new RectTransform[28];
+        inventorySlots = new GameObject[28];
 
         foreach (Item item in unsortedItems.GetComponentsInChildren<Item>())
         {

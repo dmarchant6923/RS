@@ -44,7 +44,7 @@ public class Tools : MonoBehaviour
         {
             str = Mathf.Floor(number / 1000).ToString() + "M";
         }
-        else if (number >= 10000)
+        else if (number >= 1000)
         {
             str = Mathf.Floor(number / 1000).ToString() + "K";
         }

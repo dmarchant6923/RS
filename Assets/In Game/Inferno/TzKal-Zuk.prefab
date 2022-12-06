@@ -24,6 +24,10 @@ PrefabInstance:
       value: 260
       objectReference: {fileID: 0}
     - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: overkill
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: strength
       value: 600
       objectReference: {fileID: 0}
@@ -269,5 +273,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rangerPrefab: {fileID: 0}
   magerPrefab: {fileID: 0}
+  jadPrefab: {fileID: 0}
   healerPrefab: {fileID: 0}
+  mageSpawnTile: {fileID: 0}
+  rangeSpawnTile: {fileID: 0}
+  jadSpawnTile: {fileID: 0}
+  healerSpawnTiles:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  tileMarkerParent: {fileID: 0}
+  enemyScript: {fileID: 0}
   shieldScript: {fileID: 0}

@@ -48,6 +48,7 @@ public class Enemy : MonoBehaviour
     public bool ignoreAccuracyCheck = false;
 
     public bool typelessAttack = false;
+    public bool overkill = false;
     public int overheadProtectionMult = 1;
     public Color projectileColor;
     public bool slowProjectile = false;

@@ -7,11 +7,9 @@ public class Combat : MonoBehaviour
     public bool onPlayer = false;
 
     Player playerScript;
-    Pathfinder pathFinder;
     [HideInInspector] public Enemy targetEnemy;
     bool specialEffects;
     SpecialEffects effects;
-    [HideInInspector] Spell playerSpell;
 
     [HideInInspector] public int attackCooldown = 0;
     [HideInInspector] public int minCoolDown = -7;
@@ -19,7 +17,7 @@ public class Combat : MonoBehaviour
     public GameObject projectile;
     public float projectileSize = 1;
 
-    public bool debug;
+    public bool debugEnabled;
     LineRenderer line;
     public GameObject LOSIntersection;
     List<GameObject> intersections = new List<GameObject>();
@@ -49,14 +47,13 @@ public class Combat : MonoBehaviour
     private void Start()
     {
         playerScript = FindObjectOfType<Player>();
-        pathFinder = FindObjectOfType<Pathfinder>();
 
         TickManager.beforeTick += BeforeTick;
 
         specialEffects = false;
         effects = null;
 
-        if (debug)
+        if (debugEnabled)
         {
             line = GetComponent<LineRenderer>();
         }
@@ -348,8 +345,11 @@ public class Combat : MonoBehaviour
 
         if (attackCooldown <= 0)
         {
+            HealthHUD.Activate(Player.targetedNPC.GetComponent<Enemy>());
             Prayer.UpdatePrayerBonuses();
             attackCooldown = 5;
+            AttackStyles.attackStyle = AttackStyles.magicStyle;
+            AttackStyles.attackType = AttackStyles.accurateType;
 
             specialEffects = false;
             effects = null;
@@ -476,6 +476,8 @@ public class Combat : MonoBehaviour
 
             CombatInfo.PlayerAttack(AttackStyles.magicStyle, (int)maxAttRoll);
             CombatInfo.PlayerAttackResult(hitChance, (int)maxHit, dps);
+
+            AttackStyles.instance.UpdateWeapon();
         }
         else
         {
@@ -1228,7 +1230,7 @@ public class Combat : MonoBehaviour
             b = -lineStart.x * slope;
         }
 
-        if (debug)
+        if (debugEnabled)
         {
             line.SetPosition(0, Player.player.trueTile + lineStart);
             line.SetPosition(1, Player.player.trueTile + relativeTile + lineStart);
@@ -1306,7 +1308,7 @@ public class Combat : MonoBehaviour
         //go through each vertical intersection, get tile data from left and right tiles. If either are obstacles, return false. Ignore tiles already examined.
         foreach (Vector2 intersection in verticalIntersections)
         {
-            if (debug)
+            if (debugEnabled)
             {
                 GameObject newIntersection = Instantiate(LOSIntersection, intersection, Quaternion.identity);
                 intersections.Add(newIntersection);
@@ -1317,7 +1319,7 @@ public class Combat : MonoBehaviour
                 Vector2 tile = TileManager.FindTile(intersection + Vector2.right * i * 0.5f);
                 if (searchedTiles.Contains(tile) == false)
                 {
-                    if (debug)
+                    if (debugEnabled)
                     {
                         GameObject newTile = Instantiate(checkedTileMarker, tile, Quaternion.identity);
                         checkedTileMarkers.Add(newTile);
@@ -1325,7 +1327,7 @@ public class Combat : MonoBehaviour
 
                     if (TileDataManager.GetTileData(tile).tallObstacle)
                     {
-                        if (debug)
+                        if (debugEnabled)
                         {
                             checkedTileMarkers[checkedTileMarkers.Count - 1].GetComponent<SpriteRenderer>().color = Color.red;
                             intersections[intersections.Count - 1].GetComponent<SpriteRenderer>().color = Color.red;
@@ -1341,7 +1343,7 @@ public class Combat : MonoBehaviour
         //same for horizontal intersections, up and down tiles.
         foreach (Vector2 intersection in horizontalIntersections)
         {
-            if (debug)
+            if (debugEnabled)
             {
                 GameObject newIntersection = Instantiate(LOSIntersection, intersection, Quaternion.identity);
                 intersections.Add(newIntersection);
@@ -1352,7 +1354,7 @@ public class Combat : MonoBehaviour
                 Vector2 tile = TileManager.FindTile(intersection + Vector2.up * i * 0.5f);
                 if (searchedTiles.Contains(tile) == false)
                 {
-                    if (debug)
+                    if (debugEnabled)
                     {
                         GameObject newTile = Instantiate(checkedTileMarker, tile, Quaternion.identity);
                         checkedTileMarkers.Add(newTile);
@@ -1360,7 +1362,7 @@ public class Combat : MonoBehaviour
 
                     if (TileDataManager.GetTileData(tile).tallObstacle)
                     {
-                        if (debug)
+                        if (debugEnabled)
                         {
                             checkedTileMarkers[checkedTileMarkers.Count - 1].GetComponent<SpriteRenderer>().color = Color.red;
                             intersections[intersections.Count - 1].GetComponent<SpriteRenderer>().color = Color.red;
@@ -1375,7 +1377,7 @@ public class Combat : MonoBehaviour
 
         foreach (Vector2 intersection in cornerIntersections)
         {
-            if (debug)
+            if (debugEnabled)
             {
                 GameObject newIntersection = Instantiate(LOSIntersection, intersection, Quaternion.identity);
                 intersections.Add(newIntersection);
@@ -1386,7 +1388,7 @@ public class Combat : MonoBehaviour
                 Vector2 tile = TileManager.FindTile(intersection + Tools.AngleToVector(i));
                 if (searchedTiles.Contains(tile) == false)
                 {
-                    if (debug)
+                    if (debugEnabled)
                     {
                         GameObject newTile = Instantiate(checkedTileMarker, tile, Quaternion.identity);
                         checkedTileMarkers.Add(newTile);
@@ -1394,7 +1396,7 @@ public class Combat : MonoBehaviour
 
                     if (TileDataManager.GetTileData(tile).tallObstacle)
                     {
-                        if (debug)
+                        if (debugEnabled)
                         {
                             checkedTileMarkers[checkedTileMarkers.Count - 1].GetComponent<SpriteRenderer>().color = Color.yellow;
                             intersections[intersections.Count - 1].GetComponent<SpriteRenderer>().color = Color.yellow;
@@ -1406,7 +1408,7 @@ public class Combat : MonoBehaviour
             }
         }
 
-        if (debug)
+        if (debugEnabled)
         {
             line.startColor = Color.green;
             line.endColor = Color.green;

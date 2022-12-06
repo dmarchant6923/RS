@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
         public int damage;
         public int ticks;
         public Enemy enemyAttacking;
+        public bool overkill;
     }
     GameObject newHitSplat;
     List<IncomingDamage> damageQueue = new List<IncomingDamage>();
@@ -168,6 +169,10 @@ public class Player : MonoBehaviour
         foreach (IncomingDamage damage in damageQueue)
         {
             damage.ticks--;
+            if (damage.ticks == 1 && damage.overkill == false)
+            {
+                damage.damage = Mathf.Min(PlayerStats.currentHitpoints, damage.damage);
+            }
             if (damage.ticks <= 0)
             {
                 TakeDamage(damage);
@@ -216,20 +221,25 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void AddToDamageQueue(int damage, int tickDelay, Enemy enemyAttacking)
+    public void AddToDamageQueue(int damage, int tickDelay, Enemy enemyAttacking, bool overkill)
     {
         IncomingDamage newDamage = new IncomingDamage();
         newDamage.damage = damage;
         newDamage.ticks = tickDelay;
         newDamage.enemyAttacking = enemyAttacking;
+        newDamage.overkill = overkill;
         damageQueue.Add(newDamage);
+    }
+    public void AddToDamageQueue(int damage, int tickDelay, Enemy enemyAttacking)
+    {
+        AddToDamageQueue(damage, tickDelay, enemyAttacking, false);
     }
     public void TakeDamage(IncomingDamage damage)
     {
-        if (damage.damage > PlayerStats.currentHitpoints)
-        {
-            damage.damage = PlayerStats.currentHitpoints;
-        }
+        //if (damage.damage > PlayerStats.currentHitpoints)
+        //{
+        //    damage.damage = PlayerStats.currentHitpoints;
+        //}
 
         PlayerStats.currentHitpoints -= damage.damage;
         if (newHitSplat == null)
@@ -335,6 +345,7 @@ public class Player : MonoBehaviour
 
         if (combatScript.CapableOfAttacking(trueTile, targetNPCPreviousTile, targetedNPC, range, false))
         {
+            trueTileScript.StopMovement();
             if (attackUsingSpell && spellBeingUsed != null)
             {
                 Spellbook.CountRunes();
@@ -360,6 +371,4 @@ public class Player : MonoBehaviour
         targetedNPC = null;
         attackTargetedNPC = false;
     }
-
-
 }

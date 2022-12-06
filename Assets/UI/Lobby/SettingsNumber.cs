@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class SettingsNumber : MonoBehaviour
 {
     Action textAction;
-    public string actionString;
     public float max;
     public float min;
 
@@ -21,13 +20,13 @@ public class SettingsNumber : MonoBehaviour
     private void Start()
     {
         textAction = GetComponent<Action>();
-        textAction.menuTexts[0] = "Set " + actionString;
+        textAction.menuTexts[0] = "Set value";
         textAction.serverAction0 += OpenDialogue;
     }
 
     void OpenDialogue()
     {
-        DialogueBox.PlayerInput("Set " + actionString + " (" + min + " - " + max + ")");
+        DialogueBox.PlayerInput("Set value" + " (" + min + " - " + max + ")");
 
         dialogueActive = true;
         highlight.SetActive(true);

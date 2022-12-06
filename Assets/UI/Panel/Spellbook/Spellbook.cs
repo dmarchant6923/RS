@@ -30,6 +30,7 @@ public class Spellbook : MonoBehaviour
 
     void Start()
     {
+        runesInInventory = new List<StackableItem>();
         spells = new List<Spell>();
         if (ancients)
         {
