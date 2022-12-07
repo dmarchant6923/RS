@@ -90,6 +90,7 @@ public class Player : MonoBehaviour
         TickManager.beforeTick += BeforeTick;
         TickManager.onTick += OnTick;
         TickManager.afterTick += AfterTick;
+        Action.cancel1 += RemoveFocus;
 
         TrueTile.afterMovement += PerformAttack;
     }
@@ -388,6 +389,7 @@ public class Player : MonoBehaviour
     }
     public void RemoveFocus()
     {
+        Debug.Log("you are here");
         targetedNPC = null;
         attackTargetedNPC = false;
     }

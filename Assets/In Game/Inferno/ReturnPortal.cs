@@ -10,6 +10,11 @@ public class ReturnPortal : MonoBehaviour
 
     private IEnumerator Start()
     {
+        if (OptionManager.ignorePlayerDeath == false)
+        {
+            Destroy(gameObject);
+        }
+
         objectScript = GetComponent<InteractableObject>();
         objectScript.interaction += Teleport;
 

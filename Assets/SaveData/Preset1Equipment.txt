@@ -1,1 +1,1 @@
-{"filled":true,"equipment":["Crystal helm","Masori assembler","Necklace of anguish","","Bow of faerdhinen","Crystal body","","Crystal legs","Zaryte vambraces","Pegasian boots","Lightbearer"],"blowpipeAmmo":""}
+{"filled":true,"equipment":["Ancestral hat","Imbued zamorak cape","Occult necklace","","Tumeken's shadow","Ancestral robe top","","Ancestral robe bottom","Tormented bracelet","Eternal boots","Seers ring (i)"],"blowpipeAmmo":""}

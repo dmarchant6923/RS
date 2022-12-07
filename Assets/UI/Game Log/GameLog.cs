@@ -33,7 +33,7 @@ public class GameLog : MonoBehaviour
     {
         instance = this;
 
-        verticalSpacing = logText.GetComponent<RectTransform>().rect.height;
+        verticalSpacing = logText.GetComponent<Text>().preferredHeight * 1.2f;
         indent = 10;
         textParentOnPosition = textParent.transform.position;
         rt = GetComponent<RectTransform>();
@@ -48,6 +48,20 @@ public class GameLog : MonoBehaviour
         GameObject newLog = Instantiate(instance.logText);
         newLog.transform.SetParent(instance.textParent);
         newLog.GetComponent<Text>().text = text;
+        Canvas.ForceUpdateCanvases();
+        int lines = newLog.GetComponent<Text>().cachedTextGenerator.lineCount;
+        if (lines > 1)
+        {
+            for (int i = 0; i < lines; i++)
+            {
+                int start = newLog.GetComponent<Text>().cachedTextGenerator.lines[i].startCharIdx;
+                int end = i == lines - 1 ? text.Length : newLog.GetComponent<Text>().cachedTextGenerator.lines[i + 1].startCharIdx;
+                string lineText = text.Substring(start, end - start);
+                Log(lineText);
+            }
+            Destroy(newLog);
+            return;
+        }
         
         for (int i = 0; i < instance.logs.Count; i++)
         {
@@ -57,6 +71,11 @@ public class GameLog : MonoBehaviour
                 instance.logs.RemoveAt(0);
             }
             instance.logs[i].localPosition += Vector3.up * instance.verticalSpacing;
+        }
+
+        for (int i = 1; i < lines; i++)
+        {
+
         }
 
         newLog.GetComponent<RectTransform>().localPosition = new Vector2(instance.indent, 0);

@@ -30,6 +30,8 @@ public class OptionManager : MonoBehaviour
 
     public static bool showManualSetTimer;
 
+    public static bool firstLogin = false;
+
 
     IEnumerator Start()
     {
@@ -68,6 +70,12 @@ public class OptionManager : MonoBehaviour
             }
             prayerToKeepActive = new List<int>();
             keepPrayersOn = false;
+        }
+
+        if (firstLogin == false)
+        {
+            firstLogin = true;
+            GameLog.Log("Welcome to an in-depth Zuk simulator. Have fun!");
         }
     }
 

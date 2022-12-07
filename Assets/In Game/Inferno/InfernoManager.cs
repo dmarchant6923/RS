@@ -45,7 +45,7 @@ public class InfernoManager : MonoBehaviour
         {
             HiscoresPanel.UpdateDeaths();
         }
-        StartCoroutine(ReturnToLobby(2));
+        StartCoroutine(ReturnToLobby(1.5f));
     }
 
     public void ReturnToLobby()
@@ -77,6 +77,8 @@ public class InfernoManager : MonoBehaviour
     }
     IEnumerator ReturnToLobby(float delay)
     {
+        yield return null;
+        Player.player.trueTileScript.StopMovement();
         yield return new WaitForSeconds(delay);
         Action.ignoreAllActions = true;
         fadeTicks = fadeTime;

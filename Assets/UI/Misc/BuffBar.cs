@@ -16,6 +16,8 @@ public class BuffBar : MonoBehaviour
     class ExtraTimer
     {
         public string name;
+        public string warningText;
+        public string endText;
         public float timer = 0;
         public bool warningGiven;
     }
@@ -113,16 +115,16 @@ public class BuffBar : MonoBehaviour
         buffTimer.SetActive(false);
     }
 
-    public void CreateExtraTimer(Texture texture, float time, string name)
+    public void CreateExtraTimer(Texture texture, float timeSeconds, string name, string warningText, string endText)
     {
         for (int i = 0; i < extraTimers.Length; i++)
         {
             if (extras[i].activeSelf && extraTimers[i].name == name)
             {
-                if (extraTimers[i].timer < time)
+                if (extraTimers[i].timer < timeSeconds)
                 {
-                    extraTimers[i].timer = time;
-                    extras[i].GetComponentInChildren<Text>().text = Tools.SecondsToMinutes(time);
+                    extraTimers[i].timer = timeSeconds;
+                    extras[i].GetComponentInChildren<Text>().text = Tools.SecondsToMinutes(timeSeconds);
                     return;
                 }
             }
@@ -134,12 +136,19 @@ public class BuffBar : MonoBehaviour
             {
                 extras[i].SetActive(true);
                 extras[i].transform.GetChild(0).GetComponent<RawImage>().texture = texture;
-                extras[i].GetComponentInChildren<Text>().text = Tools.SecondsToMinutes(time);
-                extraTimers[i].timer = time;
+                extras[i].GetComponentInChildren<Text>().text = Tools.SecondsToMinutes(timeSeconds);
+                extraTimers[i].timer = timeSeconds;
                 extraTimers[i].name = name;
                 return;
             }
         }
+    }
+
+    public void CreatePotionTimer(Texture texture, float timeSeconds, string name)
+    {
+        string warningText = "<color=red>Your " + name + " is about to run out!</color>";
+        string endText = "<color=red>Your " + name + " has run out.</color>";
+        CreateExtraTimer(texture, timeSeconds, name, warningText, endText);
     }
 
     public void UpdateExtraTimer(int i, float time)

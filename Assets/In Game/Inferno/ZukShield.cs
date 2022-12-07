@@ -45,6 +45,10 @@ public class ZukShield : MonoBehaviour
         {
             safeSpotMarker.SetActive(true);
         }
+        else
+        {
+            safeSpotMarker.SetActive(false);
+        }
         relativePosition = safeSpotMarker.transform.position - npcScript.newSizeTileMarker.transform.position;
     }
 

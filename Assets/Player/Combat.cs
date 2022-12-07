@@ -564,6 +564,10 @@ public class Combat : MonoBehaviour
 
             effectiveLevel = Mathf.Floor(Mathf.Floor(PlayerStats.currentMagic * Prayer.magicAttackPrayerBonus) * voidBonus + AttackStyles.magicBonus + 9);
             styleBonus = WornEquipment.attackMagic;
+            if (specialEffects && effects.tumekensShadow && WornEquipment.weapon.weaponCategory == WornEquipment.poweredStaffCategory)
+            {
+                styleBonus = Mathf.Ceil(styleBonus/3);
+            }
         }
 
 
@@ -669,10 +673,17 @@ public class Combat : MonoBehaviour
             {
                 gearBonus += 0.15f;
             }
+
             gearBonus--;
 
+            float magicDamage = (float)WornEquipment.magicDamage / 100;
+            if (specialEffects && effects.tumekensShadow && WornEquipment.weapon.weaponCategory == WornEquipment.poweredStaffCategory)
+            {
+                magicDamage = Mathf.Ceil(magicDamage / 3);
+            }
+
             float baseMaxHit = WornEquipment.weapon.GetComponent<PoweredStaff>().BaseMaxHit(PlayerStats.currentMagic);
-            maxHit = Mathf.Floor(baseMaxHit * (voidBonus + (WornEquipment.magicDamage / 100) + gearBonus));
+            maxHit = Mathf.Floor(baseMaxHit * (voidBonus + (magicDamage) + gearBonus));
         }
 
         if (specialEffects)

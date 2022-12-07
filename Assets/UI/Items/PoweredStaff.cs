@@ -11,7 +11,7 @@ public class PoweredStaff : MonoBehaviour
 
     public float BaseMaxHit(int level)
     {
-        float maxHit = Mathf.Floor(maxHitAtBase + (level - baseLevel) * scalePerLevel);
+        float maxHit = Mathf.Floor((float)maxHitAtBase + ((float)level - (float)baseLevel) * scalePerLevel);
         return maxHit;
     }
 }

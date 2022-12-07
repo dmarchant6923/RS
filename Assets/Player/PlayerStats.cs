@@ -67,6 +67,10 @@ public class PlayerStats : MonoBehaviour
     public delegate void ChangeStats();
     public static event ChangeStats newStats;
 
+    public static int imbuedHeartRechargeTicks = 700;
+    public static bool imbuedHeartCharged = true;
+    public static int imbuedHeartTicks = 0;
+
     private IEnumerator Start()
     {
         instance = this;
@@ -106,7 +110,7 @@ public class PlayerStats : MonoBehaviour
         truePrayer = (float) initialPrayer * 100;
         TickManager.beforeTick += BoostTimer;
         TickManager.onTick += PrayerDrain;
-        TickManager.afterTick += Redemption;
+        TickManager.afterTick += AfterTick;
         prayersOnForATick = false;
 
         float baselvl = 0.25f * ((float) defence + hitpoints + (prayer * 0.5f));
@@ -120,6 +124,8 @@ public class PlayerStats : MonoBehaviour
         BuffBar.instance.UpdateBaseStats();
 
         SetTotalLevel();
+
+        imbuedHeartTicks = 0;
     }
 
     public static void SetTotalLevel()
@@ -266,7 +272,7 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    void Redemption()
+    void AfterTick()
     {
         if (Prayer.redemption && currentHitpoints > 0 && currentHitpoints <= (float)initialHitpoints / 10)
         {
@@ -278,6 +284,15 @@ public class PlayerStats : MonoBehaviour
         if (currentHitpoints <= 0)
         {
             currentHitpoints = 0;
+        }
+
+        if (imbuedHeartTicks > 0)
+        {
+            imbuedHeartTicks--;
+        }
+        else
+        {
+            imbuedHeartCharged = true;
         }
     }
 
@@ -330,6 +345,8 @@ public class PlayerStats : MonoBehaviour
         {
             showTimer = true;
             truePrayer = Mathf.Min(truePrayer + (potion.CalcBoost(initialPrayer, currentPrayer) - currentPrayer) * 100, initialPrayer * 100);
+            currentPrayer = (int)Mathf.Ceil(truePrayer / 100);
+
         }
         if (potion.hitpoints)
         {
@@ -351,6 +368,24 @@ public class PlayerStats : MonoBehaviour
         drinkDelay = 3;
         foodDelay = 3;
 
+        BuffBar.instance.UpdateStats();
+    }
+
+    public static void StartSkillTimer()
+    {
+        if (instance.timerActive == false)
+        {
+            instance.timerActive = true;
+            instance.tickTimer = instance.initialTickTimer;
+            instance.timer = (float)instance.initialTickTimer * TickManager.maxTickTime;
+        }
+    }
+
+    public static void InvigorateImbuedHeart()
+    {
+        StartSkillTimer();
+        imbuedHeartTicks = imbuedHeartRechargeTicks;
+        imbuedHeartCharged = false;
         BuffBar.instance.UpdateStats();
     }
 
@@ -384,7 +419,8 @@ public class PlayerStats : MonoBehaviour
         }
         if (currentPrayer > initialPrayer)
         {
-            currentPrayer -= (int)Mathf.Sign(initialPrayer - currentPrayer);
+            truePrayer -= 100;
+            currentPrayer = (int)Mathf.Ceil(truePrayer / 100);
             keepTimerActive = true;
         }
 
@@ -405,8 +441,10 @@ public class PlayerStats : MonoBehaviour
         divineMagicTimer = buffScript.mage ? divineTicks : divineMagicTimer;
         Texture texture = buffScript.potionScript.CreatePotionTexture(4);
         string name = buffScript.name;
+        string warningText = "<color=red>Your divine potion effect is about to expire.</color>";
+        string endText = "<color=red>The effects of the divine potion have worn off.</color>";
 
-        BuffBar.instance.CreateExtraTimer(texture, (float)divineTicks * TickManager.maxTickTime, name);
+        BuffBar.instance.CreateExtraTimer(texture, (float)divineTicks * TickManager.maxTickTime, name, warningText, endText);
     }
 
     public static void ReinitializeStats()

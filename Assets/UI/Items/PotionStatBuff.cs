@@ -95,7 +95,7 @@ public class PotionStatBuff : MonoBehaviour
             Texture texture = potionScript.dose4;
             string name = gameObject.name;
 
-            BuffBar.instance.CreateExtraTimer(texture, (float)Player.player.staminaTicks * TickManager.maxTickTime, name);
+            BuffBar.instance.CreatePotionTimer(texture, (float)Player.player.staminaTicks * TickManager.maxTickTime, name);
         }
     }
 }

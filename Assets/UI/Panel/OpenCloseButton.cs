@@ -42,6 +42,9 @@ public class OpenCloseButton : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     private void OnDisable()
     {
-        image.texture = buttonOff;
+        if (image != null)
+        {
+            image.texture = buttonOff;
+        }
     }
 }

@@ -345,6 +345,11 @@ public class ChargeItem : MonoBehaviour
                 end = " and no loaded darts.";
             }
         }
-        Debug.Log("Your " + gameObject.name + " has " + charges + " charges" + end);
+        GameLog.Log("Your " + gameObject.name + " has " + charges + " charges" + end);
+    }
+
+    private void OnDestroy()
+    {
+        TickManager.afterTick -= AfterTick;
     }
 }

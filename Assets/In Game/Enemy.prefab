@@ -7,6 +7,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3042574918361363680, guid: 23339714d51375142b814ae821deac9a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3042574918361363680, guid: 23339714d51375142b814ae821deac9a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4371471395131933020, guid: 23339714d51375142b814ae821deac9a, type: 3}
       propertyPath: m_Color.b
       value: 0
@@ -137,6 +145,7 @@ MonoBehaviour:
   ignoreLineOfSight: 0
   ignoreAccuracyCheck: 0
   typelessAttack: 0
+  overkill: 0
   overheadProtectionMult: 1
   projectileColor: {r: 0, g: 0, b: 0, a: 0}
   slowProjectile: 0
@@ -169,7 +178,11 @@ MonoBehaviour:
   minCoolDown: -7
   projectile: {fileID: 6025835048010670392, guid: 5b5b57d91dfa50f43ba55ef8df626e95, type: 3}
   projectileSize: 1
-  debug: 0
+  debugEnabled: 0
   LOSIntersection: {fileID: 0}
   checkedTileMarker: {fileID: 0}
   projectileSpawnsImmediately: 0
+  attackEffect: {fileID: 0}
+  diamondBoltProcChance: 0.1
+  rubyBoltProcChance: 0.11
+  useSpec: 0
