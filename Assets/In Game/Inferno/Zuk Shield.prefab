@@ -186,6 +186,7 @@ MonoBehaviour:
   redClick: 1
   actionUsedOnThis: {fileID: 0}
   actionOnPointerUp: 0
+  useActionSuccessful: 0
 --- !u!61 &6607004498786039253
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -373,9 +374,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21152c3af38606a46ad4a6366aa8915c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyScript: {fileID: 0}
   safeSpotRange:
   - 0
   - 0
   shieldAction: {fileID: 698397580170661479}
-  showSafeSpot: 0
   safeSpotMarker: {fileID: 2489374679388905951}
+  relativePosition: {x: 0, y: 0, z: 0}

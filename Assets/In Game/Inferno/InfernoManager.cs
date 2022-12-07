@@ -48,9 +48,9 @@ public class InfernoManager : MonoBehaviour
         StartCoroutine(ReturnToLobby(2));
     }
 
-    void DamageCounter(int damage)
+    public void ReturnToLobby()
     {
-        damageTaken += damage;
+        StartCoroutine(ReturnToLobby(0));
     }
 
     void ZukDeath()
@@ -60,6 +60,11 @@ public class InfernoManager : MonoBehaviour
             HiscoresPanel.UpdateSuccessStats(PlayerStats.totalLevel, damageTaken, encounterTicks);
         }
         StartCoroutine(ReturnToLobby(5));
+    }
+
+    void DamageCounter(int damage)
+    {
+        damageTaken += damage;
     }
 
     void AfterTick()

@@ -149,7 +149,7 @@ public class Tools : MonoBehaviour
     {
         Vector2 nearestTile = NearestTileToPlayer(swTile, sizeX, sizeY);
 
-        if (TileManager.TileDistance(Player.player.trueTile, nearestTile) == 1)
+        if (TileManager.TileDistance(Player.player.trueTile, nearestTile) <= 1)
         {
             if (allowCorners)
             {

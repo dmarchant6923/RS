@@ -29,8 +29,7 @@ public class PresetsPanel : MonoBehaviour
     [System.NonSerialized] public PresetEquipment[] presetEquipment = new PresetEquipment[3];
     [System.NonSerialized] public PresetInventory[] presetInventory = new PresetInventory[3];
 
-    public bool IgnoreActions = false;
-    bool endIgnoreActions;
+    bool IgnoreActions;
 
     public Text[] presetTexts = new Text[3];
 
@@ -80,7 +79,7 @@ public class PresetsPanel : MonoBehaviour
 
         InitializePresets();
 
-        TickManager.afterTick += AfterTick;
+        TickManager.beforeTick += BeforeTick;
     }
     void InitializePresets()
     {
@@ -131,6 +130,12 @@ public class PresetsPanel : MonoBehaviour
 
     public void SavePreset(int presetNumber)
     {
+        if (IgnoreActions)
+        {
+            return;
+        }
+        IgnoreActions = true;
+
         presetEquipment[presetNumber].filled = false;
 
         presetEquipment[presetNumber].equipment[0] = WornEquipment.head != null ? WornEquipment.head.name : "";
@@ -201,103 +206,26 @@ public class PresetsPanel : MonoBehaviour
         jsonString = JsonUtility.ToJson(presetInventory[presetNumber]);
         File.WriteAllText(fullPath, jsonString);
 
-        endIgnoreActions = true;
+        IgnoreActions = true;
     }
     public void LoadPreset(int num)
     {
+        if (IgnoreActions)
+        {
+            return;
+        }
+        IgnoreActions = true;
+
         StartCoroutine(LoadPlayerAttributes.LoadPresetEnum(presetEquipment[num].equipment, presetEquipment[num].blowpipeAmmo, presetInventory[num].items, presetInventory[num].blowpipeAmmo));
-        endIgnoreActions = true;
-    }
-    public IEnumerator LoadPresetEnum(int presetNumber)
-    {
-        foreach (GameObject slot in Inventory.inventorySlots)
-        {
-            if (slot.GetComponentInChildren<Item>() != null)
-            {
-                Destroy(slot.GetComponentInChildren<Item>().gameObject);
-            }
-        }
-
-        yield return null;
-
-        foreach (Transform slot in WornEquipment.slots)
-        {
-            if (slot.GetComponentInChildren<Equipment>() != null)
-            {
-                Equipment item = slot.GetComponentInChildren<Equipment>();
-                item.Equip();
-                Destroy(item.gameObject);
-            }
-        }
-
-        List<GameObject> equipments = new List<GameObject>();
-        for (int i = 0; i < 11; i++)
-        {
-            if (presetEquipment[presetNumber].equipment[i] != "")
-            {
-                GameObject newEquipment = Tools.LoadFromResource(presetEquipment[presetNumber].equipment[i]);
-                if (newEquipment != null)
-                {
-                    equipments.Add(newEquipment);
-                    if (newEquipment.GetComponent<StackableItem>() != null)
-                    {
-                        newEquipment.GetComponent<StackableItem>().quantity = 2000;
-                    }
-                    if (newEquipment.GetComponent<ChargeItem>() != null)
-                    {
-                        newEquipment.GetComponent<ChargeItem>().charges = 2000;
-                    }
-                    if (newEquipment.GetComponent<BlowPipe>() != null && string.IsNullOrEmpty(presetEquipment[presetNumber].blowpipeAmmo) == false)
-                    {
-                        newEquipment.GetComponent<BlowPipe>().ammoLoaded = Tools.LoadFromResource(presetEquipment[presetNumber].blowpipeAmmo);
-                        newEquipment.GetComponent<BlowPipe>().numberLoaded = 2000;
-                    }
-                }
-            }
-        }
-
-        List<GameObject> items = new List<GameObject>();
-        for (int i = 0; i < 28; i++)
-        {
-            if (presetInventory[presetNumber].items[i] != "")
-            {
-                GameObject newItem = Tools.LoadFromResource(presetInventory[presetNumber].items[i]);
-                if (newItem != null)
-                {
-                    items.Add(newItem);
-                    if (newItem.GetComponent<StackableItem>() != null)
-                    {
-                        newItem.GetComponent<StackableItem>().quantity = 2000;
-                    }
-                    if (newItem.GetComponent<ChargeItem>() != null)
-                    {
-                        newItem.GetComponent<ChargeItem>().charges = 2000;
-                    }
-                    if (newItem.GetComponent<BlowPipe>() != null && string.IsNullOrEmpty(presetInventory[presetNumber].blowpipeAmmo) == false)
-                    {
-                        newItem.GetComponent<BlowPipe>().ammoLoaded = Tools.LoadFromResource(presetInventory[presetNumber].blowpipeAmmo);
-                        newItem.GetComponent<BlowPipe>().numberLoaded = 2000;
-                    }
-                }
-            }
-        }
-
-        yield return new WaitForSeconds(0.1f);
-
-        foreach (GameObject equipment in equipments)
-        {
-            equipment.GetComponent<Equipment>().Equip();
-        }
-        items.Reverse();
-        foreach (GameObject item in items)
-        {
-            Inventory.instance.PlaceInInventory(item);
-        }
-
-        endIgnoreActions = true;
     }
     public void ClearPreset(int presetNumber)
     {
+        if (IgnoreActions)
+        {
+            return;
+        }
+        IgnoreActions = true;
+
         presetEquipment[presetNumber] = new PresetEquipment();
         presetInventory[presetNumber] = new PresetInventory();
         presetTexts[presetNumber].text = "Preset " + (presetNumber + 1) + "\n(empty)";
@@ -313,16 +241,13 @@ public class PresetsPanel : MonoBehaviour
         fullPath = dir + fileName + extension;
         jsonString = JsonUtility.ToJson(presetEquipment[presetNumber]);
         File.WriteAllText(fullPath, jsonString);
-
-        endIgnoreActions = true;
     }
 
-    void AfterTick()
+    void BeforeTick()
     {
-        if (endIgnoreActions)
+        if (IgnoreActions)
         {
             IgnoreActions = false;
-            endIgnoreActions = false;
         }
     }
 
@@ -343,14 +268,6 @@ public class PresetsPanel : MonoBehaviour
     {
         Action.cancel1 -= ClosePanel;
     }
-
-
-
-
-
-
-
-
 
 
     void SavePreset1()

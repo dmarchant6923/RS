@@ -432,7 +432,6 @@ public class Combat : MonoBehaviour
                 if (hitRoll > 0)
                 {
                     XPDrop.CombatXPDrop(AttackStyles.attackStyle, AttackStyles.attackType, hitRoll, offensivePrayerOn);
-                    Debug.Log(AttackStyles.attackStyle + " " + AttackStyles.attackType);
                 }
 
                 if (success)

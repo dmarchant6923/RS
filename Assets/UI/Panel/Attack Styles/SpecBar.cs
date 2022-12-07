@@ -53,7 +53,7 @@ public class SpecBar : MonoBehaviour
     {
         if (activate && enoughSpec == false)
         {
-            Debug.Log("You don't have enough Special Attack left.");
+            GameLog.Log("You don't have enough Special Attack left.");
             activate = false;
         }
 
