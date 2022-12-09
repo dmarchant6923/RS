@@ -5,10 +5,10 @@ using System.IO;
 
 public class SettingsPanel : MonoBehaviour
 {
-    public OpenCloseButton closeButton;
     public SettingsCheckmark[] checkmarks = new SettingsCheckmark[9];
     public SettingsNumber latency;
     public SettingsNumber uiScale;
+    public SettingsHotkeyButton[] hotkeyButtons = new SettingsHotkeyButton[5];
     public GameObject warningText;
     public GameObject parent;
 
@@ -19,31 +19,41 @@ public class SettingsPanel : MonoBehaviour
     public ButtonScript applyButton;
     public ButtonScript resetButton;
 
+    Canvas canvas;
+    public static SettingsPanel instance;
+    public delegate void Settings(Canvas canvas);
+    public event Settings settingsChanged;
+
     public class GameSettings
     {
         public bool[] bools = new bool[9];
 
         public float latency = 200;
         public float uiScale;
+
+        public int[] hotkeys = new int[5];
     }
 
     public GameSettings settings = new GameSettings();
 
+    public static bool panelOpen = false;
+
     //final build should be using persistentDataPath, not dataPath
     private void Awake()
     {
+        instance = this;
+        canvas = FindObjectOfType<Canvas>();
         gameObject.SetActive(true);
         parent.SetActive(false);
         for (int i = 0; i < checkmarks.Length; i++)
         {
             checkmarks[i].checkNumber = i;
         }
+        GetComponent<BasePanelScript>().panelClosed += SetPanelOpenBoolToFalse;
     }
 
     IEnumerator Start()
     {
-        closeButton.buttonClicked += ClosePanel;
-        Action.cancel1 += ClosePanel;
         dir = Application.dataPath + folder;
         applyButton.buttonClicked += ApplySettings;
         resetButton.buttonClicked += ResetToDefault;
@@ -58,6 +68,10 @@ public class SettingsPanel : MonoBehaviour
     public void ResetToDefault()
     {
         InitializeSettings(true);
+        for (int i = 0; i < hotkeyButtons.Length; i++)
+        {
+            hotkeyButtons[i].SetHotkey(settings.hotkeys[i]);
+        }
     }
 
     public void InitializeSettings(bool setToDefault)
@@ -83,6 +97,13 @@ public class SettingsPanel : MonoBehaviour
             settings.bools[8] = false;
             settings.latency = 200;
             settings.uiScale = 100;
+
+            settings.hotkeys[0] = 1;
+            settings.hotkeys[1] = 2;
+            settings.hotkeys[2] = -1;
+            settings.hotkeys[3] = 3;
+            settings.hotkeys[4] = 4;
+
             string jsonString = JsonUtility.ToJson(settings);
             File.WriteAllText(fullPath, jsonString);
         }
@@ -91,10 +112,14 @@ public class SettingsPanel : MonoBehaviour
         {
             checkmarks[i].Check(settings.bools[i]);
         }
+        for (int i = 0; i < settings.hotkeys.Length; i++)
+        {
+            hotkeyButtons[i].currentHotkey = settings.hotkeys[i];
+        }
         latency.SetValue(settings.latency);
         uiScale.SetValue(settings.uiScale);
 
-        OptionManager.UpdateGameSettings(settings.bools, settings.latency, settings.uiScale);
+        OptionManager.UpdateGameSettings(settings.bools, settings.latency, settings.uiScale, settings.hotkeys);
     }
 
     void SaveSettings()
@@ -103,6 +128,10 @@ public class SettingsPanel : MonoBehaviour
         {
             settings.bools[i] = checkmarks[i].check;
         }
+        for (int i = 0; i < settings.hotkeys.Length; i++)
+        {
+            settings.hotkeys[i] = hotkeyButtons[i].currentHotkey;
+        }
         settings.latency = latency.value;
         settings.uiScale = uiScale.value;
 
@@ -110,24 +139,22 @@ public class SettingsPanel : MonoBehaviour
         string fullPath = dir + fileName + extension;
         string jsonString = JsonUtility.ToJson(settings);
         File.WriteAllText(fullPath, jsonString);
+
     }
 
     public void ApplySettings()
     {
         SaveSettings();
-        OptionManager.UpdateGameSettings(settings.bools, settings.latency, settings.uiScale);
-        ClosePanel();
-    }
-
-    void ClosePanel()
-    {
-        InitializeSettings(false);
-        parent.SetActive(false);
+        OptionManager.UpdateGameSettings(settings.bools, settings.latency, settings.uiScale, settings.hotkeys);
+        GetComponent<BasePanelScript>().ClosePanel();
+        Canvas.ForceUpdateCanvases();
+        settingsChanged?.Invoke(canvas);
     }
 
     public void OpenPanel()
     {
         parent.SetActive(true);
+        InitializeSettings(false);
     }
 
     public void CheckWarning()
@@ -150,8 +177,8 @@ public class SettingsPanel : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    void SetPanelOpenBoolToFalse()
     {
-        Action.cancel1 -= ClosePanel;
+        panelOpen = false;
     }
 }

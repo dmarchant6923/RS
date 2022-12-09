@@ -15,14 +15,18 @@ public class MenuScript : MonoBehaviour, IPointerExitHandler, IPointerClickHandl
 
     Canvas canvas;
     float boxWidth;
+    [HideInInspector] public float rtScale;
 
     private void Start()
     {
         RightClickMenu.menuOpen = true;
+        canvas = FindObjectOfType<Canvas>();
         textHeight = text.GetComponent<RectTransform>().rect.height;
         hoverBoxRT = transform.GetChild(0).GetComponent<RectTransform>();
         menuRT = GetComponent<RectTransform>();
         boxWidth = menuRT.rect.width;
+        rtScale = transform.localScale.x * canvas.scaleFactor;
+        transform.localScale = Vector3.one * rtScale;
 
         if (RightClickMenu.isUsingItem == false && RightClickMenu.isCastingSpell == false)
         {
@@ -41,35 +45,13 @@ public class MenuScript : MonoBehaviour, IPointerExitHandler, IPointerClickHandl
                             hoverBoxRT.sizeDelta += Vector2.up * textHeight;
                             menuRT.sizeDelta += Vector2.up * textHeight;
                             newText = Instantiate(text, transform);
-                            newText.GetComponent<RectTransform>().position = text.GetComponent<RectTransform>().position + Vector3.up * textHeight * (entries + 1) * 2;
+                            newText.GetComponent<RectTransform>().position = text.GetComponent<RectTransform>().position + Vector3.up * textHeight * (entries + 1) * rtScale * canvas.scaleFactor;
                             newText.GetComponentInChildren<Text>().text = RightClickMenu.openActions[i].menuTexts[j];
                             newText.GetComponent<MenuEntryClick>().menuScript = this;
                             newText.GetComponent<MenuEntryClick>().actionNumber = i;
                             newText.GetComponent<MenuEntryClick>().stringNumber = j;
                             newText.GetComponent<MenuEntryClick>().action = RightClickMenu.openActions[i];
                             entries++;
-                        }
-                        else if (RightClickMenu.openActions[i].ignoreUse == false)
-                        {
-                            if (RightClickMenu.openActions[i] == RightClickMenu.itemBeingUsed.GetComponent<Action>())
-                            {
-                                continue;
-                            }
-                            hoverBoxRT.sizeDelta += Vector2.up * textHeight;
-                            menuRT.sizeDelta += Vector2.up * textHeight;
-                            newText = Instantiate(text, transform);
-                            newText.GetComponent<RectTransform>().position = text.GetComponent<RectTransform>().position + Vector3.up * textHeight * (entries + 1) * 2;
-                            newText.GetComponentInChildren<Text>().text = RightClickMenu.usingItemString + RightClickMenu.openActions[i].gameObject.name;
-                            if (RightClickMenu.isCastingSpell)
-                            {
-                                newText.GetComponentInChildren<Text>().text = RightClickMenu.castingSpellString + RightClickMenu.openActions[i].gameObject.name;
-                            }
-                            newText.GetComponent<MenuEntryClick>().menuScript = this;
-                            newText.GetComponent<MenuEntryClick>().actionNumber = i;
-                            newText.GetComponent<MenuEntryClick>().stringNumber = j;
-                            newText.GetComponent<MenuEntryClick>().action = RightClickMenu.openActions[i];
-                            entries++;
-                            j = -100;
                         }
 
                         if (newText.GetComponentInChildren<Text>().preferredWidth + 10 > boxWidth)
@@ -99,7 +81,7 @@ public class MenuScript : MonoBehaviour, IPointerExitHandler, IPointerClickHandl
                     hoverBoxRT.sizeDelta += Vector2.up * textHeight;
                     menuRT.sizeDelta += Vector2.up * textHeight;
                     newText = Instantiate(text, transform);
-                    newText.GetComponent<RectTransform>().position = text.GetComponent<RectTransform>().position + Vector3.up * textHeight * (entries + 1) * 2;
+                    newText.GetComponent<RectTransform>().position = text.GetComponent<RectTransform>().position + Vector3.up * textHeight * (entries + 1) * rtScale;
                     newText.GetComponentInChildren<Text>().text = RightClickMenu.usingItemString + RightClickMenu.openActions[i].gameObject.name;
                     if (RightClickMenu.isCastingSpell)
                     {

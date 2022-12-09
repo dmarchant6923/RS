@@ -20,6 +20,8 @@ public class Minimap : MonoBehaviour, IPointerClickHandler
     public static Minimap instance;
     Action mapAction;
 
+    Canvas canvas;
+
     private void Start()
     {
         instance = this;
@@ -30,6 +32,8 @@ public class Minimap : MonoBehaviour, IPointerClickHandler
         mainCamera = Camera.main.GetComponent<CameraScript>();
         newMinimapCam = Instantiate(minimapCam, Vector3.back * -10, Quaternion.identity);
         //minimapCam.backgroundColor = Camera.main.backgroundColor;
+
+        canvas = FindObjectOfType<Canvas>();
 
         mapArea = GetComponent<Image>();
         mapArea.alphaHitTestMinimumThreshold = 0.5f;
@@ -49,7 +53,7 @@ public class Minimap : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData pointerEventData)
     {
-        Vector2 relPos = Input.mousePosition - mapArea.rectTransform.position;
+        Vector2 relPos = (Input.mousePosition - mapArea.rectTransform.position) / canvas.scaleFactor;
         float angleToImageCenter = Tools.VectorToAngle(relPos);
         float worldSpaceAngle = angleToImageCenter + newMinimapCam.transform.eulerAngles.z;
         Vector2 newPos = Tools.AngleToVector(worldSpaceAngle) * relPos.magnitude;

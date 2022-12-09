@@ -156,10 +156,10 @@ public class Action : MonoBehaviour
             UIManager.ClickX(redClick);
         }
 
-        if (ignoreAllActions)
-        {
-            return;
-        }
+        //if (ignoreAllActions)
+        //{
+        //    return;
+        //}
 
         if (actionNumber == 0)
         {
@@ -296,26 +296,33 @@ public class Action : MonoBehaviour
     }
     IEnumerator DelayAction(int num)
     {
-        yield return new WaitForSeconds(TickManager.simLatency);
-        if (staticPlayerActions[num])
+        if (ignoreAllActions)
         {
-            staticPlayerAction = this;
-            staticActionNum = num;
+            
         }
-        else if (orderLevels[num] == -1)
+        else
         {
-            beforeTickActions.Add(this);
-            beforeTickNum.Add(num);
-        }
-        else if (orderLevels[num] == 0)
-        {
-            onTickActions.Add(this);
-            onTickNum.Add(num);
-        }
-        else if (orderLevels[num] == 1)
-        {
-            afterTickActions.Add(this);
-            afterTickNum.Add(num);
+            yield return new WaitForSeconds(TickManager.simLatency);
+            if (staticPlayerActions[num])
+            {
+                staticPlayerAction = this;
+                staticActionNum = num;
+            }
+            else if (orderLevels[num] == -1)
+            {
+                beforeTickActions.Add(this);
+                beforeTickNum.Add(num);
+            }
+            else if (orderLevels[num] == 0)
+            {
+                onTickActions.Add(this);
+                onTickNum.Add(num);
+            }
+            else if (orderLevels[num] == 1)
+            {
+                afterTickActions.Add(this);
+                afterTickNum.Add(num);
+            }
         }
     }
     IEnumerator DelayCancel(int num)
@@ -488,5 +495,12 @@ public class Action : MonoBehaviour
         staticPlayerAction = null;
         staticActionNum = -1;
         staticEventsAddedToTickManager = false;
+    }
+
+
+
+    private void Update()
+    {
+
     }
 }

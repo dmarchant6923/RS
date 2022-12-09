@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4201073349852095655}
   - component: {fileID: 4201073349852095652}
   - component: {fileID: 4201073349852095661}
+  - component: {fileID: 6710245001735898817}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -74,6 +75,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseTile: {fileID: 7780688113115077117, guid: d6b6d60afa7ed6440a063a2bb66d4b67, type: 3}
+  newMouseTile: {fileID: 0}
 --- !u!114 &4201073349852095654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,5 +136,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7290c108fe427e049b89ae58687ecb78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6710245001735898817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4201073349852095653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 101b20ff11abc434384ef9dc8621aa4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

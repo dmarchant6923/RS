@@ -61,8 +61,8 @@ public class Player : MonoBehaviour
     public delegate void PlayerEvents();
     public event PlayerEvents playerDeath;
 
-    public delegate void PlayerHealth(int damage);
-    public event PlayerHealth tookDamage;
+    public delegate void PlayerDamage(int damage);
+    public event PlayerDamage tookDamage;
 
     void Start()
     {
@@ -253,6 +253,14 @@ public class Player : MonoBehaviour
     {
         AddToDamageQueue(damage, tickDelay, enemyAttacking, false);
     }
+
+    public void InstantDamage(int damage)
+    {
+        IncomingDamage newDamage = new IncomingDamage();
+        newDamage.damage = Mathf.Min(PlayerStats.currentHitpoints, damage);
+        newDamage.ticks = 0;
+        damageQueue.Add(newDamage);
+    }
     public void TakeDamage(IncomingDamage damage)
     {
         if (damage.canTickEat == false)
@@ -260,9 +268,10 @@ public class Player : MonoBehaviour
             damage.damage = Mathf.Min(PlayerStats.currentHitpoints, damage.damage);
         }
 
+        PlayerStats.currentHitpoints -= damage.damage;
+
         tookDamage?.Invoke(damage.damage);
 
-        PlayerStats.currentHitpoints -= damage.damage;
         if (newHitSplat == null)
         {
             newHitSplat = Instantiate(UIManager.staticHitSplat, Camera.main.WorldToScreenPoint(transform.position), Quaternion.identity);
@@ -389,7 +398,7 @@ public class Player : MonoBehaviour
     }
     public void RemoveFocus()
     {
-        Debug.Log("you are here");
+        //Debug.Log("you are here");
         targetedNPC = null;
         attackTargetedNPC = false;
     }

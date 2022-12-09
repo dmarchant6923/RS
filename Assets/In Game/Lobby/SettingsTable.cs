@@ -21,5 +21,6 @@ public class SettingsTable : MonoBehaviour
     void OpenSettings()
     {
         settingsPanel.OpenPanel();
+        SettingsPanel.panelOpen = true;
     }
 }

@@ -79,7 +79,7 @@ public class OptionManager : MonoBehaviour
         }
     }
 
-    public static void UpdateGameSettings(bool[] settings, float simLatency, float uiScale)
+    public static void UpdateGameSettings(bool[] settings, float simLatency, float uiScale, int[] hotkeys)
     {
         CombatInfo.instance.gameObject.SetActive(settings[0]);
 
@@ -110,6 +110,8 @@ public class OptionManager : MonoBehaviour
         TickManager.simLatency = simLatency / 1000;
 
         FindObjectOfType<CanvasScaler>().scaleFactor = uiScale / 100;
+
+        PanelButtons.SetHotkeys(hotkeys);
 
         ignoreHiscores = false;
         if (settings[6] || settings[7] || settings[8])

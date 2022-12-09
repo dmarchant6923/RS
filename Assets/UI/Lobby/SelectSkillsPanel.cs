@@ -9,8 +9,6 @@ public class SelectSkillsPanel : MonoBehaviour
     public int[] skillLevels = new int[7];
     Text[] skillTexts = new Text[7];
 
-    public OpenCloseButton closeButton;
-
     public ButtonScript resetButton;
     public ButtonScript applyButton;
 
@@ -21,9 +19,6 @@ public class SelectSkillsPanel : MonoBehaviour
     private void Start()
     {
         InitializeStats();
-
-        closeButton.buttonClicked += ClosePanel;
-        Action.cancel1 += ClosePanel;
 
         applyButton.buttonClicked += ApplySkills;
         resetButton.buttonClicked += ResetSkills;
@@ -99,16 +94,7 @@ public class SelectSkillsPanel : MonoBehaviour
 
         PlayerStats.ReinitializeStats();
 
-        ClosePanel();
-    }
-    public void ClosePanel()
-    {
-        gameObject.SetActive(false);
-    }
-
-    private void OnDestroy()
-    {
-        Action.cancel1 -= ClosePanel;
+        GetComponent<BasePanelScript>().ClosePanel();
     }
 
     void InitializeStats()

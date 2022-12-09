@@ -32,6 +32,8 @@ public class Zuk : MonoBehaviour
 
     public static bool showSetTimer = true;
 
+    [HideInInspector] public int ballsTanked;
+
     IEnumerator Start()
     {
         NPCScript = GetComponent<NPC>();
@@ -76,6 +78,7 @@ public class Zuk : MonoBehaviour
             else
             {
                 enemyScript.AttackPlayer();
+                InfernoManager.instance.ballsTanked++;
             }
         }
 
@@ -180,6 +183,9 @@ public class Zuk : MonoBehaviour
         {
             Destroy(enemy.gameObject);
         }
+
+        TickManager.beforeTick -= BeforeTick;
+        TickManager.afterTick -= AfterTick;
     }
 
     void ReturnToLobby()

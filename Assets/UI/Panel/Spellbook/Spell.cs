@@ -135,6 +135,8 @@ public class Spell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             isCastingSpell = false;
             mask.gameObject.SetActive(false);
         }
+
+        //Debug.Log(spellAction.menuTexts[0]);
     }
 
     public void CheckRunes()

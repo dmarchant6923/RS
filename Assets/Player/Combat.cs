@@ -44,6 +44,15 @@ public class Combat : MonoBehaviour
     [HideInInspector] public bool useSpec;
     SpecialAttack specScript;
 
+    int successes = 0;
+    int failures = 0;
+
+    public delegate void PlayerDamage(int damage);
+    public event PlayerDamage playerDealtDamage;
+
+    public delegate void EnemyDamage(int damage, int maxhit);
+    public static event EnemyDamage enemyDealtDamage;
+
     private void Start()
     {
         playerScript = FindObjectOfType<Player>();
@@ -221,6 +230,7 @@ public class Combat : MonoBehaviour
             if (hitRoll > 0)
             {
                 XPDrop.CombatXPDrop(AttackStyles.attackStyle, AttackStyles.attackType, hitRoll, offensivePrayerOn);
+                playerDealtDamage?.Invoke(hitRoll);
             }
 
             int delay = CalculateDelay();
@@ -310,11 +320,20 @@ public class Combat : MonoBehaviour
                 {
                     mult = 1.25f;
                 }
-                dps = (dps * (1 - diamondBoltProcChance)) + (diamondBoltProcChance * Mathf.Floor(maxHit * 1.15f) / attackCooldown / 0.6f);
+                dps = (dps * (1 - diamondBoltProcChance)) + (diamondBoltProcChance * Mathf.Floor(maxHit * mult) / attackCooldown / 0.6f);
             }
 
             CombatInfo.PlayerAttack(AttackStyles.attackStyle, (int)maxAttRoll);
             CombatInfo.PlayerAttackResult(hitChance, (int)maxHit, dps);
+
+
+            //if (Player.targetedNPC.name == "TzKal-Zuk")
+            //{
+            //    if (success) { successes++; }
+            //    else { failures++; }
+            //    int total = successes + failures;
+            //    Debug.Log("hits: " + successes + ". misses: " + failures + ". total:" + total + ". ratio: " + ((float)successes / (float)total));
+            //}
         }
         else
         {
@@ -397,7 +416,12 @@ public class Combat : MonoBehaviour
                 float attRoll = Random.Range(0, (int)maxAttRoll);
                 float defRoll = Random.Range(0, (int)maxDefRoll);
                 bool success = false;
-                maxHit = Mathf.Floor((float)spell.maxDamage * (1 + ((float)WornEquipment.magicDamage / 100)));
+                float magicDamage = (float)WornEquipment.magicDamage;
+                if (specialEffects && effects.tumekensShadow)
+                {
+                    magicDamage = Mathf.Ceil(magicDamage / 3);
+                }
+                maxHit = Mathf.Floor((float)spell.maxDamage * (1 + (magicDamage / 100)));
                 if (specialEffects)
                 {
                     maxHit = Mathf.Floor(maxHit * effects.MaxHitMult());
@@ -432,6 +456,7 @@ public class Combat : MonoBehaviour
                 if (hitRoll > 0)
                 {
                     XPDrop.CombatXPDrop(AttackStyles.attackStyle, AttackStyles.attackType, hitRoll, offensivePrayerOn);
+                    playerDealtDamage?.Invoke(hitRoll);
                 }
 
                 if (success)
@@ -564,7 +589,7 @@ public class Combat : MonoBehaviour
 
             effectiveLevel = Mathf.Floor(Mathf.Floor(PlayerStats.currentMagic * Prayer.magicAttackPrayerBonus) * voidBonus + AttackStyles.magicBonus + 9);
             styleBonus = WornEquipment.attackMagic;
-            if (specialEffects && effects.tumekensShadow && WornEquipment.weapon.weaponCategory == WornEquipment.poweredStaffCategory)
+            if (specialEffects && effects.tumekensShadow && Player.player.spellBeingUsed != null)
             {
                 styleBonus = Mathf.Ceil(styleBonus/3);
             }
@@ -677,10 +702,6 @@ public class Combat : MonoBehaviour
             gearBonus--;
 
             float magicDamage = (float)WornEquipment.magicDamage / 100;
-            if (specialEffects && effects.tumekensShadow && WornEquipment.weapon.weaponCategory == WornEquipment.poweredStaffCategory)
-            {
-                magicDamage = Mathf.Ceil(magicDamage / 3);
-            }
 
             float baseMaxHit = WornEquipment.weapon.GetComponent<PoweredStaff>().BaseMaxHit(PlayerStats.currentMagic);
             maxHit = Mathf.Floor(baseMaxHit * (voidBonus + (magicDamage) + gearBonus));
@@ -1049,6 +1070,7 @@ public class Combat : MonoBehaviour
             if (success)
             {
                 hitRoll = Random.Range(0, (int)maxHit + 1);
+                enemyDealtDamage?.Invoke(hitRoll, (int)maxHit);
             }
 
             if ((Prayer.protectFromMelee && melee) || (Prayer.protectFromMissiles && range) || (Prayer.protectFromMagic && mage))

@@ -30,8 +30,11 @@ public class ZukHealer : MonoBehaviour
 
     List<AOE> activeAttacks = new List<AOE>();
 
+    public static int zukHeals;
+
     private void Start()
     {
+        zukHeals = 0;
         enemyScript = GetComponent<Enemy>();
         npcScript = GetComponent<NPC>();
         combatScript = GetComponent<Combat>();
@@ -75,7 +78,7 @@ public class ZukHealer : MonoBehaviour
             {
                 if (TileManager.TileDistance(Player.player.trueTile, activeAttacks[i].position) < 2)
                 {
-                    Player.player.AddToDamageQueue(activeAttacks[i].damage, 0, null);
+                    Player.player.InstantDamage(activeAttacks[i].damage);
                 }
                 Instantiate(explosion, activeAttacks[i].position, Quaternion.identity);
 
@@ -106,7 +109,8 @@ public class ZukHealer : MonoBehaviour
                 int healed = Random.Range(healAmountLow, healAmountHigh + 1);
                 zukScript.enemyScript.AddToDamageQueue(-healed, 3, false, 0);
                 healTicks = healRate;
-                combatScript.SpawnProjectile(zukScript.gameObject, gameObject, 3, projectileColor, projectile);
+                combatScript.SpawnProjectile(zukScript.gameObject, gameObject, 4, projectileColor, projectile);
+                zukHeals += healed;
             }
         }
         else

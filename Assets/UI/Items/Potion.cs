@@ -40,6 +40,7 @@ public class Potion : MonoBehaviour
         itemScript.menuTexts[0] = "Drink ";
         potionAction.orderLevels[0] = -1;
         potionAction.serverAction0 += Drink;
+        potionAction.cancelLevels[0] = 1;
         UpdateDose();
     }
 

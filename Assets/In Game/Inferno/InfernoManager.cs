@@ -8,22 +8,46 @@ public class InfernoManager : MonoBehaviour
 {
     public Enemy zukScript;
 
-    int fadeTime = 3;
+    int fadeTime = 4;
     int fadeTicks = 0;
 
     int encounterTicks = 0;
     int damageTaken;
+    bool stopTimer = false;
 
     public Image fadeBox;
 
     public static bool showZukTileMarkers;
     public GameObject tileMarkerParent;
 
+    public Text timer;
+
+    public GameObject winPanel;
+    public Text time;
+    public Text pb;
+    public Text damage;
+    public Text balls;
+    public Text chance;
+    public Text heals;
+    public Text dps;
+    public Text nibbler;
+    public ButtonScript returnButton;
+
+    float deathChance = 0;
+    public int damageDealt = 0;
+    public int ballsTanked = 0;
+
+    public static InfernoManager instance;
+
     void Start()
     {
+        instance = this;
         Player.player.playerDeath += PlayerDeath;
         Player.player.tookDamage += DamageCounter;
         zukScript.enemyDied += ZukDeath;
+        Combat.enemyDealtDamage += EnemyDamage;
+        Player.player.combatScript.playerDealtDamage += PlayerDamage;
+        returnButton.buttonClicked += ClosePanel;
 
         TickManager.afterTick += AfterTick;
 
@@ -31,6 +55,8 @@ public class InfernoManager : MonoBehaviour
         {
             tileMarkerParent.SetActive(false);
         }
+
+        timer.gameObject.SetActive(true);
     }
 
     void PlayerDeath()
@@ -43,7 +69,7 @@ public class InfernoManager : MonoBehaviour
         zukScript.ClearDamageQueue();
         if (OptionManager.ignoreHiscores == false)
         {
-            HiscoresPanel.UpdateDeaths();
+            GameManager.UpdateDeaths();
         }
         StartCoroutine(ReturnToLobby(1.5f));
     }
@@ -55,11 +81,54 @@ public class InfernoManager : MonoBehaviour
 
     void ZukDeath()
     {
+        StartCoroutine(ZukDeathCR());
+    }
+
+    IEnumerator ZukDeathCR()
+    {
+        stopTimer = true;
         if (OptionManager.ignoreHiscores == false && Player.player.dead == false)
         {
-            HiscoresPanel.UpdateSuccessStats(PlayerStats.totalLevel, damageTaken, encounterTicks);
+            GameManager.UpdateSuccessStats(PlayerStats.totalLevel, damageTaken, encounterTicks);
         }
-        StartCoroutine(ReturnToLobby(5));
+
+        yield return new WaitForSeconds(3);
+        Action.ignoreAllActions = true;
+        Player.player.trueTileScript.StopMovement();
+        time.text = timer.text;
+        pb.text = Tools.SecondsToMinutes(GameManager.scores.fastestTicks * TickManager.maxTickTime, true);
+        damage.text = damageTaken.ToString();
+        balls.text = ballsTanked.ToString();
+        chance.text = (deathChance*100).ToString() + "%";
+        dps.text = ((float)damageDealt / ((float)encounterTicks * TickManager.maxTickTime)).ToString();
+        float nibblerChance = 1 / 100;
+        if (WornEquipment.slayerHelm)
+        {
+            nibblerChance = 1 / 75;
+        }
+        if (Random.Range(0f, 1f) < nibblerChance)
+        {
+            nibbler.text = "YES! gzzzz";
+        }
+        else
+        {
+            nibbler.text = "No.";
+        }
+        winPanel.SetActive(true);
+        yield return new WaitForSeconds(1);
+        Action.ignoreAllActions = false;
+
+        while (winPanel.activeSelf)
+        {
+            yield return null;
+        }
+
+        ReturnToLobby();
+    }
+
+    void ClosePanel()
+    {
+        winPanel.SetActive(false);
     }
 
     void DamageCounter(int damage)
@@ -73,9 +142,14 @@ public class InfernoManager : MonoBehaviour
         {
             fadeTicks--;
         }
-        encounterTicks++;
+        if (stopTimer == false)
+        {
+            encounterTicks++;
+            timer.text = Tools.SecondsToMinutes((float)encounterTicks * TickManager.maxTickTime, true);
+        }
+
     }
-    IEnumerator ReturnToLobby(float delay)
+    public IEnumerator ReturnToLobby(float delay)
     {
         yield return null;
         Player.player.trueTileScript.StopMovement();
@@ -92,5 +166,27 @@ public class InfernoManager : MonoBehaviour
 
         OptionManager.keepRunOn = Player.player.runEnabled;
         SceneManager.LoadScene("Lobby");
+    }
+
+
+
+
+
+    void EnemyDamage(int damage, int maxHit)
+    {
+        float chanceOfDying = Mathf.Max(0, (maxHit - PlayerStats.currentHitpoints) / maxHit);
+        float chanceOfLiving = 1 - chanceOfDying;
+        float cumulativeChanceOfLiving = (1 - deathChance) * chanceOfLiving;
+        deathChance = 1 - cumulativeChanceOfLiving;
+    }
+
+    void PlayerDamage(int damage)
+    {
+        damageDealt += damage;
+    }
+
+    private void OnDestroy()
+    {
+        Combat.enemyDealtDamage -= EnemyDamage;
     }
 }

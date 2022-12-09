@@ -19,6 +19,7 @@ public class InfernoPortal : MonoBehaviour
         portalAction = GetComponent<Action>();
         portalAction.menuTexts[0] = "Enter ";
         portalAction.menuPriorities[0] = 1;
+        portalAction.cancelLevels[0] = 1;
         portalAction.staticPlayerActions[0] = true;
         portalAction.objectName = "<color=cyan>" + gameObject.name + "</color>";
         portalAction.UpdateName();

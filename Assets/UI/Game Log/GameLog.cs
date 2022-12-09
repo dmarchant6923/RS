@@ -12,6 +12,7 @@ public class GameLog : MonoBehaviour
     Vector2 textParentOnPosition;
     float boxOnHeight;
     float boxOffHeight;
+    Canvas canvas;
 
     float verticalSpacing;
     float indent;
@@ -32,8 +33,9 @@ public class GameLog : MonoBehaviour
     private void Start()
     {
         instance = this;
+        canvas = FindObjectOfType<Canvas>();
 
-        verticalSpacing = logText.GetComponent<Text>().preferredHeight * 1.2f;
+        verticalSpacing = logText.GetComponent<Text>().preferredHeight * 1.2f * 0.5f;
         indent = 10;
         textParentOnPosition = textParent.transform.position;
         rt = GetComponent<RectTransform>();
@@ -47,6 +49,7 @@ public class GameLog : MonoBehaviour
     {
         GameObject newLog = Instantiate(instance.logText);
         newLog.transform.SetParent(instance.textParent);
+        newLog.transform.localScale *= instance.canvas.scaleFactor;
         newLog.GetComponent<Text>().text = text;
         Canvas.ForceUpdateCanvases();
         int lines = newLog.GetComponent<Text>().cachedTextGenerator.lineCount;

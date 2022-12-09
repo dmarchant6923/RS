@@ -6,8 +6,6 @@ using System.IO;
 
 public class PresetsPanel : MonoBehaviour
 {
-    public OpenCloseButton closeButton;
-
     public class PresetEquipment
     {
         public bool filled = false;
@@ -74,8 +72,6 @@ public class PresetsPanel : MonoBehaviour
         }
 
         dir = Application.dataPath + folder;
-        closeButton.buttonClicked += ClosePanel;
-        Action.cancel1 += ClosePanel;
 
         InitializePresets();
 
@@ -216,7 +212,10 @@ public class PresetsPanel : MonoBehaviour
         }
         IgnoreActions = true;
 
-        StartCoroutine(LoadPlayerAttributes.LoadPresetEnum(presetEquipment[num].equipment, presetEquipment[num].blowpipeAmmo, presetInventory[num].items, presetInventory[num].blowpipeAmmo));
+        if (gameObject.activeSelf)
+        {
+            StartCoroutine(LoadPlayerAttributes.LoadPresetEnum(presetEquipment[num].equipment, presetEquipment[num].blowpipeAmmo, presetInventory[num].items, presetInventory[num].blowpipeAmmo));
+        }
     }
     public void ClearPreset(int presetNumber)
     {
@@ -249,24 +248,6 @@ public class PresetsPanel : MonoBehaviour
         {
             IgnoreActions = false;
         }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ClosePanel();
-        }
-    }
-
-    void ClosePanel()
-    {
-        gameObject.SetActive(false);
-    }
-
-    private void OnDestroy()
-    {
-        Action.cancel1 -= ClosePanel;
     }
 
 

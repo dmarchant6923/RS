@@ -102,6 +102,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 049418e4ee214074ebaeaa332e921456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  runIcon: {fileID: 2717461080199199991}
+  orbManager: {fileID: 0}
+  staminaColor: {r: 1, g: 0.5882353, b: 0, a: 1}
 --- !u!114 &4565937155874641813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,6 +154,7 @@ MonoBehaviour:
   redClick: 1
   actionUsedOnThis: {fileID: 0}
   actionOnPointerUp: 0
+  useActionSuccessful: 0
 --- !u!1 &2111568807459296289
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,7 +272,7 @@ RectTransform:
   m_GameObject: {fileID: 2512499426013420911}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 4123251820995606994}
   m_RootOrder: 1
@@ -276,7 +280,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -63.5, y: -27.1}
-  m_SizeDelta: {x: 45, y: 31}
+  m_SizeDelta: {x: 90, y: 62}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &1363343545294517335
 CanvasRenderer:
@@ -308,11 +312,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 26
+    m_FontSize: 52
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
-    m_MaxSize: 40
+    m_MaxSize: 52
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1

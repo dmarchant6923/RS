@@ -15,6 +15,7 @@ public class PanelButtons : MonoBehaviour
     public Transform spellbook;
     Transform currentButton;
     Transform[] buttons = new Transform[5];
+    float buttonHeight;
 
     public GameObject panel;
     public GameObject attackStylesPanel;
@@ -47,6 +48,8 @@ public class PanelButtons : MonoBehaviour
         buttons[3] = prayer;
         buttons[4] = spellbook;
 
+        buttonHeight = attackStyles.GetComponent<RectTransform>().rect.height;
+
         panelObjects[0] = attackStylesPanel;
         panelObjects[1] = inventoryPanel;
         panelObjects[2] = wornEquipmentPanel;
@@ -54,7 +57,7 @@ public class PanelButtons : MonoBehaviour
         panelObjects[4] = spellbookPanel;
 
         onPosition = attackStylesPanel.GetComponent<RectTransform>().localPosition;
-        panelOnPosition = panel.GetComponent<RectTransform>().localPosition;
+        panelOnPosition = panel.GetComponent<RectTransform>().position;
 
         foreach (GameObject panelobject in panelObjects)
         {
@@ -64,6 +67,9 @@ public class PanelButtons : MonoBehaviour
                 //panelobject.GetComponent<RectTransform>().localPosition = onPosition + Vector3.right * 1000;
             }
         }
+
+        SettingsPanel.instance.settingsChanged += ResetPanelPosition;
+
         yield return null;
 
         ForceClose();
@@ -77,7 +83,7 @@ public class PanelButtons : MonoBehaviour
 
     void Update()
     {
-        if (enablePanelHotkeys && Input.anyKeyDown)
+        if (enablePanelHotkeys && Input.anyKeyDown && SettingsPanel.panelOpen == false)
         {
             for (int i = 0; i < hotkeys.Length; i++)
             {
@@ -111,7 +117,7 @@ public class PanelButtons : MonoBehaviour
                 panelobject.GetComponent<RectTransform>().localPosition = onPosition + Vector3.right * 1000;
             }
         }
-        panel.GetComponent<RectTransform>().localPosition = panelOnPosition + Vector3.right * 1000;
+        panel.GetComponent<RectTransform>().position = panelOnPosition + Vector3.right * 1000;
         //panel.SetActive(false);
     }
 
@@ -130,7 +136,7 @@ public class PanelButtons : MonoBehaviour
         {
             selectedButton.GetComponent<Image>().sprite = offSprite;
             currentButton = null;
-            panel.GetComponent<RectTransform>().localPosition = panelOnPosition + Vector3.right * 1000;
+            panel.GetComponent<RectTransform>().position = panelOnPosition + Vector3.right * 1000;
             //panel.SetActive(false);
         }
         else
@@ -138,7 +144,7 @@ public class PanelButtons : MonoBehaviour
             selectedButton.GetComponent<Image>().sprite = onSprite;
             currentButton = selectedButton;
             //panel.SetActive(true);
-            panel.GetComponent<RectTransform>().localPosition = panelOnPosition;
+            panel.GetComponent<RectTransform>().position = panelOnPosition;
         }
 
         for (int i = 0; i < buttons.Length; i++)
@@ -153,5 +159,32 @@ public class PanelButtons : MonoBehaviour
                 break;
             }
         }
+    }
+
+    void ResetPanelPosition(Canvas canvas)
+    {
+        panelOnPosition = new Vector2(panelOnPosition.x, buttonHeight * transform.localScale.y * canvas.scaleFactor);
+    }
+
+    public static void SetHotkeys(int[] keys)
+    {
+        for (int i = 0; i < hotkeys.Length; i++)
+        {
+            if (keys[i] != -1)
+            {
+                KeyCode newKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), "Alpha" + keys[i]);
+                hotkeys[i] = newKeyCode;
+            }
+            else
+            {
+                hotkeys[i] = KeyCode.None;
+            }
+        }
+
+        attackStylesHotKey = hotkeys[0];
+        inventoryHotKey = hotkeys[1];
+        wornEquipmentHotKey = hotkeys[2];
+        prayerHotKey = hotkeys[3];
+        spellbookHotKey = hotkeys[4];
     }
 }

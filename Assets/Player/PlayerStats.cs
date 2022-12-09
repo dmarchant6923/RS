@@ -111,6 +111,7 @@ public class PlayerStats : MonoBehaviour
         TickManager.beforeTick += BoostTimer;
         TickManager.onTick += PrayerDrain;
         TickManager.afterTick += AfterTick;
+        Player.player.tookDamage += Redemption;
         prayersOnForATick = false;
 
         float baselvl = 0.25f * ((float) defence + hitpoints + (prayer * 0.5f));
@@ -274,13 +275,6 @@ public class PlayerStats : MonoBehaviour
 
     void AfterTick()
     {
-        if (Prayer.redemption && currentHitpoints > 0 && currentHitpoints <= (float)initialHitpoints / 10)
-        {
-            currentPrayer = 0;
-            Prayer.DeactivatePrayers();
-            PlayerHeal(Mathf.FloorToInt((float)initialPrayer / 4));
-        }
-
         if (currentHitpoints <= 0)
         {
             currentHitpoints = 0;
@@ -293,6 +287,18 @@ public class PlayerStats : MonoBehaviour
         else
         {
             imbuedHeartCharged = true;
+        }
+    }
+
+    void Redemption(int damage)
+    {
+        if (Prayer.redemption && currentHitpoints > 0 && currentHitpoints <= (float)initialHitpoints / 10)
+        {
+            truePrayer = 0;
+            currentPrayer = 0;
+            Prayer.DeactivatePrayers();
+            Player.player.ClearDamageQueue();
+            PlayerHeal(Mathf.FloorToInt((float)initialPrayer / 4));
         }
     }
 

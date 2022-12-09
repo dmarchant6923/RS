@@ -93,6 +93,7 @@ public class Tools : MonoBehaviour
         {
             item = Instantiate(item);
             item.name = name;
+            item.transform.localScale *= FindObjectOfType<Canvas>().scaleFactor;
         }
 
         return item;

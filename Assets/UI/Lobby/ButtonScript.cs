@@ -58,6 +58,7 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerDownHan
         {
             GetComponent<Image>().enabled = true;
             GetComponentInChildren<Text>().color = Color.yellow;
+            ButtonOff();
         }
         else
         {

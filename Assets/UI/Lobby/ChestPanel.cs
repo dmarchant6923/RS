@@ -7,8 +7,6 @@ public class ChestPanel : MonoBehaviour
 {
     public GameObject image;
 
-    public OpenCloseButton panelButton;
-
     public int itemsPerRow;
     public int itemsPerColumn;
 
@@ -16,6 +14,8 @@ public class ChestPanel : MonoBehaviour
     public RectTransform neCorner;
     public RectTransform swCorner;
     public RectTransform seCorner;
+
+    public float itemScale = 0.6f;
 
     public List<GameObject> items = new List<GameObject>();
     List<GameObject> spawnedItems = new List<GameObject>();
@@ -61,6 +61,7 @@ public class ChestPanel : MonoBehaviour
                 newImage.GetComponent<RawImage>().texture = spawnedItems[i].GetComponent<Item>().itemTexture;
                 newImage.GetComponent<ChestPanelItem>().examineText = items[i].GetComponent<Action>().examineText;
                 newImage.name = items[i].name;
+                newImage.transform.localScale = Vector2.one * itemScale * FindObjectOfType<Canvas>().scaleFactor;
                 newImage.transform.SetParent(transform);
 
                 columnNumber++;
@@ -80,26 +81,5 @@ public class ChestPanel : MonoBehaviour
         {
             Destroy(item);
         }
-
-        panelButton.buttonClicked += ClosePanel;
-        Action.cancel1 += ClosePanel;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ClosePanel();
-        }
-    }
-
-    void ClosePanel()
-    {
-        gameObject.SetActive(false);
-    }
-
-    private void OnDestroy()
-    {
-        Action.cancel1 -= ClosePanel;
     }
 }
