@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class InfernoManager : MonoBehaviour
 {
     public Enemy zukScript;
+    public ZukShield shieldScript;
 
     int fadeTime = 4;
     int fadeTicks = 0;
@@ -29,6 +30,7 @@ public class InfernoManager : MonoBehaviour
     public Text balls;
     public Text chance;
     public Text heals;
+    public Text shieldHealth;
     public Text dps;
     public Text nibbler;
     public ButtonScript returnButton;
@@ -36,6 +38,7 @@ public class InfernoManager : MonoBehaviour
     float deathChance = 0;
     public int damageDealt = 0;
     public int ballsTanked = 0;
+    int shieldHealthValue;
 
     public static InfernoManager instance;
 
@@ -45,7 +48,7 @@ public class InfernoManager : MonoBehaviour
         Player.player.playerDeath += PlayerDeath;
         Player.player.tookDamage += DamageCounter;
         zukScript.enemyDied += ZukDeath;
-        Combat.enemyDealtDamage += Chanced;
+        Player.player.damageInfo += Chanced;
         Player.player.combatScript.playerDealtDamage += PlayerDamage;
         returnButton.buttonClicked += ClosePanel;
 
@@ -92,6 +95,8 @@ public class InfernoManager : MonoBehaviour
             GameManager.UpdateSuccessStats(PlayerStats.totalLevel, damageTaken, encounterTicks);
         }
 
+        shieldHealthValue = shieldScript.GetComponent<Enemy>().hitpoints;
+
         yield return new WaitForSeconds(5);
         Action.ignoreAllActions = true;
         Player.player.trueTileScript.StopMovement();
@@ -101,6 +106,7 @@ public class InfernoManager : MonoBehaviour
         balls.text = ballsTanked.ToString();
         chance.text = (Mathf.Floor(deathChance*10000) / 100).ToString() + "%";
         heals.text = ZukHealer.zukHeals.ToString();
+        shieldHealth.text = shieldHealthValue + "/" + 600;
         dps.text = (Mathf.Floor(((float)damageDealt * 1000 / ((float)encounterTicks * TickManager.maxTickTime))) / 1000).ToString();
         float nibblerChance = 1 / 100;
         if (WornEquipment.slayerHelm)
@@ -169,26 +175,28 @@ public class InfernoManager : MonoBehaviour
         SceneManager.LoadScene("Lobby");
     }
 
-
-
-
-
-    void Chanced(int damage, int maxHit, float hitChance)
+    void Chanced(Player.IncomingDamage damage)
     {
-        float chanceOfDying = Mathf.Max(0, ((float)maxHit - (float)PlayerStats.currentHitpoints) / (float)maxHit) * hitChance;
+        if (damage.maxHit == 0)
+        {
+            return;
+        }
+
+        float adjustedHP = PlayerStats.currentHitpoints - damage.minHit;
+        float adjustedMaxHit = damage.maxHit - damage.minHit;
+        float chanceOfDying = Mathf.Max(0, (adjustedMaxHit - adjustedHP) / adjustedMaxHit * damage.hitChance);
+        if (damage.prayedAgainst)
+        {
+            chanceOfDying = 0;
+        }
         float chanceOfLiving = 1 - chanceOfDying;
         float cumulativeChanceOfLiving = (1 - deathChance) * chanceOfLiving;
         deathChance = 1 - cumulativeChanceOfLiving;
-        Debug.Log("max hit: " + maxHit + ". HP: " + PlayerStats.currentHitpoints + ". Chance of dying on this hit: " + chanceOfDying + ". cumulative chance: " + deathChance);
+        Debug.Log("max hit: " + damage.maxHit + ". HP: " + PlayerStats.currentHitpoints + ". hitchance: " + damage.hitChance + ". Chance of dying on this hit: " + chanceOfDying + ". cumulative chance: " + deathChance);
     }
 
     void PlayerDamage(int damage)
     {
         damageDealt += damage;
-    }
-
-    private void OnDestroy()
-    {
-        Combat.enemyDealtDamage -= Chanced;
     }
 }

@@ -99,9 +99,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ranged Ammo Base
       objectReference: {fileID: 0}
+    - target: {fileID: 885136016691790221, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2070536377647961073, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
       propertyPath: stackable
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7578966206899485706, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
@@ -125,3 +133,4 @@ MonoBehaviour:
   textures: []
   colors: []
   arrows: 1
+  bolts: 0

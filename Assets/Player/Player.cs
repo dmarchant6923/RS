@@ -44,6 +44,11 @@ public class Player : MonoBehaviour
         public Enemy enemyAttacking;
         public bool overkill;
         public bool canTickEat = true;
+
+        public int maxHit;
+        public int minHit;
+        public bool prayedAgainst;
+        public float hitChance;
     }
     GameObject newHitSplat;
     List<IncomingDamage> damageQueue = new List<IncomingDamage>();
@@ -64,6 +69,9 @@ public class Player : MonoBehaviour
     public delegate void PlayerDamage(int damage);
     public event PlayerDamage tookDamage;
 
+    public delegate void PlayerDamageInfo(IncomingDamage damage);
+    public event PlayerDamageInfo damageInfo;
+
     void Start()
     {
         Action.ignoreAllActions = false;
@@ -75,6 +83,7 @@ public class Player : MonoBehaviour
         trueTileScript.player = this;
         trueTileScript.debugEnabled = debugEnabled;
         trueTileScript.showTrueTile = showTrueTile;
+        forceWalk = true;
 
         runEnabled = false;
 
@@ -121,11 +130,6 @@ public class Player : MonoBehaviour
             {
                 transform.position = playerPath[0];
                 playerPath.RemoveAt(0);
-                forceWalk = false;
-                if (runEnabled && playerPath.Count > 0 && playerPath[0] == trueTileScript.destinationTile && trueTileScript.oddTilesInPath)
-                {
-                    forceWalk = true;
-                }
             }
             else if (targetedNPC == null)
             {
@@ -233,6 +237,15 @@ public class Player : MonoBehaviour
 
     public void AddToDamageQueue(int damage, int tickDelay, Enemy enemyAttacking, bool overkill)
     {
+        AddToDamageQueue(damage, tickDelay, enemyAttacking, overkill, 0, 0, false, 0);
+    }
+    public void AddToDamageQueue(int damage, int tickDelay, Enemy enemyAttacking)
+    {
+        AddToDamageQueue(damage, tickDelay, enemyAttacking, false);
+    }
+
+    public void AddToDamageQueue(int damage, int tickDelay, Enemy enemyAttacking, bool overkill, int maxHit, int minHit, bool prayedAgainst, float hitChance)
+    {
         IncomingDamage newDamage = new IncomingDamage();
         newDamage.damage = damage;
         newDamage.ticks = tickDelay;
@@ -247,26 +260,36 @@ public class Player : MonoBehaviour
         }
         newDamage.enemyAttacking = enemyAttacking;
         newDamage.overkill = overkill;
+
+        newDamage.maxHit = maxHit;
+        newDamage.minHit = minHit;
+        newDamage.prayedAgainst = prayedAgainst;
+        newDamage.hitChance = hitChance;
+
         damageQueue.Add(newDamage);
     }
-    public void AddToDamageQueue(int damage, int tickDelay, Enemy enemyAttacking)
-    {
-        AddToDamageQueue(damage, tickDelay, enemyAttacking, false);
-    }
 
-    public void InstantDamage(int damage)
+    public void InstantDamage(int damage, int maxHit, int minHit, bool prayedAgainst, float hitChance)
     {
         IncomingDamage newDamage = new IncomingDamage();
         newDamage.damage = Mathf.Min(PlayerStats.currentHitpoints, damage);
         newDamage.ticks = 0;
+        newDamage.maxHit = maxHit;
+        newDamage.minHit = minHit;
+        newDamage.prayedAgainst = prayedAgainst;
+        newDamage.hitChance = hitChance;
         damageQueue.Add(newDamage);
     }
     public void TakeDamage(IncomingDamage damage)
     {
+
+
         if (damage.canTickEat == false)
         {
             damage.damage = Mathf.Min(PlayerStats.currentHitpoints, damage.damage);
         }
+
+        damageInfo?.Invoke(damage);
 
         PlayerStats.currentHitpoints -= damage.damage;
 

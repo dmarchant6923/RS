@@ -38,7 +38,7 @@ public class StackableItem : MonoBehaviour
     }
     List<DelaySpawn> spawnList = new List<DelaySpawn>();
 
-    private void Start()
+    private IEnumerator Start()
     {
         if (useRangeAmmoScript == false)
         {
@@ -59,6 +59,10 @@ public class StackableItem : MonoBehaviour
         ChooseImage();
 
         TickManager.beforeTick += BeforeTick;
+
+        yield return null;
+
+        itemImage.enabled = true;
     }
 
     public void SetImages(Texture2D[] newTextures)

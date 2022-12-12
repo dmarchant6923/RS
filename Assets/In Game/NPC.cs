@@ -68,13 +68,17 @@ public class NPC : MonoBehaviour
         Destroy(newTrueTileMarker.GetComponent<BoxCollider2D>());
         newSizeTileMarker = Instantiate(trueTileMarker, trueTile - centerOffset, Quaternion.identity);
         newSizeTileMarker.transform.localScale *= tileSize;
+        newTrueTileMarker.GetComponent<SpriteRenderer>().enabled = false;
         if (showTrueTile == false)
         {
-            newTrueTileMarker.GetComponent<SpriteRenderer>().enabled = false;
+
+        }
+        else
+        {
+            newSizeTileMarker.GetComponent<SpriteRenderer>().enabled = true;
         }
         //if (showSizeTile == false)
         //{
-            newSizeTileMarker.GetComponent<SpriteRenderer>().enabled = false;
         //}
 
         TickManager.beforeTick += BeforeTick;

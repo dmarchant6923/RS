@@ -74,6 +74,8 @@ public class WornEquipment : MonoBehaviour
     public static bool crystalWeapon;
     public static bool lightBearer;
     public static bool recoil;
+    public static bool justiciar;
+    public static bool regenBrace;
 
     public static bool diamondBoltsE;
     public static bool rubyBoltsE;
@@ -272,7 +274,7 @@ public class WornEquipment : MonoBehaviour
 
         accumulator = false;
         assembler = false;
-        if (cape != null && (cape.name == "Ava's assembler" || cape.name == "Masori assembler"))
+        if (cape != null && (cape.name == "Ava's assembler" || cape.name == "Masori assembler" || cape.name == "Ranging cape(t)"))
         {
             assembler = true;
         }
@@ -330,6 +332,18 @@ public class WornEquipment : MonoBehaviour
         if (ring != null && (ring.name.Contains("suffering") || ring.name.Contains("recoil")))
         {
             recoil = true;
+        }
+
+        justiciar = false;
+        if (head != null && head.name == "Justiciar faceguard" && body != null && body.name == "Justiciar chestguard" && leg != null && leg.name == "Justiciar legguards")
+        {
+            justiciar = true;
+        }
+
+        regenBrace = false;
+        if (glove != null && glove.name == "Regen bracelet")
+        {
+            regenBrace = true;
         }
     }
     public void UpdateText()

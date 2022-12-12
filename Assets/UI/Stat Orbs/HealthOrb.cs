@@ -71,6 +71,10 @@ public class HealthOrb : MonoBehaviour
             if (tick == 0)
             {
                 PlayerStats.currentHitpoints += (int)Mathf.Sign(PlayerStats.initialHitpoints - PlayerStats.currentHitpoints);
+                if (WornEquipment.regenBrace && PlayerStats.currentHitpoints < PlayerStats.initialHitpoints)
+                {
+                    PlayerStats.currentHitpoints++;
+                }
                 tick = regenTicks;
             }
             tick--;

@@ -153,7 +153,7 @@ public class BuffBar : MonoBehaviour
 
     public void UpdateExtraTimer(int i, float time)
     {
-        extras[i].GetComponentInChildren<Text>().text = Tools.SecondsToMinutes(time);
+        extras[i].GetComponentInChildren<Text>().text = Tools.SecondsToMinutes(time, true);
         if (extraTimers[i].timer < 11 && extraTimers[i].warningGiven == false)
         {
             extraTimers[i].warningGiven = true;

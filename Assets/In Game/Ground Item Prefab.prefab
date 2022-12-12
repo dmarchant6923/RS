@@ -185,6 +185,7 @@ MonoBehaviour:
   chargeItem: 0
   charges: 0
   equipment: 0
+  groundItemTileObject: {fileID: 7947639172957269363, guid: d777ca486b06f634aa1345c636d5c36e, type: 3}
   doses: 0
 --- !u!114 &-8687135462732698540
 MonoBehaviour:
@@ -205,6 +206,7 @@ MonoBehaviour:
   inGame: 1
   redClick: 1
   actionUsedOnThis: {fileID: 0}
+  foundUseActionMethod: 0
   actionOnPointerUp: 0
   useActionSuccessful: 0
 --- !u!61 &6575286194499516590

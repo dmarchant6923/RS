@@ -10,6 +10,7 @@ public class SpecialEffects : MonoBehaviour
     public bool rerollDefMult;
     public bool tumekensShadow;
     public bool zaryteCrossbow;
+    public bool sangStaff;
 
     public float GearBonusMult()
     {

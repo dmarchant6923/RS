@@ -32,7 +32,8 @@ public class MenuScript : MonoBehaviour, IPointerExitHandler, IPointerClickHandl
         {
             for (int priority = -1; priority < 2; priority++)
             {
-                for (int i = RightClickMenu.openActions.Count - 1; i >= 0; i--)
+                for (int i = 0; i < RightClickMenu.openActions.Count; i++)
+                //for (int i = RightClickMenu.openActions.Count - 1; i >= 0; i--)
                 {
                     for (int j = RightClickMenu.openActions[i].menuTexts.Length - 1; j >= 0; j--)
                     {

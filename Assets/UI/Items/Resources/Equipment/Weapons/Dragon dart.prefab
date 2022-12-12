@@ -104,6 +104,10 @@ PrefabInstance:
       value: Dragon dart
       objectReference: {fileID: 0}
     - target: {fileID: 7868429133807836611, guid: f13774f4ea731f6408c7f62fcdbb5027, type: 3}
+      propertyPath: image1
+      value: 
+      objectReference: {fileID: 2800000, guid: 9c310210c996d874490fa0b5cf4a502b, type: 3}
+    - target: {fileID: 7868429133807836611, guid: f13774f4ea731f6408c7f62fcdbb5027, type: 3}
       propertyPath: projectileColor.b
       value: 0.9103774
       objectReference: {fileID: 0}

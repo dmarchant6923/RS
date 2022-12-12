@@ -57,6 +57,8 @@ public class Enemy : MonoBehaviour
 
     public int customCombatLvl;
 
+    public float xpMult = 1;
+
     [HideInInspector] public bool inCombat;
 
     [HideInInspector] public float combatLevel;

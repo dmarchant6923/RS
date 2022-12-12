@@ -43,6 +43,7 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     ChargeItem chargeScript;
 
     public static bool shiftClickToDrop;
+    public GameObject groundItemTileObject;
 
     public float groundSizeFactor = 0.8f;
 
@@ -170,6 +171,20 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             Destroy(gameObject);
         }
+
+        RaycastHit2D castAll = Physics2D.CircleCast(tile, 0.1f, Vector2.zero, 0, LayerMask.GetMask("Ground Items Tile"));
+        GroundItemTile itemTileObject;
+        if (castAll.collider == null)
+        {
+            itemTileObject = Instantiate(groundItemTileObject, tile, Quaternion.identity).GetComponent<GroundItemTile>();
+        }
+        else
+        {
+            itemTileObject = castAll.collider.GetComponent<GroundItemTile>();
+        }
+
+        itemTileObject.AddGroundItem(newItem.GetComponent<SpriteRenderer>());
+
 
         return newItem;
     }

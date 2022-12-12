@@ -13,6 +13,8 @@ public class GroundItem : MonoBehaviour
     public bool equipment = false;
     bool stackableItem;
 
+    [HideInInspector] public GroundItemTile itemTileObject;
+
     Action itemAction;
     Inventory inventory;
     SpriteRenderer sprite;
@@ -50,6 +52,7 @@ public class GroundItem : MonoBehaviour
         itemAction.menuPriorities[0] = 1;
         itemAction.clientAction0 += TrueTileIndicator;
         itemAction.serverAction0 += Take;
+        itemAction.staticPlayerActions[0] = true;
         itemAction.orderLevels[0] = -1;
         itemAction.UpdateName();
 
@@ -60,18 +63,18 @@ public class GroundItem : MonoBehaviour
         inventory = FindObjectOfType<Inventory>();
         playerScript = FindObjectOfType<Player>();
 
-        RaycastHit2D[] castAll = Physics2D.CircleCastAll(trueTile, 0.1f, Vector2.zero, 0);
-        foreach (RaycastHit2D cast in castAll)
-        {
-            if (cast.collider.GetComponent<GroundItem>() != null)
-            {
-                sprite.sortingOrder--;
-                if (sprite.sortingOrder < -2)
-                {
-                    sprite.enabled = false;
-                }
-            }
-        }
+        //RaycastHit2D[] castAll = Physics2D.CircleCastAll(trueTile, 0.1f, Vector2.zero, 0, LayerMask.GetMask("Ground Items"));
+        //foreach (RaycastHit2D cast in castAll)
+        //{
+        //    if (cast.collider.GetComponent<GroundItem>() != null)
+        //    {
+        //        sprite.sortingOrder--;
+        //        if (sprite.sortingOrder < -2)
+        //        {
+        //            sprite.enabled = false;
+        //        }
+        //    }
+        //}
     }
 
     void TrueTileIndicator()
@@ -97,7 +100,9 @@ public class GroundItem : MonoBehaviour
             willTake = false;
             itemToTake = null;
 
-            GameObject newItem = null;
+            itemTileObject.RemoveGroundItem(GetComponent<SpriteRenderer>());
+
+            GameObject newItem;
             if (stackableItem)
             {
                 newItem = inventory.ScanForItem(gameObject.name);

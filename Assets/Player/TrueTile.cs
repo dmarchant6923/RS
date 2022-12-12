@@ -19,7 +19,7 @@ public class TrueTile : MonoBehaviour
     [HideInInspector] public Vector2 currentTile;
     [HideInInspector] public Vector2 destinationTile;
     [HideInInspector] public Vector2 serverDestinationTile;
-    List<Vector2> path;
+    [HideInInspector] public List<Vector2> path;
     [HideInInspector] public bool moving;
     [HideInInspector] public bool oddTilesInPath = false;
 
@@ -135,10 +135,10 @@ public class TrueTile : MonoBehaviour
         {
             oddTilesInPath = true;
         }
-        if (path.Count == 1)
-        {
-            player.forceWalk = true;
-        }
+        //if (path.Count == 1)
+        //{
+        //    player.forceWalk = true;
+        //}
         moving = true;
 
         if (debugEnabled)
@@ -166,6 +166,15 @@ public class TrueTile : MonoBehaviour
             int i = 1;
             if (player.runEnabled) { i = 2; }
 
+            if (path.Count == 1)
+            {
+                player.forceWalk = true;
+            }
+            else
+            {
+                player.forceWalk = false;
+            }
+
             while (i > 0)
             {
                 currentTile = path[0];
@@ -175,14 +184,18 @@ public class TrueTile : MonoBehaviour
                 path.RemoveAt(0);
                 if (path.Count == 0)
                 {
-                    moving = false;
-                    if (newClickedTile != null)
-                    {
-                        Destroy(newClickedTile);
-                    }
                     break;
                 }
                 i--;
+            }
+
+            if (path.Count == 0)
+            {
+                moving = false;
+                if (newClickedTile != null)
+                {
+                    Destroy(newClickedTile);
+                }
             }
 
         }

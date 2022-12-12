@@ -78,7 +78,7 @@ public class ZukHealer : MonoBehaviour
             {
                 if (TileManager.TileDistance(Player.player.trueTile, activeAttacks[i].position) < 2)
                 {
-                    Player.player.InstantDamage(activeAttacks[i].damage);
+                    Player.player.InstantDamage(activeAttacks[i].damage, 10, 5, false, 1);
                 }
                 Instantiate(explosion, activeAttacks[i].position, Quaternion.identity);
 
@@ -91,6 +91,12 @@ public class ZukHealer : MonoBehaviour
     void AfterTick()
     {
         enemyScript.attackThisTick = false;
+
+        if (enemyScript.death)
+        {
+            return;
+        }
+
         if (healInterrupted == false)
         {
             if (healTicks > 0)

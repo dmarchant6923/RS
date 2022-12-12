@@ -43,9 +43,14 @@ public class SetSpawn : MonoBehaviour
     void BeforeTick()
     {
         enemyScript.attackThisTick = false;
-        if (attackPlayer == false && shieldScript == null || shieldScript.enemyScript.death)
+        if (attackPlayer == false && (shieldScript == null || shieldScript.enemyScript.death))
         {
             SwitchAggro();
+        }
+
+        if (attackPlayer == false && enemyScript.isAttackingPlayer)
+        {
+            TookDamage();
         }
 
         if (attackPlayer == false && combatScript.attackCooldown <= 0)

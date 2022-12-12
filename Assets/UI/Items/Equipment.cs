@@ -46,6 +46,7 @@ public class Equipment : MonoBehaviour
 
     public bool addAmmoRangedStats = true;
     public Color overrideProjectileColor;
+    public bool canFireDragonAmmo = true;
 
     [HideInInspector] public SpecialAttack spec;
 

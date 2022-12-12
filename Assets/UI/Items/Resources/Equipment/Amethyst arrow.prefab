@@ -41,15 +41,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 474748487045074713, guid: d3e3454cddd653343b699f919af120af, type: 3}
       propertyPath: colors.Array.data[1].b
-      value: 0.8146754
+      value: 0.64017856
       objectReference: {fileID: 0}
     - target: {fileID: 474748487045074713, guid: d3e3454cddd653343b699f919af120af, type: 3}
       propertyPath: colors.Array.data[1].g
-      value: 0.47659308
+      value: 0.35702205
       objectReference: {fileID: 0}
     - target: {fileID: 474748487045074713, guid: d3e3454cddd653343b699f919af120af, type: 3}
       propertyPath: colors.Array.data[1].r
-      value: 0.8490566
+      value: 0.6698113
       objectReference: {fileID: 0}
     - target: {fileID: 474748487045074713, guid: d3e3454cddd653343b699f919af120af, type: 3}
       propertyPath: textures.Array.data[0]

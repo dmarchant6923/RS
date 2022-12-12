@@ -335,6 +335,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5526092176037748152, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
   m_PrefabInstance: {fileID: 39585233}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &39585245 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8464127308413139448, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+  m_PrefabInstance: {fileID: 39585233}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &114938193 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4570065735009076467, guid: bdb1c2d236e99cb41adeb1d7b084fcac, type: 3}
@@ -2012,6 +2023,7 @@ MonoBehaviour:
   inGame: 0
   redClick: 1
   actionUsedOnThis: {fileID: 0}
+  foundUseActionMethod: 0
   actionOnPointerUp: 0
   useActionSuccessful: 0
 --- !u!114 &1317606631
@@ -5862,6 +5874,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zukScript: {fileID: 278671182}
+  shieldScript: {fileID: 1284711622}
   fadeBox: {fileID: 39585234}
   tileMarkerParent: {fileID: 1069673090}
   timer: {fileID: 39585235}
@@ -5872,6 +5885,7 @@ MonoBehaviour:
   balls: {fileID: 39585240}
   chance: {fileID: 39585239}
   heals: {fileID: 39585238}
+  shieldHealth: {fileID: 39585245}
   dps: {fileID: 39585237}
   nibbler: {fileID: 39585236}
   returnButton: {fileID: 1569136143}
@@ -6368,5 +6382,6 @@ MonoBehaviour:
   inGame: 1
   redClick: 1
   actionUsedOnThis: {fileID: 0}
+  foundUseActionMethod: 0
   actionOnPointerUp: 0
   useActionSuccessful: 0

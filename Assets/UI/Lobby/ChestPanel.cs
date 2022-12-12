@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ChestPanel : MonoBehaviour
 {
     public GameObject image;
+    public Transform itemParent;
 
     public int itemsPerRow;
     public int itemsPerColumn;
@@ -24,8 +25,6 @@ public class ChestPanel : MonoBehaviour
 
     private IEnumerator Start()
     {
-        PanelButtons.instance.ForceOpen("Inventory");
-
         yield return null;
 
         foreach (GameObject item in items)
@@ -63,7 +62,7 @@ public class ChestPanel : MonoBehaviour
                 newImage.GetComponent<ChestPanelItem>().examineText = spawnedItems[i].GetComponent<Action>().examineText;
                 newImage.name = items[i].name;
                 newImage.transform.localScale = Vector2.one * itemScale * FindObjectOfType<Canvas>().scaleFactor;
-                newImage.transform.SetParent(transform);
+                newImage.transform.SetParent(itemParent);
 
                 columnNumber++;
                 if (columnNumber > itemsPerRow)

@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: itemTexture
       value: 
       objectReference: {fileID: 2800000, guid: 019501e361dca3447b81c28cf53c3561, type: 3}
+    - target: {fileID: 3791920951219604624, guid: dd6d120554a12a145b391ad375fde44b, type: 3}
+      propertyPath: groundSizeFactor
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5804928529789445242, guid: dd6d120554a12a145b391ad375fde44b, type: 3}
       propertyPath: m_Name
       value: Soul rune

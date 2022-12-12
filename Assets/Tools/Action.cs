@@ -471,7 +471,7 @@ public class Action : MonoBehaviour
             {
                 serverActionUse();
             }
-            if (foundUseActionMethod == false)
+            if (foundUseActionMethod == false && actionUsedOnThis != null)
             {
                actionUsedOnThis.CheckTheOtherItem(this);
             }

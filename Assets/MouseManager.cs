@@ -6,10 +6,6 @@ using UnityEngine.EventSystems;
 
 public class MouseManager : MonoBehaviour
 {
-    public delegate void MouseAction();
-    public static event MouseAction IGClientClick;
-    public static event MouseAction IGServerClick;
-
     public static bool mouseOnScreen;
     public static Vector2 mouseCoordinate;
     public static bool isOverGame;
@@ -67,8 +63,8 @@ public class MouseManager : MonoBehaviour
         if (isOverGame)
         {
             RaycastHit2D[] castAll = Physics2D.CircleCastAll(worldPoint, 0.1f, Vector2.zero, 0);
-            //for (int i = -20; i <=0; i++)
-            for (int i = 0; i >= -20; i--)
+            for (int i = -20; i <=0; i++)
+            //for (int i = 0; i >= -20; i--)
             {
                 foreach (RaycastHit2D cast in castAll)
                 {
@@ -82,11 +78,6 @@ public class MouseManager : MonoBehaviour
             }
 
             mouseCoordinate = TileManager.FindTile(new Vector2(worldPoint.x, worldPoint.y));
-            if (Input.GetMouseButtonDown(0))
-            {
-                GameClientClick();
-                StartCoroutine(GameServerClick());
-            }
             mouseTileSprite.color = spriteColor;
 
         }
@@ -95,16 +86,5 @@ public class MouseManager : MonoBehaviour
             mouseTileSprite.color = Vector4.zero;
         }
         newMouseTile.transform.position = mouseCoordinate;
-    }
-
-    void GameClientClick()
-    {
-        IGClientClick?.Invoke();
-    }
-
-    IEnumerator GameServerClick()
-    {
-        yield return new WaitForSeconds(TickManager.simLatency);
-        IGServerClick?.Invoke();
     }
 }

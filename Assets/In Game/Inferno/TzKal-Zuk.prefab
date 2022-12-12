@@ -20,6 +20,10 @@ PrefabInstance:
       value: 400
       objectReference: {fileID: 0}
     - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: xpMult
+      value: 1.575
+      objectReference: {fileID: 0}
+    - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: defence
       value: 260
       objectReference: {fileID: 0}
@@ -283,6 +287,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  tileMarkerParent: {fileID: 0}
   enemyScript: {fileID: 0}
   shieldScript: {fileID: 0}
+  ballsTanked: 0

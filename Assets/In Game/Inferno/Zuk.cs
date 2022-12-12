@@ -66,6 +66,12 @@ public class Zuk : MonoBehaviour
     void BeforeTick()
     {
         enemyScript.attackThisTick = false;
+
+        if (enemyScript.death)
+        {
+            return;
+        }
+
         if (combatScript.attackCooldown <= 0)
         {
             if (Player.player.trueTile.x >= shieldScript.safeSpotRange[0] && Player.player.trueTile.x <= shieldScript.safeSpotRange[1] && 

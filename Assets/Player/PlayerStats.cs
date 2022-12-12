@@ -319,6 +319,12 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    public static void RestorePrayer(int amount, int max)
+    {
+        truePrayer = Mathf.Min(truePrayer + amount * 100, max * 100);
+        currentPrayer = (int)Mathf.Ceil(truePrayer / 100);
+    }
+
     public static void PotionStatBoost(PotionStatBuff potion)
     {
         bool showTimer = false;

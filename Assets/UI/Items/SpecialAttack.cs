@@ -12,6 +12,7 @@ public class SpecialAttack : MonoBehaviour
     public bool blowPipe;
     public bool armadylCrossbow;
     public bool zaryteCrossbow;
+    public bool eldritchStaff;
 
     [System.NonSerialized] public bool guaranteeHit = false;
     [System.NonSerialized] public bool slowProjectile = false;

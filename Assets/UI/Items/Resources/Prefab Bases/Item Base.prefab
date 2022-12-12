@@ -340,12 +340,13 @@ MonoBehaviour:
   examineText: 
   objectName: 
   addObjectName: 0
-  itemAction: 0
   ignoreUse: 0
   inGame: 0
   redClick: 1
   actionUsedOnThis: {fileID: 0}
+  foundUseActionMethod: 0
   actionOnPointerUp: 1
+  useActionSuccessful: 0
 --- !u!114 &3725504699299388105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,7 +361,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemAction: {fileID: 0}
   itemImage: {fileID: 0}
+  itemTexture: {fileID: 0}
   clickHeld: 0
   inventory: {fileID: 0}
   groundItemsParent: {fileID: 0}
   groundPrefab: {fileID: 8940232162871179629, guid: ebe7f289e798d5e42b0485e06a8f5e24, type: 3}
+  groundItemTileObject: {fileID: 7947639172957269363, guid: d777ca486b06f634aa1345c636d5c36e, type: 3}
+  groundSizeFactor: 0.8

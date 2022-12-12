@@ -152,6 +152,7 @@ MonoBehaviour:
   uniformProjectileDelay: 0
   customProjectile: {fileID: 0}
   customCombatLvl: 0
+  xpMult: 1
   inCombat: 0
   combatLevel: 0
   combatLevelColor: 
