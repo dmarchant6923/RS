@@ -30,7 +30,7 @@ public class PrayerToggle : MonoBehaviour
 
         prayerToggle = GetComponent<Toggle>();
 
-        startPosition = flickInidcator.position.x;
+        startPosition = flickInidcator.localPosition.x;
         distance = Mathf.Abs(flickInidcator.localPosition.x) * 2f;
         speed = distance / TickManager.maxTickTime;
 
@@ -52,7 +52,7 @@ public class PrayerToggle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        flickInidcator.position = new Vector2(Mathf.MoveTowards(flickInidcator.position.x, flickInidcator.position.x + distance, speed * Time.deltaTime), flickInidcator.position.y);
+        flickInidcator.localPosition = new Vector2(Mathf.MoveTowards(flickInidcator.localPosition.x, flickInidcator.localPosition.x + distance, speed * Time.deltaTime), flickInidcator.localPosition.y);
     }
 
     void ActivateQuickPrayers()
@@ -68,7 +68,7 @@ public class PrayerToggle : MonoBehaviour
 
     void OnTick()
     {
-        flickInidcator.position = new Vector2(startPosition, flickInidcator.position.y);
+        flickInidcator.localPosition = new Vector2(startPosition, flickInidcator.localPosition.y);
     }
 
     void ReadPrayer()

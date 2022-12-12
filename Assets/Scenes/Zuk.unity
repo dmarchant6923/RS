@@ -578,10 +578,6 @@ PrefabInstance:
       propertyPath: healerSpawnTiles.Array.data[3]
       value: 
       objectReference: {fileID: 760519367}
-    - target: {fileID: 1451595848354660733, guid: 0d56ed38d87abf54bb0c8894fcfdbe3e, type: 3}
-      propertyPath: overkill
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2085281643378908957, guid: 0d56ed38d87abf54bb0c8894fcfdbe3e, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -5879,8 +5875,8 @@ MonoBehaviour:
   dps: {fileID: 39585237}
   nibbler: {fileID: 39585236}
   returnButton: {fileID: 1569136143}
-  deathChance: 0
   damageDealt: 0
+  ballsTanked: 0
 --- !u!1001 &1698911879
 PrefabInstance:
   m_ObjectHideFlags: 0

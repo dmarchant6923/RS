@@ -1,1 +1,1 @@
-{"deaths":0,"completions":1,"lowestLevel":693,"leastDamage":47,"fastestTicks":571}
+{"deaths":11,"completions":7,"lowestLevel":693,"leastDamage":41,"fastestTicks":29}

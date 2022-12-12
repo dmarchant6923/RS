@@ -363,7 +363,7 @@ public class Enemy : MonoBehaviour
 
     public void AttackPlayer()
     {
-        if (npcScript == null)
+        if (npcScript == null || Player.player.dead)
         {
             return;
         }
@@ -405,7 +405,7 @@ public class Enemy : MonoBehaviour
     }
     void PerformAttack()
     {
-        if (npcScript == null || isAttackingPlayer == false || npcScript.isTargetingPlayer == false || death)
+        if (npcScript == null || isAttackingPlayer == false || npcScript.isTargetingPlayer == false || death || Player.player.dead)
         {
             return;
         }

@@ -12,6 +12,8 @@ public class CameraScript : MonoBehaviour
     float maxCamSpeed = 10;
     float camSpeed;
 
+    [System.NonSerialized] float zoomSensitivity = 120;
+
     Camera cam;
     [HideInInspector] public Player player;
 
@@ -33,7 +35,7 @@ public class CameraScript : MonoBehaviour
         {
             if (cam.orthographicSize >= minCamSize && cam.orthographicSize <= maxCamSize)
             {
-                cam.orthographicSize -= Input.mouseScrollDelta.y * Time.deltaTime * 130;
+                cam.orthographicSize -= Input.mouseScrollDelta.y * Time.deltaTime * zoomSensitivity;
             }
 
             if (cam.orthographicSize <= minCamSize)

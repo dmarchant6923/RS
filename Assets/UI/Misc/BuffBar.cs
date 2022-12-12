@@ -99,7 +99,7 @@ public class BuffBar : MonoBehaviour
         {
             buffTimer.SetActive(true);
         }
-        buffTimerText.text = Tools.SecondsToMinutes(time);
+        buffTimerText.text = Tools.SecondsToMinutes(time, true);
         if (time < 11)
         {
             buffTimerText.color = Color.red;
@@ -124,7 +124,7 @@ public class BuffBar : MonoBehaviour
                 if (extraTimers[i].timer < timeSeconds)
                 {
                     extraTimers[i].timer = timeSeconds;
-                    extras[i].GetComponentInChildren<Text>().text = Tools.SecondsToMinutes(timeSeconds);
+                    extras[i].GetComponentInChildren<Text>().text = Tools.SecondsToMinutes(timeSeconds, true);
                     return;
                 }
             }
@@ -136,7 +136,7 @@ public class BuffBar : MonoBehaviour
             {
                 extras[i].SetActive(true);
                 extras[i].transform.GetChild(0).GetComponent<RawImage>().texture = texture;
-                extras[i].GetComponentInChildren<Text>().text = Tools.SecondsToMinutes(timeSeconds);
+                extras[i].GetComponentInChildren<Text>().text = Tools.SecondsToMinutes(timeSeconds, true);
                 extraTimers[i].timer = timeSeconds;
                 extraTimers[i].name = name;
                 return;

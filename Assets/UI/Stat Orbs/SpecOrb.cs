@@ -19,7 +19,7 @@ public class SpecOrb : MonoBehaviour
         orbToggle = GetComponent<Toggle>();
         orbManager.orbAction.serverAction0 += Toggle;
 
-        startPosition = regenIndicator.position.x;
+        startPosition = regenIndicator.localPosition.x;
         distance = Mathf.Abs(regenIndicator.localPosition.x) * 2f;
         regenIndicator.gameObject.SetActive(false);
 
@@ -64,6 +64,6 @@ public class SpecOrb : MonoBehaviour
             regenIndicator.gameObject.SetActive(true);
         }
 
-        regenIndicator.position = new Vector2(startPosition + distance * ((float)SpecBar.instance.ticks / (float)SpecBar.instance.regenTicks), regenIndicator.position.y);
+        regenIndicator.localPosition = new Vector2(startPosition + distance * ((float)SpecBar.instance.ticks / (float)SpecBar.instance.regenTicks), regenIndicator.localPosition.y);
     }
 }

@@ -55,6 +55,7 @@ public class RunToggle : MonoBehaviour
         }
 
         numberText.text = Mathf.Round(player.runEnergy / 100).ToString();
+        orbManager.UpdateMask();
     }
 
     public void Stamina(bool active)

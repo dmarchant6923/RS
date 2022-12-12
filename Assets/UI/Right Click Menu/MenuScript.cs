@@ -105,8 +105,8 @@ public class MenuScript : MonoBehaviour, IPointerExitHandler, IPointerClickHandl
 
         Vector2 cameraSize = new Vector2(Screen.width, Screen.height) - Vector2.one;
         Vector2 RTPosition = menuRT.position;
-        Vector2 maxCorner = RTPosition + Vector2.right * menuRT.rect.width;
-        Vector2 minCorner = RTPosition - new Vector2(menuRT.rect.width, menuRT.rect.height * 2);
+        Vector2 maxCorner = RTPosition + Vector2.right * canvas.scaleFactor * menuRT.rect.width / 2;
+        Vector2 minCorner = RTPosition - new Vector2(menuRT.rect.width / 2, menuRT.rect.height) * canvas.scaleFactor;
 
         if (maxCorner.x > cameraSize.x)
         {

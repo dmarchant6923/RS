@@ -106,7 +106,6 @@ public class BlowPipe : MonoBehaviour
     {
         if (itemAction.actionUsedOnThis.gameObject.name.ToLower().Contains("dart") == false)
         {
-            itemAction.DefaultUseAction();
             return;
         }
 
@@ -155,6 +154,9 @@ public class BlowPipe : MonoBehaviour
             AddDartStats();
             AddUnloadAction();
         }
+
+        itemAction.foundUseActionMethod = true;
+        return;
     }
 
     void AddDartStats()

@@ -33,7 +33,7 @@ public class SetSpawn : MonoBehaviour
         combatScript.attackCooldown = 5;
         if (Jad)
         {
-            combatScript.attackCooldown = 12;
+            combatScript.attackCooldown = 9;
         }
 
         TickManager.beforeTick += BeforeTick;

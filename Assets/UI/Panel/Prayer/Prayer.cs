@@ -103,6 +103,16 @@ public class Prayer : MonoBehaviour
         rangedStrengthPrayerBonus = 1;
         magicAttackPrayerBonus = 1;
         defensePrayerBonus = 1;
+
+        protectFromMagic = false;
+        protectFromMelee = false;
+        protectFromMissiles = false;
+        redemption = false;
+        smite = false;
+        retribution = false;
+        preserve = false;
+        rapidHeal = false;
+        currentOverhead = null;
     }
     void Activate()
     {

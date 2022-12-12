@@ -215,7 +215,6 @@ public class ChargeItem : MonoBehaviour
 
         if (itemFound == false)
         {
-            itemAction.DefaultUseAction();
             return;
         }
 
@@ -259,6 +258,7 @@ public class ChargeItem : MonoBehaviour
             }
 
             Debug.Log("You need " + quantityString + " to charge the " + gameObject.name + ".");
+            itemAction.foundUseActionMethod = true;
             return;
         }
 
@@ -277,6 +277,8 @@ public class ChargeItem : MonoBehaviour
 
         chargeDialogueActive = true;
         DialogueBox.InputSubmitted += ReceiveInput;
+        itemAction.foundUseActionMethod = true;
+        return;
     }
     void ReceiveInput()
     {

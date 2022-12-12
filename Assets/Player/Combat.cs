@@ -50,7 +50,7 @@ public class Combat : MonoBehaviour
     public delegate void PlayerDamage(int damage);
     public event PlayerDamage playerDealtDamage;
 
-    public delegate void EnemyDamage(int damage, int maxhit);
+    public delegate void EnemyDamage(int damage, int maxhit, float hitChance);
     public static event EnemyDamage enemyDealtDamage;
 
     private void Start()
@@ -212,12 +212,12 @@ public class Combat : MonoBehaviour
                 if (rand <= realRubyBoltChance) //0.121f
                 {
                     success = true;
-                    float mult = 0.2f;
+                    float dmg = 100;
                     if (specialEffects && effects.zaryteCrossbow)
                     {
-                        mult = 0.22f;
+                        dmg = 110;
                     }
-                    hitRoll = (int)Mathf.Min(100, Mathf.Floor((float)Player.targetedNPC.GetComponent<Enemy>().hitpoints * mult));
+                    hitRoll = (int)Mathf.Min(dmg, Mathf.Floor((float)Player.targetedNPC.GetComponent<Enemy>().hitpoints));
                     Player.player.AddToDamageQueue((int) Mathf.Floor((float)PlayerStats.currentHitpoints * 0.1f), 0, null);
                     GameObject newEffect = Instantiate(attackEffect, Player.player.trueTile, Quaternion.identity);
                     newEffect.GetComponent<Explosion>().followObject = playerScript.gameObject;
@@ -306,12 +306,12 @@ public class Combat : MonoBehaviour
 
             if (WornEquipment.rubyBoltsE)
             {
-                float mult = 0.2f;
+                float dmg = 100;
                 if (specialEffects && effects.zaryteCrossbow)
                 {
-                    mult = 0.22f;
+                    dmg = 110f;
                 }
-                dps = (dps * (1 - rubyBoltProcChance)) + (rubyBoltProcChance * (int)Mathf.Min(100, Mathf.Floor((float)Player.targetedNPC.GetComponent<Enemy>().hitpoints * mult)) / attackCooldown / 0.6f);
+                dps = (dps * (1 - rubyBoltProcChance)) + (rubyBoltProcChance * (int)Mathf.Min(dmg, Mathf.Floor((float)Player.targetedNPC.GetComponent<Enemy>().hitpoints)) / attackCooldown / 0.6f);
             }
             else if (WornEquipment.diamondBoltsE)
             {
@@ -456,8 +456,9 @@ public class Combat : MonoBehaviour
                 if (hitRoll > 0)
                 {
                     XPDrop.CombatXPDrop(AttackStyles.attackStyle, AttackStyles.attackType, hitRoll, offensivePrayerOn);
-                    playerDealtDamage?.Invoke(hitRoll);
                 }
+
+                playerDealtDamage?.Invoke((int)maxHit);
 
                 if (success)
                 {
@@ -1070,15 +1071,25 @@ public class Combat : MonoBehaviour
             if (success)
             {
                 hitRoll = Random.Range(0, (int)maxHit + 1);
-                enemyDealtDamage?.Invoke(hitRoll, (int)maxHit);
             }
 
-            if ((Prayer.protectFromMelee && melee) || (Prayer.protectFromMissiles && range) || (Prayer.protectFromMagic && mage))
+            float hitChance;
+            if (maxAttRoll > maxDefRoll)
             {
-                if (enemyScript.typelessAttack == false)
-                {
-                    hitRoll = Mathf.FloorToInt((float) hitRoll * (1 - enemyScript.overheadProtectionMult));
-                }
+                hitChance = 1 - (maxDefRoll + 2) / (2 * (maxAttRoll + 1));
+            }
+            else
+            {
+                hitChance = maxAttRoll / (2 * (maxDefRoll + 1));
+            }
+
+            if (((Prayer.protectFromMelee && melee) || (Prayer.protectFromMissiles && range) || (Prayer.protectFromMagic && mage)) && enemyScript.typelessAttack == false)
+            {
+                hitRoll = Mathf.FloorToInt((float) hitRoll * (1 - enemyScript.overheadProtectionMult));
+            }
+            else
+            {
+                enemyDealtDamage?.Invoke(hitRoll, (int)maxHit, hitChance);
             }
 
             int dist = TileManager.TileDistance(playerScript.trueTile, enemyScript.npcScript.trueTile);
@@ -1104,16 +1115,6 @@ public class Combat : MonoBehaviour
 
             playerScript.AddToDamageQueue(hitRoll, delay, enemyScript, enemyScript.overkill);
             enemyScript.attackThisTick = true;
-
-            float hitChance;
-            if (maxAttRoll > maxDefRoll)
-            {
-                hitChance = 1 - (maxDefRoll + 2) / (2 * (maxAttRoll + 1));
-            }
-            else
-            {
-                hitChance = maxAttRoll / (2 * (maxDefRoll + 1));
-            }
 
             float dps = (maxHit / 2) * hitChance / attackCooldown / 0.6f;
 

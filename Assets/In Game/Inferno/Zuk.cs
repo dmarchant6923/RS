@@ -104,6 +104,7 @@ public class Zuk : MonoBehaviour
         }
         if (enemyScript.hitpoints < threshold3 && thresh3Passed == false)
         {
+            GameLog.Log("TzKal-Zuk has become enraged and is fighting for his life.");
             thresh3Passed = true;
             HealerSpawn();
             enemyScript.attackSpeed = 6;

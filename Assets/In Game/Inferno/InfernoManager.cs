@@ -45,7 +45,7 @@ public class InfernoManager : MonoBehaviour
         Player.player.playerDeath += PlayerDeath;
         Player.player.tookDamage += DamageCounter;
         zukScript.enemyDied += ZukDeath;
-        Combat.enemyDealtDamage += EnemyDamage;
+        Combat.enemyDealtDamage += Chanced;
         Player.player.combatScript.playerDealtDamage += PlayerDamage;
         returnButton.buttonClicked += ClosePanel;
 
@@ -92,15 +92,16 @@ public class InfernoManager : MonoBehaviour
             GameManager.UpdateSuccessStats(PlayerStats.totalLevel, damageTaken, encounterTicks);
         }
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(5);
         Action.ignoreAllActions = true;
         Player.player.trueTileScript.StopMovement();
-        time.text = timer.text;
+        time.text = Tools.SecondsToMinutes((float)encounterTicks * TickManager.maxTickTime, true);
         pb.text = Tools.SecondsToMinutes(GameManager.scores.fastestTicks * TickManager.maxTickTime, true);
         damage.text = damageTaken.ToString();
         balls.text = ballsTanked.ToString();
-        chance.text = (deathChance*100).ToString() + "%";
-        dps.text = ((float)damageDealt / ((float)encounterTicks * TickManager.maxTickTime)).ToString();
+        chance.text = (Mathf.Floor(deathChance*10000) / 100).ToString() + "%";
+        heals.text = ZukHealer.zukHeals.ToString();
+        dps.text = (Mathf.Floor(((float)damageDealt * 1000 / ((float)encounterTicks * TickManager.maxTickTime))) / 1000).ToString();
         float nibblerChance = 1 / 100;
         if (WornEquipment.slayerHelm)
         {
@@ -172,12 +173,13 @@ public class InfernoManager : MonoBehaviour
 
 
 
-    void EnemyDamage(int damage, int maxHit)
+    void Chanced(int damage, int maxHit, float hitChance)
     {
-        float chanceOfDying = Mathf.Max(0, (maxHit - PlayerStats.currentHitpoints) / maxHit);
+        float chanceOfDying = Mathf.Max(0, ((float)maxHit - (float)PlayerStats.currentHitpoints) / (float)maxHit) * hitChance;
         float chanceOfLiving = 1 - chanceOfDying;
         float cumulativeChanceOfLiving = (1 - deathChance) * chanceOfLiving;
         deathChance = 1 - cumulativeChanceOfLiving;
+        Debug.Log("max hit: " + maxHit + ". HP: " + PlayerStats.currentHitpoints + ". Chance of dying on this hit: " + chanceOfDying + ". cumulative chance: " + deathChance);
     }
 
     void PlayerDamage(int damage)
@@ -187,6 +189,6 @@ public class InfernoManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        Combat.enemyDealtDamage -= EnemyDamage;
+        Combat.enemyDealtDamage -= Chanced;
     }
 }

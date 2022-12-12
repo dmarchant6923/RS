@@ -33,6 +33,7 @@ public class ChestPanel : MonoBehaviour
             if (item != null)
             {
                 GameObject newItem = Instantiate(item, Vector2.one * -1000, Quaternion.identity);
+                newItem.name = item.name;
                 spawnedItems.Add(newItem);
             }
         }
@@ -49,9 +50,9 @@ public class ChestPanel : MonoBehaviour
         int columnNumber = 1;
         int rowNumber = 1;
 
-        for (int i = 0; i < items.Count; i++)
+        for (int i = 0; i < spawnedItems.Count; i++)
         {
-            if (i < items.Count && items[i] != null)
+            if (i < spawnedItems.Count && spawnedItems[i] != null)
             {
                 float positionX = nwCorner.position.x + (columnNumber - 1) * spacingX;
                 float positionY = nwCorner.position.y - (rowNumber - 1) * spacingY;
@@ -59,7 +60,7 @@ public class ChestPanel : MonoBehaviour
 
                 GameObject newImage = Instantiate(image, position, Quaternion.identity);
                 newImage.GetComponent<RawImage>().texture = spawnedItems[i].GetComponent<Item>().itemTexture;
-                newImage.GetComponent<ChestPanelItem>().examineText = items[i].GetComponent<Action>().examineText;
+                newImage.GetComponent<ChestPanelItem>().examineText = spawnedItems[i].GetComponent<Action>().examineText;
                 newImage.name = items[i].name;
                 newImage.transform.localScale = Vector2.one * itemScale * FindObjectOfType<Canvas>().scaleFactor;
                 newImage.transform.SetParent(transform);

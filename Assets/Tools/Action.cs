@@ -66,6 +66,7 @@ public class Action : MonoBehaviour
     static bool invokeCancel3;
 
     [HideInInspector] public Action actionUsedOnThis;
+    [HideInInspector] public bool foundUseActionMethod = false;
 
     public bool actionOnPointerUp;
 
@@ -465,16 +466,33 @@ public class Action : MonoBehaviour
         if (actionNumber == 9)
         {
             useActionSuccessful = false;
+            foundUseActionMethod = false;
             if (serverActionUse != null && actionUsedOnThis != null)
             {
                 serverActionUse();
             }
-            else
+            if (foundUseActionMethod == false)
             {
-                DefaultUseAction();
+               actionUsedOnThis.CheckTheOtherItem(this);
             }
             actionUsedOnThis = null;
+            foundUseActionMethod = false;
         }
+    }
+
+    public void CheckTheOtherItem(Action thisAction)
+    {
+        foundUseActionMethod = false;
+        actionUsedOnThis = thisAction;
+        if (serverActionUse != null && actionUsedOnThis != null)
+        {
+            serverActionUse();
+        }
+        if (foundUseActionMethod == false)
+        {
+            DefaultUseAction();
+        }
+        foundUseActionMethod = false;
     }
 
     public void DefaultUseAction()
@@ -496,8 +514,6 @@ public class Action : MonoBehaviour
         staticActionNum = -1;
         staticEventsAddedToTickManager = false;
     }
-
-
 
     private void Update()
     {
