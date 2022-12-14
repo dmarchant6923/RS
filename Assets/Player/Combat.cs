@@ -12,7 +12,7 @@ public class Combat : MonoBehaviour
     SpecialEffects effects;
 
     [HideInInspector] public int attackCooldown = 0;
-    [HideInInspector] public int minCoolDown = -7;
+    [HideInInspector] public static int minCoolDown = -7;
 
     public GameObject projectile;
     public float projectileSize = 1;
@@ -378,7 +378,6 @@ public class Combat : MonoBehaviour
 
         SpecBar.instance.CheckSpec();
 
-        Debug.Log(useSpec);
         if (attackCooldown <= 0)
         {
             if (useSpec && WornEquipment.weapon.spec == null)

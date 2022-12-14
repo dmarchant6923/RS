@@ -136,7 +136,7 @@ public class Zuk : MonoBehaviour
             return;
         }
 
-        if (showSetTimer && Mathf.Floor(floatTimer) > Mathf.Floor(floatTimer - Time.deltaTime))
+        if (CustomHUD.instance != null && showSetTimer && Mathf.Floor(floatTimer) > Mathf.Floor(floatTimer - Time.deltaTime))
         {
             CustomHUD.instance.UpdateText(Tools.SecondsToMinutes(floatTimer, true));
         }

@@ -15,6 +15,21 @@ public class HiscoresPanel : MonoBehaviour
     public Text leastDamageValue;
     public Text timeValue;
 
+    public GameObject parent;
+
+    private void Awake()
+    {
+        PlayerStats.reinitialize += FindPanel;
+    }
+
+    void FindPanel()
+    {
+        TV tv = FindObjectOfType<TV>();
+        if (tv != null)
+        {
+            tv.statsPanel = parent;
+        }
+    }
     private void Start()
     {
         resetButton.buttonClicked += ResetScores;

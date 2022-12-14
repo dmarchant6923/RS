@@ -114,7 +114,7 @@ public class Equipment : MonoBehaviour
         {
             if (twoHanded && Inventory.slotsTaken == 28 && WornEquipment.shield != null)
             {
-                Debug.Log("You don't have enough free space to do that.");
+                GameLog.Log("You don't have enough free space to do that.");
                 return;
             }
 
@@ -212,6 +212,13 @@ public class Equipment : MonoBehaviour
         {
             equipSlot.GetComponent<RawImage>().enabled = true;
         }
+    }
+
+    public void DestroyEquippedItem()
+    {
+        equipSlot.GetComponent<RawImage>().enabled = true;
+        itemScript.inventory.UpdateStats();
+        Destroy(gameObject);
     }
 
     public void RemoveEquipAction()

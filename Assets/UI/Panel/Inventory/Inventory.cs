@@ -155,7 +155,7 @@ public class Inventory : MonoBehaviour
         GameObject item = null;
         foreach (GameObject slot in inventorySlots)
         {
-            if (slot.transform.childCount > 0 && slot.transform.GetChild(0).name == itemName)
+            if (slot.transform.childCount > 0 && slot.transform.GetChild(0).name.ToLower() == itemName.ToLower())
             {
                 item = slot.transform.GetChild(0).gameObject;
                 break;

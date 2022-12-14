@@ -137,6 +137,11 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         SpawnGroundItem(player.trueTile, true);
     }
 
+    public void DestroyItem()
+    {
+        Destroy(gameObject);
+    }
+
     public GameObject SpawnGroundItem(Vector2 tile, bool removeFromInventory)
     {
         GameObject newItem = Instantiate(groundPrefab, tile, Quaternion.identity);

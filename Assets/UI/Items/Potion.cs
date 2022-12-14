@@ -13,7 +13,7 @@ public class Potion : MonoBehaviour
 
     public int startingDose = 4;
     int currentDose;
-    string initialName;
+    [HideInInspector] public string initialName;
     [HideInInspector] public bool divine;
 
     public delegate void PotionEffects();

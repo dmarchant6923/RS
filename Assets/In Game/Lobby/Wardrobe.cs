@@ -20,7 +20,6 @@ public class Wardrobe : MonoBehaviour
 
     void OpenWardrobe()
     {
-        PanelButtons.instance.ForceOpen("Inventory");
-        presetPanel.SetActive(true);
+        FindObjectOfType<PresetsPanel>().OpenWardrobe();
     }
 }

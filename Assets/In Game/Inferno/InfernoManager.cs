@@ -12,35 +12,28 @@ public class InfernoManager : MonoBehaviour
     int fadeTime = 4;
     int fadeTicks = 0;
 
-    int encounterTicks = 0;
-    int damageTaken;
     bool stopTimer = false;
-
-    public Image fadeBox;
 
     public static bool showZukTileMarkers;
     public GameObject tileMarkerParent;
 
     public Text timer;
 
-    public GameObject winPanel;
-    public Text time;
-    public Text pb;
-    public Text damage;
-    public Text balls;
-    public Text chance;
-    public Text heals;
-    public Text shieldHealth;
-    public Text dps;
-    public Text nibbler;
-    public ButtonScript returnButton;
+    public CompletionPanel winPanel;
 
-    float deathChance = 0;
-    public int damageDealt = 0;
-    public int ballsTanked = 0;
-    int shieldHealthValue;
+    [HideInInspector] public int encounterTicks = 0;
+    [HideInInspector] public int damageTaken;
+    [HideInInspector] public float deathChance = 0;
+    [HideInInspector] public int damageDealt = 0;
+    [HideInInspector] public int ballsTanked = 0;
+    [HideInInspector] public int shieldHealthValue;
 
     public static InfernoManager instance;
+
+    public GameObject infernoUI;
+    GameObject newUI;
+    Canvas canvas;
+    List<GameObject> newUIElements = new List<GameObject>();
 
     void Start()
     {
@@ -50,7 +43,9 @@ public class InfernoManager : MonoBehaviour
         zukScript.enemyDied += ZukDeath;
         Player.player.damageInfo += Chanced;
         Player.player.combatScript.playerDealtDamage += PlayerDamage;
-        returnButton.buttonClicked += ClosePanel;
+
+        Player.player.SetNewPosition(Vector2.zero);
+        Action.ignoreAllActions = false;
 
         TickManager.afterTick += AfterTick;
 
@@ -59,7 +54,40 @@ public class InfernoManager : MonoBehaviour
             tileMarkerParent.SetActive(false);
         }
 
-        timer.gameObject.SetActive(true);
+        canvas = FindObjectOfType<Canvas>();
+        newUI = Instantiate(infernoUI, canvas.transform);
+        newUI.transform.position = canvas.transform.position;
+        newUI.GetComponent<RectTransform>().sizeDelta = new Vector2(newUI.GetComponent<RectTransform>().rect.width / canvas.scaleFactor, newUI.GetComponent<RectTransform>().rect.height / canvas.scaleFactor);
+        winPanel = newUI.GetComponentInChildren<CompletionPanel>();
+        timer = newUI.transform.GetChild(0).GetComponent<Text>();
+
+        winPanel.gameObject.SetActive(false);
+        winPanel.manager = this;
+        GameLog.Log("Good luck!");
+
+        StartCoroutine(Unfade());
+    }
+
+    IEnumerator Unfade()
+    {
+        yield return null;
+        CameraScript.instance.ResetCameraPosition();
+        Color color = UIManager.instance.fadeBox.color;
+        while (color.a > 0)
+        {
+            color = UIManager.instance.fadeBox.color;
+            color.a -= Time.deltaTime;
+            UIManager.instance.fadeBox.color = color;
+            yield return null;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        Player.player.playerDeath -= PlayerDeath;
+        Player.player.tookDamage -= DamageCounter;
+        Player.player.damageInfo -= Chanced;
+        TickManager.afterTick -= AfterTick;
     }
 
     void PlayerDeath()
@@ -98,44 +126,27 @@ public class InfernoManager : MonoBehaviour
         shieldHealthValue = shieldScript.GetComponent<Enemy>().hitpoints;
 
         yield return new WaitForSeconds(5);
-        Action.ignoreAllActions = true;
-        Player.player.trueTileScript.StopMovement();
-        time.text = Tools.SecondsToMinutes((float)encounterTicks * TickManager.maxTickTime, true);
-        pb.text = Tools.SecondsToMinutes(GameManager.scores.fastestTicks * TickManager.maxTickTime, true);
-        damage.text = damageTaken.ToString();
-        balls.text = ballsTanked.ToString();
-        chance.text = (Mathf.Floor(deathChance*10000) / 100).ToString() + "%";
-        heals.text = ZukHealer.zukHeals.ToString();
-        shieldHealth.text = shieldHealthValue + "/" + 600;
-        dps.text = (Mathf.Floor(((float)damageDealt * 1000 / ((float)encounterTicks * TickManager.maxTickTime))) / 1000).ToString();
-        float nibblerChance = 1 / 100;
-        if (WornEquipment.slayerHelm)
+        if (OptionManager.ignoreHiscores == false)
         {
-            nibblerChance = 1 / 75;
-        }
-        if (Random.Range(0f, 1f) < nibblerChance)
-        {
-            nibbler.text = "YES! gzzzz";
+            Action.ignoreAllActions = true;
+            Player.player.trueTileScript.StopMovement();
+            winPanel.UpdateText();
+            winPanel.gameObject.SetActive(true);
+
+            yield return new WaitForSeconds(1);
+            Action.ignoreAllActions = false;
         }
         else
         {
-            nibbler.text = "No.";
+            GameLog.Log("You were not eligible for high scores.");
         }
-        winPanel.SetActive(true);
-        yield return new WaitForSeconds(1);
-        Action.ignoreAllActions = false;
 
-        while (winPanel.activeSelf)
+        while (winPanel.gameObject.activeSelf)
         {
             yield return null;
         }
 
         ReturnToLobby();
-    }
-
-    void ClosePanel()
-    {
-        winPanel.SetActive(false);
     }
 
     void DamageCounter(int damage)
@@ -158,6 +169,7 @@ public class InfernoManager : MonoBehaviour
     }
     public IEnumerator ReturnToLobby(float delay)
     {
+        Player.player.ClearDamageQueue();
         yield return null;
         Player.player.trueTileScript.StopMovement();
         yield return new WaitForSeconds(delay);
@@ -165,13 +177,18 @@ public class InfernoManager : MonoBehaviour
         fadeTicks = fadeTime;
         while (fadeTicks > 0)
         {
-            Color color = fadeBox.color;
+            Color color = UIManager.instance.fadeBox.color;
             color.a += Time.deltaTime;
-            fadeBox.color = color;
+            UIManager.instance.fadeBox.color = color;
             yield return null;
         }
 
-        OptionManager.keepRunOn = Player.player.runEnabled;
+        Prayer.DeactivatePrayers();
+        //foreach (GameObject element in newUIElements)
+        //{
+        //    Destroy(element);
+        //}
+        Destroy(newUI);
         SceneManager.LoadScene("Lobby");
     }
 

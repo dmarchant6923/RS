@@ -64,8 +64,9 @@ public class PlayerStats : MonoBehaviour
     //static bool ignoreRangeDecrease = false;
     //static bool ignoreMagicDecrease = false;
 
-    public delegate void ChangeStats();
-    public static event ChangeStats newStats;
+    public delegate void PlayerEvent();
+    public static event PlayerEvent newStats;
+    public static event PlayerEvent reinitialize;
 
     public static int imbuedHeartRechargeTicks = 700;
     public static bool imbuedHeartCharged = true;
@@ -231,6 +232,14 @@ public class PlayerStats : MonoBehaviour
         if (drinkDelay > 0)
         {
             drinkDelay--;
+        }
+        if (foodDelay > 0)
+        {
+            foodDelay--;
+        }
+        if (karambwanDelayLol > 0)
+        {
+            karambwanDelayLol--;
         }
     }
 
@@ -459,6 +468,20 @@ public class PlayerStats : MonoBehaviour
         BuffBar.instance.CreateExtraTimer(texture, (float)divineTicks * TickManager.maxTickTime, name, warningText, endText);
     }
 
+    public static void ResetAllAttributes()
+    {
+        ReinitializeStats();
+        Player.player.dead = false;
+        //HealthHUD.Deactivate();
+        HealthBar.DeleteAll();
+        imbuedHeartCharged = true;
+        imbuedHeartTicks = 0;
+        Player.player.runEnergy = 10000;
+        SpecBar.ResetSpecBar();
+        Player.player.staminaTicks = 0;
+
+        reinitialize?.Invoke();
+    }
     public static void ReinitializeStats()
     {
         currentAttack = initialAttack;
@@ -479,7 +502,7 @@ public class PlayerStats : MonoBehaviour
         {
             foreach (var d in newStats.GetInvocationList())
             {
-                newStats -= d as ChangeStats;
+                newStats -= d as PlayerEvent;
             }
         }
     }

@@ -31,6 +31,7 @@ public class Minimap : MonoBehaviour, IPointerClickHandler
 
         mainCamera = Camera.main.GetComponent<CameraScript>();
         newMinimapCam = Instantiate(minimapCam, Vector3.back * -10, Quaternion.identity);
+        DontDestroyOnLoad(newMinimapCam);
         //minimapCam.backgroundColor = Camera.main.backgroundColor;
 
         canvas = FindObjectOfType<Canvas>();

@@ -22,12 +22,12 @@ public class LoadPlayerAttributes : MonoBehaviour
             return;
         }
 
-        StartCoroutine(LoadPresetEnum(_equipment, _equipBlowpipeAmmo, _items, _inventoryBlowpipeAmmo));
+        //StartCoroutine(LoadPresetEnum(_equipment, _equipBlowpipeAmmo, _items, _inventoryBlowpipeAmmo));
     }
 
     public static IEnumerator LoadPresetEnum(string[] equipment, string equipBlowpipeAmmo, string[] items, string inventoryBlowpipeAmmo)
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.05f);
         foreach (GameObject slot in Inventory.inventorySlots)
         {
             if (slot.GetComponentInChildren<Item>() != null)
@@ -42,9 +42,7 @@ public class LoadPlayerAttributes : MonoBehaviour
         {
             if (slot.GetComponentInChildren<Equipment>() != null)
             {
-                Equipment item = slot.GetComponentInChildren<Equipment>();
-                item.Equip();
-                Destroy(item.gameObject);
+                slot.GetComponentInChildren<Equipment>().DestroyEquippedItem();
             }
         }
 
@@ -100,7 +98,7 @@ public class LoadPlayerAttributes : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.05f);
 
         foreach (GameObject equipItem in equipments)
         {
@@ -111,10 +109,5 @@ public class LoadPlayerAttributes : MonoBehaviour
         {
             Inventory.instance.PlaceInInventory(item);
         }
-
-        //_equipment = new string[11];
-        //_equipBlowpipeAmmo = null;
-        //_items = new string[28];
-        //_inventoryBlowpipeAmmo = null;
     }
 }

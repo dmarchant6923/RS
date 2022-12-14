@@ -17,8 +17,12 @@ public class CameraScript : MonoBehaviour
     Camera cam;
     [HideInInspector] public Player player;
 
+    public static CameraScript instance;
+
     void Start()
     {
+        instance = this;
+        DontDestroyOnLoad(gameObject);
         camSize = PlayerPrefs.GetFloat("Camera Size", 5);
 
         cam = GetComponent<Camera>();
@@ -26,6 +30,8 @@ public class CameraScript : MonoBehaviour
 
         player = FindObjectOfType<Player>();
         cam.transform.position = player.transform.position + Vector3.back * 10;
+
+        DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame
@@ -67,4 +73,14 @@ public class CameraScript : MonoBehaviour
     {
         PlayerPrefs.SetFloat("Camera Size", cam.orthographicSize);
     }
+
+    public void ResetCameraPosition()
+    {
+        transform.position = new Vector3(player.playerPosition.x, player.playerPosition.y, -10);
+    }
+
+    //private void OnLevelWasLoaded(int level)
+    //{
+    //    ResetCameraPosition();
+    //}
 }

@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
-public class ChestPanelItem : MonoBehaviour, IPointerClickHandler
+public class ChestPanelItem : MonoBehaviour
 {
     Action itemAction;
+    ChestPanel chestPanelScript;
 
     public string examineText = "asdfas";
 
     private void Start()
     {
+        chestPanelScript = transform.parent.parent.GetComponent<ChestPanel>();
         itemAction = GetComponent<Action>();
 
         itemAction.menuTexts[0] = "Take ";
@@ -22,6 +22,20 @@ public class ChestPanelItem : MonoBehaviour, IPointerClickHandler
     }
 
     void TakeItem()
+    {
+        Inventory.instance.CountSlots();
+        if (Inventory.slotsTaken == 28)
+        {
+            GameLog.Log("You don't have enough space.");
+        }
+
+        if (gameObject.activeSelf)
+        {
+            StartCoroutine(TakeItemCR());
+        }
+    }
+
+    IEnumerator TakeItemCR()
     {
         GameObject newItem = Tools.LoadFromResource(gameObject.name);
         newItem.name = gameObject.name;
@@ -34,10 +48,13 @@ public class ChestPanelItem : MonoBehaviour, IPointerClickHandler
             newItem.GetComponent<ChargeItem>().charges = 2000;
         }
         Inventory.instance.PlaceInInventory(newItem);
-    }
 
-    public void OnPointerClick(PointerEventData pointerEventData)
-    {
+        yield return null;
 
+        Item itemScript = newItem.GetComponent<Item>();
+        itemScript.menuTexts[7] = "Deposit ";
+        itemScript.itemAction.serverAction7 += itemScript.DestroyItem;
+        itemScript.itemAction.menuPriorities[7] = 1;
+        itemScript.UpdateActions();
     }
 }

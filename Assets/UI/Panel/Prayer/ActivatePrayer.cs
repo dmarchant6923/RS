@@ -74,6 +74,13 @@ public class ActivatePrayer : MonoBehaviour
             QPeffectiveActive = true;
         }
         selectQuickPrayer = false;
+
+        TickManager.afterTick += CorrectBackgroundColor;
+    }
+
+    void CorrectBackgroundColor()
+    {
+        ChangeColors(active);
     }
 
     public void SetPrayerUnlocked()
@@ -111,6 +118,11 @@ public class ActivatePrayer : MonoBehaviour
         if (locked)
         {
             GameLog.Log("Your prayer level is too low to use this prayer.");
+            return;
+        }
+        if (PlayerStats.currentPrayer == 0 && active == false)
+        {
+            GameLog.Log("You are out of prayer points.");
             return;
         }
 

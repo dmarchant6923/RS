@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 543691679007232029}
   - component: {fileID: 543691679007232028}
-  - component: {fileID: -5250633589155809030}
-  - component: {fileID: 2000097399694952871}
   - component: {fileID: 8600925281318287474}
+  - component: {fileID: 2000097399694952871}
+  - component: {fileID: -5250633589155809030}
   - component: {fileID: 1636768606}
   m_Layer: 0
   m_Name: Supply chest
@@ -86,6 +86,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8600925281318287474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543691679007232027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 437afd227ec508449a620648e78ee4b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chestPanel: {fileID: 0}
+--- !u!114 &2000097399694952871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543691679007232027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fe906a0d43cbfb47a0fed94be9c0297, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  examineText: Choose your gear.
+  objectName: 
+  addObjectName: 1
+  ignoreUse: 0
+  inGame: 0
+  redClick: 1
+  actionUsedOnThis: {fileID: 0}
+  foundUseActionMethod: 0
+  actionOnPointerUp: 0
+  useActionSuccessful: 0
 --- !u!61 &-5250633589155809030
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -112,40 +147,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.8, y: 1.5}
   m_EdgeRadius: 0
---- !u!114 &2000097399694952871
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 543691679007232027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fe906a0d43cbfb47a0fed94be9c0297, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  examineText: Choose your gear.
-  objectName: 
-  addObjectName: 1
-  ignoreUse: 0
-  inGame: 0
-  redClick: 1
-  actionUsedOnThis: {fileID: 0}
-  actionOnPointerUp: 0
-  useActionSuccessful: 0
---- !u!114 &8600925281318287474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 543691679007232027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 437afd227ec508449a620648e78ee4b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chestPanel: {fileID: 0}
 --- !u!114 &1636768606
 MonoBehaviour:
   m_ObjectHideFlags: 0

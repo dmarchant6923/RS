@@ -40,6 +40,7 @@ public class TrueTile : MonoBehaviour
         pathFinder = FindObjectOfType<Pathfinder>();
 
         newTileMarker = Instantiate(tileMarker, TileManager.FindTile(transform.position), Quaternion.identity);
+        DontDestroyOnLoad(newTileMarker);
         if (showTrueTile)
         {
             newTileMarker.GetComponent<SpriteRenderer>().enabled = false;

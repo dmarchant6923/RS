@@ -33,7 +33,6 @@ public class TileDataManager : MonoBehaviour
         }
 
         examineTileAction = GetComponent<Action>();
-        examineTileAction.clientActionExamine += ExamineTile;
         examineTileAction.orderLevels[8] = -1;
     }
 
@@ -52,7 +51,7 @@ public class TileDataManager : MonoBehaviour
 
             if (examineText != "")
             {
-                menuText = "Examine " + GetTileName(MouseManager.mouseCoordinate);
+                menuText = "Examine <color=cyan>" + GetTileName(MouseManager.mouseCoordinate) + "</color>";
                 examineTileAction.menuTexts[8] = menuText;
                 examineTileAction.examineText = examineText;
                 examineTileAction.objectName = GetTileName(MouseManager.mouseCoordinate);
@@ -66,11 +65,6 @@ public class TileDataManager : MonoBehaviour
                 RightClickMenu.tileActions.Remove(examineTileAction);
             }
         }
-    }
-
-    public void ExamineTile()
-    {
-        Debug.Log(examineText);
     }
 
     public static TileData GetTileData(Vector2 coordinate)

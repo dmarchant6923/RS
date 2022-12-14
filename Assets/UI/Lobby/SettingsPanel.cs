@@ -50,6 +50,17 @@ public class SettingsPanel : MonoBehaviour
             checkmarks[i].checkNumber = i;
         }
         GetComponent<BasePanelScript>().panelClosed += SetPanelOpenBoolToFalse;
+
+        PlayerStats.reinitialize += FindPanel;
+    }
+
+    void FindPanel()
+    {
+        SettingsTable table = FindObjectOfType<SettingsTable>();
+        if (table != null)
+        {
+            table.settingsPanel = this;
+        }
     }
 
     IEnumerator Start()

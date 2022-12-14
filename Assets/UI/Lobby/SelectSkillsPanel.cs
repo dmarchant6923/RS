@@ -11,13 +11,29 @@ public class SelectSkillsPanel : MonoBehaviour
 
     public ButtonScript resetButton;
     public ButtonScript applyButton;
+    public GameObject parent;
 
     public Text totalLevelText;
 
     int totalLevel;
+    Treadmill treadmill;
 
-    private void Start()
+    private void Awake()
     {
+        PlayerStats.reinitialize += FindPanel;
+    }
+
+    void FindPanel()
+    {
+        treadmill = FindObjectOfType<Treadmill>();
+        if (treadmill != null)
+        {
+            treadmill.skillsPanel = parent;
+        }
+    }
+    private IEnumerator Start()
+    {
+        yield return null;
         InitializeStats();
 
         applyButton.buttonClicked += ApplySkills;

@@ -20,7 +20,6 @@ public class SupplyChest : MonoBehaviour
 
     void OpenChest()
     {
-        chestPanel.SetActive(true);
-        PanelButtons.instance.ForceOpen("Inventory");
+        FindObjectOfType<ChestPanel>().OpenChest();
     }
 }

@@ -1,1 +1,1 @@
-{"filled":false,"items":["","","","","","","","","","","","","","","","","","","","","","","","","","","",""],"blowpipeAmmo":""}
+{"filled":true,"items":["","","","","","","","","","","","","Super restore","Super restore","Super restore","Super restore","Super restore","Super restore","Saradomin brew","Saradomin brew","Saradomin brew","Saradomin brew","Saradomin brew","Saradomin brew","Bastion potion","Stamina potion","Diamond dragon bolts (e)","Toxic blowpipe"],"blowpipeAmmo":"Dragon dart"}

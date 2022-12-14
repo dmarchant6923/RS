@@ -39,43 +39,83 @@ public class PresetsPanel : MonoBehaviour
     string extension = ".txt";
     string dir;
 
+    public GameObject parent;
+    Wardrobe wardrobe;
+    BasePanelScript panelScript;
+
+    public ButtonScript depositInventoryButton;
+    public ButtonScript depositEquipmentButton;
+
+    public GameObject warning;
+
+    [HideInInspector] public bool panelOpen = false;
+
     //final build should be using persistentDataPath, not dataPath
 
-    private void Start()
+    private void Awake()
     {
-        for (int i = 0; i < 3; i++)
+        PlayerStats.reinitialize += FindPanel;
+        panelScript = GetComponent<BasePanelScript>();
+        panelScript.panelClosed += CloseWardrobe;
+        TickManager.afterTick += CheckWarningTick;
+
+        depositInventoryButton.buttonClicked += DepositInventory;
+        depositEquipmentButton.buttonClicked += DepositEquipment;
+    }
+
+    void FindPanel()
+    {
+        wardrobe = FindObjectOfType<Wardrobe>();
+        if (wardrobe != null)
         {
-            saveButtons[i].buttonAction.menuTexts[0] = "Save preset " + (i + 1);
-            loadButtons[i].buttonAction.menuTexts[0] = "Load preset " + (i + 1);
-            clearButtons[i].buttonAction.menuTexts[0] = "Clear preset " + (i + 1);
-            if (i == 0)
-            {
-                saveButtons[i].buttonClicked += SavePreset1;
-                loadButtons[i].buttonClicked += LoadPreset1;
-                clearButtons[i].buttonClicked += ClearPreset1;
-            }
-            if (i == 1)
-            {
-                saveButtons[i].buttonClicked += SavePreset2;
-                loadButtons[i].buttonClicked += LoadPreset2;
-                clearButtons[i].buttonClicked += ClearPreset2;
-            }
-            if (i == 2)
-            {
-                saveButtons[i].buttonClicked += SavePreset3;
-                loadButtons[i].buttonClicked += LoadPreset3;
-                clearButtons[i].buttonClicked += ClearPreset3;
-            }
-            saveButtons[i].buttonAction.UpdateName();
-            loadButtons[i].buttonAction.UpdateName();
-            clearButtons[i].buttonAction.UpdateName();
+            wardrobe.presetPanel = parent;
         }
+        StartCoroutine(StartPanel());
+    }
 
-        dir = Application.dataPath + folder;
+    private IEnumerator StartPanel()
+    {
+        if (wardrobe != null)
+        {
+            while (saveButtons[0].buttonAction == null)
+            {
+                yield return null;
+            }
 
-        InitializePresets();
+            for (int i = 0; i < 3; i++)
+            {
+                saveButtons[i].buttonAction.menuTexts[0] = "Save preset " + (i + 1);
+                loadButtons[i].buttonAction.menuTexts[0] = "Load preset " + (i + 1);
+                clearButtons[i].buttonAction.menuTexts[0] = "Clear preset " + (i + 1);
+                if (i == 0)
+                {
+                    saveButtons[i].buttonClicked += SavePreset1;
+                    loadButtons[i].buttonClicked += LoadPreset1;
+                    clearButtons[i].buttonClicked += ClearPreset1;
+                }
+                if (i == 1)
+                {
+                    saveButtons[i].buttonClicked += SavePreset2;
+                    loadButtons[i].buttonClicked += LoadPreset2;
+                    clearButtons[i].buttonClicked += ClearPreset2;
+                }
+                if (i == 2)
+                {
+                    saveButtons[i].buttonClicked += SavePreset3;
+                    loadButtons[i].buttonClicked += LoadPreset3;
+                    clearButtons[i].buttonClicked += ClearPreset3;
+                }
+                saveButtons[i].buttonAction.UpdateName();
+                loadButtons[i].buttonAction.UpdateName();
+                clearButtons[i].buttonAction.UpdateName();
+            }
 
-        TickManager.beforeTick += BeforeTick;
+            dir = Application.dataPath + folder;
+
+            InitializePresets();
+
+            TickManager.beforeTick += BeforeTick;
+        }
     }
     void InitializePresets()
     {
@@ -215,6 +255,7 @@ public class PresetsPanel : MonoBehaviour
         if (gameObject.activeSelf)
         {
             StartCoroutine(LoadPlayerAttributes.LoadPresetEnum(presetEquipment[num].equipment, presetEquipment[num].blowpipeAmmo, presetInventory[num].items, presetInventory[num].blowpipeAmmo));
+            StartCoroutine(AddDepositAction());
         }
     }
     public void ClearPreset(int presetNumber)
@@ -288,4 +329,93 @@ public class PresetsPanel : MonoBehaviour
         ClearPreset(2);
     }
 
+
+
+
+    public void OpenWardrobe()
+    {
+        panelOpen = true;
+        PanelButtons.instance.ForceOpen("Inventory");
+        parent.SetActive(true);
+        foreach (GameObject slot in Inventory.inventorySlots)
+        {
+            if (slot.GetComponentInChildren<Item>() != null)
+            {
+                Item item = slot.GetComponentInChildren<Item>();
+                item.menuTexts[7] = "Deposit ";
+                item.itemAction.serverAction7 += item.DestroyItem;
+                item.itemAction.menuPriorities[7] = 1;
+                item.UpdateActions();
+            }
+        }
+    }
+
+    void CloseWardrobe()
+    {
+        panelOpen = false;
+        foreach (GameObject slot in Inventory.inventorySlots)
+        {
+            if (slot.GetComponentInChildren<Item>() != null)
+            {
+                Item item = slot.GetComponentInChildren<Item>();
+                item.menuTexts[7] = null;
+                item.itemAction.serverAction7 -= item.DestroyItem;
+                item.itemAction.menuPriorities[7] = 0;
+                item.UpdateActions();
+            }
+        }
+    }
+
+    IEnumerator AddDepositAction()
+    {
+        yield return new WaitForSeconds(0.2f);
+        foreach (GameObject slot in Inventory.inventorySlots)
+        {
+            if (slot.GetComponentInChildren<Item>() != null)
+            {
+                Item item = slot.GetComponentInChildren<Item>();
+                item.menuTexts[7] = "Deposit ";
+                item.itemAction.serverAction7 += item.DestroyItem;
+                item.itemAction.menuPriorities[7] = 1;
+                item.UpdateActions();
+            }
+        }
+    }
+
+    void DepositInventory()
+    {
+        foreach (GameObject slot in Inventory.inventorySlots)
+        {
+            if (slot.GetComponentInChildren<Item>() != null)
+            {
+                Destroy(slot.GetComponentInChildren<Item>().gameObject);
+            }
+        }
+    }
+
+    void DepositEquipment()
+    {
+        foreach (Transform slot in WornEquipment.slots)
+        {
+            if (slot.GetComponentInChildren<Equipment>() != null)
+            {
+                slot.GetComponentInChildren<Equipment>().DestroyEquippedItem();
+            }
+        }
+    }
+
+    void CheckWarningTick()
+    {
+        if (panelOpen == false)
+        {
+            return;
+        }
+
+        Invoke(nameof(CheckWarning), 0.1f);
+    }
+
+    void CheckWarning()
+    {
+        warning.SetActive(UIManager.instance.CheckWarning());
+    }
 }

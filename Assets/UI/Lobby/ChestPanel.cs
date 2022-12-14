@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ChestPanel : MonoBehaviour
 {
+    [HideInInspector] public bool panelOpen = false;
     public GameObject image;
     public Transform itemParent;
 
@@ -18,13 +19,25 @@ public class ChestPanel : MonoBehaviour
 
     public float itemScale = 0.6f;
 
+    public ButtonScript depositInventoryButton;
+    public ButtonScript depositEquipmentButton;
+    public GameObject warning;
+
     public List<GameObject> items = new List<GameObject>();
     List<GameObject> spawnedItems = new List<GameObject>();
 
-    Vector2 onPosition;
+    BasePanelScript panelScript;
 
     private IEnumerator Start()
     {
+        TickManager.afterTick += CheckWarningTick;
+        PlayerStats.reinitialize += FindPanel;
+        panelScript = GetComponent<BasePanelScript>();
+        panelScript.panelClosed += CloseChest;
+
+        depositInventoryButton.buttonClicked += DepositInventory;
+        depositEquipmentButton.buttonClicked += DepositEquipment;
+
         yield return null;
 
         foreach (GameObject item in items)
@@ -81,5 +94,85 @@ public class ChestPanel : MonoBehaviour
         {
             Destroy(item);
         }
+    }
+
+    void FindPanel()
+    {
+        SupplyChest chest = FindObjectOfType<SupplyChest>();
+        if (chest != null)
+        {
+            chest.chestPanel = itemParent.gameObject;
+        }
+    }
+
+    public void OpenChest()
+    {
+        panelOpen = true;
+        itemParent.gameObject.SetActive(true);
+        PanelButtons.instance.ForceOpen("Inventory");
+        foreach (GameObject slot in Inventory.inventorySlots)
+        {
+            if (slot.GetComponentInChildren<Item>() != null)
+            {
+                Item item = slot.GetComponentInChildren<Item>();
+                item.menuTexts[7] = "Deposit ";
+                item.itemAction.serverAction7 += item.DestroyItem;
+                item.itemAction.menuPriorities[7] = 1;
+                item.UpdateActions();
+            }
+        }
+    }
+
+    void CloseChest()
+    {
+        panelOpen = false;
+        foreach (GameObject slot in Inventory.inventorySlots)
+        {
+            if (slot.GetComponentInChildren<Item>() != null)
+            {
+                Item item = slot.GetComponentInChildren<Item>();
+                item.menuTexts[7] = null;
+                item.itemAction.serverAction7 -= item.DestroyItem;
+                item.itemAction.menuPriorities[7] = 0;
+                item.UpdateActions();
+            }
+        }
+    }
+
+    void DepositInventory()
+    {
+        foreach (GameObject slot in Inventory.inventorySlots)
+        {
+            if (slot.GetComponentInChildren<Item>() != null)
+            {
+                Destroy(slot.GetComponentInChildren<Item>().gameObject);
+            }
+        }
+    }
+
+    void DepositEquipment()
+    {
+        foreach (Transform slot in WornEquipment.slots)
+        {
+            if (slot.GetComponentInChildren<Equipment>() != null)
+            {
+                slot.GetComponentInChildren<Equipment>().DestroyEquippedItem();
+            }
+        }
+    }
+
+    void CheckWarningTick()
+    {
+        if (panelOpen == false)
+        {
+            return;
+        }
+
+        Invoke(nameof(CheckWarning), 0.05f);
+    }
+
+    void CheckWarning()
+    {
+        warning.SetActive(UIManager.instance.CheckWarning());
     }
 }

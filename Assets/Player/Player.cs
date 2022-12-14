@@ -63,6 +63,7 @@ public class Player : MonoBehaviour
     public bool debugEnabled = false;
 
     [HideInInspector] public bool dead = false;
+    [HideInInspector] public bool standardDeath = false;
     public delegate void PlayerEvents();
     public event PlayerEvents playerDeath;
 
@@ -102,6 +103,8 @@ public class Player : MonoBehaviour
         Action.cancel1 += RemoveFocus;
 
         TrueTile.afterMovement += PerformAttack;
+
+        DontDestroyOnLoad(gameObject);
     }
 
     void Update()
@@ -291,7 +294,7 @@ public class Player : MonoBehaviour
 
         damageInfo?.Invoke(damage);
 
-        PlayerStats.currentHitpoints -= damage.damage;
+        PlayerStats.currentHitpoints = Mathf.Max(PlayerStats.currentHitpoints - damage.damage, 0);
 
         tookDamage?.Invoke(damage.damage);
 
@@ -428,9 +431,19 @@ public class Player : MonoBehaviour
 
     public void StandardDeath()
     {
+        standardDeath = true;
         ClearDamageQueue();
         trueTileScript.StopMovement();
         RemoveFocus();
         Action.ignoreAllActions = true;
+    }
+
+    public void SetNewPosition(Vector2 position)
+    {
+        trueTileScript.StopMovement();
+        transform.position = position;
+        trueTileScript.currentTile = position;
+        trueTileScript.newTileMarker.position = position;
+        trueTile = position;
     }
 }

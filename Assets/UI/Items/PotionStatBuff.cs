@@ -90,7 +90,7 @@ public class PotionStatBuff : MonoBehaviour
         {
             RunToggle.instance.Stamina(true);
             Player.player.stamina = true;
-            Player.player.staminaTicks = 100; //200
+            Player.player.staminaTicks = 200; //200
 
             Texture texture = potionScript.dose4;
             string name = gameObject.name;

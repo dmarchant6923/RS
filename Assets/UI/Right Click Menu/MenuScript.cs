@@ -82,7 +82,7 @@ public class MenuScript : MonoBehaviour, IPointerExitHandler, IPointerClickHandl
                     hoverBoxRT.sizeDelta += Vector2.up * textHeight;
                     menuRT.sizeDelta += Vector2.up * textHeight;
                     newText = Instantiate(text, transform);
-                    newText.GetComponent<RectTransform>().position = text.GetComponent<RectTransform>().position + Vector3.up * textHeight * (entries + 1) * rtScale;
+                    newText.GetComponent<RectTransform>().position = text.GetComponent<RectTransform>().position + Vector3.up * textHeight * (entries + 1) * rtScale * canvas.scaleFactor;
                     newText.GetComponentInChildren<Text>().text = RightClickMenu.usingItemString + RightClickMenu.openActions[i].gameObject.name;
                     if (RightClickMenu.isCastingSpell)
                     {

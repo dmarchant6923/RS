@@ -11,7 +11,6 @@ public class InfernoPortal : MonoBehaviour
     int size = 4;
     int fadeTime = 3;
     int fadeTicks;
-    public Image fadeBox;
 
     bool willEnterPortal = false;
     void Start()
@@ -63,61 +62,20 @@ public class InfernoPortal : MonoBehaviour
         fadeTicks = fadeTime;
         while (fadeTicks > 0)
         {
-            Color color = fadeBox.color;
+            Color color = UIManager.instance.fadeBox.color;
             color.a += Time.deltaTime;
-            fadeBox.color = color;
+            UIManager.instance.fadeBox.color = color;
             yield return null;
         }
+        UIManager.instance.fadeBox.color = Color.black;
 
-        string[] equipment = new string[11];
-        equipment[0] = WornEquipment.head != null ? WornEquipment.head.name : "";
-        equipment[1] = WornEquipment.cape != null ? WornEquipment.cape.name : "";
-        equipment[2] = WornEquipment.neck != null ? WornEquipment.neck.name : "";
-        equipment[3] = WornEquipment.ammo != null ? WornEquipment.ammo.name : "";
-        equipment[4] = WornEquipment.weapon != null ? WornEquipment.weapon.name : "";
-        equipment[5] = WornEquipment.body != null ? WornEquipment.body.name : "";
-        equipment[6] = WornEquipment.shield != null ? WornEquipment.shield.name : "";
-        equipment[7] = WornEquipment.leg != null ? WornEquipment.leg.name : "";
-        equipment[8] = WornEquipment.glove != null ? WornEquipment.glove.name : "";
-        equipment[9] = WornEquipment.boot != null ? WornEquipment.boot.name : "";
-        equipment[10] = WornEquipment.ring != null ? WornEquipment.ring.name : "";
-
-        string equipBlowpipeAmmo = null;
-        if (equipment[4] == "Toxic blowpipe")
+        Player.player.runEnergy = 10000;
+        OptionManager.ignoreHiscores = false;
+        if (SettingsPanel.instance.settings.bools[6] || SettingsPanel.instance.settings.bools[7] || SettingsPanel.instance.settings.bools[8] || UIManager.instance.CheckWarning())
         {
-            equipBlowpipeAmmo = WornEquipment.weapon.GetComponent<BlowPipe>().ammoLoaded.name;
+            OptionManager.ignoreHiscores = true;
         }
 
-        string[] items = new string[28];
-        string inventoryBlowpipeAmmo = null;
-
-        for (int i = 0; i < 28; i++)
-        {
-            if (Inventory.inventorySlots[i].GetComponentInChildren<Item>() != null)
-            {
-                items[i] = Inventory.inventorySlots[i].GetComponentInChildren<Item>().name;
-                if (Inventory.inventorySlots[i].GetComponentInChildren<BlowPipe>() != null)
-                {
-                    inventoryBlowpipeAmmo = Inventory.inventorySlots[i].GetComponentInChildren<BlowPipe>().ammoLoaded.name;
-                }
-            }
-        }
-
-        LoadPlayerAttributes._equipment = equipment;
-        LoadPlayerAttributes._equipBlowpipeAmmo = equipBlowpipeAmmo;
-        LoadPlayerAttributes._items = items;
-        LoadPlayerAttributes._inventoryBlowpipeAmmo = inventoryBlowpipeAmmo;
-
-        Action.ignoreAllActions = false;
-        OptionManager.keepRunOn = Player.player.runEnabled;
-        OptionManager.keepPrayersOn = true;
-        for (int i = 0; i < Prayer.prayers.Length; i++)
-        {
-            if (Prayer.prayers[i].active)
-            {
-                OptionManager.prayerToKeepActive.Add(i);
-            }
-        }
         SceneManager.LoadScene("Zuk");
     }
 

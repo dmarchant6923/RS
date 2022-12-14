@@ -13,19 +13,21 @@ public class MouseManager : MonoBehaviour
     public static bool screenLeftClick = false;
 
     public static bool showMouseTile;
-    public GameObject mouseTile;
-    [HideInInspector] public GameObject newMouseTile;
+    public GameObject newMouseTile;
     SpriteRenderer mouseTileSprite;
     Color spriteColor;
 
     public static MouseManager instance;
 
-    void Start()
+    private void Awake()
     {
         instance = this;
+    }
+    void Start()
+    {
         mouseOnScreen = false;
 
-        newMouseTile = Instantiate(mouseTile, mouseCoordinate, Quaternion.identity);
+        DontDestroyOnLoad(newMouseTile);
         mouseTileSprite = newMouseTile.GetComponent<SpriteRenderer>();
         if (showMouseTile == false)
         {

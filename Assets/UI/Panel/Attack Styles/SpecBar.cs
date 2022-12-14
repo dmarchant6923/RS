@@ -160,4 +160,10 @@ public class SpecBar : MonoBehaviour
         specPercentage -= WornEquipment.weapon.spec.specCost;
         CheckSpec();
     }
+
+    public static void ResetSpecBar()
+    {
+        specPercentage = 100;
+        instance.CheckSpec();
+    }
 }

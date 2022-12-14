@@ -244,7 +244,7 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        if (combatScript.attackCooldown == combatScript.minCoolDown)
+        if (combatScript.attackCooldown == Combat.minCoolDown)
         {
             inCombat = false;
         }
@@ -365,7 +365,7 @@ public class Enemy : MonoBehaviour
 
     public void AttackPlayer()
     {
-        if (npcScript == null || Player.player.dead)
+        if (npcScript == null || Player.player.standardDeath)
         {
             return;
         }
@@ -407,7 +407,7 @@ public class Enemy : MonoBehaviour
     }
     void PerformAttack()
     {
-        if (npcScript == null || isAttackingPlayer == false || npcScript.isTargetingPlayer == false || death || Player.player.dead)
+        if (npcScript == null || isAttackingPlayer == false || npcScript.isTargetingPlayer == false || death || Player.player.standardDeath)
         {
             return;
         }

@@ -36,8 +36,18 @@ public class UIManager : MonoBehaviour
     public Inventory inventory;
     public static Inventory staticInventory;
 
+    public Image fadeBox;
+    public RawImage frontBlackScreen;
+    public static UIManager instance;
+
+    public List<GameObject> bannedItems = new List<GameObject>();
+
     private void Start()
     {
+        DontDestroyOnLoad(gameObject);
+
+        instance = this;
+
         raycaster = FindObjectOfType<GraphicRaycaster>();
         eventSystem = FindObjectOfType<EventSystem>();
 
@@ -105,5 +115,56 @@ public class UIManager : MonoBehaviour
         //newXClick = Instantiate(staticXClick, Camera.main.ScreenToViewportPoint(Input.mousePosition), Quaternion.identity);
         newXClick = Instantiate(staticXClick, Input.mousePosition, Quaternion.identity);
         newXClick.GetComponent<ClickX>().redClick = redClick;
+    }
+
+    public bool CheckWarning()
+    {
+        foreach (GameObject slot in Inventory.inventorySlots)
+        {
+            Item item = slot.GetComponentInChildren<Item>();
+            if (item == null)
+            {
+                continue;
+            }
+
+            foreach (GameObject bannedItem in bannedItems)
+            {
+                string name = item.name.ToLower();
+                if (item.GetComponent<Potion>() != null)
+                {
+                    name = item.GetComponent<Potion>().initialName.ToLower();
+                }
+
+                if (name == bannedItem.name.ToLower())
+                {
+                    return true;
+                }
+            }
+        }
+
+        foreach (Transform slot in WornEquipment.slots)
+        {
+            Equipment item = slot.GetComponentInChildren<Equipment>();
+            if (item == null)
+            {
+                continue;
+            }
+
+            foreach (GameObject bannedItem in bannedItems)
+            {
+                string name = item.name.ToLower();
+                if (item.GetComponent<Potion>() != null)
+                {
+                    name = item.GetComponent<Potion>().initialName.ToLower();
+                }
+
+                if (name == bannedItem.name.ToLower())
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

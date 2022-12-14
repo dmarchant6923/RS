@@ -140,7 +140,6 @@ public class StatOrbManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         currentScale = minScale + ((initialScale - minScale) * value / initialValue);
         currentPosition = minPosition + ((initialPosition - minPosition) * value / initialValue) - 7f;
-
         maskRT.sizeDelta = new Vector2(maskRT.sizeDelta.x, currentScale);
         maskRT.localPosition = new Vector2(maskRT.localPosition.x, currentPosition);
 

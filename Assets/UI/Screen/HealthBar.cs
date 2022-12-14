@@ -71,6 +71,14 @@ public class HealthBar : MonoBehaviour
         greenBar.rect.Set(greenBar.position.x, greenBar.position.y, percent * greenBarFullXWidth, greenBar.rect.height);
     }
 
+    public static void DeleteAll()
+    {
+        foreach (HealthBar bar in FindObjectsOfType<HealthBar>())
+        {
+            Destroy(bar.gameObject);
+        }
+    }
+
     private void OnDestroy()
     {
         TickManager.afterTick -= AfterTick;

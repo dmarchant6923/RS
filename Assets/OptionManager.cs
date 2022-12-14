@@ -21,10 +21,6 @@ public class OptionManager : MonoBehaviour
 
     public static OptionManager instance;
 
-    public static bool keepRunOn = false;
-    public static bool keepPrayersOn = false;
-    public static List<int> prayerToKeepActive = new List<int>();
-
     public static bool ignorePlayerDeath;
     public static bool ignoreHiscores;
 
@@ -32,11 +28,13 @@ public class OptionManager : MonoBehaviour
 
     public static bool firstLogin = false;
 
+    private void Awake()
+    {
+        instance = this;
+    }
 
     IEnumerator Start()
     {
-        instance = this;
-
         player = FindObjectOfType<Player>();
         player.showTrueTile = showTrueTile;
         player.showClickedTile = showClickedTile;
@@ -52,25 +50,7 @@ public class OptionManager : MonoBehaviour
         PanelButtons.spellbookHotKey = spellbookHotKey;
 
         yield return null;
-
-        if (keepRunOn)
-        {
-            RunToggle.instance.ToggleRun();
-            RunToggle.instance.orbManager.ClientClickedToggle();
-            keepRunOn = false;
-        }
-
         yield return null;
-        yield return null;
-        if (keepPrayersOn)
-        {
-            foreach (int num in prayerToKeepActive)
-            {
-                Prayer.prayers[num].ServerClickPrayer();
-            }
-            prayerToKeepActive = new List<int>();
-            keepPrayersOn = false;
-        }
 
         if (firstLogin == false)
         {
@@ -112,12 +92,6 @@ public class OptionManager : MonoBehaviour
         FindObjectOfType<CanvasScaler>().scaleFactor = uiScale / 100;
 
         PanelButtons.SetHotkeys(hotkeys);
-
-        ignoreHiscores = false;
-        if (settings[6] || settings[7] || settings[8])
-        {
-            ignoreHiscores = true;
-        }
     }
 
 

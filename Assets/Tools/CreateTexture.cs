@@ -11,7 +11,7 @@ public class CreateTexture : MonoBehaviour
 
     Vector3 currentPosition = Vector3.zero;
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
     }

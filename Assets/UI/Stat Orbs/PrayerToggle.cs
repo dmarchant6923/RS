@@ -21,10 +21,10 @@ public class PrayerToggle : MonoBehaviour
 
     public static PrayerToggle instance;
 
-    void Start()
+    IEnumerator Start()
     {
         instance = this;
-
+        yield return null;
         orbManager = GetComponent<StatOrbManager>();
         orbManager.initialValue = PlayerStats.initialPrayer;
 
@@ -57,6 +57,11 @@ public class PrayerToggle : MonoBehaviour
 
     void ActivateQuickPrayers()
     {
+        if (PlayerStats.currentPrayer == 0)
+        {
+            GameLog.Log("You are out of prayer points.");
+            return;
+        }
         orbManager.active = !orbManager.active;
         prayerScript.ActivateQuickPrayers(orbManager.active);
     }

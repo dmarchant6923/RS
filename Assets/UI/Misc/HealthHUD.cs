@@ -67,11 +67,11 @@ public class HealthHUD : MonoBehaviour
         instance.nameText.text = enemy.name;
     }
 
-    void Deactivate()
+    public static void Deactivate()
     {
-        ticks = 0;
-        active = false;
-        currentEnemy = null;
-        rt.position = onPosition + Vector2.up * 1000;
+        instance.ticks = 0;
+        instance.active = false;
+        instance.currentEnemy = null;
+        instance.rt.position = instance.onPosition + Vector2.up * 1000;
     }
 }

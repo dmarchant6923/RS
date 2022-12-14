@@ -43,7 +43,14 @@ public class MenuEntryClick : MonoBehaviour, IPointerDownHandler, IPointerEnterH
         menuScript.OptionClicked(actionNumber, stringNumber);
         if (action != null)
         {
-            action.PickAction(stringNumber);
+            if (RightClickMenu.isCastingSpell)
+            {
+                RightClickMenu.spellBeingCast.GetComponent<Spell>().CastSpell(action.gameObject);
+            }
+            else
+            {
+                action.PickAction(stringNumber);
+            }
         }
     }
 }

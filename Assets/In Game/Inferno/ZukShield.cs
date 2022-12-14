@@ -76,13 +76,19 @@ public class ZukShield : MonoBehaviour
 
         safeSpotRange[0] = npcScript.trueTile.x - 1;
         safeSpotRange[1] = npcScript.trueTile.x + 3;
-        //if (npcScript.trueTile == new Vector2(absolutePosition.x * -1, absolutePosition.y) + Vector2.left)
-        //{
-        //    safeSpotRange[1]++;
-        //}
-        //else if (npcScript.trueTile == new Vector2(absolutePosition.x, absolutePosition.y) + Vector2.left)
-        //{
-        //    safeSpotRange[0]--;
-        //}
+        if (npcScript.trueTile == new Vector2(absolutePosition.x * -1, absolutePosition.y) + Vector2.left)
+        {
+            safeSpotRange[1]++;
+            safeSpotMarker.transform.position = npcScript.newSizeTileMarker.transform.position + relativePosition + Vector3.right;
+        }
+        else if (npcScript.trueTile == new Vector2(absolutePosition.x, absolutePosition.y) + Vector2.left)
+        {
+            safeSpotRange[0]--;
+            safeSpotMarker.transform.position = npcScript.newSizeTileMarker.transform.position + relativePosition + Vector3.left;
+        }
+        else
+        {
+            safeSpotMarker.transform.position = npcScript.newSizeTileMarker.transform.position + relativePosition;
+        }
     }
 }

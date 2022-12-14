@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         WriteScores();
+        DontDestroyOnLoad(gameObject);
     }
 
     void WriteScores()
