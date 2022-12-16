@@ -94,6 +94,8 @@ public class LoadPlayerAttributes : MonoBehaviour
                         newItem.GetComponent<BlowPipe>().ammoLoaded = Tools.LoadFromResource(inventoryBlowpipeAmmo);
                         newItem.GetComponent<BlowPipe>().numberLoaded = 2000;
                     }
+
+                    Inventory.instance.PlaceInInventory(newItem, i);
                 }
             }
         }
@@ -105,9 +107,9 @@ public class LoadPlayerAttributes : MonoBehaviour
             equipItem.GetComponent<Equipment>().Equip();
         }
         newItems.Reverse();
-        foreach (GameObject item in newItems)
-        {
-            Inventory.instance.PlaceInInventory(item);
-        }
+        //foreach (GameObject item in newItems)
+        //{
+        //    Inventory.instance.PlaceInInventory(item);
+        //}
     }
 }

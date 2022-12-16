@@ -13,8 +13,9 @@ public class PanelButtons : MonoBehaviour
     public Transform wornEquipment;
     public Transform prayer;
     public Transform spellbook;
+    public Transform logout;
     Transform currentButton;
-    Transform[] buttons = new Transform[5];
+    Transform[] buttons = new Transform[6];
     float buttonHeight;
 
     public GameObject panel;
@@ -23,7 +24,9 @@ public class PanelButtons : MonoBehaviour
     public GameObject wornEquipmentPanel;
     public GameObject prayerPanel;
     public GameObject spellbookPanel;
-    GameObject[] panelObjects = new GameObject[5];
+    public GameObject logoutPanel;
+    GameObject[] panelObjects = new GameObject[6];
+    bool panelOpen = false;
 
     Vector3 onPosition;
     Vector3 panelOnPosition;
@@ -38,6 +41,9 @@ public class PanelButtons : MonoBehaviour
 
     public static PanelButtons instance;
 
+    public RectTransform statsPanel;
+    Vector2 panelOpenStatsPosition;
+
     private IEnumerator Start()
     {
         instance = this;
@@ -47,6 +53,7 @@ public class PanelButtons : MonoBehaviour
         buttons[2] = wornEquipment;
         buttons[3] = prayer;
         buttons[4] = spellbook;
+        buttons[5] = logout;
 
         buttonHeight = attackStyles.GetComponent<RectTransform>().rect.height;
 
@@ -55,9 +62,11 @@ public class PanelButtons : MonoBehaviour
         panelObjects[2] = wornEquipmentPanel;
         panelObjects[3] = prayerPanel;
         panelObjects[4] = spellbookPanel;
+        panelObjects[5] = logoutPanel;
 
         onPosition = attackStylesPanel.GetComponent<RectTransform>().localPosition;
         panelOnPosition = panel.GetComponent<RectTransform>().position;
+        panelOpenStatsPosition = statsPanel.anchoredPosition;
 
         foreach (GameObject panelobject in panelObjects)
         {
@@ -67,8 +76,6 @@ public class PanelButtons : MonoBehaviour
                 //panelobject.GetComponent<RectTransform>().localPosition = onPosition + Vector3.right * 1000;
             }
         }
-
-        SettingsPanel.instance.settingsChanged += ResetPanelPosition;
 
         yield return null;
 
@@ -113,57 +120,70 @@ public class PanelButtons : MonoBehaviour
         {
             if (panelobject != null)
             {
-                //panelobject.SetActive(false);
                 panelobject.GetComponent<RectTransform>().localPosition = onPosition + Vector3.right * 1000;
             }
         }
         panel.GetComponent<RectTransform>().position = panelOnPosition + Vector3.right * 1000;
-        //panel.SetActive(false);
     }
 
     public void OnClick(Transform selectedButton, bool forceOpen)
     {
-        for (int i = 0; i < buttons.Length; i++)
+        if (selectedButton == buttons[5])
         {
-            buttons[i].GetComponent<Image>().sprite = offSprite;
-            if (panelObjects[i] != null)
+            for (int i = 0; i < buttons.Length; i++)
             {
-                //panelObjects[i].SetActive(false);
                 panelObjects[i].GetComponent<RectTransform>().localPosition = onPosition + Vector3.right * 1000;
             }
+            panelObjects[5].GetComponent<RectTransform>().localPosition = onPosition;
+            currentButton = selectedButton;
+            panel.GetComponent<RectTransform>().position = panelOnPosition;
+            panelOpen = true;
+            return;
+        }
+
+        panelObjects[5].GetComponent<RectTransform>().localPosition = onPosition + Vector3.right * 1000;
+        for (int i = 0; i < buttons.Length - 1; i++)
+        {
+            buttons[i].GetComponent<Image>().sprite = offSprite;
+            panelObjects[i].GetComponent<RectTransform>().localPosition = onPosition + Vector3.right * 1000;
         }
         if (selectedButton == currentButton && forceOpen == false)
         {
             selectedButton.GetComponent<Image>().sprite = offSprite;
             currentButton = null;
             panel.GetComponent<RectTransform>().position = panelOnPosition + Vector3.right * 1000;
-            //panel.SetActive(false);
+            panelOpen = false;
         }
         else
         {
             selectedButton.GetComponent<Image>().sprite = onSprite;
             currentButton = selectedButton;
-            //panel.SetActive(true);
             panel.GetComponent<RectTransform>().position = panelOnPosition;
+            panelOpen = true;
         }
 
-        for (int i = 0; i < buttons.Length; i++)
+        for (int i = 0; i < buttons.Length - 1; i++)
         {
             if (currentButton == buttons[i])
             {
-                if (panelObjects[i] != null)
-                {
-                    panelObjects[i].GetComponent<RectTransform>().localPosition = onPosition;
-                    //panelObjects[i].SetActive(true);
-                }
+                panelObjects[i].GetComponent<RectTransform>().localPosition = onPosition;
                 break;
             }
         }
+
+        if (panelOpen)
+        {
+            statsPanel.anchoredPosition = panelOpenStatsPosition;
+        }
+        else
+        {
+            statsPanel.anchoredPosition = Vector2.up * panelOpenStatsPosition.y;
+        }
     }
 
-    void ResetPanelPosition(Canvas canvas)
+    public void ResetPanelPosition()
     {
-        panelOnPosition = new Vector2(panelOnPosition.x, buttonHeight * transform.localScale.y * canvas.scaleFactor);
+        panelOnPosition = new Vector2(panelOnPosition.x, buttonHeight * transform.localScale.y * FindObjectOfType<Canvas>().scaleFactor);
     }
 
     public static void SetHotkeys(int[] keys)

@@ -242,6 +242,8 @@ public class PresetsPanel : MonoBehaviour
         jsonString = JsonUtility.ToJson(presetInventory[presetNumber]);
         File.WriteAllText(fullPath, jsonString);
 
+        GameLog.Log("Preset " + (presetNumber + 1) + " saved!");
+
         IgnoreActions = true;
     }
     public void LoadPreset(int num)

@@ -472,6 +472,7 @@ public class PlayerStats : MonoBehaviour
     {
         ReinitializeStats();
         Player.player.dead = false;
+        Player.player.standardDeath = false;
         //HealthHUD.Deactivate();
         HealthBar.DeleteAll();
         imbuedHeartCharged = true;

@@ -12,6 +12,10 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerDownHan
     public Sprite onSprite;
     public Sprite offSprite;
     public string actionText;
+    public bool invertTextColor = false;
+
+    Color mouseOffColor;
+    Color mouseOnColor;
 
     [HideInInspector] public Action buttonAction;
 
@@ -27,6 +31,17 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerDownHan
         buttonImage = GetComponent<Image>();
         buttonAction = GetComponent<Action>();
         buttonText = GetComponentInChildren<Text>();
+
+        if (invertTextColor == false)
+        {
+            mouseOnColor = Color.white;
+            mouseOffColor = Color.yellow;
+        }
+        else
+        {
+            mouseOnColor = Color.yellow;
+            mouseOffColor = Color.white;
+        }
     }
 
     private void Start()
@@ -57,7 +72,7 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerDownHan
         if (newActive)
         {
             GetComponent<Image>().enabled = true;
-            GetComponentInChildren<Text>().color = Color.yellow;
+            GetComponentInChildren<Text>().color = mouseOffColor;
             ButtonOff();
         }
         else
@@ -73,7 +88,7 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerDownHan
         {
             return;
         }
-        buttonText.color = Color.white;
+        buttonText.color = mouseOnColor;
     }
     public void OnPointerDown(PointerEventData pointerEventData)
     {
@@ -98,7 +113,7 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerDownHan
             return;
         }
         ButtonOff();
-        buttonText.color = Color.yellow;
+        buttonText.color = mouseOffColor;
     }
     void ButtonOff()
     {
@@ -115,7 +130,7 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerDownHan
         {
             return;
         }
-        buttonText.color = Color.yellow;
+        buttonText.color = mouseOffColor;
         ButtonOff();
     }
 }

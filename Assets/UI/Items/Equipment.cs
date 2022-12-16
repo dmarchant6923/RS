@@ -56,11 +56,11 @@ public class Equipment : MonoBehaviour
 
         yield return null; 
 
-        for (int i = 0; i < WornEquipment.wornEquipment.transform.childCount; i++)
+        for (int i = 0; i < WornEquipment.instance.transform.childCount; i++)
         {
-            if (equipSlotName.ToLower() == WornEquipment.wornEquipment.transform.GetChild(i).name.ToLower())
+            if (equipSlotName.ToLower() == WornEquipment.instance.transform.GetChild(i).name.ToLower())
             {
-                equipSlot = WornEquipment.wornEquipment.transform.GetChild(i);
+                equipSlot = WornEquipment.instance.transform.GetChild(i);
                 break;
             }
         }
@@ -202,6 +202,7 @@ public class Equipment : MonoBehaviour
             }
         }
 
+        SpecBar.instance.CheckSpec();
         itemScript.inventory.UpdateStats();
 
         if (equipSlot.GetComponentInChildren<Equipment>() != null)

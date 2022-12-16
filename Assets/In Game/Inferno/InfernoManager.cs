@@ -64,6 +64,10 @@ public class InfernoManager : MonoBehaviour
         winPanel.gameObject.SetActive(false);
         winPanel.manager = this;
         GameLog.Log("Good luck!");
+        if (OptionManager.ignoreHiscores)
+        {
+            GameLog.Log("<color=red>You are not eligible for high scores this run.</color>");
+        }
 
         StartCoroutine(Unfade());
     }
@@ -101,6 +105,7 @@ public class InfernoManager : MonoBehaviour
         if (OptionManager.ignoreHiscores == false)
         {
             GameManager.UpdateDeaths();
+            HiscoresPanel.instance.WriteScores();
         }
         StartCoroutine(ReturnToLobby(1.5f));
     }
@@ -132,13 +137,10 @@ public class InfernoManager : MonoBehaviour
             Player.player.trueTileScript.StopMovement();
             winPanel.UpdateText();
             winPanel.gameObject.SetActive(true);
+            HiscoresPanel.instance.WriteScores();
 
             yield return new WaitForSeconds(1);
             Action.ignoreAllActions = false;
-        }
-        else
-        {
-            GameLog.Log("You were not eligible for high scores.");
         }
 
         while (winPanel.gameObject.activeSelf)

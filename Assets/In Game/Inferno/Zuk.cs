@@ -191,12 +191,12 @@ public class Zuk : MonoBehaviour
             Destroy(enemy.gameObject);
         }
 
+        foreach (Projectile item in FindObjectsOfType<Projectile>())
+        {
+            Destroy(item.gameObject);
+        }
+
         TickManager.beforeTick -= BeforeTick;
         TickManager.afterTick -= AfterTick;
-    }
-
-    void ReturnToLobby()
-    {
-
     }
 }

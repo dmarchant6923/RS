@@ -27,9 +27,14 @@ public class Inventory : MonoBehaviour
 
     public static Inventory instance;
 
+    [HideInInspector] public Vector2 panelMin;
+    [HideInInspector] public Vector2 panelMax;
+
     private void Start()
     {
         instance = this;
+
+        ResetPanelExtents();
 
         items = new Item[28];
         itemRTs = new RectTransform[28];
@@ -101,6 +106,7 @@ public class Inventory : MonoBehaviour
         }
         CountSlots();
     }
+
     public void CountSlots()
     {
         slotsTaken = 0;
@@ -114,6 +120,11 @@ public class Inventory : MonoBehaviour
     }
 
     public void PlaceInInventory(GameObject item)
+    {
+        PlaceInInventory(item, -1);
+    }
+
+    public void PlaceInInventory(GameObject item, int position)
     {
         if (item.GetComponent<StackableItem>() != null)
         {
@@ -133,8 +144,27 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        item.transform.SetParent(unsortedItems.transform);
-        SortInventory();
+        if (position == -1)
+        {
+            item.transform.SetParent(unsortedItems.transform);
+            SortInventory();
+            return;
+        }
+
+
+
+
+        if (inventorySlots[position].GetComponentInChildren<Item>() == null)
+        {
+            item.transform.SetParent(inventorySlots[position].transform);
+            item.transform.position = item.transform.parent.position;
+        }
+        else
+        {
+            Destroy(item);
+            Debug.Log("destroyed item in placeininventory!");
+        }
+
         CountSlots();
     }
 
@@ -182,5 +212,12 @@ public class Inventory : MonoBehaviour
                 ReadEquippedItems -= d as EquipAction;
             }
         }
+    }
+
+    public void ResetPanelExtents()
+    {
+        Canvas canvas = FindObjectOfType<Canvas>();
+        panelMin = panel.position + (Vector3.left * panel.rect.width + Vector3.one * 20) * canvas.scaleFactor;
+        panelMax = panel.position + (Vector3.up * panel.rect.height - Vector3.one * 20) * canvas.scaleFactor;
     }
 }

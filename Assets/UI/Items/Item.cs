@@ -73,6 +73,8 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         menuTexts[8] = "Examine ";
 
+        itemAction.serverAction0 += CancelDrag;
+
         UpdateActions();
 
         player = FindObjectOfType<Player>();
@@ -287,7 +289,7 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             float insertRange = 27;
             bool failed = false;
-            while (Input.GetMouseButton(0))
+            while (Input.GetMouseButton(0) && clickHeld)
             {
                 if (gameObject.transform.parent.parent != inventory.inventoryParent.transform)
                 {
@@ -296,6 +298,8 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 }
                 Vector3 mousePoint = Input.mousePosition;
                 itemRT.position = mousePoint - relativeDist;
+                itemRT.position = new Vector2(Mathf.Clamp(itemRT.position.x, inventory.panelMin.x, inventory.panelMax.x),
+                                              Mathf.Clamp(itemRT.position.y, inventory.panelMin.y, inventory.panelMax.y));
                 yield return null;
             }
             if (failed == false)
@@ -320,6 +324,11 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             }
         }
         yield return new WaitForSeconds(0.1f);
+        clickHeld = false;
+    }
+
+    void CancelDrag()
+    {
         clickHeld = false;
     }
 

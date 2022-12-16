@@ -70,7 +70,7 @@ public class MouseManager : MonoBehaviour
             {
                 foreach (RaycastHit2D cast in castAll)
                 {
-                    if (cast.collider.GetComponent<Action>() != null && gameActions.Contains(cast.collider.GetComponent<Action>()) == false && 
+                    if (cast.collider.GetComponent<Action>() != null &&// gameActions.Contains(cast.collider.GetComponent<Action>()) == false && 
                         cast.collider.GetComponent<SpriteRenderer>() != null && cast.collider.GetComponent<SpriteRenderer>().sortingOrder == i)
                     {
                         //Debug.Log(cast.collider.GetComponent<SpriteRenderer>().sortingOrder + " " + cast.collider.gameObject + " " + i);
@@ -87,6 +87,7 @@ public class MouseManager : MonoBehaviour
         {
             mouseTileSprite.color = Vector4.zero;
         }
+
         newMouseTile.transform.position = mouseCoordinate;
     }
 }

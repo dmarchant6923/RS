@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class SelectSkillsPanel : MonoBehaviour
 {
     public RawImage[] skillImages = new RawImage[7];
-    public int[] skillLevels = new int[7];
     Text[] skillTexts = new Text[7];
 
     public ButtonScript resetButton;
@@ -18,8 +18,23 @@ public class SelectSkillsPanel : MonoBehaviour
     int totalLevel;
     Treadmill treadmill;
 
+    BasePanelScript panelScript;
+
+
+    public class SavedSkills
+    {
+        public int[] levels = new int[7];
+    }
+    public SavedSkills savedSkills = new SavedSkills();
+    string folder = "/SaveData/";
+    string extension = ".txt";
+    string fileName = "Skills";
+    string dir;
+
+
     private void Awake()
     {
+        dir = Application.dataPath + folder;
         PlayerStats.reinitialize += FindPanel;
     }
 
@@ -31,13 +46,17 @@ public class SelectSkillsPanel : MonoBehaviour
             treadmill.skillsPanel = parent;
         }
     }
+
     private IEnumerator Start()
     {
         yield return null;
         InitializeStats();
 
         applyButton.buttonClicked += ApplySkills;
-        resetButton.buttonClicked += ResetSkills;
+        resetButton.buttonClicked += SetSkillsTo99;
+        
+        panelScript = GetComponent<BasePanelScript>();
+        panelScript.panelClosed += ResetNumbers;
     }
 
     public void IncrementSkill(RawImage skillImage, bool increase)
@@ -46,9 +65,10 @@ public class SelectSkillsPanel : MonoBehaviour
         {
             if (skillImage == skillImages[i])
             {
-                skillLevels[i] = increase ? skillLevels[i] + 1 : skillLevels[i] - 1;
-                skillLevels[i] = Mathf.Clamp(skillLevels[i], 1, 99);
-                skillTexts[i].text = skillLevels[i].ToString();
+                savedSkills.levels[i] = increase ? savedSkills.levels[i] + 1 : savedSkills.levels[i] - 1;
+                savedSkills.levels[i] = Mathf.Clamp(savedSkills.levels[i], 1, 99);
+                skillTexts[i].text = savedSkills.levels[i].ToString();
+                skillTexts[i].color = Color.green;
             }
         }
 
@@ -61,21 +81,23 @@ public class SelectSkillsPanel : MonoBehaviour
         {
             if (skillImage == skillImages[i])
             {
-                skillLevels[i] = number;
-                skillLevels[i] = Mathf.Clamp(skillLevels[i], 1, 99);
-                skillTexts[i].text = skillLevels[i].ToString();
+                savedSkills.levels[i] = number;
+                savedSkills.levels[i] = Mathf.Clamp(savedSkills.levels[i], 1, 99);
+                skillTexts[i].text = savedSkills.levels[i].ToString();
+                skillTexts[i].color = Color.green;
             }
         }
 
         SetTotalLevel();
     }
 
-    public void ResetSkills()
+    public void SetSkillsTo99()
     {
         for (int i = 0; i < 7; i++)
         {
-            skillLevels[i] = 99;
-            skillTexts[i].text = skillLevels[i].ToString();
+            savedSkills.levels[i] = 99;
+            skillTexts[i].text = savedSkills.levels[i].ToString();
+            skillTexts[i].color = Color.yellow;
         }
 
         SetTotalLevel();
@@ -86,7 +108,7 @@ public class SelectSkillsPanel : MonoBehaviour
         totalLevel = 0;
         for (int i = 0; i < 7; i++)
         {
-            totalLevel += skillLevels[i];
+            totalLevel += savedSkills.levels[i];
         }
         totalLevelText.text = "Total level: " + totalLevel;
     }
@@ -99,46 +121,59 @@ public class SelectSkillsPanel : MonoBehaviour
 
     public void ApplySkills()
     {
-        PlayerStats.initialAttack = skillLevels[0];
-        PlayerStats.initialStrength = skillLevels[1];
-        PlayerStats.initialDefence = skillLevels[2];
-        PlayerStats.initialRanged = skillLevels[3];
-        PlayerStats.initialMagic = skillLevels[4];
-        PlayerStats.initialHitpoints = skillLevels[5];
-        PlayerStats.initialPrayer = skillLevels[6];
-        PlayerStats.setInitialStats = skillLevels;
+        PlayerStats.initialAttack = savedSkills.levels[0];
+        PlayerStats.initialStrength = savedSkills.levels[1];
+        PlayerStats.initialDefence = savedSkills.levels[2];
+        PlayerStats.initialRanged = savedSkills.levels[3];
+        PlayerStats.initialMagic = savedSkills.levels[4];
+        PlayerStats.initialHitpoints = savedSkills.levels[5];
+        PlayerStats.initialPrayer = savedSkills.levels[6];
+        PlayerStats.setInitialStats = savedSkills.levels;
 
         PlayerStats.ReinitializeStats();
+
+
+        string fullPath = dir + fileName + extension;
+        string jsonString = JsonUtility.ToJson(savedSkills);
+        File.WriteAllText(fullPath, jsonString);
 
         GetComponent<BasePanelScript>().ClosePanel();
     }
 
     void InitializeStats()
     {
-        skillLevels[0] = PlayerStats.initialAttack;
-        skillLevels[1] = PlayerStats.initialStrength;
-        skillLevels[2] = PlayerStats.initialDefence;
-        skillLevels[3] = PlayerStats.initialRanged;
-        skillLevels[4] = PlayerStats.initialMagic;
-        skillLevels[5] = PlayerStats.initialHitpoints;
-        skillLevels[6] = PlayerStats.initialPrayer;
+        ResetNumbers();
+        ApplySkills();
+        SetRealTotalLevel();
+    }
+
+    void ResetNumbers()
+    {
+        string fullPath = dir + fileName + extension;
+        if (File.Exists(fullPath))
+        {
+            string jsonString = File.ReadAllText(fullPath);
+            savedSkills = JsonUtility.FromJson<SavedSkills>(jsonString);
+        }
+        else
+        {
+            savedSkills = new SavedSkills();
+            for (int i = 0; i < 7; i++)
+            {
+                savedSkills.levels[i] = 99;
+            }
+
+            string jsonString = JsonUtility.ToJson(savedSkills);
+            File.WriteAllText(fullPath, jsonString);
+        }
 
         for (int i = 0; i < 7; i++)
         {
             skillTexts[i] = skillImages[i].GetComponentInChildren<Text>();
-            skillTexts[i].text = skillLevels[i].ToString();
+            skillTexts[i].text = savedSkills.levels[i].ToString();
+            skillTexts[i].color = Color.yellow;
         }
 
-        SetRealTotalLevel();
-    }
-
-    private void OnEnable()
-    {
         SetTotalLevel();
-    }
-
-    private void OnDisable()
-    {
-        InitializeStats();
     }
 }

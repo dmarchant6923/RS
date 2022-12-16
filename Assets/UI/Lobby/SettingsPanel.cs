@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.IO;
 
 public class SettingsPanel : MonoBehaviour
@@ -21,8 +22,8 @@ public class SettingsPanel : MonoBehaviour
 
     Canvas canvas;
     public static SettingsPanel instance;
-    public delegate void Settings(Canvas canvas);
-    public event Settings settingsChanged;
+
+    public Text ping;
 
     public class GameSettings
     {
@@ -159,7 +160,7 @@ public class SettingsPanel : MonoBehaviour
         OptionManager.UpdateGameSettings(settings.bools, settings.latency, settings.uiScale, settings.hotkeys);
         GetComponent<BasePanelScript>().ClosePanel();
         Canvas.ForceUpdateCanvases();
-        settingsChanged?.Invoke(canvas);
+        ping.text = settings.latency + " ms";
     }
 
     public void OpenPanel()

@@ -90,6 +90,10 @@ public class OptionManager : MonoBehaviour
         TickManager.simLatency = simLatency / 1000;
 
         FindObjectOfType<CanvasScaler>().scaleFactor = uiScale / 100;
+        Canvas.ForceUpdateCanvases();
+        Inventory.instance.ResetPanelExtents();
+        WornEquipment.instance.ResetStatPanelPosition();
+        PanelButtons.instance.ResetPanelPosition();
 
         PanelButtons.SetHotkeys(hotkeys);
     }

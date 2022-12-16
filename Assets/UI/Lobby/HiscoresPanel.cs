@@ -17,8 +17,11 @@ public class HiscoresPanel : MonoBehaviour
 
     public GameObject parent;
 
+    public static HiscoresPanel instance;
+
     private void Awake()
     {
+        instance = this;
         PlayerStats.reinitialize += FindPanel;
     }
 
@@ -37,7 +40,7 @@ public class HiscoresPanel : MonoBehaviour
         WriteScores();
     }
 
-    void WriteScores()
+    public void WriteScores()
     {
         deathValue.text = GameManager.scores.deaths.ToString();
         completionValue.text = GameManager.scores.completions.ToString();

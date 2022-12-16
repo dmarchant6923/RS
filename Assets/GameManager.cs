@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
         {
             scores.lowestLevel = level;
         }
-        if (damage < scores.leastDamage || scores.leastDamage == -1)
+        if (damage < scores.leastDamage || scores.leastDamage < 0)
         {
             scores.leastDamage = damage;
         }

@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     GraphicRaycaster raycaster;
     PointerEventData eventData;
     EventSystem eventSystem;
+    Canvas canvas;
 
     Action UIAction;
 
@@ -48,11 +49,11 @@ public class UIManager : MonoBehaviour
 
         instance = this;
 
+        canvas = FindObjectOfType<Canvas>();
         raycaster = FindObjectOfType<GraphicRaycaster>();
         eventSystem = FindObjectOfType<EventSystem>();
 
         panelOpenPos = statPanel.position.x;
-
         staticXClick = xClick;
         staticHitSplat = hitSplat;
         staticOverhead = overhead;
@@ -92,18 +93,6 @@ public class UIManager : MonoBehaviour
         }
 
         RightClickMenu.UIAction = UIAction;
-
-
-
-
-        if (panel.activeSelf && statPanel.position.x != panelOpenPos)
-        {
-            statPanel.position = new Vector2(panelOpenPos, statPanel.position.y);
-        }
-        if (panel.activeSelf == false && statPanel.position.x == panelOpenPos)
-        {
-            statPanel.position = new Vector2(1920, statPanel.position.y);
-        }
     }
 
     public static void ClickX(bool redClick)

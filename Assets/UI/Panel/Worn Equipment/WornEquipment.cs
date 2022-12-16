@@ -80,10 +80,12 @@ public class WornEquipment : MonoBehaviour
     public static bool diamondBoltsE;
     public static bool rubyBoltsE;
 
-    public GameObject statPanel;
+    Canvas canvas;
+    public RectTransform statPanel;
     public Text statPanelText;
     public OpenCloseButton panelCloseButton;
     public OpenCloseButton panelOpenButton;
+    float baseStatPanelPosition;
 
     public static string slashSwordCategory = "Slash Sword";
     public static string stabSwordCategory = "Stab Sword";
@@ -94,7 +96,7 @@ public class WornEquipment : MonoBehaviour
     public static string bladedStaffCategory = "Bladed Staff";
     public static string poweredStaffCategory = "Powered Staff";
 
-    public static WornEquipment wornEquipment;
+    public static WornEquipment instance;
 
     private void Start()
     {
@@ -139,10 +141,12 @@ public class WornEquipment : MonoBehaviour
         TickManager.onTick += UpdateText;
         Inventory.UpdateEquippedItems += UpdateStats;
 
-        wornEquipment = this;
+        instance = this;
 
         panelCloseButton.buttonClicked += StatsPanelActivate;
         panelOpenButton.buttonClicked += StatsPanelActivate;
+
+        canvas = FindObjectOfType<Canvas>();
     }
 
     public static void UpdateStats()
@@ -370,6 +374,13 @@ public class WornEquipment : MonoBehaviour
 
     void StatsPanelActivate()
     {
-        statPanel.SetActive(!statPanel.activeSelf);
+        statPanel.gameObject.SetActive(!statPanel.gameObject.activeSelf);
+    }
+
+    public void ResetStatPanelPosition()
+    {
+        //Debug.Log(statPanel.position);
+        //statPanel.position = new Vector2(-350 * canvas.scaleFactor, statPanel.position.y);
+        //Debug.Log(statPanel.position);
     }
 }
