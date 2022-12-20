@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
     GraphicRaycaster raycaster;
     PointerEventData eventData;
     EventSystem eventSystem;
-    Canvas canvas;
+    public static Canvas canvas;
 
     Action UIAction;
 

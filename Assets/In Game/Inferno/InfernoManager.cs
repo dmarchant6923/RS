@@ -191,6 +191,11 @@ public class InfernoManager : MonoBehaviour
         //    Destroy(element);
         //}
         Destroy(newUI);
+        if (Player.player.standardDeath)
+        {
+            GameLog.Log("Oh dear, you are dead!");
+        }
+
         SceneManager.LoadScene("Lobby");
     }
 
@@ -211,7 +216,7 @@ public class InfernoManager : MonoBehaviour
         float chanceOfLiving = 1 - chanceOfDying;
         float cumulativeChanceOfLiving = (1 - deathChance) * chanceOfLiving;
         deathChance = 1 - cumulativeChanceOfLiving;
-        Debug.Log("max hit: " + damage.maxHit + ". HP: " + PlayerStats.currentHitpoints + ". hitchance: " + damage.hitChance + ". Chance of dying on this hit: " + chanceOfDying + ". cumulative chance: " + deathChance);
+        //Debug.Log("max hit: " + damage.maxHit + ". HP: " + PlayerStats.currentHitpoints + ". hitchance: " + damage.hitChance + ". Chance of dying on this hit: " + chanceOfDying + ". cumulative chance: " + deathChance);
     }
 
     void PlayerDamage(int damage)

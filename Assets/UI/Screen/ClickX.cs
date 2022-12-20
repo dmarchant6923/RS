@@ -23,6 +23,7 @@ public class ClickX : MonoBehaviour
 
     void Start()
     {
+        transform.localScale *= UIManager.canvas.scaleFactor;
         image = GetComponent<RawImage>();
         transform.SetParent(FindObjectOfType<Canvas>().transform);
 

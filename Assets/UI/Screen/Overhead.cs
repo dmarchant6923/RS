@@ -19,6 +19,7 @@ public class Overhead : MonoBehaviour
 
     private void Start()
     {
+        transform.localScale *= UIManager.canvas.scaleFactor;
         image = GetComponent<RawImage>();
         transform.SetParent(FindObjectOfType<Canvas>().transform);
         transform.SetAsFirstSibling();
@@ -29,7 +30,8 @@ public class Overhead : MonoBehaviour
     private void Update()
     {
         //transform.position = Camera.main.WorldToScreenPoint(objectWithOverhead.transform.position + Tools.AngleToVector3(Camera.main.transform.eulerAngles.z) * worldSpaceOffset);
-        transform.position = Camera.main.WorldToScreenPoint(objectWithOverhead.transform.position + Tools.AngleToVector3(Camera.main.transform.eulerAngles.z) * worldSpaceOffset) + Vector3.up * 60;
+        transform.position = Camera.main.WorldToScreenPoint(objectWithOverhead.transform.position + Tools.AngleToVector3(Camera.main.transform.eulerAngles.z) * worldSpaceOffset) + 
+                             Vector3.up * 60 * UIManager.canvas.scaleFactor; ;
 
     }
 

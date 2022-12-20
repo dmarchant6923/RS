@@ -1,1 +1,1 @@
-{"bools":[true,true,true,true,true,true,false,false,false],"latency":200.0,"uiScale":95.0,"hotkeys":[1,2,-1,3,4]}
+{"bools":[true,true,true,true,true,true,false,false,false],"latency":200.0,"uiScale":80.0,"hotkeys":[1,2,-1,3,4]}

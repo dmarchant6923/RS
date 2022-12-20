@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Profiling;
 
 public class TickManager : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class TickManager : MonoBehaviour
     float tickTimer;
     public static float simLatency = 0.2f;
 
+    static readonly ProfilerMarker newMarker = new ProfilerMarker("Tick");
+
     private void Awake()
     {
         tickCount = 0;
@@ -30,6 +33,7 @@ public class TickManager : MonoBehaviour
         {
             tickTimer -= maxTickTime + currentVariance;
             tickCount++;
+            newMarker.Begin();
             if (cancelBeforeTick != null)
             {
                 cancelBeforeTick();
@@ -46,6 +50,7 @@ public class TickManager : MonoBehaviour
             {
                 afterTick();
             }
+            newMarker.End();
 
             currentVariance = Random.Range(-maxTickVariance, maxTickVariance);
         }   

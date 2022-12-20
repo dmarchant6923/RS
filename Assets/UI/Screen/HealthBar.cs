@@ -18,6 +18,7 @@ public class HealthBar : MonoBehaviour
     int ticks;
     void Start()
     {
+        transform.localScale *= UIManager.canvas.scaleFactor;
         greenBar = transform.GetChild(0).GetComponent<RectTransform>();
         greenBarFullXWidth = greenBar.rect.width;
         transform.SetParent(FindObjectOfType<Canvas>().transform);
@@ -35,7 +36,8 @@ public class HealthBar : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        transform.position = Camera.main.WorldToScreenPoint(objectWithHealth.transform.position + Tools.AngleToVector3(Camera.main.transform.eulerAngles.z) * worldSpaceOffset) + Vector3.up * 20;
+        transform.position = Camera.main.WorldToScreenPoint(objectWithHealth.transform.position + Tools.AngleToVector3(Camera.main.transform.eulerAngles.z) * worldSpaceOffset) +
+                                                            Vector3.up * 20 * UIManager.canvas.scaleFactor;
 
     }
 

@@ -29,6 +29,7 @@ public class HitSplat : MonoBehaviour
         if (objectGettingHit == null)
         {
             Destroy(gameObject);
+            return;
         }
 
         bool destroy = true;
@@ -101,6 +102,7 @@ public class HitSplat : MonoBehaviour
                     damage = Mathf.Abs(damage);
                 }
                 newHitSplat.GetComponentInChildren<Text>().text = damage.ToString();
+                newHitSplat.transform.localScale *= UIManager.canvas.scaleFactor;
 
                 activeHitSplats[i] = newHitSplat;
                 timers[i] = timer;
