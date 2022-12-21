@@ -38,7 +38,7 @@ public class Jad : MonoBehaviour
 
     void AfterTick()
     {
-        if (combatScript.attackCooldown == enemyScript.attackSpeed || combatScript.attackCooldown <= 0)
+        if (combatScript.attackCooldown == enemyScript.attackSpeed || combatScript.attackCooldown <= 0 || enemyScript.death)
         {
             signalSprite.enabled = false;
         }

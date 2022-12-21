@@ -338,9 +338,9 @@ public class ChargeItem : MonoBehaviour
         if (GetComponent<BlowPipe>() != null)
         {
             BlowPipe pipeScript = GetComponent<BlowPipe>();
-            if (GetComponent<BlowPipe>().ammoLoaded != null)
+            if (pipeScript.ammoLoaded != null)
             {
-                end = " and " + GetComponent<BlowPipe>().numberLoaded + " " + GetComponent<BlowPipe>().ammoLoaded.name + "s.";
+                end = " and " + pipeScript.numberLoaded + " " + pipeScript.ammoLoaded.name + "s.";
             }
             else
             {

@@ -47,6 +47,11 @@ public class ChestPanelItem : MonoBehaviour
         {
             newItem.GetComponent<ChargeItem>().charges = 2000;
         }
+        if (newItem.GetComponent<BlowPipe>() != null)
+        {
+            newItem.GetComponent<BlowPipe>().ammoLoaded = Tools.LoadFromResource("Dragon dart");
+            newItem.GetComponent<BlowPipe>().numberLoaded = 2000;
+        }
         Inventory.instance.PlaceInInventory(newItem);
 
         yield return null;

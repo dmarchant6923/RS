@@ -6,6 +6,7 @@ public class Food : MonoBehaviour
 {
     public int heal = 3;
     public bool karambwan = false;
+    public bool anglerfish = false;
 
     Action foodAction;
     Item itemScript;
@@ -35,7 +36,38 @@ public class Food : MonoBehaviour
             return;
         }
 
-        PlayerStats.PlayerHeal(heal);
+        int overheal = 0;
+        if (anglerfish)
+        {
+            int c = 0;
+            int hp = PlayerStats.initialHitpoints;
+            if (hp >= 93)
+            {
+                c = 13;
+            }
+            else if (hp >= 75)
+            {
+                c = 8;
+            }
+            else if (hp >= 50)
+            {
+                c = 6;
+            }
+            else if (hp >= 25)
+            {
+                c = 4;
+            }
+            else if (hp >= 10)
+            {
+                c = 2;
+            }
+
+            heal = Mathf.FloorToInt((float)hp * 0.1f) + c;
+            overheal = heal;
+        }
+
+        Debug.Log(heal + " " + overheal);
+        PlayerStats.PlayerHeal(heal, overheal);
 
         if (karambwan == false)
         {

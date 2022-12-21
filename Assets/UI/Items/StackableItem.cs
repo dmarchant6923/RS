@@ -27,6 +27,7 @@ public class StackableItem : MonoBehaviour
     public Text quantityText;
 
     public Color projectileColor;
+    public Sprite customProjectile;
 
     [System.NonSerialized] public Item itemScript;
     [HideInInspector] public bool groundItem = false;
@@ -114,7 +115,7 @@ public class StackableItem : MonoBehaviour
         ChooseImage();
     }
 
-    public void UseRangedAmmo(Vector2 targetTile, int delay)
+    public void UseRangedAmmo(Vector2 targetTile, int delay, bool spawnOnGround)
     {
         float rand = Random.Range(0f, 1f);
         if (WornEquipment.assembler)
@@ -123,8 +124,10 @@ public class StackableItem : MonoBehaviour
             {
                 AddToQuantity(-1);
             }
+            return;
         }
-        else if (WornEquipment.accumulator)
+
+        if (WornEquipment.accumulator)
         {
             if (rand < 0.2f)
             {
@@ -133,15 +136,20 @@ public class StackableItem : MonoBehaviour
             else if (rand < 0.28f)
             {
                 AddToQuantity(-1);
-                DelaySpawn newSpawn = new DelaySpawn();
-                newSpawn.ticks = delay;
-                newSpawn.targetTile = targetTile;
-                spawnList.Add(newSpawn);
+                if (spawnOnGround)
+                {
+                    DelaySpawn newSpawn = new DelaySpawn();
+                    newSpawn.ticks = delay;
+                    newSpawn.targetTile = targetTile;
+                    spawnList.Add(newSpawn);
+                }
             }
+            return;
         }
-        else
+
+        AddToQuantity(-1);
+        if (spawnOnGround)
         {
-            AddToQuantity(-1);
             if (rand > 0.07f)
             {
                 DelaySpawn newSpawn = new DelaySpawn();
@@ -150,6 +158,11 @@ public class StackableItem : MonoBehaviour
                 spawnList.Add(newSpawn);
             }
         }
+
+    }
+    public void UseRangedAmmo(Vector2 targetTile, int delay)
+    {
+        UseRangedAmmo(targetTile, delay, true);
     }
 
     void BeforeTick()

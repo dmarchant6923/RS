@@ -123,5 +123,29 @@ PrefabInstance:
       propertyPath: rangedStrength
       value: 35
       objectReference: {fileID: 0}
+    - target: {fileID: 8768139431642779603, guid: f13774f4ea731f6408c7f62fcdbb5027, type: 3}
+      propertyPath: weaponCategory
+      value: Thrown
+      objectReference: {fileID: 0}
+    - target: {fileID: 8768139431642779603, guid: f13774f4ea731f6408c7f62fcdbb5027, type: 3}
+      propertyPath: canFireDragonAmmo
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8768139431642779603, guid: f13774f4ea731f6408c7f62fcdbb5027, type: 3}
+      propertyPath: addAmmoRangedStats
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8768139431642779603, guid: f13774f4ea731f6408c7f62fcdbb5027, type: 3}
+      propertyPath: overrideProjectileColor.b
+      value: 0.9098039
+      objectReference: {fileID: 0}
+    - target: {fileID: 8768139431642779603, guid: f13774f4ea731f6408c7f62fcdbb5027, type: 3}
+      propertyPath: overrideProjectileColor.g
+      value: 0.99215686
+      objectReference: {fileID: 0}
+    - target: {fileID: 8768139431642779603, guid: f13774f4ea731f6408c7f62fcdbb5027, type: 3}
+      propertyPath: overrideProjectileColor.r
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f13774f4ea731f6408c7f62fcdbb5027, type: 3}

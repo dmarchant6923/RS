@@ -14,6 +14,7 @@ public class HiscoresPanel : MonoBehaviour
     public Text lowestLevelValue;
     public Text leastDamageValue;
     public Text timeValue;
+    public Text gradeValue;
 
     public GameObject parent;
 
@@ -63,8 +64,13 @@ public class HiscoresPanel : MonoBehaviour
         if (GameManager.scores.fastestTicks > 0)
         {
             float seconds = (float)GameManager.scores.fastestTicks * TickManager.maxTickTime;
-            string text = Tools.SecondsToMinutes(seconds, true);
+            string text = Tools.SecondsToMinutes(seconds, true, true);
             timeValue.text = text;
+        }
+        gradeValue.text = "-";
+        if (GameManager.scores.highestScore > 0)
+        {
+            gradeValue.text = CompletionPanel.CalculateGrade(GameManager.scores.highestScore);
         }
     }
 

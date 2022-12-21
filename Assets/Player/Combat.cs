@@ -36,8 +36,8 @@ public class Combat : MonoBehaviour
 
     public GameObject attackEffect;
 
-    [HideInInspector] public float diamondBoltProcChance = 0.1f;
-    [HideInInspector] public float rubyBoltProcChance = 0.11f;
+    float diamondBoltProcChance = 0.1f;
+    float rubyBoltProcChance = 0.06f;
     float realDiamondBoltChance;
     float realRubyBoltChance;
 
@@ -131,6 +131,7 @@ public class Combat : MonoBehaviour
 
         if (attackCooldown <= 0)
         {
+            projectileSize = 1;
             Enemy enemyScript = Player.targetedNPC.GetComponent<Enemy>();
 
             playerScript.attackThisTick = true;
@@ -245,6 +246,11 @@ public class Combat : MonoBehaviour
                 {
                     SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, WornEquipment.ammo.GetComponent<StackableItem>().projectileColor, WornEquipment.weapon.weaponCategory);
                 }
+                else if (WornEquipment.weapon.weaponCategory == WornEquipment.chinchompaCategory)
+                {
+                    projectileSize = 10;
+                    SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, Color.white, WornEquipment.weapon.GetComponent<StackableItem>().customProjectile);
+                }
                 else
                 {
                     SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, WornEquipment.weapon.overrideProjectileColor, WornEquipment.weapon.weaponCategory);
@@ -295,11 +301,51 @@ public class Combat : MonoBehaviour
                 {
                     WornEquipment.weapon.GetComponent<BlowPipe>().UseRangedAmmo(playerScript.targetNPCPreviousTile, delay);
                 }
+                else if (WornEquipment.weapon.weaponCategory == WornEquipment.thrownCategory)
+                {
+                    WornEquipment.weapon.GetComponent<StackableItem>().UseRangedAmmo(playerScript.targetNPCPreviousTile, delay);
+                }
+                else if (WornEquipment.weapon.weaponCategory == WornEquipment.chinchompaCategory)
+                {
+                    WornEquipment.weapon.GetComponent<StackableItem>().AddToQuantity(-1);
+                }
             }
 
             if (useSpec)
             {
                 SpecBar.instance.UseSpec();
+            }
+
+            if (specialEffects && effects.chinchompa)
+            {
+                List<Enemy> enemies = new List<Enemy>();
+                RaycastHit2D[] cast = Physics2D.BoxCastAll(Player.targetedNPC.transform.position, Vector2.one * 5, 0, Vector2.zero);
+                foreach (RaycastHit2D enemy in cast)
+                {
+                    if (enemy.collider.GetComponent<Enemy>() != null && enemy.collider.gameObject != Player.targetedNPC.gameObject)
+                    {
+                        Enemy script = enemy.collider.GetComponent<Enemy>();
+                        if ((script.npcScript.trueTile - Player.targetedNPC.trueTile).magnitude < 1.8f && enemies.Count < 13 && enemies.Contains(script) == false)
+                        {
+                            enemies.Add(script);
+                        }
+                    }
+                }
+
+                foreach (Enemy enemy in enemies)
+                {
+                    hitRoll = 0;
+                    if (success)
+                    {
+                        hitRoll = Random.Range(0, (int)maxHit + 1);
+                    }
+                    enemy.AddToDamageQueue(hitRoll, delay, true, (int)maxHit);
+                    if (hitRoll > 0)
+                    {
+                        XPDrop.CombatXPDrop(AttackStyles.attackStyle, AttackStyles.attackType, Mathf.Min(hitRoll, enemy.hitpoints), enemy.xpMult, offensivePrayerOn);
+                        playerDealtDamage?.Invoke(hitRoll);
+                    }
+                }
             }
 
 
@@ -314,7 +360,7 @@ public class Combat : MonoBehaviour
                 hitChance = maxAttRoll / (2 * (maxDefRoll + 1));
             }
 
-            float dps = (maxHit / 2) * hitChance / attackCooldown / 0.6f;
+            float damagePerHit = (maxHit / 2) * hitChance;
 
             if (WornEquipment.rubyBoltsE)
             {
@@ -325,7 +371,7 @@ public class Combat : MonoBehaviour
                     dmg = 110f;
                     mult = 0.22f;
                 }
-                dps = (dps * (1 - rubyBoltProcChance)) + (rubyBoltProcChance * (int)Mathf.Min(dmg, Mathf.Floor((float)Player.targetedNPC.GetComponent<Enemy>().hitpoints) * mult) / attackCooldown / 0.6f);
+                damagePerHit = (damagePerHit * (1 - rubyBoltProcChance)) + (rubyBoltProcChance * (int)Mathf.Min(dmg, Mathf.Floor((float)Player.targetedNPC.GetComponent<Enemy>().hitpoints) * mult));
             }
             else if (WornEquipment.diamondBoltsE)
             {
@@ -334,8 +380,10 @@ public class Combat : MonoBehaviour
                 {
                     mult = 1.25f;
                 }
-                dps = (dps * (1 - diamondBoltProcChance)) + (diamondBoltProcChance * Mathf.Floor(maxHit * mult) / attackCooldown / 0.6f);
+                damagePerHit = (damagePerHit * (1 - diamondBoltProcChance)) + (diamondBoltProcChance * Mathf.Floor(maxHit * mult / 2));
             }
+
+            float dps = damagePerHit / attackCooldown / 0.6f;
 
             CombatInfo.PlayerAttack(AttackStyles.attackStyle, (int)maxAttRoll);
             CombatInfo.PlayerAttackResult(hitChance, (int)maxHit, dps);
@@ -642,6 +690,25 @@ public class Combat : MonoBehaviour
         if (specialEffects)
         {
             roll = Mathf.Floor(roll * effects.AttackRollMult());
+            
+            if (effects.chinchompa)
+            {
+                int dist = TileManager.TileDistance(playerScript.trueTile, Player.targetedNPC.trueTile);
+                if (AttackStyles.attackType == AttackStyles.accurateType)
+                {
+                    if (dist >= 7) { roll *= 0.5f; }
+                    else if (dist >= 4) { roll *= 0.75f; }
+                }
+                if (AttackStyles.attackType == AttackStyles.rapidType)
+                {
+                    if (dist >= 7 || dist <= 3) { roll *= 0.75f; }
+                }
+                if (AttackStyles.attackType == AttackStyles.longrangeType)
+                {
+                    if (dist <= 3) { roll *= 0.5f; }
+                    else if (dist <= 6) { roll *= 0.75f; }
+                }
+            }
         }
         if (useSpec)
         {

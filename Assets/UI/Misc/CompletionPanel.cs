@@ -32,15 +32,16 @@ public class CompletionPanel : MonoBehaviour
 
     public void UpdateText()
     {
-        time.text = Tools.SecondsToMinutes((float)manager.encounterTicks * TickManager.maxTickTime, true);
-        pb.text = Tools.SecondsToMinutes(GameManager.scores.fastestTicks * TickManager.maxTickTime, true);
+        time.text = Tools.SecondsToMinutes((float)manager.encounterTicks * TickManager.maxTickTime, true, true);
+        pb.text = Tools.SecondsToMinutes(GameManager.scores.fastestTicks * TickManager.maxTickTime, true, true);
         damage.text = manager.damageTaken.ToString();
         balls.text = manager.ballsTanked.ToString();
         chance.text = (Mathf.Floor(manager.deathChance * 10000) / 100).ToString() + "%";
         heals.text = ZukHealer.zukHeals.ToString();
         shieldHealth.text = manager.shieldHealthValue + "/" + 600;
         dps.text = (Mathf.Floor(((float)manager.damageDealt * 1000 / ((float)manager.encounterTicks * TickManager.maxTickTime))) / 1000).ToString();
-        grade.text = CalculateGrade();
+        float score = CalculateScore();
+        grade.text = CalculateGrade(score);
         float nibblerChance = 1 / 100;
         if (WornEquipment.slayerHelm)
         {
@@ -56,22 +57,26 @@ public class CompletionPanel : MonoBehaviour
         }
     }
 
-    string CalculateGrade()
+    public float CalculateScore()
     {
-        float timePoints = Mathf.Max(1300 - (manager.encounterTicks), 0);
-        float damagePoints = Mathf.Max(1000 - manager.damageTaken * 3, 0);
+        float timePoints = Mathf.Max(1300 - manager.encounterTicks, 0);
+        float damagePoints = Mathf.Max(500 - manager.damageTaken * 1.5f, 0);
         float ballsPoints = Mathf.Max(1000 - manager.ballsTanked * 500, 0);
-        float chancePoints = Mathf.Max((manager.deathChance > 0.001) ? 700 - manager.deathChance * 1000 : 1000, 0);
-        float healsPoints = Mathf.Max(500 - ZukHealer.zukHeals);
+        float chancePoints = Mathf.Max((manager.deathChance > 0.001) ? 800 - manager.deathChance * 1000 : 1000, 0);
+        float healsPoints = Mathf.Max(500 - ZukHealer.zukHeals, 0);
 
         float total = Mathf.Max(timePoints + damagePoints + ballsPoints + chancePoints + healsPoints, 1);
-        Debug.Log(total);
+        Debug.Log(timePoints + " " + damagePoints + " " + ballsPoints + " " + chancePoints + " " + healsPoints + " total: " + total);
+        return total;
+    }
 
-        float Aplus = 3750;
-        float Aminus = 2900;
-        float Bminus = 2400;
-        float Cminus = 1900;
-        float D = 1500;
+    public static string CalculateGrade(float total)
+    {
+        float Aplus = 3400;
+        float Aminus = 2800;
+        float Bminus = 1900;
+        float Cminus = 1300;
+        float D = 1000;
         float[] thresholds = new float[6];
         thresholds[0] = Aplus;
         thresholds[1] = Aminus;
@@ -128,6 +133,21 @@ public class CompletionPanel : MonoBehaviour
             else
             {
                 modifier = "-";
+            }
+
+            return color + grade + modifier + endColor;
+        }
+        if (i == 4)
+        {
+            float difference1 = thresholds[4] - thresholds[3];
+            float yourDifference1 = total - thresholds[3];
+            if (yourDifference1 > difference1 * 0.5f)
+            {
+                modifier = "+";
+            }
+            else
+            {
+                modifier = "";
             }
 
             return color + grade + modifier + endColor;

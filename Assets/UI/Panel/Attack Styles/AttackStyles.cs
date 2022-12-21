@@ -44,6 +44,10 @@ public class AttackStyles : MonoBehaviour
     public Texture cbowRapid;
     public Texture cbowLongrange;
 
+    public Texture chinShort;
+    public Texture chinMed;
+    public Texture chinLong;
+
     public Texture whipFlick;
     public Texture whipLash;
 
@@ -400,7 +404,37 @@ public class AttackStyles : MonoBehaviour
                 attackType = longrangeType;
             }
         }
+        else if (category == WornEquipment.chinchompaCategory)
+        {
+            setActive[0] = true;
+            setActive[1] = true;
+            setActive[2] = true;
 
+            style1.transform.GetChild(0).GetComponent<RawImage>().texture = chinShort;
+            style1.GetComponentInChildren<Text>().text = "Short fuse";
+
+            style2.transform.GetChild(0).GetComponent<RawImage>().texture = chinMed;
+            style2.GetComponentInChildren<Text>().text = "Medium fuse";
+
+            style3.transform.GetChild(0).GetComponent<RawImage>().texture = chinLong;
+            style3.GetComponentInChildren<Text>().text = "Long fuse";
+
+            selectedStyle = PlayerPrefs.GetInt(WornEquipment.chinchompaCategory, 1);
+
+            attackStyle = rangedStyle;
+            if (selectedStyle == 1)
+            {
+                attackType = accurateType;
+            }
+            else if (selectedStyle == 2)
+            {
+                attackType = rapidType;
+            }
+            else
+            {
+                attackType = longrangeType;
+            }
+        }
 
 
         else if (category == WornEquipment.staffCategory || category == WornEquipment.bladedStaffCategory)

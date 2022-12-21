@@ -5,6 +5,7 @@ using UnityEngine;
 public class BlowPipe : MonoBehaviour
 {
     public GameObject ammoLoaded;
+    public string ammoLoadedName;
     public int numberLoaded;
 
     Item itemScript;
@@ -29,6 +30,7 @@ public class BlowPipe : MonoBehaviour
         {
             itemScript.menuTexts[5] = "Unload ";
             AddDartStats();
+            DontDestroyOnLoad(ammoLoaded);
         }
 
         itemAction.cancelLevels[5] = 1;
@@ -155,6 +157,7 @@ public class BlowPipe : MonoBehaviour
             AddUnloadAction();
         }
 
+        DontDestroyOnLoad(ammoLoaded);
         itemAction.foundUseActionMethod = true;
         return;
     }

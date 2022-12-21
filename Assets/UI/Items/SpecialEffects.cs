@@ -11,6 +11,7 @@ public class SpecialEffects : MonoBehaviour
     public bool tumekensShadow;
     public bool zaryteCrossbow;
     public bool sangStaff;
+    public bool chinchompa;
 
     public float GearBonusMult()
     {

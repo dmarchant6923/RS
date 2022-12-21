@@ -98,6 +98,10 @@ public class SetSpawn : MonoBehaviour
         switchAggroOnAttack = false;
         attackPlayer = true;
         combatScript.attackCooldown = attackSpeed;
+        if (Jad)
+        {
+            combatScript.attackCooldown = 5;
+        }
         npcScript.externalFocus = false;
         enemyScript.AttackPlayer();
     }

@@ -123,16 +123,14 @@ public class InfernoManager : MonoBehaviour
     IEnumerator ZukDeathCR()
     {
         stopTimer = true;
-        if (OptionManager.ignoreHiscores == false && Player.player.dead == false)
-        {
-            GameManager.UpdateSuccessStats(PlayerStats.totalLevel, damageTaken, encounterTicks);
-        }
+        float score = winPanel.CalculateScore();
 
         shieldHealthValue = shieldScript.GetComponent<Enemy>().hitpoints;
 
-        yield return new WaitForSeconds(5);
-        if (OptionManager.ignoreHiscores == false)
+        yield return new WaitForSeconds(4);
+        if (OptionManager.ignoreHiscores == false && Player.player.standardDeath == false)
         {
+            GameManager.UpdateSuccessStats(PlayerStats.totalLevel, damageTaken, encounterTicks, score);
             Action.ignoreAllActions = true;
             Player.player.trueTileScript.StopMovement();
             winPanel.UpdateText();
@@ -165,7 +163,7 @@ public class InfernoManager : MonoBehaviour
         if (stopTimer == false)
         {
             encounterTicks++;
-            timer.text = Tools.SecondsToMinutes((float)encounterTicks * TickManager.maxTickTime, true);
+            timer.text = Tools.SecondsToMinutes((float)encounterTicks * TickManager.maxTickTime, true, true);
         }
 
     }

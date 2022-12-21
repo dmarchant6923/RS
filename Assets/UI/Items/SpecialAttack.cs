@@ -60,7 +60,7 @@ public class SpecialAttack : MonoBehaviour
     {
         if (armadylCrossbow)
         {
-            return chance + 0.1f;
+            return chance * 2;
         }
         else if (zaryteCrossbow && success)
         {

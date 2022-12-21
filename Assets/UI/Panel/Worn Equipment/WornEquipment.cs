@@ -92,6 +92,7 @@ public class WornEquipment : MonoBehaviour
     public static string bowCategory = "Bow";
     public static string crossbowCategory = "Crossbow";
     public static string thrownCategory = "Thrown";
+    public static string chinchompaCategory = "Chinchompas";
     public static string staffCategory = "Staff";
     public static string bladedStaffCategory = "Bladed Staff";
     public static string poweredStaffCategory = "Powered Staff";

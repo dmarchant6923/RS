@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &7283083134542994466
+--- !u!1001 &4385203188105247127
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -94,42 +94,42 @@ PrefabInstance:
     - target: {fileID: 585735260740878817, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
       propertyPath: image1
       value: 
-      objectReference: {fileID: 2800000, guid: ab64d9558d00948488285cfe56a14a0f, type: 3}
+      objectReference: {fileID: 2800000, guid: 6a8ab60b59a73634d9546b1217a20728, type: 3}
+    - target: {fileID: 585735260740878817, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
+      propertyPath: customProjectile
+      value: 
+      objectReference: {fileID: 21300000, guid: 6a8ab60b59a73634d9546b1217a20728, type: 3}
     - target: {fileID: 585735260740878817, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
       propertyPath: projectileColor.a
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 585735260740878817, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
       propertyPath: projectileColor.b
-      value: 0.8411381
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 585735260740878817, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
       propertyPath: projectileColor.g
-      value: 0.5338644
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 585735260740878817, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
       propertyPath: projectileColor.r
-      value: 0.8773585
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 876085000153691955, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
       propertyPath: examineText
-      value: A deadly throwing dart with an amethyst tip.
+      value: Just plain nasty.
       objectReference: {fileID: 0}
     - target: {fileID: 885136016691790221, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
       propertyPath: m_Name
-      value: Amethyst dart
+      value: Black chinchompa
       objectReference: {fileID: 0}
     - target: {fileID: 2070536377647961073, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
-      propertyPath: stackable
-      value: 1
+      propertyPath: attackRange
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 2070536377647961073, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
       propertyPath: attackSpeed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2070536377647961073, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
-      propertyPath: ammoCategory
-      value: 
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2070536377647961073, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
       propertyPath: equipSlotName
@@ -137,15 +137,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070536377647961073, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
       propertyPath: attackDistance
-      value: 3
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2070536377647961073, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
       propertyPath: rangedStrength
-      value: 28
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2070536377647961073, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
       propertyPath: weaponCategory
-      value: Thrown
+      value: Chinchompas
       objectReference: {fileID: 0}
     - target: {fileID: 2070536377647961073, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
       propertyPath: canFireDragonAmmo
@@ -155,25 +155,34 @@ PrefabInstance:
       propertyPath: addAmmoRangedStats
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2070536377647961073, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
-      propertyPath: overrideProjectileColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2070536377647961073, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
-      propertyPath: overrideProjectileColor.b
-      value: 0.8392157
-      objectReference: {fileID: 0}
-    - target: {fileID: 2070536377647961073, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
-      propertyPath: overrideProjectileColor.g
-      value: 0.53333336
-      objectReference: {fileID: 0}
-    - target: {fileID: 2070536377647961073, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
-      propertyPath: overrideProjectileColor.r
-      value: 0.8784314
-      objectReference: {fileID: 0}
     - target: {fileID: 7518760927752005991, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
       propertyPath: itemTexture
       value: 
-      objectReference: {fileID: 2800000, guid: ab64d9558d00948488285cfe56a14a0f, type: 3}
+      objectReference: {fileID: 2800000, guid: 6a8ab60b59a73634d9546b1217a20728, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
+--- !u!1 &3500420150350182426 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 885136016691790221, guid: 0230092b63bd219429675bd8b22203dd, type: 3}
+  m_PrefabInstance: {fileID: 4385203188105247127}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-7405240433206129952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3500420150350182426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e13758f45a94964cb9af33a67de2de8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  twistedBow: 0
+  crystalBow: 0
+  rerollAttMult: 0
+  rerollDefMult: 0
+  tumekensShadow: 0
+  zaryteCrossbow: 0
+  sangStaff: 0
+  chinchompa: 1

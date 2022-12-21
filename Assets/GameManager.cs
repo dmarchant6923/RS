@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
         public int lowestLevel;
         public int leastDamage = -1;
         public int fastestTicks;
+        public float highestScore;
     }
     public static Hiscores scores = new Hiscores();
 
@@ -59,7 +60,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public static void UpdateSuccessStats(int level, int damage, int ticks)
+    public static void UpdateSuccessStats(int level, int damage, int ticks, float score)
     {
         scores.completions++;
         if (level < scores.lowestLevel || scores.lowestLevel == 0)
@@ -73,6 +74,10 @@ public class GameManager : MonoBehaviour
         if (ticks < scores.fastestTicks || scores.fastestTicks == 0)
         {
             scores.fastestTicks = ticks;
+        }
+        if (score > scores.highestScore)
+        {
+            scores.highestScore = score;
         }
 
         SaveScores();

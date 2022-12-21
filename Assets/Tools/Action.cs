@@ -366,6 +366,16 @@ public class Action : MonoBehaviour
     }
     public static void BeforeTick()
     {
+        if (ignoreAllActions)
+        {
+            beforeTickActions = new List<Action>();
+            beforeTickNum = new List<int>();
+            onTickActions = new List<Action>();
+            onTickNum = new List<int>();
+            afterTickActions = new List<Action>();
+            afterTickNum = new List<int>();
+        }
+
         for (int i = 0; i < beforeTickActions.Count; i++)
         {
             if (beforeTickActions[i].gameObject.activeSelf)

@@ -130,19 +130,36 @@ public class Tools : MonoBehaviour
     }
     public static string SecondsToMinutes(float seconds, bool keepMinutesPlace)
     {
+        return SecondsToMinutes(seconds, keepMinutesPlace, false);
+    }
+    public static string SecondsToMinutes(float seconds, bool keepMinutesPlace, bool decimalSeconds)
+    {
         float minutes = Mathf.Floor(seconds / 60);
+        seconds = (minutes == 0) ? seconds : seconds % (minutes * 60);
+        string secondsText;
+        if (decimalSeconds)
+        {
+            seconds = Mathf.Floor(seconds * 10) / 10;
+            secondsText = seconds.ToString("00.0");
+
+        }
+        else
+        {
+            seconds = Mathf.Floor(seconds);
+            secondsText = seconds.ToString("00");
+        }
+
         if (minutes == 0)
         {
             if (keepMinutesPlace)
             {
-                return "0:" + Mathf.Floor(seconds).ToString("00");
+                return "0:" + secondsText;
             }
-            return Mathf.Floor(seconds).ToString("00");
+            return secondsText;
         }
         else
         {
-            seconds = seconds % (minutes * 60);
-            return minutes.ToString() + ":" + Mathf.Floor(seconds).ToString("00");
+            return minutes.ToString() + ":" + secondsText;
         }
     }
 

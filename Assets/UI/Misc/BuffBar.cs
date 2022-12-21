@@ -160,4 +160,13 @@ public class BuffBar : MonoBehaviour
             GameLog.Log("<color=red>Your " + extraTimers[i].name + " is about to run out!</color>");
         }
     }
+
+    public void ResetTimers()
+    {
+        for (int i = 0; i < extraTimers.Length; i++)
+        {
+            extraTimers[i] = new ExtraTimer();
+            extras[i].SetActive(false);
+        }
+    }
 }

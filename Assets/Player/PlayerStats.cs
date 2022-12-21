@@ -480,6 +480,8 @@ public class PlayerStats : MonoBehaviour
         Player.player.runEnergy = 10000;
         SpecBar.ResetSpecBar();
         Player.player.staminaTicks = 0;
+        instance.timerActive = false;
+        BuffBar.instance.ResetTimers();
 
         reinitialize?.Invoke();
     }
