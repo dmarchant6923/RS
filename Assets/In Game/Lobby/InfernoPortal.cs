@@ -8,9 +8,11 @@ public class InfernoPortal : MonoBehaviour
 {
     Action portalAction;
     Vector2 swTile;
-    int size = 4;
+    int size = 5;
     int fadeTime = 3;
     int fadeTicks;
+
+    public static double GearValueAtPortalEntrance = -1;
 
     bool willEnterPortal = false;
     void Start()
@@ -25,7 +27,7 @@ public class InfernoPortal : MonoBehaviour
         portalAction.serverAction0 += EnterPortal;
 
         Vector2 position = transform.position;
-        swTile = TileManager.FindTile(position - Vector2.one * 1.5f);
+        swTile = TileManager.FindTile(position - Vector2.one * (size / 2));
 
         TickManager.beforeTick += BeforeTick;
         Action.cancel1 += Cancel;
@@ -59,6 +61,7 @@ public class InfernoPortal : MonoBehaviour
     IEnumerator PortalFade()
     {
         Action.ignoreAllActions = true;
+        GearValueAtPortalEntrance = GameManager.instance.TotalCarriedValue();
         fadeTicks = fadeTime;
         while (fadeTicks > 0)
         {

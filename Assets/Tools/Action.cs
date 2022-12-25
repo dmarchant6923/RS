@@ -78,7 +78,7 @@ public class Action : MonoBehaviour
     private IEnumerator Start()
     {
         menuTexts = new string[9];
-        if (examineText != null && string.IsNullOrEmpty(examineText) == false)
+        if (string.IsNullOrEmpty(examineText) == false)
         {
             menuTexts[8] = "Examine ";
             serverActionExamine += Examine;
@@ -513,6 +513,23 @@ public class Action : MonoBehaviour
     void Examine()
     {
         GameLog.Log(examineText);
+    }
+
+    public void ReturnGEPrice()
+    {
+        double price = GameManager.instance.GetItemPrice(gameObject.name);
+        if (price < 0)
+        {
+            return;
+        }
+        
+        string str = "Price of <color=cyan>" + gameObject.name + "</color>: GE Average <color=cyan>" + Tools.DoubleToCashValue(price).Remove(0, 1);
+        if (GetComponent<StackableItem>() != null)
+        {
+            str += " (" + Tools.DoubleToCashValue(price * GetComponent<StackableItem>().quantity).Remove(0, 1) + ")";
+        }
+        str += "</color>";
+        GameLog.Log(str);
     }
 
     private void OnDestroy()

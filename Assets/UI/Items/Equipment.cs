@@ -16,7 +16,7 @@ public class Equipment : MonoBehaviour
     [HideInInspector] public bool equippedWhenClicked = false;
     public string equipSlotName;
     [HideInInspector] public Transform equipSlot;
-    Item itemScript;
+    [HideInInspector] public Item itemScript;
     string equipString;
 
     public bool stackable;

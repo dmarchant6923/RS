@@ -22,6 +22,7 @@ public class ZukShield : MonoBehaviour
     public GameObject safeSpotMarker;
     public Vector3 relativePosition;
 
+
     private IEnumerator Start()
     {
         if (Random.Range(0, 2) == 0)

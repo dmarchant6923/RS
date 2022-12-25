@@ -25,7 +25,8 @@ public class LoadPlayerAttributes : MonoBehaviour
         //StartCoroutine(LoadPresetEnum(_equipment, _equipBlowpipeAmmo, _items, _inventoryBlowpipeAmmo));
     }
 
-    public static IEnumerator LoadPresetEnum(string[] equipment, string equipBlowpipeAmmo, string[] items, string inventoryBlowpipeAmmo)
+    public static IEnumerator LoadPresetEnum(GameManager.ItemAndQuantity[] equipment, string equipBlowpipeAmmo, GameManager.ItemAndQuantity[] items, string inventoryBlowpipeAmmo)
+    //public static IEnumerator LoadPresetEnum(string[] equipment, string equipBlowpipeAmmo, string[] items, string inventoryBlowpipeAmmo)
     {
         yield return new WaitForSeconds(0.05f);
         foreach (GameObject slot in Inventory.inventorySlots)
@@ -49,15 +50,15 @@ public class LoadPlayerAttributes : MonoBehaviour
         List<GameObject> equipments = new List<GameObject>();
         for (int i = 0; i < 11; i++)
         {
-            if (string.IsNullOrEmpty(equipment[i]) == false)
+            if (string.IsNullOrEmpty(equipment[i].name) == false)
             {
-                GameObject newEquipment = Tools.LoadFromResource(equipment[i]);
+                GameObject newEquipment = Tools.LoadFromResource(equipment[i].name);
                 if (newEquipment != null)
                 {
                     equipments.Add(newEquipment);
                     if (newEquipment.GetComponent<StackableItem>() != null)
                     {
-                        newEquipment.GetComponent<StackableItem>().quantity = 2000;
+                        newEquipment.GetComponent<StackableItem>().quantity = equipment[i].quantity;
                     }
                     if (newEquipment.GetComponent<ChargeItem>() != null)
                     {
@@ -75,15 +76,15 @@ public class LoadPlayerAttributes : MonoBehaviour
         List<GameObject> newItems = new List<GameObject>();
         for (int i = 0; i < 28; i++)
         {
-            if (string.IsNullOrEmpty(items[i]) == false)
+            if (string.IsNullOrEmpty(items[i].name) == false)
             {
-                GameObject newItem = Tools.LoadFromResource(items[i]);
+                GameObject newItem = Tools.LoadFromResource(items[i].name);
                 if (newItem != null)
                 {
                     newItems.Add(newItem);
                     if (newItem.GetComponent<StackableItem>() != null)
                     {
-                        newItem.GetComponent<StackableItem>().quantity = 2000;
+                        newItem.GetComponent<StackableItem>().quantity = items[i].quantity;
                     }
                     if (newItem.GetComponent<ChargeItem>() != null)
                     {

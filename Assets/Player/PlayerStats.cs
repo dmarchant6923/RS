@@ -72,6 +72,10 @@ public class PlayerStats : MonoBehaviour
     public static bool imbuedHeartCharged = true;
     public static int imbuedHeartTicks = 0;
 
+    public static bool defensiveBulwark = false;
+    public static int defensiveDelay = 10;
+    public static int defensiveTicks = 0;
+
     private IEnumerator Start()
     {
         instance = this;
@@ -296,6 +300,23 @@ public class PlayerStats : MonoBehaviour
         else
         {
             imbuedHeartCharged = true;
+        }
+
+        if (WornEquipment.weapon != null && WornEquipment.weapon.weaponCategory == WornEquipment.bulwarkCategory && AttackStyles.attackType == AttackStyles.defensiveType)
+        {
+            if (defensiveTicks < defensiveDelay)
+            {
+                defensiveTicks++;
+            }
+            else
+            {
+                defensiveBulwark = true;
+            }
+        }
+        else if (defensiveBulwark)
+        {
+            defensiveBulwark = false;
+            Player.player.combatScript.attackCooldown = 10;
         }
     }
 

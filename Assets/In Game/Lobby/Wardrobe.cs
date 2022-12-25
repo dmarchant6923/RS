@@ -14,7 +14,6 @@ public class Wardrobe : MonoBehaviour
         objectScript = GetComponent<InteractableObject>();
 
         wardrobeAction.menuTexts[0] = "Check-presets ";
-        wardrobeAction.UpdateName();
         objectScript.interaction += OpenWardrobe;
     }
 

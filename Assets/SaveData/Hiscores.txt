@@ -1,1 +1,1 @@
-{"deaths":91,"completions":23,"lowestLevel":669,"leastDamage":124,"fastestTicks":421,"highestScore":2080.800048828125}
+{"deaths":103,"completions":27,"lowestLevel":669,"leastDamage":124,"lowestValue":5798795.0,"fastestTicks":421,"highestScore":3290.0}

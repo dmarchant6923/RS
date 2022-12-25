@@ -110,9 +110,16 @@ public class Combat : MonoBehaviour
                 if (WornEquipment.weapon.GetComponent<BlowPipe>() != null && WornEquipment.weapon.GetComponent<BlowPipe>().numberLoaded <= 0)
                 {
                     GameLog.Log("Your weapon has no ammo.");
+                    playerScript.RemoveFocus();
                     return;
                 }
             }
+        }
+        if (WornEquipment.weapon != null && WornEquipment.weapon.weaponCategory == WornEquipment.bulwarkCategory && AttackStyles.attackType == AttackStyles.defensiveType)
+        {
+            GameLog.Log("Your bulwark gets in the way.");
+            playerScript.RemoveFocus();
+            return;
         }
 
         if (AttackStyles.attackStyle == AttackStyles.magicStyle && WornEquipment.weapon.weaponCategory == WornEquipment.poweredStaffCategory)
@@ -264,14 +271,18 @@ public class Combat : MonoBehaviour
 
             if (useSpec && specScript.leech)
             {
-                PlayerStats.PlayerHeal(Mathf.FloorToInt((float)hitRoll * specScript.leechPercent));
+                PlayerStats.PlayerHeal(Mathf.CeilToInt((float)hitRoll * specScript.leechPercent));
+            }
+            if (useSpec && specScript.sgs)
+            {
+                PlayerStats.RestorePrayer((int)((float)hitRoll / 2), 120);
             }
             if (specialEffects && effects.sangStaff)
             {
                 int rand = Random.Range(0, 6);
                 if (rand == 0)
                 {
-                    PlayerStats.PlayerHeal(Mathf.FloorToInt((float)hitRoll * 0.5f));
+                    PlayerStats.PlayerHeal(Mathf.CeilToInt((float)hitRoll * 0.25f));
                 }
             }
 
@@ -774,7 +785,13 @@ public class Combat : MonoBehaviour
                 offensivePrayerOn = true;
             }
 
-            effectiveStrength = Mathf.Floor((Mathf.Floor(PlayerStats.currentStrength * Prayer.strengthPrayerBonus) + AttackStyles.strBonus + 8) * voidBonus);
+            int strengthBonus = AttackStyles.strBonus;
+            if (WornEquipment.weapon != null && WornEquipment.weapon.weaponCategory == WornEquipment.bulwarkCategory)
+            {
+                int extraStr = Mathf.FloorToInt((((float)WornEquipment.defenceStab + (float)WornEquipment.defenceSlash + (float)WornEquipment.defenceCrush + (float)WornEquipment.defenceRange) / 4 - 200) / 3 - 38);
+                strengthBonus += extraStr;
+            }
+            effectiveStrength = Mathf.Floor((Mathf.Floor(PlayerStats.currentStrength * Prayer.strengthPrayerBonus) + strengthBonus + 8) * voidBonus);
             maxHit = Mathf.Floor(0.5f + (effectiveStrength * (WornEquipment.meleeStrength + 64)) / 640 * gearBonus);
         }
         else if (AttackStyles.attackStyle == AttackStyles.rangedStyle)
@@ -1318,6 +1335,11 @@ public class Combat : MonoBehaviour
             playerBonus = Mathf.Max(0, playerBonus);
 
             maxHit = Mathf.Ceil(maxHit * 1 - (playerBonus / 3000)) - 1;
+        }
+
+        if (PlayerStats.defensiveBulwark)
+        {
+            maxHit = Mathf.Floor((float)maxHit * 0.8f);
         }
 
         return Mathf.Floor(maxHit);

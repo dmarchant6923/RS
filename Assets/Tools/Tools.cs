@@ -52,6 +52,12 @@ public class Tools : MonoBehaviour
         return str;
     }
 
+    public static string DoubleToCashValue(double number)
+    {
+        string str = number.ToString("C");
+        return str.Remove(str.Length - 3);
+    }
+
     public static Vector2 AngleToVector(float angle)
     {
         Vector2 vector = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad + Mathf.PI / 2),

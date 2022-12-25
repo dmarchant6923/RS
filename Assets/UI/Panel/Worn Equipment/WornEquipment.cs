@@ -89,6 +89,8 @@ public class WornEquipment : MonoBehaviour
 
     public static string slashSwordCategory = "Slash Sword";
     public static string stabSwordCategory = "Stab Sword";
+    public static string twoHandedSwordCategory = "2h Sword";
+    public static string bulwarkCategory = "Bulwark";
     public static string bowCategory = "Bow";
     public static string crossbowCategory = "Crossbow";
     public static string thrownCategory = "Thrown";

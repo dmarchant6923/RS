@@ -14,7 +14,6 @@ public class SupplyChest : MonoBehaviour
         objectScript = GetComponent<InteractableObject>();
 
         chestAction.menuTexts[0] = "Open ";
-        chestAction.UpdateName();
         objectScript.interaction += OpenChest;
     }
 

@@ -308,6 +308,66 @@ public class AttackStyles : MonoBehaviour
                 attackType = defensiveType;
             }
         }
+        else if (category == WornEquipment.twoHandedSwordCategory)
+        {
+            setActive[0] = true;
+            setActive[1] = true;
+            setActive[2] = true;
+            setActive[3] = true;
+
+            style1.transform.GetChild(0).GetComponent<RawImage>().texture = swordChop;
+            style1.GetComponentInChildren<Text>().text = "Chop";
+
+            style2.transform.GetChild(0).GetComponent<RawImage>().texture = swordSlash;
+            style2.GetComponentInChildren<Text>().text = "Slash";
+
+            style3.transform.GetChild(0).GetComponent<RawImage>().texture = swordSlash;
+            style3.GetComponentInChildren<Text>().text = "Smash";
+
+            style4.transform.GetChild(0).GetComponent<RawImage>().texture = swordBlock;
+            style4.GetComponentInChildren<Text>().text = "Block";
+
+            selectedStyle = PlayerPrefs.GetInt(WornEquipment.twoHandedSwordCategory, 1);
+
+            attackStyle = slashStyle;
+            if (selectedStyle == 1)
+            {
+                attackType = accurateType;
+            }
+            else if (selectedStyle == 2)
+            {
+                attackType = aggressiveType;
+            }
+            else if (selectedStyle == 3)
+            {
+                attackType = aggressiveType;
+                attackStyle = crushStyle;
+            }
+            else
+            {
+                attackType = defensiveType;
+            }
+        }
+        else if (category == WornEquipment.bulwarkCategory)
+        {
+            setActive[0] = true;
+            setActive[1] = true;
+
+            style1.transform.GetChild(0).GetComponent<RawImage>().texture = bluntPummel;
+            style1.GetComponentInChildren<Text>().text = "Pummel";
+
+            style2.transform.GetChild(0).GetComponent<RawImage>().texture = bluntPound;
+            style2.GetComponentInChildren<Text>().text = "Block";
+
+            selectedStyle = PlayerPrefs.GetInt(WornEquipment.bulwarkCategory, 1);
+
+            attackStyle = crushStyle;
+            attackType = accurateType;
+            if (selectedStyle == 1)
+            {
+                attackType = defensiveType;
+            }
+        }
 
 
 

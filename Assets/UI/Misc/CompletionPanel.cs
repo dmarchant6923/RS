@@ -13,6 +13,7 @@ public class CompletionPanel : MonoBehaviour
     public Text heals;
     public Text shieldHealth;
     public Text dps;
+    public Text gearValue;
     public Text nibbler;
     public Text grade;
     public ButtonScript returnButton;
@@ -40,6 +41,7 @@ public class CompletionPanel : MonoBehaviour
         heals.text = ZukHealer.zukHeals.ToString();
         shieldHealth.text = manager.shieldHealthValue + "/" + 600;
         dps.text = (Mathf.Floor(((float)manager.damageDealt * 1000 / ((float)manager.encounterTicks * TickManager.maxTickTime))) / 1000).ToString();
+        gearValue.text = Tools.DoubleToCashValue(InfernoPortal.GearValueAtPortalEntrance);
         float score = CalculateScore();
         grade.text = CalculateGrade(score);
         float nibblerChance = 1 / 100;
@@ -61,7 +63,7 @@ public class CompletionPanel : MonoBehaviour
     {
         float timePoints = Mathf.Max(1300 - manager.encounterTicks, 0);
         float damagePoints = Mathf.Max(500 - manager.damageTaken * 1.5f, 0);
-        float ballsPoints = Mathf.Max(1000 - manager.ballsTanked * 500, 0);
+        float ballsPoints = Mathf.Max(500 - manager.ballsTanked * 250, 0);
         float chancePoints = Mathf.Max((manager.deathChance > 0.001) ? 800 - manager.deathChance * 1000 : 1000, 0);
         float healsPoints = Mathf.Max(500 - ZukHealer.zukHeals, 0);
 
@@ -72,10 +74,10 @@ public class CompletionPanel : MonoBehaviour
 
     public static string CalculateGrade(float total)
     {
-        float Aplus = 3400;
-        float Aminus = 2800;
-        float Bminus = 1900;
-        float Cminus = 1300;
+        float Aplus = 3000;
+        float Aminus = 2400;
+        float Bminus = 1500;
+        float Cminus = 800;
         float D = 1000;
         float[] thresholds = new float[6];
         thresholds[0] = Aplus;

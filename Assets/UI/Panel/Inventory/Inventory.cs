@@ -140,7 +140,6 @@ public class Inventory : MonoBehaviour
         if (slotsTaken == 28)
         {
             Destroy(item);
-            Debug.Log("ERROR item destroyed");
             return;
         }
 

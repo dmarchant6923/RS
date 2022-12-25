@@ -13,6 +13,7 @@ public class HiscoresPanel : MonoBehaviour
     public Text kdValue;
     public Text lowestLevelValue;
     public Text leastDamageValue;
+    public Text lowestGearValue;
     public Text timeValue;
     public Text gradeValue;
 
@@ -59,6 +60,11 @@ public class HiscoresPanel : MonoBehaviour
         if (GameManager.scores.leastDamage > -1)
         {
             leastDamageValue.text = GameManager.scores.leastDamage.ToString();
+        }
+        lowestGearValue.text = "-";
+        if (GameManager.scores.lowestValue > -1)
+        {
+            lowestGearValue.text = Tools.DoubleToCashValue(GameManager.scores.lowestValue);
         }
         timeValue.text = "-";
         if (GameManager.scores.fastestTicks > 0)

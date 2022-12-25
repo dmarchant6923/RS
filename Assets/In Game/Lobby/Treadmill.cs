@@ -14,7 +14,6 @@ public class Treadmill : MonoBehaviour
         objectScript = GetComponent<InteractableObject>();
 
         treadmillAction.menuTexts[0] = "Use ";
-        treadmillAction.UpdateName();
         objectScript.interaction += UseTreadmill;
     }
 

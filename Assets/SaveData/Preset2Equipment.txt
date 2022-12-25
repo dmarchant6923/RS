@@ -1,1 +1,1 @@
-{"filled":true,"equipment":["Zamorak mitre","Ranging cape(t)","Necklace of anguish","Ruby dragon bolts (e)","Armadyl crossbow","Zamorak robe top","Book of law","Armadyl chaps","Regen bracelet","Ranger boots","Ring of suffering (i)"],"blowpipeAmmo":""}
+{"filled":false,"equipmentNames":["","","","","","","","","","",""],"equipmentQuantities":[0,0,0,0,0,0,0,0,0,0,0],"blowpipeAmmo":""}

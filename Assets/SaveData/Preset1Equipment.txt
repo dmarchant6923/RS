@@ -1,1 +1,1 @@
-{"filled":true,"equipment":["Ancestral hat","Imbued zamorak cape","Occult necklace","Rada's blessing 4","Tumeken's shadow","Ancestral robe top","","Ancestral robe bottom","Tormented bracelet","Eternal boots","Seers ring (i)"],"blowpipeAmmo":""}
+{"filled":false,"equipmentNames":["","","","","","","","","","",""],"equipmentQuantities":[0,0,0,0,0,0,0,0,0,0,0],"blowpipeAmmo":""}

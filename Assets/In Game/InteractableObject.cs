@@ -15,7 +15,7 @@ public class InteractableObject : MonoBehaviour
     public delegate void ObjectInteract();
     public event ObjectInteract interaction;
 
-    private void Start()
+    private IEnumerator Start()
     {
         objectAction = GetComponent<Action>();
         objectAction.objectName = "<color=cyan>" + gameObject.name + "</color>";
@@ -25,6 +25,7 @@ public class InteractableObject : MonoBehaviour
         objectAction.cancelLevels[0] = 1;
         objectAction.staticPlayerActions[0] = true;
         objectAction.inGame = true;
+        //objectAction.UpdateName();
 
         Action.cancel1 += Cancel;
 
@@ -35,9 +36,9 @@ public class InteractableObject : MonoBehaviour
         transform.position = position;
 
         TickManager.beforeTick += BeforeTick;
-    }
-    public void UpdateAction()
-    {
+
+        yield return null;
+
         objectAction.UpdateName();
     }
 

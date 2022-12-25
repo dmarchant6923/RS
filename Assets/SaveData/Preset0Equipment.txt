@@ -1,1 +1,1 @@
-{"filled":true,"equipment":["Masori mask (f)","Masori assembler","Necklace of anguish","Ruby dragon bolts (e)","Zaryte crossbow","Masori body (f)","Twisted buckler","Masori chaps (f)","Zaryte vambraces","Pegasian boots","Lightbearer"],"blowpipeAmmo":""}
+{"filled":true,"equipmentNames":["Slayer helmet (i)","Masori assembler","Necklace of anguish","Ruby dragon bolts (e)","Zaryte crossbow","Masori body (f)","Twisted buckler","Masori chaps (f)","Zaryte vambraces","Pegasian boots","Lightbearer"],"equipmentQuantities":[0,0,0,100,202,0,0,0,0,0,0],"blowpipeAmmo":""}

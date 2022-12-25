@@ -28,6 +28,7 @@ public class TrueTile : MonoBehaviour
     [HideInInspector] public bool debugEnabled = false;
 
     public delegate void TrueTileMoved();
+    public static event TrueTileMoved beforeMovement;
     public static event TrueTileMoved afterMovement;
 
     [HideInInspector] public Action walkHereAction;
@@ -162,6 +163,8 @@ public class TrueTile : MonoBehaviour
     //updates on every tick
     void Move()
     {
+        beforeMovement?.Invoke();
+
         if (path.Count > 0)
         {
             int i = 1;

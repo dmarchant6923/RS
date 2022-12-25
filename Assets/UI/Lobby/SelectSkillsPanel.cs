@@ -34,7 +34,7 @@ public class SelectSkillsPanel : MonoBehaviour
 
     private void Awake()
     {
-        dir = Application.dataPath + folder;
+        dir = Application.persistentDataPath + folder;
         PlayerStats.reinitialize += FindPanel;
     }
 

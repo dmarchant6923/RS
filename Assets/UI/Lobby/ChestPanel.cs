@@ -23,6 +23,8 @@ public class ChestPanel : MonoBehaviour
     public ButtonScript depositEquipmentButton;
     public GameObject warning;
 
+    public CarriedValueScript valueScript;
+
     public List<GameObject> items = new List<GameObject>();
     List<GameObject> spawnedItems = new List<GameObject>();
 
@@ -64,7 +66,7 @@ public class ChestPanel : MonoBehaviour
 
         for (int i = 0; i < spawnedItems.Count; i++)
         {
-            if (i < spawnedItems.Count && spawnedItems[i] != null)
+            if (spawnedItems[i] != null)
             {
                 float positionX = nwCorner.position.x + (columnNumber - 1) * spacingX;
                 float positionY = nwCorner.position.y - (rowNumber - 1) * spacingY;
@@ -73,7 +75,8 @@ public class ChestPanel : MonoBehaviour
                 GameObject newImage = Instantiate(image, position, Quaternion.identity);
                 newImage.GetComponent<RawImage>().texture = spawnedItems[i].GetComponent<Item>().itemTexture;
                 newImage.GetComponent<ChestPanelItem>().examineText = spawnedItems[i].GetComponent<Action>().examineText;
-                newImage.name = items[i].name;
+                newImage.GetComponent<ChestPanelItem>().stackable = spawnedItems[i].GetComponent<StackableItem>() != null;
+                newImage.name = (spawnedItems[i].GetComponent<Potion>() == null) ? items[i].name : items[i].name + "(4)";
                 newImage.transform.localScale = Vector2.one * itemScale * FindObjectOfType<Canvas>().scaleFactor;
                 newImage.transform.SetParent(itemParent);
 
@@ -83,12 +86,16 @@ public class ChestPanel : MonoBehaviour
                     columnNumber = 1;
                     rowNumber++;
                 }
+
+                GameManager.instance.spawnedItems.Add(spawnedItems[i].name);
             }
             else
             {
                 break;
             }
         }
+
+        GameManager.instance.StartGetPrices();
 
         foreach (GameObject item in spawnedItems)
         {
@@ -121,6 +128,7 @@ public class ChestPanel : MonoBehaviour
                 item.UpdateActions();
             }
         }
+        //UpdatePrice();
     }
 
     void CloseChest()
@@ -148,6 +156,7 @@ public class ChestPanel : MonoBehaviour
                 Destroy(slot.GetComponentInChildren<Item>().gameObject);
             }
         }
+        //UpdatePrice();
     }
 
     void DepositEquipment()
@@ -159,6 +168,12 @@ public class ChestPanel : MonoBehaviour
                 slot.GetComponentInChildren<Equipment>().DestroyEquippedItem();
             }
         }
+        //UpdatePrice();
+    }
+
+    public void UpdatePrice()
+    {
+        valueScript.UpdateValue();
     }
 
     void CheckWarningTick()
@@ -169,6 +184,7 @@ public class ChestPanel : MonoBehaviour
         }
 
         Invoke(nameof(CheckWarning), 0.05f);
+        UpdatePrice();
     }
 
     void CheckWarning()

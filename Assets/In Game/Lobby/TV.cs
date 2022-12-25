@@ -14,7 +14,6 @@ public class TV : MonoBehaviour
         objectScript = GetComponent<InteractableObject>();
 
         tvAction.menuTexts[0] = "Stats ";
-        tvAction.UpdateName();
         objectScript.interaction += OpenSettings;
     }
 

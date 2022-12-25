@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Net;
+using System.IO;
+using UnityEngine.Networking;
+using System.Text;
+using System;
+using System.Linq;
 
 public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -36,8 +42,8 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     bool isEquipment = false;
     Equipment equipScript;
 
-    bool isStackable = false;
-    StackableItem stackScript;
+    [HideInInspector] public bool isStackable = false;
+    [HideInInspector] public StackableItem stackScript;
 
     bool isChargeable = false;
     ChargeItem chargeScript;
@@ -46,6 +52,8 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public GameObject groundItemTileObject;
 
     public float groundSizeFactor = 0.8f;
+
+    [HideInInspector] public float price;
 
     private void Start()
     {
@@ -72,6 +80,7 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         itemAction.orderLevels[4] = -1;
 
         menuTexts[8] = "Examine ";
+        itemAction.serverActionExamine += itemAction.ReturnGEPrice;
 
         itemAction.serverAction0 += CancelDrag;
 
@@ -258,7 +267,6 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
 
     }
-
     IEnumerator ItemDrag(Vector3 clickedPosition)
     {
         bool isDragging = false;
@@ -326,7 +334,6 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         yield return new WaitForSeconds(0.1f);
         clickHeld = false;
     }
-
     void CancelDrag()
     {
         clickHeld = false;

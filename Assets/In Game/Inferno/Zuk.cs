@@ -26,7 +26,8 @@ public class Zuk : MonoBehaviour
     Combat combatScript;
     public ZukShield shieldScript;
 
-    int timer = 75; //75
+    int timerStart = 75;
+    int timer; //75
     float floatTimer;
     bool timerPaused = false;
 
@@ -40,8 +41,9 @@ public class Zuk : MonoBehaviour
         enemyScript = GetComponent<Enemy>();
         combatScript = GetComponent<Combat>();
         NPCScript.isTargetingPlayer = true;
+        timer = timerStart;
 
-        TickManager.beforeTick += BeforeTick;
+        TrueTile.beforeMovement += OnTick;
         TickManager.afterTick += AfterTick;
 
         mageSpawnTile.gameObject.SetActive(false);
@@ -60,10 +62,10 @@ public class Zuk : MonoBehaviour
             CustomHUD.instance.Activate("Set Timer", Tools.SecondsToMinutes(floatTimer, true));
         }
 
-        combatScript.attackCooldown = 13;
+        combatScript.attackCooldown = 14; //13
     }
 
-    void BeforeTick()
+    void OnTick()
     {
         enemyScript.attackThisTick = false;
 
@@ -77,7 +79,7 @@ public class Zuk : MonoBehaviour
             if (Player.player.trueTile.x >= shieldScript.safeSpotRange[0] && Player.player.trueTile.x <= shieldScript.safeSpotRange[1] && 
                 Player.player.trueTile.y >= -2 && shieldScript != null)
             {
-                combatScript.attackCooldown = enemyScript.attackSpeed + 1;
+                combatScript.attackCooldown = enemyScript.attackSpeed;
                 combatScript.SpawnProjectile(shieldScript.gameObject, gameObject, 5, enemyScript.projectileColor, "");
                 enemyScript.attackThisTick = true;
             }
@@ -196,7 +198,7 @@ public class Zuk : MonoBehaviour
             Destroy(item.gameObject);
         }
 
-        TickManager.beforeTick -= BeforeTick;
+        TrueTile.beforeMovement -= OnTick;
         TickManager.afterTick -= AfterTick;
     }
 }

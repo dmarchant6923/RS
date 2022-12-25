@@ -13,6 +13,7 @@ public class SpecialAttack : MonoBehaviour
     public bool armadylCrossbow;
     public bool zaryteCrossbow;
     public bool eldritchStaff;
+    public bool sgs;
 
     [System.NonSerialized] public bool guaranteeHit = false;
     [System.NonSerialized] public bool slowProjectile = false;
@@ -27,11 +28,16 @@ public class SpecialAttack : MonoBehaviour
             leech = true;
             leechPercent = 0.5f;
         }
+        if (sgs)
+        {
+            leech = true;
+            leechPercent = 0.5f;
+        }
     }
 
     public float AccuracyRollMult()
     {
-        if (blowPipe || armadylCrossbow || zaryteCrossbow)
+        if (blowPipe || armadylCrossbow || zaryteCrossbow || sgs)
         {
             return 2;
         }
@@ -43,6 +49,10 @@ public class SpecialAttack : MonoBehaviour
         if (blowPipe)
         {
             return 1.5f;
+        }
+        if (sgs)
+        {
+            return 1.1f;
         }
 
         return 1;

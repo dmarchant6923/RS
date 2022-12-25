@@ -45,11 +45,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 79437354327222573, guid: 3b947440a119e9040b006cd247117587, type: 3}
       propertyPath: examineText
-      value: you probably shouldn't use this.
+      value: You probably shouldn't use this.
       objectReference: {fileID: 0}
     - target: {fileID: 106661373814431635, guid: 3b947440a119e9040b006cd247117587, type: 3}
       propertyPath: m_Name
-      value: Rotten Potato Bow
+      value: Rotten potato bow
       objectReference: {fileID: 0}
     - target: {fileID: 743011910885336195, guid: 3b947440a119e9040b006cd247117587, type: 3}
       propertyPath: m_Pivot.x

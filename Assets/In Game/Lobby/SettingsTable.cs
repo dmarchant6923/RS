@@ -14,7 +14,6 @@ public class SettingsTable : MonoBehaviour
         objectScript = GetComponent<InteractableObject>();
 
         settingsAction.menuTexts[0] = "Change-settings ";
-        settingsAction.UpdateName();
         objectScript.interaction += OpenSettings;
     }
 

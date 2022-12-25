@@ -10,7 +10,8 @@ public class PresetsPanel : MonoBehaviour
     {
         public bool filled = false;
 
-        public string[] equipment = new string[11];
+        public string[] equipmentNames = new string[11];
+        public int[] equipmentQuantities = new int[11];
 
         public string blowpipeAmmo;
     }
@@ -19,7 +20,8 @@ public class PresetsPanel : MonoBehaviour
     {
         public bool filled = false;
 
-        public string[] items = new string[28];
+        public string[] itemNames = new string[28];
+        public int[] itemQuantities = new int[28];
 
         public string blowpipeAmmo;
     }
@@ -47,6 +49,7 @@ public class PresetsPanel : MonoBehaviour
     public ButtonScript depositEquipmentButton;
 
     public GameObject warning;
+    public CarriedValueScript valueScript;
 
     [HideInInspector] public bool panelOpen = false;
 
@@ -110,7 +113,7 @@ public class PresetsPanel : MonoBehaviour
                 clearButtons[i].buttonAction.UpdateName();
             }
 
-            dir = Application.dataPath + folder;
+            dir = Application.persistentDataPath + folder;
 
             InitializePresets();
 
@@ -174,19 +177,28 @@ public class PresetsPanel : MonoBehaviour
 
         presetEquipment[presetNumber].filled = false;
 
-        presetEquipment[presetNumber].equipment[0] = WornEquipment.head != null ? WornEquipment.head.name : "";
-        presetEquipment[presetNumber].equipment[1] = WornEquipment.cape != null ? WornEquipment.cape.name : "";
-        presetEquipment[presetNumber].equipment[2] = WornEquipment.neck != null ? WornEquipment.neck.name : "";
-        presetEquipment[presetNumber].equipment[3] = WornEquipment.ammo != null ? WornEquipment.ammo.name : "";
-        presetEquipment[presetNumber].equipment[4] = WornEquipment.weapon != null ? WornEquipment.weapon.name : "";
-        presetEquipment[presetNumber].equipment[5] = WornEquipment.body != null ? WornEquipment.body.name : "";
-        presetEquipment[presetNumber].equipment[6] = WornEquipment.shield != null ? WornEquipment.shield.name : "";
-        presetEquipment[presetNumber].equipment[7] = WornEquipment.leg != null ? WornEquipment.leg.name : "";
-        presetEquipment[presetNumber].equipment[8] = WornEquipment.glove != null ? WornEquipment.glove.name : "";
-        presetEquipment[presetNumber].equipment[9] = WornEquipment.boot != null ? WornEquipment.boot.name : "";
-        presetEquipment[presetNumber].equipment[10] = WornEquipment.ring != null ? WornEquipment.ring.name : "";
 
-        foreach (string item in presetEquipment[presetNumber].equipment)
+        presetEquipment[presetNumber].equipmentNames[0] = WornEquipment.head != null ? WornEquipment.head.name : "";
+        presetEquipment[presetNumber].equipmentNames[1] = WornEquipment.cape != null ? WornEquipment.cape.name : "";
+        presetEquipment[presetNumber].equipmentNames[2] = WornEquipment.neck != null ? WornEquipment.neck.name : "";
+        presetEquipment[presetNumber].equipmentNames[3] = WornEquipment.ammo != null ? WornEquipment.ammo.name : "";
+        if (WornEquipment.ammo != null && WornEquipment.ammo.stackable)
+        {
+            presetEquipment[presetNumber].equipmentQuantities[3] = WornEquipment.ammo.itemScript.stackScript.quantity;
+        }
+        presetEquipment[presetNumber].equipmentNames[4] = WornEquipment.weapon != null ? WornEquipment.weapon.name : "";
+        if (WornEquipment.weapon != null && WornEquipment.weapon.stackable)
+        {
+            presetEquipment[presetNumber].equipmentQuantities[4] = WornEquipment.weapon.itemScript.stackScript.quantity;
+        }
+        presetEquipment[presetNumber].equipmentNames[5] = WornEquipment.body != null ? WornEquipment.body.name : "";
+        presetEquipment[presetNumber].equipmentNames[6] = WornEquipment.shield != null ? WornEquipment.shield.name : "";
+        presetEquipment[presetNumber].equipmentNames[7] = WornEquipment.leg != null ? WornEquipment.leg.name : "";
+        presetEquipment[presetNumber].equipmentNames[8] = WornEquipment.glove != null ? WornEquipment.glove.name : "";
+        presetEquipment[presetNumber].equipmentNames[9] = WornEquipment.boot != null ? WornEquipment.boot.name : "";
+        presetEquipment[presetNumber].equipmentNames[10] = WornEquipment.ring != null ? WornEquipment.ring.name : "";
+
+        foreach (string item in presetEquipment[presetNumber].equipmentNames)
         {
             if (string.IsNullOrEmpty(item) == false)
             {
@@ -195,7 +207,7 @@ public class PresetsPanel : MonoBehaviour
             }
         }
 
-        if (presetEquipment[presetNumber].equipment[4] == "Toxic blowpipe")
+        if (presetEquipment[presetNumber].equipmentNames[4] == "Toxic blowpipe")
         {
             presetEquipment[presetNumber].blowpipeAmmo = WornEquipment.weapon.GetComponent<BlowPipe>().ammoLoaded.name;
         }
@@ -205,16 +217,21 @@ public class PresetsPanel : MonoBehaviour
         {
             if (Inventory.inventorySlots[i].GetComponentInChildren<Item>() != null)
             {
+                Item item = Inventory.inventorySlots[i].GetComponentInChildren<Item>();
                 presetInventory[presetNumber].filled = true;
-                presetInventory[presetNumber].items[i] = Inventory.inventorySlots[i].GetComponentInChildren<Item>().name;
+                presetInventory[presetNumber].itemNames[i] = item.name;
                 if (Inventory.inventorySlots[i].GetComponentInChildren<BlowPipe>() != null)
                 {
                     presetInventory[presetNumber].blowpipeAmmo = Inventory.inventorySlots[i].GetComponentInChildren<BlowPipe>().ammoLoaded.name;
                 }
+                if (item.isStackable)
+                {
+                    presetInventory[presetNumber].itemQuantities[i] = item.stackScript.quantity;
+                }
             }
             else
             {
-                presetInventory[presetNumber].items[i] = "";
+                presetInventory[presetNumber].itemNames[i] = "";
             }
         }
 
@@ -256,8 +273,7 @@ public class PresetsPanel : MonoBehaviour
 
         if (gameObject.activeSelf)
         {
-            StartCoroutine(LoadPlayerAttributes.LoadPresetEnum(presetEquipment[num].equipment, presetEquipment[num].blowpipeAmmo, presetInventory[num].items, presetInventory[num].blowpipeAmmo));
-            StartCoroutine(AddDepositAction());
+            StartCoroutine(LoadPresetEnum(num));
         }
     }
     public void ClearPreset(int presetNumber)
@@ -350,6 +366,8 @@ public class PresetsPanel : MonoBehaviour
                 item.UpdateActions();
             }
         }
+
+        UpdatePrice();
     }
 
     void CloseWardrobe()
@@ -368,9 +386,27 @@ public class PresetsPanel : MonoBehaviour
         }
     }
 
-    IEnumerator AddDepositAction()
+    IEnumerator LoadPresetEnum(int num)
     {
-        yield return new WaitForSeconds(0.2f);
+        GameManager.ItemAndQuantity[] equipment = new GameManager.ItemAndQuantity[11];
+        GameManager.ItemAndQuantity[] items = new GameManager.ItemAndQuantity[28];
+        for (int i = 0; i < presetEquipment[num].equipmentNames.Length; i++)
+        {
+            GameManager.ItemAndQuantity newEquipment = new GameManager.ItemAndQuantity();
+            newEquipment.name = presetEquipment[num].equipmentNames[i];
+            newEquipment.quantity = presetEquipment[num].equipmentQuantities[i];
+            equipment[i] = newEquipment;
+        }
+        for (int i = 0; i < presetInventory[num].itemNames.Length; i++)
+        {
+            GameManager.ItemAndQuantity newItem = new GameManager.ItemAndQuantity();
+            newItem.name = presetInventory[num].itemNames[i];
+            newItem.quantity = presetInventory[num].itemQuantities[i];
+            items[i] = newItem;
+        }
+
+        yield return StartCoroutine(LoadPlayerAttributes.LoadPresetEnum(equipment, presetEquipment[num].blowpipeAmmo, items, presetInventory[num].blowpipeAmmo));
+        yield return null;
         foreach (GameObject slot in Inventory.inventorySlots)
         {
             if (slot.GetComponentInChildren<Item>() != null)
@@ -382,6 +418,8 @@ public class PresetsPanel : MonoBehaviour
                 item.UpdateActions();
             }
         }
+
+        UpdatePrice();
     }
 
     void DepositInventory()
@@ -393,6 +431,8 @@ public class PresetsPanel : MonoBehaviour
                 Destroy(slot.GetComponentInChildren<Item>().gameObject);
             }
         }
+
+        UpdatePrice();
     }
 
     void DepositEquipment()
@@ -404,6 +444,8 @@ public class PresetsPanel : MonoBehaviour
                 slot.GetComponentInChildren<Equipment>().DestroyEquippedItem();
             }
         }
+
+        UpdatePrice();
     }
 
     void CheckWarningTick()
@@ -414,10 +456,16 @@ public class PresetsPanel : MonoBehaviour
         }
 
         Invoke(nameof(CheckWarning), 0.1f);
+        Invoke(nameof(UpdatePrice), 0.1f);
     }
 
     void CheckWarning()
     {
         warning.SetActive(UIManager.instance.CheckWarning());
+    }
+
+    public void UpdatePrice()
+    {
+        valueScript.UpdateValue();
     }
 }

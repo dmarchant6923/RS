@@ -38,15 +38,18 @@ public class Jad : MonoBehaviour
 
     void AfterTick()
     {
-        if (combatScript.attackCooldown == enemyScript.attackSpeed || combatScript.attackCooldown <= 0 || enemyScript.death)
+        if (combatScript.attackCooldown > 3 || enemyScript.death)
         {
             signalSprite.enabled = false;
+        }
+        else
+        {
+            signalSprite.enabled = true;
         }
 
         if (combatScript.attackCooldown == 3)
         {
             currentStyle = Random.Range(0, 2);
-            signalSprite.enabled = true;
             if (currentStyle == 0)
             {
                 signalSprite.sprite = protectFromRange;

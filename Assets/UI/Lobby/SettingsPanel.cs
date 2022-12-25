@@ -66,7 +66,7 @@ public class SettingsPanel : MonoBehaviour
 
     IEnumerator Start()
     {
-        dir = Application.dataPath + folder;
+        dir = Application.persistentDataPath + folder;
         applyButton.buttonClicked += ApplySettings;
         resetButton.buttonClicked += ResetToDefault;
 

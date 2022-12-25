@@ -27,13 +27,13 @@ public class InfernoManager : MonoBehaviour
     [HideInInspector] public int damageDealt = 0;
     [HideInInspector] public int ballsTanked = 0;
     [HideInInspector] public int shieldHealthValue;
+    [HideInInspector] public int lowestGearValue = -1;
 
     public static InfernoManager instance;
 
     public GameObject infernoUI;
     GameObject newUI;
     Canvas canvas;
-    List<GameObject> newUIElements = new List<GameObject>();
 
     void Start()
     {
@@ -130,7 +130,7 @@ public class InfernoManager : MonoBehaviour
         yield return new WaitForSeconds(4);
         if (OptionManager.ignoreHiscores == false && Player.player.standardDeath == false)
         {
-            GameManager.UpdateSuccessStats(PlayerStats.totalLevel, damageTaken, encounterTicks, score);
+            GameManager.UpdateSuccessStats(PlayerStats.totalLevel, damageTaken, encounterTicks, score, InfernoPortal.GearValueAtPortalEntrance);
             Action.ignoreAllActions = true;
             Player.player.trueTileScript.StopMovement();
             winPanel.UpdateText();
