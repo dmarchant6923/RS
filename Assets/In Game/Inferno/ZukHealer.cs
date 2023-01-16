@@ -92,7 +92,7 @@ public class ZukHealer : MonoBehaviour
     {
         enemyScript.attackThisTick = false;
         
-        if (enemyScript.death || zukScript.enemyScript.death)
+        if (zukScript.enemyScript.death)
         {
             activeAttacks = new List<AOE>();
             return;
@@ -128,7 +128,7 @@ public class ZukHealer : MonoBehaviour
                 enemyScript.npcAction.serverAction0 -= DummyMethod;
             }
 
-            if (combatScript.attackCooldown <= 0)
+            if (combatScript.attackCooldown <= 0 && enemyScript.death == false)
             {
                 enemyScript.attackThisTick = true;
                 for (int i = 0; i < 3; i++)

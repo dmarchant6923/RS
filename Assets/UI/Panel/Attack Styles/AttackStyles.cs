@@ -386,7 +386,7 @@ public class AttackStyles : MonoBehaviour
             style3.transform.GetChild(0).GetComponent<RawImage>().texture = bowLongrange;
             style3.GetComponentInChildren<Text>().text = "Longrange";
 
-            selectedStyle = PlayerPrefs.GetInt(WornEquipment.bowCategory, 1);
+            selectedStyle = PlayerPrefs.GetInt(WornEquipment.bowCategory, 2);
 
             attackStyle = rangedStyle;
             if (selectedStyle == 1)
@@ -417,7 +417,7 @@ public class AttackStyles : MonoBehaviour
             style3.transform.GetChild(0).GetComponent<RawImage>().texture = cbowLongrange;
             style3.GetComponentInChildren<Text>().text = "Longrange";
 
-            selectedStyle = PlayerPrefs.GetInt(WornEquipment.crossbowCategory, 1);
+            selectedStyle = PlayerPrefs.GetInt(WornEquipment.crossbowCategory, 2);
 
             attackStyle = rangedStyle;
             if (selectedStyle == 1)
@@ -448,7 +448,7 @@ public class AttackStyles : MonoBehaviour
             style3.transform.GetChild(0).GetComponent<RawImage>().texture = thrownLongrange;
             style3.GetComponentInChildren<Text>().text = "Longrange";
 
-            selectedStyle = PlayerPrefs.GetInt(WornEquipment.thrownCategory, 1);
+            selectedStyle = PlayerPrefs.GetInt(WornEquipment.thrownCategory, 2);
 
             attackStyle = rangedStyle;
             if (selectedStyle == 1)
@@ -479,7 +479,7 @@ public class AttackStyles : MonoBehaviour
             style3.transform.GetChild(0).GetComponent<RawImage>().texture = chinLong;
             style3.GetComponentInChildren<Text>().text = "Long fuse";
 
-            selectedStyle = PlayerPrefs.GetInt(WornEquipment.chinchompaCategory, 1);
+            selectedStyle = PlayerPrefs.GetInt(WornEquipment.chinchompaCategory, 2);
 
             attackStyle = rangedStyle;
             if (selectedStyle == 1)

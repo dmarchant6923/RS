@@ -46,7 +46,7 @@ public class UIManager : MonoBehaviour
 
     public List<GameObject> bannedItems = new List<GameObject>();
 
-    private void Start()
+    private IEnumerator Start()
     {
         DontDestroyOnLoad(gameObject);
 
@@ -63,6 +63,10 @@ public class UIManager : MonoBehaviour
         staticHealthBar = healthBar;
         staticGroundItemsParent = groundItemsParent;
         staticInventory = inventory;
+
+        yield return new WaitForSeconds(0.1f);
+
+        infernoUI.SetActive(false);
     }
 
     void Update()

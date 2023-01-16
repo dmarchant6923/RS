@@ -3577,6 +3577,7 @@ MonoBehaviour:
   image: {fileID: 0}
   actionText: Close
   buttonAction: {fileID: 0}
+  objectToClose: {fileID: 0}
 --- !u!114 &6570267179026301558
 MonoBehaviour:
   m_ObjectHideFlags: 0

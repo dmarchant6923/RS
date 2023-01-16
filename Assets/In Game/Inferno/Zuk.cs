@@ -54,12 +54,15 @@ public class Zuk : MonoBehaviour
             healer.gameObject.SetActive(false);
         }
 
-        yield return null;
-
         floatTimer = (float)timer * TickManager.maxTickTime;
+        yield return null;
         if (showSetTimer)
         {
             CustomHUD.instance.Activate("Set Timer", Tools.SecondsToMinutes(floatTimer, true));
+        }
+        if (OptionManager.showManualSetTimer)
+        {
+            ManualSetTimer.instance.gameObject.SetActive(true);
         }
 
         combatScript.attackCooldown = 14; //13

@@ -26,7 +26,7 @@ public class Projectile : MonoBehaviour
 
     public bool appearInstantly = false;
 
-    private void Start()
+    private IEnumerator Start()
     {
         sprite = GetComponent<SpriteRenderer>();
         sprite.color = color;
@@ -69,6 +69,13 @@ public class Projectile : MonoBehaviour
         }
 
         TickManager.beforeTick += BeforeTick;
+
+        yield return null;
+
+        if (source == null)
+        {
+            Destroy(gameObject);
+        }
     }
 
     void BeforeTick()

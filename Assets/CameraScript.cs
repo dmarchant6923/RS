@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
-    float maxCamSize = 25; //13
+    float maxCamSize = 13; //13
     float minCamSize = 3;
     float camSize;
 
@@ -12,9 +12,9 @@ public class CameraScript : MonoBehaviour
     float maxCamSpeed = 10;
     float camSpeed;
 
-    public float rotateSensitivity = 3;
+    public float rotateSensitivity = 2.5f;
 
-    [System.NonSerialized] float zoomSensitivity = 120;
+    [System.NonSerialized] float zoomSensitivity = 50;
 
     Camera cam;
     [HideInInspector] public Player player;

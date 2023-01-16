@@ -365,7 +365,7 @@ public class Enemy : MonoBehaviour
 
     public void AttackPlayer()
     {
-        if (npcScript == null || Player.player.standardDeath)
+        if (npcScript == null || Player.player.standardDeath || death)
         {
             return;
         }

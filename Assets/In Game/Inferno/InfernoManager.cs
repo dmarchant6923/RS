@@ -183,6 +183,8 @@ public class InfernoManager : MonoBehaviour
             UIManager.instance.fadeBox.color = color;
             yield return null;
         }
+        CustomHUD.instance.Deactivate();
+        ManualSetTimer.instance.gameObject.SetActive(false);
 
         Prayer.DeactivatePrayers();
         //foreach (GameObject element in newUIElements)

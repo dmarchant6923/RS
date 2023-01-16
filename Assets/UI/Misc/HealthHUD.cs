@@ -33,8 +33,8 @@ public class HealthHUD : MonoBehaviour
         ticks = ticksToDelete;
 
         rt = GetComponent<RectTransform>();
-        onPosition = rt.position;
-        rt.position = onPosition + Vector2.up * 1000;
+        onPosition = rt.anchoredPosition;
+        rt.anchoredPosition = onPosition + Vector2.up * 1000;
 
         TickManager.afterTick += AfterTick;
     }
@@ -63,7 +63,7 @@ public class HealthHUD : MonoBehaviour
         instance.ticks = instance.ticksToDelete;
         instance.active = true;
         instance.currentEnemy = enemy;
-        instance.rt.position = instance.onPosition;
+        instance.rt.anchoredPosition = instance.onPosition;
         instance.nameText.text = enemy.name;
     }
 
@@ -72,6 +72,6 @@ public class HealthHUD : MonoBehaviour
         instance.ticks = 0;
         instance.active = false;
         instance.currentEnemy = null;
-        instance.rt.position = instance.onPosition + Vector2.up * 1000;
+        instance.rt.anchoredPosition = instance.onPosition + Vector2.up * 1000;
     }
 }

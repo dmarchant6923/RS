@@ -15,19 +15,19 @@ public class CustomHUD : MonoBehaviour
     {
         instance = this;
         rt = GetComponent<RectTransform>();
-        onPosition = rt.position;
+        onPosition = rt.anchoredPosition;
         Deactivate();
     }
 
     public void Activate(string topText, string bottomText)
     {
-        rt.position = onPosition;
+        rt.anchoredPosition = onPosition;
         UpdateText(topText, bottomText);
     }
 
     public void Deactivate()
     {
-        rt.position = onPosition + Vector2.up * 500;
+        rt.anchoredPosition = onPosition + Vector2.up * 500;
     }
 
     public void UpdateText(string topText, string bottomText)

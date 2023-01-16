@@ -14,6 +14,8 @@ public class ManualSetTimer : MonoBehaviour
     float timer = 210;
     bool timerPaused = false;
 
+    public static ManualSetTimer instance;
+
     private IEnumerator Start()
     {
         if (OptionManager.showManualSetTimer == false || FindObjectOfType<Zuk>() == null)
@@ -21,9 +23,10 @@ public class ManualSetTimer : MonoBehaviour
             gameObject.SetActive(false);
         }
         step = -1;
-        yield return null;
+        instance = this;
         button.buttonClicked += NextStep;
         NextStep();
+        yield return null;
     }
 
     private void Update()
@@ -83,8 +86,6 @@ public class ManualSetTimer : MonoBehaviour
     private void OnDisable()
     {
         step = -1;
-        timer = 210;
-        timerText.text = Tools.SecondsToMinutes(timer, true);
-        timerPaused = true;
+        NextStep();
     }
 }

@@ -231,7 +231,7 @@ public class NPC : MonoBehaviour
             {
                 trueMoveSpeed *= Mathf.Sqrt(2);
             }
-            if ((npcPosition - trueTile).magnitude > 2 || npcPath.Count > 2)
+            if ((npcPosition - trueTile).magnitude > 1.5f || npcPath.Count > 2)
             {
                 trueMoveSpeed *= 1.3f;
             }

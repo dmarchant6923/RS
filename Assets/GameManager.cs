@@ -241,7 +241,10 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < newItems.Count; i++)
         {
-            total += priceDictionary[newItems[i].name] * newItems[i].quantity;
+            if (priceDictionary.ContainsKey(newItems[i].name))
+            {
+                total += priceDictionary[newItems[i].name] * newItems[i].quantity;
+            }
         }
 
         return total;

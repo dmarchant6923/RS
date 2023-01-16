@@ -71,6 +71,7 @@ public class HitSplat : MonoBehaviour
                     if (i == 1) { offset = Vector2.down * 20; }
                     if (i == 2) { offset = Vector2.right * 20; }
                     if (i == 3) { offset = Vector2.left * 20; }
+                    offset *= UIManager.canvas.scaleFactor;
 
                     activeHitSplats[i].transform.localPosition = offset;
                 }
