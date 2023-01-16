@@ -41,6 +41,9 @@ public class UIManager : MonoBehaviour
     public RawImage frontBlackScreen;
     public static UIManager instance;
 
+    public GameObject infernoUI;
+    public GameObject entryInfoBox;
+
     public List<GameObject> bannedItems = new List<GameObject>();
 
     private void Start()

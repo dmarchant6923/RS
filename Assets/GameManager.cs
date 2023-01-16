@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public static string fileName = "Hiscores";
     public static string extension = ".txt";
 
+    public static bool foundPrices = false;
+
     public class Hiscores
     {
         public int deaths;
@@ -40,6 +42,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        foundPrices = false;
         instance = this;
         if (Directory.Exists(Application.persistentDataPath + folder) == false)
         {
@@ -53,7 +56,18 @@ public class GameManager : MonoBehaviour
     {
         scores = new Hiscores();
         string dir = Application.persistentDataPath + folder + fileName + extension;
-        if (File.Exists(dir))
+        //if (Application.platform == RuntimePlatform.WebGLPlayer)
+        if (true)
+        {
+            scores.deaths = PlayerPrefs.GetInt("scores deaths", 0);
+            scores.completions = PlayerPrefs.GetInt("scores completions", 0);
+            scores.lowestLevel = PlayerPrefs.GetInt("scores lowest level", 0);
+            scores.leastDamage = PlayerPrefs.GetInt("scores least damage", -1);
+            scores.lowestValue = double.Parse(PlayerPrefs.GetString("scores lowest value", "-1"));
+            scores.fastestTicks = PlayerPrefs.GetInt("scores fastest ticks", 0);
+            scores.highestScore = PlayerPrefs.GetFloat("scores highests score", 0);
+        }
+        else if (File.Exists(dir))
         {
             string jsonString = File.ReadAllText(dir);
             scores = JsonUtility.FromJson<Hiscores>(jsonString);
@@ -108,6 +122,20 @@ public class GameManager : MonoBehaviour
 
     public static void SaveScores()
     {
+        //if (Application.platform == RuntimePlatform.WebGLPlayer)
+        if (true)
+        {
+            PlayerPrefs.SetInt("scores deaths", scores.deaths);
+            PlayerPrefs.SetInt("scores completions", scores.completions);
+            PlayerPrefs.SetInt("scores lowest level", scores.lowestLevel);
+            PlayerPrefs.SetInt("scores least damage", scores.leastDamage);
+            PlayerPrefs.SetString("scores lowest value", scores.lowestValue.ToString());
+            PlayerPrefs.SetInt("scores fastest ticks", scores.fastestTicks);
+            PlayerPrefs.SetFloat("scores highests score", scores.highestScore);
+
+            return;
+        }
+
         string dir = Application.persistentDataPath + folder + fileName + extension;
         string jsonString = JsonUtility.ToJson(scores);
         File.WriteAllText(dir, jsonString);
@@ -121,6 +149,7 @@ public class GameManager : MonoBehaviour
     {
         UnityWebRequest priceReq = new UnityWebRequest();
         priceReq.downloadHandler = new DownloadHandlerBuffer();
+        priceReq.SetRequestHeader("Idk-what-to-put-here-tbh", "@BigLasagne#6847");
 
         string names = "";
         List<ItemAndQuantity> spawnedItemList = new List<ItemAndQuantity>();
@@ -141,6 +170,12 @@ public class GameManager : MonoBehaviour
 
         priceReq.url = "https://api.weirdgloop.org/exchange/history/osrs/latest?name=" + names;
         yield return priceReq.SendWebRequest();
+        if (priceReq.result == UnityWebRequest.Result.ProtocolError || priceReq.result == UnityWebRequest.Result.ConnectionError)
+        {
+            GameLog.Log("Could not fetch price data. Check your internet connection and restart the game to try again.");
+            yield break;
+        }
+        foundPrices = true;
         string jsonString = Encoding.Default.GetString(priceReq.downloadHandler.data);
         JSONNode node = JSON.Parse(jsonString);
         foreach (KeyValuePair<string, JSONNode> kvp in node)
@@ -157,6 +192,12 @@ public class GameManager : MonoBehaviour
     public double TotalCarriedValue()
     {
         double total = 0;
+
+        if (foundPrices == false)
+        {
+            return -1;
+        }
+
         List<ItemAndQuantity> items = new List<ItemAndQuantity>();
         foreach (GameObject slot in Inventory.inventorySlots)
         {
@@ -208,6 +249,11 @@ public class GameManager : MonoBehaviour
 
     public double GetItemPrice(string name)
     {
+        if (foundPrices == false)
+        {
+            return -1;
+        }
+
         string realName = ParseItemStrings(name);
 
         if (string.IsNullOrEmpty(realName))

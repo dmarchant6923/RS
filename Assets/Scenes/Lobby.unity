@@ -2280,7 +2280,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 543691679007232027, guid: 7987e3fddfd2a134183887933843815a, type: 3}
       propertyPath: m_Name
-      value: Chest
+      value: Supply chest
       objectReference: {fileID: 0}
     - target: {fileID: 543691679007232029, guid: 7987e3fddfd2a134183887933843815a, type: 3}
       propertyPath: m_RootOrder

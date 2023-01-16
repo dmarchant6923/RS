@@ -396,7 +396,7 @@ public class Combat : MonoBehaviour
 
             float dps = damagePerHit / attackCooldown / 0.6f;
 
-            CombatInfo.PlayerAttack(AttackStyles.attackStyle, (int)maxAttRoll);
+            CombatInfo.PlayerAttack(Player.targetedNPC.name, AttackStyles.attackStyle, (int)maxAttRoll);
             CombatInfo.PlayerAttackResult(hitChance, (int)maxHit, dps);
 
 
@@ -598,7 +598,7 @@ public class Combat : MonoBehaviour
 
             float dps = (maxHit / 2) * hitChance / attackCooldown / 0.6f;
 
-            CombatInfo.PlayerAttack(AttackStyles.magicStyle, (int)maxAttRoll);
+            CombatInfo.PlayerAttack(Player.targetedNPC.name, AttackStyles.magicStyle, (int)maxAttRoll);
             CombatInfo.PlayerAttackResult(hitChance, (int)maxHit, dps);
 
             AttackStyles.instance.UpdateWeapon();

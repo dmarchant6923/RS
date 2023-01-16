@@ -31,8 +31,7 @@ public class InfernoManager : MonoBehaviour
 
     public static InfernoManager instance;
 
-    public GameObject infernoUI;
-    GameObject newUI;
+    GameObject infernoUI;
     Canvas canvas;
 
     void Start()
@@ -55,11 +54,13 @@ public class InfernoManager : MonoBehaviour
         }
 
         canvas = FindObjectOfType<Canvas>();
-        newUI = Instantiate(infernoUI, canvas.transform);
-        newUI.transform.position = canvas.transform.position;
-        newUI.GetComponent<RectTransform>().sizeDelta = new Vector2(newUI.GetComponent<RectTransform>().rect.width / canvas.scaleFactor, newUI.GetComponent<RectTransform>().rect.height / canvas.scaleFactor);
-        winPanel = newUI.GetComponentInChildren<CompletionPanel>();
-        timer = newUI.transform.GetChild(0).GetComponent<Text>();
+        infernoUI = UIManager.instance.infernoUI;
+        infernoUI.SetActive(true);
+        //newUI = Instantiate(infernoUI, canvas.transform);
+        //newUI.transform.position = canvas.transform.position;
+        //newUI.GetComponent<RectTransform>().sizeDelta = new Vector2(newUI.GetComponent<RectTransform>().rect.width / canvas.scaleFactor, newUI.GetComponent<RectTransform>().rect.height / canvas.scaleFactor);
+        winPanel = infernoUI.GetComponentInChildren<CompletionPanel>();
+        timer = infernoUI.transform.GetChild(0).GetComponent<Text>();
 
         winPanel.gameObject.SetActive(false);
         winPanel.manager = this;
@@ -124,8 +125,8 @@ public class InfernoManager : MonoBehaviour
     {
         stopTimer = true;
         float score = winPanel.CalculateScore();
-
-        shieldHealthValue = shieldScript.GetComponent<Enemy>().hitpoints;
+        Player.player.ClearDamageQueue();
+        shieldHealthValue = shieldScript != null ? shieldScript.GetComponent<Enemy>().hitpoints : 0;
 
         yield return new WaitForSeconds(4);
         if (OptionManager.ignoreHiscores == false && Player.player.standardDeath == false)
@@ -188,7 +189,10 @@ public class InfernoManager : MonoBehaviour
         //{
         //    Destroy(element);
         //}
-        Destroy(newUI);
+        //Destroy(infernoUI);
+        timer.text = Tools.SecondsToMinutes(0, true, true);
+        infernoUI.SetActive(false);
+        winPanel.gameObject.SetActive(true);
         if (Player.player.standardDeath)
         {
             GameLog.Log("Oh dear, you are dead!");

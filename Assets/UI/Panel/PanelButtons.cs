@@ -64,8 +64,8 @@ public class PanelButtons : MonoBehaviour
         panelObjects[4] = spellbookPanel;
         panelObjects[5] = logoutPanel;
 
-        onPosition = attackStylesPanel.GetComponent<RectTransform>().localPosition;
-        panelOnPosition = panel.GetComponent<RectTransform>().position;
+        onPosition = attackStylesPanel.GetComponent<RectTransform>().anchoredPosition;
+        panelOnPosition = panel.GetComponent<RectTransform>().anchoredPosition;
         panelOpenStatsPosition = statsPanel.anchoredPosition;
 
         foreach (GameObject panelobject in panelObjects)
@@ -79,7 +79,8 @@ public class PanelButtons : MonoBehaviour
 
         yield return null;
 
-        ForceClose();
+        //ForceClose();
+        ForceOpen("inventory");
 
         hotkeys[0] = attackStylesHotKey;
         hotkeys[1] = inventoryHotKey;
@@ -120,10 +121,10 @@ public class PanelButtons : MonoBehaviour
         {
             if (panelobject != null)
             {
-                panelobject.GetComponent<RectTransform>().localPosition = onPosition + Vector3.right * 1000;
+                panelobject.GetComponent<RectTransform>().anchoredPosition = onPosition + Vector3.right * 1000;
             }
         }
-        panel.GetComponent<RectTransform>().position = panelOnPosition + Vector3.right * 1000;
+        panel.GetComponent<RectTransform>().anchoredPosition = panelOnPosition + Vector3.right * 1000;
     }
 
     public void OnClick(Transform selectedButton, bool forceOpen)
@@ -132,33 +133,33 @@ public class PanelButtons : MonoBehaviour
         {
             for (int i = 0; i < buttons.Length; i++)
             {
-                panelObjects[i].GetComponent<RectTransform>().localPosition = onPosition + Vector3.right * 1000;
+                panelObjects[i].GetComponent<RectTransform>().anchoredPosition = onPosition + Vector3.right * 1000;
             }
-            panelObjects[5].GetComponent<RectTransform>().localPosition = onPosition;
+            panelObjects[5].GetComponent<RectTransform>().anchoredPosition = onPosition;
             currentButton = selectedButton;
-            panel.GetComponent<RectTransform>().position = panelOnPosition;
+            panel.GetComponent<RectTransform>().anchoredPosition = panelOnPosition;
             panelOpen = true;
             return;
         }
 
-        panelObjects[5].GetComponent<RectTransform>().localPosition = onPosition + Vector3.right * 1000;
+        panelObjects[5].GetComponent<RectTransform>().anchoredPosition = onPosition + Vector3.right * 1000;
         for (int i = 0; i < buttons.Length - 1; i++)
         {
             buttons[i].GetComponent<Image>().sprite = offSprite;
-            panelObjects[i].GetComponent<RectTransform>().localPosition = onPosition + Vector3.right * 1000;
+            panelObjects[i].GetComponent<RectTransform>().anchoredPosition = onPosition + Vector3.right * 1000;
         }
         if (selectedButton == currentButton && forceOpen == false)
         {
             selectedButton.GetComponent<Image>().sprite = offSprite;
             currentButton = null;
-            panel.GetComponent<RectTransform>().position = panelOnPosition + Vector3.right * 1000;
+            panel.GetComponent<RectTransform>().anchoredPosition = panelOnPosition + Vector3.right * 1000;
             panelOpen = false;
         }
         else
         {
             selectedButton.GetComponent<Image>().sprite = onSprite;
             currentButton = selectedButton;
-            panel.GetComponent<RectTransform>().position = panelOnPosition;
+            panel.GetComponent<RectTransform>().anchoredPosition = panelOnPosition;
             panelOpen = true;
         }
 
@@ -166,7 +167,7 @@ public class PanelButtons : MonoBehaviour
         {
             if (currentButton == buttons[i])
             {
-                panelObjects[i].GetComponent<RectTransform>().localPosition = onPosition;
+                panelObjects[i].GetComponent<RectTransform>().anchoredPosition = onPosition;
                 break;
             }
         }
@@ -183,7 +184,7 @@ public class PanelButtons : MonoBehaviour
 
     public void ResetPanelPosition()
     {
-        panelOnPosition = new Vector2(panelOnPosition.x, buttonHeight * transform.localScale.y * FindObjectOfType<Canvas>().scaleFactor);
+        //panelOnPosition = new Vector2(panelOnPosition.x, buttonHeight * transform.localScale.y * FindObjectOfType<Canvas>().scaleFactor);
     }
 
     public static void SetHotkeys(int[] keys)

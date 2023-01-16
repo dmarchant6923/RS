@@ -102,6 +102,7 @@ public class BlowPipe : MonoBehaviour
     {
         itemScript.menuTexts[5] = "Unload ";
         itemScript.UpdateActions();
+        itemScript.chargeScript.Check();
     }
 
     void ObjectUsedOnThis()

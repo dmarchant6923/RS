@@ -39,11 +39,9 @@ public class ActivatePrayer : MonoBehaviour
 
     bool locked;
 
-    private void Start()
+    private IEnumerator Start()
     {
         image = GetComponent<RawImage>();
-        backgroundImage = Instantiate(background, backgroundsParent).GetComponent<RawImage>();
-        backgroundImage.transform.position = transform.position;
         prayerAction = GetComponent<Action>();
         prayerScript = FindObjectOfType<Prayer>();
         prayerAction.menuTexts[0] = "Activate <color=orange>" + gameObject.name + "</color>";
@@ -54,12 +52,6 @@ public class ActivatePrayer : MonoBehaviour
         prayerAction.serverAction1 += ServerSelectQuickPrayer;
         prayerAction.orderLevels[0] = -1;
         prayerAction.orderLevels[1] = -1;
-
-        if (backgroundImage.color.a == 1)
-        {
-            prayerAction.menuTexts[0] = "Deactivate <color=orange>" + gameObject.name + "</color>";
-            active = true;
-        }
 
         newCheck = Instantiate(check, transform);
         newCheck.transform.SetParent(iconsParent);
@@ -76,6 +68,16 @@ public class ActivatePrayer : MonoBehaviour
         selectQuickPrayer = false;
 
         TickManager.afterTick += CorrectBackgroundColor;
+
+        yield return null;
+
+        backgroundImage = Instantiate(background, backgroundsParent).GetComponent<RawImage>();
+        backgroundImage.transform.position = transform.position;
+        if (backgroundImage.color.a == 1)
+        {
+            prayerAction.menuTexts[0] = "Deactivate <color=orange>" + gameObject.name + "</color>";
+            active = true;
+        }
     }
 
     void CorrectBackgroundColor()

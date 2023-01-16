@@ -15,6 +15,7 @@ public class InfernoPortal : MonoBehaviour
     public static double GearValueAtPortalEntrance = -1;
 
     bool willEnterPortal = false;
+
     void Start()
     {
         portalAction = GetComponent<Action>();
@@ -61,6 +62,7 @@ public class InfernoPortal : MonoBehaviour
     IEnumerator PortalFade()
     {
         Action.ignoreAllActions = true;
+        UIManager.instance.entryInfoBox.SetActive(false);
         GearValueAtPortalEntrance = GameManager.instance.TotalCarriedValue();
         fadeTicks = fadeTime;
         while (fadeTicks > 0)

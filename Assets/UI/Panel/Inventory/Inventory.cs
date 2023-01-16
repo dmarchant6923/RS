@@ -56,8 +56,8 @@ public class Inventory : MonoBehaviour
         panelScale = panel.transform.localScale.x;
 
         Vector2 panelAnchor = panel.position;
-        float panelWidth = panel.rect.width * panelScale;
-        float panelHeight = panel.rect.height * panelScale;
+        float panelWidth = panel.rect.width * panelScale * OptionManager.uiScaleFactor;
+        float panelHeight = panel.rect.height * panelScale * OptionManager.uiScaleFactor;
         Vector2 center = panelAnchor + new Vector2(-panelWidth / 2, panelHeight / 2);
         float widthIncrement = panelWidth * 0.9f / 4;
         float heightIncrement = panelHeight * 0.9f / 7;
@@ -216,7 +216,7 @@ public class Inventory : MonoBehaviour
     public void ResetPanelExtents()
     {
         Canvas canvas = FindObjectOfType<Canvas>();
-        panelMin = panel.position + (Vector3.left * panel.rect.width + Vector3.one * 20) * canvas.scaleFactor;
-        panelMax = panel.position + (Vector3.up * panel.rect.height - Vector3.one * 20) * canvas.scaleFactor;
+        panelMin = panel.position + (Vector3.left * panel.rect.width + Vector3.one * 20) * OptionManager.uiScaleFactor;
+        panelMax = panel.position + (Vector3.up * panel.rect.height - Vector3.one * 20) * OptionManager.uiScaleFactor;
     }
 }

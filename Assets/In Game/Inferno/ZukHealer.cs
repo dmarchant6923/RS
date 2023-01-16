@@ -91,9 +91,10 @@ public class ZukHealer : MonoBehaviour
     void AfterTick()
     {
         enemyScript.attackThisTick = false;
-
-        if (enemyScript.death)
+        
+        if (enemyScript.death || zukScript.enemyScript.death)
         {
+            activeAttacks = new List<AOE>();
             return;
         }
 

@@ -332,7 +332,7 @@ public class ChargeItem : MonoBehaviour
     }
 
 
-    void Check()
+    public void Check()
     {
         string end = ".";
         if (GetComponent<BlowPipe>() != null)

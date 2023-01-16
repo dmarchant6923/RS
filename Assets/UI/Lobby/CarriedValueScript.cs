@@ -5,12 +5,13 @@ using UnityEngine.UI;
 
 public class CarriedValueScript : MonoBehaviour
 {
-    Text valueText;
+    [HideInInspector] public Text valueText;
 
     private void Awake()
     {
         valueText = GetComponent<Text>();
     }
+
     public void UpdateValue()
     {
         StartCoroutine(UpdateValueCR());
@@ -18,6 +19,11 @@ public class CarriedValueScript : MonoBehaviour
 
     IEnumerator UpdateValueCR()
     {
+        if (GameManager.foundPrices == false)
+        {
+            valueText.text = "-";
+            yield break;
+        }
         yield return new WaitForSeconds(0.05f);
         valueText.text = "Carried value: " + Tools.DoubleToCashValue(GameManager.instance.TotalCarriedValue());
     }

@@ -97,7 +97,7 @@ public class SetSpawn : MonoBehaviour
         }
         switchAggroOnAttack = false;
         attackPlayer = true;
-        combatScript.attackCooldown = attackSpeed;
+        combatScript.attackCooldown = 2;
         if (Jad)
         {
             combatScript.attackCooldown = Mathf.Min(5, combatScript.attackCooldown);

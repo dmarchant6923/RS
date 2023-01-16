@@ -54,6 +54,7 @@ public class GroundItem : MonoBehaviour
         itemAction.serverAction0 += Take;
         itemAction.staticPlayerActions[0] = true;
         itemAction.orderLevels[0] = -1;
+        itemAction.serverActionExamine += itemAction.ReturnGEPrice;
         itemAction.UpdateName();
 
         TickManager.beforeTick += BeforeTick;

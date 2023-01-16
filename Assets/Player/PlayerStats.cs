@@ -132,6 +132,7 @@ public class PlayerStats : MonoBehaviour
         SetTotalLevel();
 
         imbuedHeartTicks = 0;
+        defensiveTicks = 0;
     }
 
     public static void SetTotalLevel()
@@ -302,6 +303,7 @@ public class PlayerStats : MonoBehaviour
             imbuedHeartCharged = true;
         }
 
+
         if (WornEquipment.weapon != null && WornEquipment.weapon.weaponCategory == WornEquipment.bulwarkCategory && AttackStyles.attackType == AttackStyles.defensiveType)
         {
             if (defensiveTicks < defensiveDelay)
@@ -313,10 +315,14 @@ public class PlayerStats : MonoBehaviour
                 defensiveBulwark = true;
             }
         }
-        else if (defensiveBulwark)
+        else
         {
-            defensiveBulwark = false;
-            Player.player.combatScript.attackCooldown = 10;
+            if (defensiveBulwark)
+            {
+                defensiveBulwark = false;
+                Player.player.combatScript.attackCooldown = 10;
+            }
+            defensiveTicks = 0;
         }
     }
 

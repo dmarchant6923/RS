@@ -31,6 +31,22 @@ PrefabInstance:
       propertyPath: colors.Array.data[2].r
       value: 0.990566
       objectReference: {fileID: 0}
+    - target: {fileID: 7075291499728027366, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: projectileColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7075291499728027366, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: projectileColor.b
+      value: 0.011764706
+      objectReference: {fileID: 0}
+    - target: {fileID: 7075291499728027366, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: projectileColor.g
+      value: 0.011764706
+      objectReference: {fileID: 0}
+    - target: {fileID: 7075291499728027366, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: projectileColor.r
+      value: 0.5568628
+      objectReference: {fileID: 0}
     - target: {fileID: 7365907216575350836, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
       propertyPath: examineText
       value: Enchanted Dragon crossbow bolts, tipped with ruby.
@@ -122,6 +138,22 @@ PrefabInstance:
     - target: {fileID: 7885089542566544794, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551362494319013110, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: overrideProjectileColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551362494319013110, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: overrideProjectileColor.b
+      value: 0.011764706
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551362494319013110, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: overrideProjectileColor.g
+      value: 0.011764706
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551362494319013110, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}
+      propertyPath: overrideProjectileColor.r
+      value: 0.5568628
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b733c7efa66d1a8449aea0b357719b49, type: 3}

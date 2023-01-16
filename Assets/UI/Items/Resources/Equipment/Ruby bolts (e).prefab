@@ -95,6 +95,22 @@ PrefabInstance:
       propertyPath: rangedStrength
       value: 103
       objectReference: {fileID: 0}
+    - target: {fileID: 5591147477353168723, guid: d3e3454cddd653343b699f919af120af, type: 3}
+      propertyPath: overrideProjectileColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5591147477353168723, guid: d3e3454cddd653343b699f919af120af, type: 3}
+      propertyPath: overrideProjectileColor.b
+      value: 0.011764706
+      objectReference: {fileID: 0}
+    - target: {fileID: 5591147477353168723, guid: d3e3454cddd653343b699f919af120af, type: 3}
+      propertyPath: overrideProjectileColor.g
+      value: 0.011764706
+      objectReference: {fileID: 0}
+    - target: {fileID: 5591147477353168723, guid: d3e3454cddd653343b699f919af120af, type: 3}
+      propertyPath: overrideProjectileColor.r
+      value: 0.5568628
+      objectReference: {fileID: 0}
     - target: {fileID: 6221233367251998271, guid: d3e3454cddd653343b699f919af120af, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -178,6 +194,22 @@ PrefabInstance:
     - target: {fileID: 6221233367251998271, guid: d3e3454cddd653343b699f919af120af, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6416303190260477251, guid: d3e3454cddd653343b699f919af120af, type: 3}
+      propertyPath: projectileColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6416303190260477251, guid: d3e3454cddd653343b699f919af120af, type: 3}
+      propertyPath: projectileColor.b
+      value: 0.013127446
+      objectReference: {fileID: 0}
+    - target: {fileID: 6416303190260477251, guid: d3e3454cddd653343b699f919af120af, type: 3}
+      propertyPath: projectileColor.g
+      value: 0.013127446
+      objectReference: {fileID: 0}
+    - target: {fileID: 6416303190260477251, guid: d3e3454cddd653343b699f919af120af, type: 3}
+      propertyPath: projectileColor.r
+      value: 0.5566038
       objectReference: {fileID: 0}
     - target: {fileID: 6702412283856460689, guid: d3e3454cddd653343b699f919af120af, type: 3}
       propertyPath: examineText

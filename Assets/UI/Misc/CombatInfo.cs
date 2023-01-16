@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class CombatInfo : MonoBehaviour
 {
+    public Text enemyAttackingName;
     public Text playerAttack;
     public Text enemyDefense;
     public Text playerAttackResult;
-    public Text enemyName;
+    public Text enemyDefendingName;
     public Text enemyAttack;
     public Text playerDefense;
     public Text enemyAttackResult;
@@ -25,8 +26,10 @@ public class CombatInfo : MonoBehaviour
         enemyAttackResult.text = "";
     }
 
-    public static void PlayerAttack(string attackStyle, int attackRoll)
+    public static void PlayerAttack(string name, string attackStyle, int attackRoll)
     {
+        instance.enemyAttackingName.text = "ATTACKING (" + name + ")";
+
         instance.playerAttack.text =
         "Player attack style: " + attackStyle + "\n" +
         "Player max attack roll: " + attackRoll;
@@ -54,7 +57,7 @@ public class CombatInfo : MonoBehaviour
     }
     public static void EnemyAttack(string name, string attackStyle, int styleLevel, int attackBonus, int attackRoll)
     {
-        instance.enemyName.text = "DEFENDING (" + name + ")";
+        instance.enemyDefendingName.text = "DEFENDING (" + name + ")";
 
         string skill = "attack";
         if (attackStyle == AttackStyles.rangedStyle)

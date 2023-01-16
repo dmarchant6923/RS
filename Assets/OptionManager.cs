@@ -28,6 +28,8 @@ public class OptionManager : MonoBehaviour
 
     public static bool firstLogin = false;
 
+    public static float uiScaleFactor = 1;
+
     private void Awake()
     {
         instance = this;
@@ -89,7 +91,9 @@ public class OptionManager : MonoBehaviour
 
         TickManager.simLatency = simLatency / 1000;
 
+        uiScaleFactor = uiScale / 100;
         FindObjectOfType<CanvasScaler>().scaleFactor = uiScale / 100;
+        FindObjectOfType<CanvasScaler>().referenceResolution = new Vector2(1920, 1080) * 100 / uiScale;
         Canvas.ForceUpdateCanvases();
         Inventory.instance.ResetPanelExtents();
         WornEquipment.instance.ResetStatPanelPosition();

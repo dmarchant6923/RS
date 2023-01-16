@@ -197,7 +197,7 @@ public class Spell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             }
             else if (hasRune4 == false && rune.name == rune4 && rune.quantity >= quantity4)
             {
-                hasRune1 = true;
+                hasRune4 = true;
             }
 
             if (hasRune1 && hasRune2 && hasRune3 && hasRune4)

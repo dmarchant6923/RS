@@ -71,12 +71,9 @@ public class NPC : MonoBehaviour
         newTrueTileMarker.GetComponent<SpriteRenderer>().enabled = false;
         if (showTrueTile == false)
         {
+            newSizeTileMarker.GetComponent<SpriteRenderer>().enabled = false;
+        }
 
-        }
-        else
-        {
-            newSizeTileMarker.GetComponent<SpriteRenderer>().enabled = true;
-        }
         //if (showSizeTile == false)
         //{
         //}

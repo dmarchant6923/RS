@@ -13,7 +13,7 @@ public class TV : MonoBehaviour
         tvAction = GetComponent<Action>();
         objectScript = GetComponent<InteractableObject>();
 
-        tvAction.menuTexts[0] = "Stats ";
+        tvAction.menuTexts[0] = "Hiscores ";
         objectScript.interaction += OpenSettings;
     }
 

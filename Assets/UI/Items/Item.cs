@@ -46,7 +46,7 @@ public class Item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [HideInInspector] public StackableItem stackScript;
 
     bool isChargeable = false;
-    ChargeItem chargeScript;
+    [HideInInspector] public ChargeItem chargeScript;
 
     public static bool shiftClickToDrop;
     public GameObject groundItemTileObject;

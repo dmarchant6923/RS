@@ -17,6 +17,8 @@ public class OpenCloseButton : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public delegate void closeButton();
     public event closeButton buttonClicked;
 
+    public GameObject objectToClose;
+
     private void Start()
     {
         image = GetComponent<RawImage>();
@@ -29,6 +31,10 @@ public class OpenCloseButton : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         //targetObject.SetActive(!targetObject.activeSelf);
         buttonClicked?.Invoke();
+        if (objectToClose != null)
+        {
+            objectToClose.SetActive(false);
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)

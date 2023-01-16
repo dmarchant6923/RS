@@ -79,4 +79,12 @@ public class ManualSetTimer : MonoBehaviour
             button.buttonText.text = "Reset";
         }
     }
+
+    private void OnDisable()
+    {
+        step = -1;
+        timer = 210;
+        timerText.text = Tools.SecondsToMinutes(timer, true);
+        timerPaused = true;
+    }
 }

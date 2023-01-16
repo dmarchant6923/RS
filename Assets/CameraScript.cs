@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
-    float maxCamSize = 13;
+    float maxCamSize = 25; //13
     float minCamSize = 3;
     float camSize;
 
     float minCamSpeed = 0.5f;
     float maxCamSpeed = 10;
     float camSpeed;
+
+    public float rotateSensitivity = 3;
 
     [System.NonSerialized] float zoomSensitivity = 120;
 
@@ -58,14 +60,9 @@ public class CameraScript : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, player.transform.position, camSpeed * Time.deltaTime);
         transform.position = new Vector3(transform.position.x, transform.position.y, -10);
 
-        if (MouseManager.mouseOnScreen && Input.GetMouseButton(2))
-        {
-
-        }
-
         if (Input.GetMouseButton(2))
         {
-            transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z - Input.GetAxis("Mouse X") * 4.2f);
+            transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z - Input.GetAxis("Mouse X") * rotateSensitivity);
         }
     }
 

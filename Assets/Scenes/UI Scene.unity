@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424ef1b3d0c5523409dc4788e3207796, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotateSensitivity: 2
   player: {fileID: 0}
 --- !u!81 &720135272
 AudioListener:

@@ -95,9 +95,9 @@ public class SelectSkillsPanel : MonoBehaviour
     {
         for (int i = 0; i < 7; i++)
         {
+            skillTexts[i].color = savedSkills.levels[i] == 99 ? Color.yellow : Color.green;
             savedSkills.levels[i] = 99;
             skillTexts[i].text = savedSkills.levels[i].ToString();
-            skillTexts[i].color = Color.yellow;
         }
 
         SetTotalLevel();
@@ -132,10 +132,20 @@ public class SelectSkillsPanel : MonoBehaviour
 
         PlayerStats.ReinitializeStats();
 
-
-        string fullPath = dir + fileName + extension;
-        string jsonString = JsonUtility.ToJson(savedSkills);
-        File.WriteAllText(fullPath, jsonString);
+        //if (Application.platform == RuntimePlatform.WebGLPlayer)
+        if (true)
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                PlayerPrefs.SetInt("savedSkills level " + i, savedSkills.levels[i]);
+            }
+        }
+        else
+        {
+            string fullPath = dir + fileName + extension;
+            string jsonString = JsonUtility.ToJson(savedSkills);
+            File.WriteAllText(fullPath, jsonString);
+        }
 
         GetComponent<BasePanelScript>().ClosePanel();
     }
@@ -150,7 +160,16 @@ public class SelectSkillsPanel : MonoBehaviour
     void ResetNumbers()
     {
         string fullPath = dir + fileName + extension;
-        if (File.Exists(fullPath))
+        //if (Application.platform == RuntimePlatform.WebGLPlayer)
+        if (true)
+        {
+            savedSkills = new SavedSkills();
+            for (int i = 0; i < 7; i++)
+            {
+                savedSkills.levels[i] = PlayerPrefs.GetInt("savedSkills level " + i, 99);
+            }
+        }
+        else if (File.Exists(fullPath))
         {
             string jsonString = File.ReadAllText(fullPath);
             savedSkills = JsonUtility.FromJson<SavedSkills>(jsonString);

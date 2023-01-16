@@ -23,7 +23,6 @@ public class ReturnPortal : MonoBehaviour
         yield return null;
 
         objectAction.menuTexts[0] = "Return ";
-        objectAction.UpdateName();
     }
 
     void Teleport()
