@@ -392,18 +392,7 @@ public class PresetsPanel : MonoBehaviour
                 File.WriteAllText(fullPath, jsonString);
             }
 
-            if (presetEquipment[i].filled == false && presetInventory[i].filled == false)
-            {
-                presetTexts[i].text = "Preset " + (i + 1) + "\n(empty)";
-                loadButtons[i].ActivateButton(false);
-                clearButtons[i].ActivateButton(false);
-            }
-            else
-            {
-                presetTexts[i].text = "Preset " + (i + 1);
-                loadButtons[i].ActivateButton(true);
-                clearButtons[i].ActivateButton(true);
-            }
+            WritePresetText(i);
         }
     }
 
@@ -474,24 +463,30 @@ public class PresetsPanel : MonoBehaviour
             }
         }
 
-        if (presetInventory[presetNumber].filled == false && presetEquipment[presetNumber].filled == false)
-        {
-            presetTexts[presetNumber].text = "Preset " + (presetNumber + 1) + "\n(empty)";
-            loadButtons[presetNumber].ActivateButton(false);
-            clearButtons[presetNumber].ActivateButton(false);
-        }
-        else
-        {
-            presetTexts[presetNumber].text = "Preset " + (presetNumber + 1);
-            loadButtons[presetNumber].ActivateButton(true);
-            clearButtons[presetNumber].ActivateButton(true);
-        }
+        WritePresetText(presetNumber);
 
         SavePresetWriteToData(presetNumber);
 
         GameLog.Log("Preset " + (presetNumber + 1) + " saved.");
 
         IgnoreActions = true;
+    }
+
+    void WritePresetText(int presetNumber)
+    {
+        if (presetInventory[presetNumber].filled == false && presetEquipment[presetNumber].filled == false)
+        {
+            presetTexts[presetNumber].text = "Preset " + (presetNumber + 1) + "\n<size=50>(empty)</size>";
+            loadButtons[presetNumber].ActivateButton(false);
+            clearButtons[presetNumber].ActivateButton(false);
+        }
+        else
+        {
+            string weapon = string.IsNullOrEmpty(presetEquipment[presetNumber].equipmentNames[4]) ? "Unarmed" : presetEquipment[presetNumber].equipmentNames[4];
+            presetTexts[presetNumber].text = "Preset " + (presetNumber + 1) + "\n<size=50>" + weapon + "</size>";
+            loadButtons[presetNumber].ActivateButton(true);
+            clearButtons[presetNumber].ActivateButton(true);
+        }
     }
     void SavePresetWriteToData(int presetNumber)
     {
@@ -593,9 +588,7 @@ public class PresetsPanel : MonoBehaviour
 
         presetEquipment[presetNumber] = new PresetEquipment();
         presetInventory[presetNumber] = new PresetInventory();
-        presetTexts[presetNumber].text = "Preset " + (presetNumber + 1) + "\n(empty)";
-        loadButtons[presetNumber].ActivateButton(false);
-        clearButtons[presetNumber].ActivateButton(false);
+        WritePresetText(presetNumber);
 
         GameLog.Log("Preset " + (presetNumber + 1) + " cleared.");
 

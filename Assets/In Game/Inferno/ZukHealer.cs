@@ -124,6 +124,7 @@ public class ZukHealer : MonoBehaviour
         {
             if (combatScript.attackCooldown < 3 && addedAttackActionBack == false)
             {
+                addedAttackActionBack = true;
                 enemyScript.npcAction.serverAction0 += enemyScript.PlayerAttack;
                 enemyScript.npcAction.serverAction0 -= DummyMethod;
             }

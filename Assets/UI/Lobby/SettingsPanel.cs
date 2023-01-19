@@ -101,7 +101,7 @@ public class SettingsPanel : MonoBehaviour
                 settings.bools[i] = PlayerPrefs.GetInt("settings bools " + i, num) == 1;
             }
             settings.latency = PlayerPrefs.GetFloat("settings latency", 100);
-            settings.uiScale = PlayerPrefs.GetFloat("settings uiScale", settings.uiScale = Mathf.Clamp(100 * canvas.pixelRect.width / 1920, 25, 100));
+            settings.uiScale = PlayerPrefs.GetFloat("settings uiScale", 100);
 
             settings.hotkeys[0] = PlayerPrefs.GetInt("settings hotkeys 0", 1);
             settings.hotkeys[1] = PlayerPrefs.GetInt("settings hotkeys 1", 2);
@@ -127,7 +127,7 @@ public class SettingsPanel : MonoBehaviour
             settings.bools[7] = false;
             settings.bools[8] = false;
             settings.latency = 100;
-            settings.uiScale = Mathf.Clamp(100 * canvas.pixelRect.width / 1920, 25, 100);
+            settings.uiScale = 100;
 
             settings.hotkeys[0] = 1;
             settings.hotkeys[1] = 2;

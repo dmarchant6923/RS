@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class HitSplat : MonoBehaviour
 {
-    public bool showMaxHitSplat = false;
-
     public GameObject hitSplat;
     GameObject[] activeHitSplats = new GameObject[4];
     int numActive = 0;
@@ -83,17 +81,28 @@ public class HitSplat : MonoBehaviour
 
     public void NewHitSplat(int damage, int maxHit)
     {
+        NewHitSplat(damage, maxHit, false);
+    }
+
+    public void NewHitSplat(int damage, int maxHit, bool fromPlayer)
+    {
         for (int i = 0; i < activeHitSplats.Length; i++)
         {
             if (activeHitSplats[i] == null)
             {
                 GameObject newHitSplat = Instantiate(hitSplat, transform);
                 newHitSplat.transform.SetAsLastSibling();
+
+                if (fromPlayer)
+                {
+                    Debug.Log(damage + " " + maxHit);
+                }
+
                 if (damage == 0)
                 {
                     newHitSplat.GetComponent<RawImage>().texture = blueHitSplat;
                 }
-                if (showMaxHitSplat && damage == maxHit && damage > 1)
+                if (fromPlayer && damage == maxHit && damage > 1)
                 {
                     newHitSplat.GetComponent<RawImage>().texture = maxHitSplat;
                 }

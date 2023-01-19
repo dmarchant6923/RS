@@ -92,8 +92,9 @@ public class OptionManager : MonoBehaviour
         TickManager.simLatency = simLatency / 1000;
 
         uiScaleFactor = uiScale / 100;
-        FindObjectOfType<CanvasScaler>().scaleFactor = uiScale / 100;
-        FindObjectOfType<CanvasScaler>().referenceResolution = new Vector2(1920, 1080) * 100 / uiScale;
+        //FindObjectOfType<CanvasScaler>().scaleFactor = uiScale / 100;
+        //FindObjectOfType<CanvasScaler>().referenceResolution = new Vector2(1920, 1080) * 100 / uiScale;
+        UIManager.instance.ResetCanvasScale();
         Canvas.ForceUpdateCanvases();
         Inventory.instance.ResetPanelExtents();
         WornEquipment.instance.ResetStatPanelPosition();

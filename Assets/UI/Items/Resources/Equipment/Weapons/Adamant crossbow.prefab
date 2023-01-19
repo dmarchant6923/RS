@@ -16,8 +16,16 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -5194834354910527777, guid: 3b947440a119e9040b006cd247117587, type: 3}
+      propertyPath: equipSlotName
+      value: weapon
+      objectReference: {fileID: 0}
+    - target: {fileID: -5194834354910527777, guid: 3b947440a119e9040b006cd247117587, type: 3}
       propertyPath: attackDistance
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -5194834354910527777, guid: 3b947440a119e9040b006cd247117587, type: 3}
+      propertyPath: weaponCategory
+      value: Crossbow
       objectReference: {fileID: 0}
     - target: {fileID: -5194834354910527777, guid: 3b947440a119e9040b006cd247117587, type: 3}
       propertyPath: canFireDragonAmmo

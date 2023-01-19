@@ -281,12 +281,12 @@ public class Enemy : MonoBehaviour
         {
             newHitSplat = Instantiate(UIManager.staticHitSplat, Camera.main.WorldToScreenPoint(transform.position), Quaternion.identity);
             HitSplat splatScript = newHitSplat.GetComponent<HitSplat>();
-            splatScript.NewHitSplat(damage.damage, 0);
+            splatScript.NewHitSplat(damage.damage, damage.maxHit, damage.fromPlayer);
             splatScript.objectGettingHit = gameObject;
         }
         else
         {
-            newHitSplat.GetComponent<HitSplat>().NewHitSplat(damage.damage, 0);
+            newHitSplat.GetComponent<HitSplat>().NewHitSplat(damage.damage, damage.maxHit, damage.fromPlayer);
         }
 
 

@@ -77,7 +77,7 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        TickManager.onTick += CountSlots;
+        //TickManager.onTick += CountSlots;
         //TickManager.beforeTick += EquipQueue;
         SortInventory();
     }
@@ -91,7 +91,6 @@ public class Inventory : MonoBehaviour
                 if (inventorySlots[i].GetComponentInChildren<Item>() == null)
                 {
                     item.transform.SetParent(inventorySlots[i].transform);
-                    item.transform.position = item.transform.parent.position;
                     break;
                 }
             }
@@ -123,7 +122,6 @@ public class Inventory : MonoBehaviour
     {
         PlaceInInventory(item, -1);
     }
-
     public void PlaceInInventory(GameObject item, int position)
     {
         if (item.GetComponent<StackableItem>() != null)
@@ -140,6 +138,7 @@ public class Inventory : MonoBehaviour
         if (slotsTaken == 28)
         {
             Destroy(item);
+            Debug.Log("destroyed item in Inventory.PlaceInInventory()!");
             return;
         }
 
@@ -161,7 +160,7 @@ public class Inventory : MonoBehaviour
         else
         {
             Destroy(item);
-            Debug.Log("destroyed item in placeininventory!");
+            Debug.Log("destroyed item in Inventory.PlaceInInventory()!");
         }
 
         CountSlots();

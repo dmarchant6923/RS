@@ -74,8 +74,8 @@ public class CompletionPanel : MonoBehaviour
 
     public static string CalculateGrade(float total)
     {
-        float Aplus = 3400;
-        float Aminus = 2800;
+        float Aplus = 3200;
+        float Aminus = 2700;
         float Bminus = 1600;
         float Cminus = 1000;
         float D = 700;

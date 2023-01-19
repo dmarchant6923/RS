@@ -46,6 +46,8 @@ public class UIManager : MonoBehaviour
 
     public List<GameObject> bannedItems = new List<GameObject>();
 
+    float screenWidth = 0;
+
     private IEnumerator Start()
     {
         DontDestroyOnLoad(gameObject);
@@ -100,6 +102,18 @@ public class UIManager : MonoBehaviour
         }
 
         RightClickMenu.UIAction = UIAction;
+
+        if (Screen.width != screenWidth)
+        {
+            ResetCanvasScale();
+            screenWidth = Screen.width;
+        }
+    }
+
+    public void ResetCanvasScale()
+    {
+        //canvas.scaleFactor = Mathf.Clamp(100 * canvas.pixelRect.width / 1920, 50, 100) * OptionManager.uiScaleFactor / 100;
+        canvas.scaleFactor = canvas.pixelRect.width / 1920 * OptionManager.uiScaleFactor;
     }
 
     public static void ClickX(bool redClick)

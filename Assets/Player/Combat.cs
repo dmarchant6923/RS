@@ -104,6 +104,12 @@ public class Combat : MonoBehaviour
                     playerScript.RemoveFocus();
                     return;
                 }
+                if (WornEquipment.weapon.canFireDragonAmmo == false && WornEquipment.ammo.name.ToLower().Contains("dragon"))
+                {
+                    GameLog.Log("You can't use that ammo with your weapon.");
+                    playerScript.RemoveFocus();
+                    return;
+                }
             }
             else
             {

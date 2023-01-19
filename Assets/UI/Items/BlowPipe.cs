@@ -30,6 +30,7 @@ public class BlowPipe : MonoBehaviour
         {
             itemScript.menuTexts[5] = "Unload ";
             AddDartStats();
+            ammoLoaded = Tools.LoadFromResource(ammoLoaded.name);
             DontDestroyOnLoad(ammoLoaded);
         }
 
@@ -77,7 +78,7 @@ public class BlowPipe : MonoBehaviour
         }
 
         equipScript.rangedStrength -= ammoLoaded.GetComponent<Equipment>().rangedStrength;
-        ammoLoaded = null;
+        Destroy(ammoLoaded);
         RemoveUnloadAction();
     }
 
@@ -112,47 +113,62 @@ public class BlowPipe : MonoBehaviour
             return;
         }
 
-        int currentLoaded = numberLoaded;
-        StackableItem stackScript = itemAction.actionUsedOnThis.GetComponent<StackableItem>();
-        if (currentLoaded > 0 && stackScript.gameObject.name == ammoLoaded.name)
+        int currentNumberLoaded = numberLoaded;
+        StackableItem selectedAmmoStackScript = itemAction.actionUsedOnThis.GetComponent<StackableItem>();
+        //case 1: BP has ammo and the SAME ammo is being used on it
+        if (currentNumberLoaded > 0 && selectedAmmoStackScript.gameObject.name == ammoLoaded.name)
         {
-            AddToQuantity(stackScript.quantity);
-            Destroy(stackScript.gameObject);
+            AddToQuantity(selectedAmmoStackScript.quantity);
+            Destroy(selectedAmmoStackScript.gameObject);
         }
-        else if (currentLoaded > 0)
+        //case 2: BP has ammo and DIFFERENT ammo is being used on it
+        else if (currentNumberLoaded > 0)
         {
             equipScript.rangedStrength -= ammoLoaded.GetComponent<Equipment>().rangedStrength;
 
-            GameObject ammo = Inventory.instance.ScanForItem(ammoLoaded.name);
+            string currentAmmoName = ammoLoaded.name;
+            int currentAmmoQuantity = numberLoaded;
+            Destroy(ammoLoaded);
+            ammoLoaded = Tools.LoadFromResource(itemAction.actionUsedOnThis.name);
+            numberLoaded = itemAction.actionUsedOnThis.GetComponent<StackableItem>().quantity;
+            itemAction.actionUsedOnThis.transform.SetParent(null);
+            Destroy(itemAction.actionUsedOnThis.gameObject);
 
-            GameObject currentAmmo = itemAction.gameObject;
-            ammoLoaded = Tools.LoadFromResource(itemAction.actionUsedOnThis.gameObject.name);
-            AddToQuantity(stackScript.quantity);
-            Destroy(itemAction.gameObject);
+            GameObject newAmmo = Tools.LoadFromResource(currentAmmoName);
+            newAmmo.GetComponent<StackableItem>().quantity = currentAmmoQuantity;
+            Inventory.instance.PlaceInInventory(newAmmo);
 
-            Inventory.instance.CountSlots();
-            if (Inventory.instance.ScanForItem(currentAmmo.name) != null)
-            {
-                ammo.GetComponent<StackableItem>().AddToQuantity(numberLoaded);
-            }
-            else
-            {
-                ammo = Instantiate(currentAmmo);
-                ammo.name = ammoLoaded.name;
-                ammo.GetComponent<StackableItem>().quantity = numberLoaded;
-                ammo.GetComponent<Item>().inventory = itemScript.inventory;
-                ammo.GetComponent<Item>().groundItemsParent = itemScript.groundItemsParent;
-                ammo.GetComponent<Item>().groundPrefab = itemScript.groundPrefab;
-            }
+            //GameObject currentAmmoObject = Inventory.instance.ScanForItem(ammoLoaded.name);
+
+            //GameObject newAmmoObject = itemAction.actionUsedOnThis.gameObject;
+            //ammoLoaded = Tools.LoadFromResource(itemAction.actionUsedOnThis.gameObject.name);
+            //AddToQuantity(selectedAmmoStackScript.quantity);
+            //Destroy(itemAction.actionUsedOnThis.gameObject);
+
+            //Inventory.instance.CountSlots();
+            //if (Inventory.instance.ScanForItem(newAmmoObject.name) != null)
+            //{
+            //    currentAmmoObject.GetComponent<StackableItem>().AddToQuantity(numberLoaded);
+            //}
+            //else
+            //{
+            //    currentAmmoObject = Instantiate(newAmmoObject);
+            //    currentAmmoObject.name = ammoLoaded.name;
+            //    currentAmmoObject.GetComponent<StackableItem>().quantity = numberLoaded;
+            //    currentAmmoObject.GetComponent<Item>().inventory = itemScript.inventory;
+            //    currentAmmoObject.GetComponent<Item>().groundItemsParent = itemScript.groundItemsParent;
+            //    currentAmmoObject.GetComponent<Item>().groundPrefab = itemScript.groundPrefab;
+            //}
 
             AddDartStats();
             AddUnloadAction();
         }
+        //case 3: BP has no ammo currently loaded.
         else
         {
             ammoLoaded = Tools.LoadFromResource(itemAction.actionUsedOnThis.gameObject.name);
             AddToQuantity(itemAction.actionUsedOnThis.GetComponent<StackableItem>().quantity);
-            Destroy(stackScript.gameObject);
+            Destroy(selectedAmmoStackScript.gameObject);
 
             AddDartStats();
             AddUnloadAction();

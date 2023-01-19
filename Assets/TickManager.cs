@@ -18,7 +18,7 @@ public class TickManager : MonoBehaviour
     float tickTimer;
     public static float simLatency = 0.2f;
 
-    static readonly ProfilerMarker newMarker = new ProfilerMarker("Tick");
+    //static readonly ProfilerMarker newMarker = new ProfilerMarker("Tick");
 
     private void Awake()
     {
@@ -33,7 +33,7 @@ public class TickManager : MonoBehaviour
         {
             tickTimer -= maxTickTime + currentVariance;
             tickCount++;
-            newMarker.Begin();
+            //newMarker.Begin();
             if (cancelBeforeTick != null)
             {
                 cancelBeforeTick();
@@ -50,7 +50,7 @@ public class TickManager : MonoBehaviour
             {
                 afterTick();
             }
-            newMarker.End();
+            //newMarker.End();
 
             currentVariance = Random.Range(-maxTickVariance, maxTickVariance);
         }   
