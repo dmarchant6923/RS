@@ -61,7 +61,7 @@ public class OptionManager : MonoBehaviour
         }
     }
 
-    public static void UpdateGameSettings(bool[] settings, float simLatency, float uiScale, int[] hotkeys)
+    public static void UpdateGameSettings(bool[] settings, float simLatency, float uiScale, string[] hotkeys)
     {
         CombatInfo.instance.gameObject.SetActive(settings[0]);
 
@@ -86,7 +86,7 @@ public class OptionManager : MonoBehaviour
         Zuk.showSetTimer = settings[6];
 
         ZukShield.showSafeSpot = settings[7];
-
+        
         ignorePlayerDeath = settings[8];
 
         TickManager.simLatency = simLatency / 1000;

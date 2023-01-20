@@ -9,7 +9,7 @@ public class SettingsHotkeyButton : MonoBehaviour
     ButtonScript button;
     public SettingsPanel settings;
 
-    [HideInInspector] public int currentHotkey = -1;
+    [HideInInspector] public string currentHotkey;
     string buttonText;
 
     bool listening = false;
@@ -43,30 +43,30 @@ public class SettingsHotkeyButton : MonoBehaviour
         SetButtonText();
     }
 
-    public void SetHotkey(int key)
+    public void SetHotkey(string key)
     {
         currentHotkey = key;
         SetButtonText();
         CancelListen();
         foreach (SettingsHotkeyButton button in settings.hotkeyButtons)
         {
-            if (key != -1 && button != this && button.currentHotkey == key)
+            if (key != "-1" && button != this && button.currentHotkey == key)
             {
-                button.SetHotkey(-1);
+                button.SetHotkey("-1");
             }
         }
     }
 
     void SetButtonText()
     {
-        if (currentHotkey == -1)
+        if (currentHotkey == "-1")
         {
             buttonText = "Listen";
             button.buttonText.fontSize = 35;
         }
         else
         {
-            buttonText = currentHotkey.ToString();
+            buttonText = currentHotkey;
             button.buttonText.fontSize = 55;
         }
         button.buttonText.text = buttonText;
@@ -78,20 +78,42 @@ public class SettingsHotkeyButton : MonoBehaviour
         {
             if (Input.anyKeyDown && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2)) == false)
             {
-                bool validKey = false;
                 for (int i = 0; i < 10; i++)
                 {
                     if (Input.GetKeyDown(i.ToString()))
                     {
-                        validKey = true;
-                        SetHotkey(i);
+                        SetHotkey(i.ToString());
+                        return;
                     }
                 }
 
-                if (validKey == false)
+                //for (int i = 1; i < 13; i++)
+                //{
+                //    if (Input.GetKeyDown("f" + i))
+                //    {
+                //        Debug.Log("you are here");
+                //        SetHotkey("F" + i);
+                //        return;
+                //    }
+                //}
+
+                if (Input.GetKeyDown(KeyCode.BackQuote))
                 {
-                    SetHotkey(-1);
+                    SetHotkey("`");
+                    return;
                 }
+                if (Input.GetKeyDown(KeyCode.Minus))
+                {
+                    SetHotkey("-");
+                    return;
+                }
+                if (Input.GetKeyDown(KeyCode.Equals))
+                {
+                    SetHotkey("=");
+                    return;
+                }
+
+                SetHotkey("-1");
             }
 
 

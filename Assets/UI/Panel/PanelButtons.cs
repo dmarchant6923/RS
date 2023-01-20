@@ -187,13 +187,19 @@ public class PanelButtons : MonoBehaviour
         //panelOnPosition = new Vector2(panelOnPosition.x, buttonHeight * transform.localScale.y * FindObjectOfType<Canvas>().scaleFactor);
     }
 
-    public static void SetHotkeys(int[] keys)
+    public static void SetHotkeys(string[] keys)
     {
         for (int i = 0; i < hotkeys.Length; i++)
         {
-            if (keys[i] != -1)
+            if (keys[i] != "-1")
             {
-                KeyCode newKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), "Alpha" + keys[i]);
+                string code = keys[i];
+                Debug.Log(keys[i] + " " + System.Char.IsNumber(code[0]));
+                if (System.Char.IsNumber(code[0]) && int.Parse(code) > -1)
+                {
+                    code = "Alpha" + keys[i];
+                }
+                KeyCode newKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), code);
                 hotkeys[i] = newKeyCode;
             }
             else

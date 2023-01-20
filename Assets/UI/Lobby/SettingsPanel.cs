@@ -32,7 +32,7 @@ public class SettingsPanel : MonoBehaviour
         public float latency = 200;
         public float uiScale;
 
-        public int[] hotkeys = new int[5];
+        public string[] hotkeys = new string[5];
     }
 
     public GameSettings settings = new GameSettings();
@@ -103,11 +103,11 @@ public class SettingsPanel : MonoBehaviour
             settings.latency = PlayerPrefs.GetFloat("settings latency", 100);
             settings.uiScale = PlayerPrefs.GetFloat("settings uiScale", 100);
 
-            settings.hotkeys[0] = PlayerPrefs.GetInt("settings hotkeys 0", 1);
-            settings.hotkeys[1] = PlayerPrefs.GetInt("settings hotkeys 1", 2);
-            settings.hotkeys[2] = PlayerPrefs.GetInt("settings hotkeys 2", -1);
-            settings.hotkeys[3] = PlayerPrefs.GetInt("settings hotkeys 3", 3);
-            settings.hotkeys[4] = PlayerPrefs.GetInt("settings hotkeys 4", 4);
+            settings.hotkeys[0] = PlayerPrefs.GetString("settings hotkeys 0", "1");
+            settings.hotkeys[1] = PlayerPrefs.GetString("settings hotkeys 1", "2");
+            settings.hotkeys[2] = PlayerPrefs.GetString("settings hotkeys 2", "-1");
+            settings.hotkeys[3] = PlayerPrefs.GetString("settings hotkeys 3", "3");
+            settings.hotkeys[4] = PlayerPrefs.GetString("settings hotkeys 4", "4");
         }
         else if (File.Exists(fullPath) && setToDefault == false)
         {
@@ -129,11 +129,11 @@ public class SettingsPanel : MonoBehaviour
             settings.latency = 100;
             settings.uiScale = 100;
 
-            settings.hotkeys[0] = 1;
-            settings.hotkeys[1] = 2;
-            settings.hotkeys[2] = -1;
-            settings.hotkeys[3] = 3;
-            settings.hotkeys[4] = 4;
+            settings.hotkeys[0] = "1";
+            settings.hotkeys[1] = "2";
+            settings.hotkeys[2] = "-1";
+            settings.hotkeys[3] = "3";
+            settings.hotkeys[4] = "4";
 
             string jsonString = JsonUtility.ToJson(settings);
             File.WriteAllText(fullPath, jsonString);
@@ -175,11 +175,11 @@ public class SettingsPanel : MonoBehaviour
             PlayerPrefs.SetFloat("settings latency", settings.latency);
             PlayerPrefs.SetFloat("settings uiScale", settings.uiScale);
 
-            PlayerPrefs.SetInt("settings hotkeys 0", settings.hotkeys[0]);
-            PlayerPrefs.SetInt("settings hotkeys 1", settings.hotkeys[1]);
-            PlayerPrefs.SetInt("settings hotkeys 2", settings.hotkeys[2]);
-            PlayerPrefs.SetInt("settings hotkeys 3", settings.hotkeys[3]);
-            PlayerPrefs.SetInt("settings hotkeys 4", settings.hotkeys[4]);
+            PlayerPrefs.SetString("settings hotkeys 0", settings.hotkeys[0]);
+            PlayerPrefs.SetString("settings hotkeys 1", settings.hotkeys[1]);
+            PlayerPrefs.SetString("settings hotkeys 2", settings.hotkeys[2]);
+            PlayerPrefs.SetString("settings hotkeys 3", settings.hotkeys[3]);
+            PlayerPrefs.SetString("settings hotkeys 4", settings.hotkeys[4]);
 
             return;
         }
