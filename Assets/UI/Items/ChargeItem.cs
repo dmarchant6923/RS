@@ -151,12 +151,9 @@ public class ChargeItem : MonoBehaviour
             }
             else
             {
-                newItem = Instantiate(chargeItems[i]);
+                newItem = Tools.LoadFromResource(chargeItems[i].name);
                 newItem.name = chargeItems[i].name;
                 newItem.GetComponent<StackableItem>().quantity = chargeQuantities[i] * charges;
-                newItem.GetComponent<Item>().inventory = itemScript.inventory;
-                newItem.GetComponent<Item>().groundItemsParent = itemScript.groundItemsParent;
-                newItem.GetComponent<Item>().groundPrefab = itemScript.groundPrefab;
                 inventory.PlaceInInventory(newItem);
             }
         }

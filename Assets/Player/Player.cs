@@ -285,8 +285,20 @@ public class Player : MonoBehaviour
     }
     public void TakeDamage(IncomingDamage damage)
     {
-
-
+        if (WornEquipment.ely && damage.damage > 0)
+        {
+            float rand = Random.Range(0f, 1f);
+            if (rand > 0.3f)
+            {
+                damage.damage = Mathf.FloorToInt((float) damage.damage * 0.75f);
+                GameObject newFlash = Instantiate(combatScript.attackEffect, transform.position, Quaternion.identity);
+                Explosion script = newFlash.GetComponent<Explosion>();
+                script.decaySpeed = 3;
+                script.rotate = true;
+                script.followObject = gameObject;
+                newFlash.GetComponent<SpriteRenderer>().color = Color.cyan;
+            }
+        }
         if (damage.canTickEat == false)
         {
             damage.damage = Mathf.Min(PlayerStats.currentHitpoints, damage.damage);

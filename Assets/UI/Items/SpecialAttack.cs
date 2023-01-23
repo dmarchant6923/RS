@@ -14,6 +14,7 @@ public class SpecialAttack : MonoBehaviour
     public bool zaryteCrossbow;
     public bool eldritchStaff;
     public bool sgs;
+    public bool dcb;
 
     [System.NonSerialized] public bool guaranteeHit = false;
     [System.NonSerialized] public bool slowProjectile = false;
@@ -53,6 +54,10 @@ public class SpecialAttack : MonoBehaviour
         if (sgs)
         {
             return 1.1f;
+        }
+        if (dcb)
+        {
+            return 1.2f;
         }
 
         return 1;

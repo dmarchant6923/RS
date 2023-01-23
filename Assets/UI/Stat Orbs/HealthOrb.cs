@@ -19,7 +19,7 @@ public class HealthOrb : MonoBehaviour
 
     IEnumerator Start()
     {
-        startPosition = regenIndicator.position.x;
+        startPosition = regenIndicator.anchoredPosition.x;
         distance = Mathf.Abs(regenIndicator.localPosition.x) * 2;
         tick = regenTicks;
         regenIndicator.gameObject.SetActive(false);
@@ -40,14 +40,14 @@ public class HealthOrb : MonoBehaviour
             rapidHeal = true;
             regenTicks = 50;
             tick = regenTicks;
-            regenIndicator.position = new Vector2(startPosition, regenIndicator.position.y);
+            regenIndicator.anchoredPosition = new Vector2(startPosition, regenIndicator.anchoredPosition.y);
         }
         if (rapidHeal && Prayer.rapidHeal == false)
         {
             rapidHeal = false;
             regenTicks = 100;
             tick = regenTicks;
-            regenIndicator.position = new Vector2(startPosition, regenIndicator.position.y);
+            regenIndicator.anchoredPosition = new Vector2(startPosition, regenIndicator.anchoredPosition.y);
         }
 
         if (PlayerStats.currentHitpoints == PlayerStats.initialHitpoints)
@@ -55,7 +55,7 @@ public class HealthOrb : MonoBehaviour
             tick = regenTicks;
             if (regenIndicator.gameObject.activeSelf)
             {
-                regenIndicator.position = new Vector2(startPosition, regenIndicator.position.y);
+                regenIndicator.anchoredPosition = new Vector2(startPosition, regenIndicator.anchoredPosition.y);
                 regenIndicator.gameObject.SetActive(false);
             }
         }
@@ -66,7 +66,7 @@ public class HealthOrb : MonoBehaviour
                 regenIndicator.gameObject.SetActive(true);
             }
             float percent = 1 - ((float)tick / (float)regenTicks);
-            regenIndicator.position = new Vector2(startPosition + distance * percent, regenIndicator.position.y);
+            regenIndicator.anchoredPosition = new Vector2(startPosition + distance * percent, regenIndicator.anchoredPosition.y);
 
             if (tick == 0)
             {

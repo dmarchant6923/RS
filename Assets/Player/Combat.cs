@@ -328,13 +328,17 @@ public class Combat : MonoBehaviour
                 }
             }
 
-            if (useSpec)
+            //chins and dcb spec
+            if ((specialEffects && effects.chinchompa) || (useSpec && specScript.dcb))
             {
-                SpecBar.instance.UseSpec();
-            }
+                int num = 13;
+                int newMaxHit = (int)maxHit;
+                if (useSpec && specScript.dcb)
+                {
+                    num = 9;
+                    newMaxHit = Mathf.FloorToInt(maxHit * 0.8f);
+                }
 
-            if (specialEffects && effects.chinchompa)
-            {
                 List<Enemy> enemies = new List<Enemy>();
                 RaycastHit2D[] cast = Physics2D.BoxCastAll(Player.targetedNPC.transform.position, Vector2.one * 5, 0, Vector2.zero);
                 foreach (RaycastHit2D enemy in cast)
@@ -342,7 +346,7 @@ public class Combat : MonoBehaviour
                     if (enemy.collider.GetComponent<Enemy>() != null && enemy.collider.gameObject != Player.targetedNPC.gameObject)
                     {
                         Enemy script = enemy.collider.GetComponent<Enemy>();
-                        if ((script.npcScript.trueTile - Player.targetedNPC.trueTile).magnitude < 1.8f && enemies.Count < 13 && enemies.Contains(script) == false)
+                        if ((script.npcScript.trueTile - Player.targetedNPC.trueTile).magnitude < 1.8f && enemies.Count < num && enemies.Contains(script) == false)
                         {
                             enemies.Add(script);
                         }
@@ -354,15 +358,20 @@ public class Combat : MonoBehaviour
                     hitRoll = 0;
                     if (success)
                     {
-                        hitRoll = Random.Range(0, (int)maxHit + 1);
+                        hitRoll = Random.Range(0, (int)newMaxHit + 1);
                     }
-                    enemy.AddToDamageQueue(hitRoll, delay, true, (int)maxHit);
+                    enemy.AddToDamageQueue(hitRoll, delay, true, (int)newMaxHit);
                     if (hitRoll > 0)
                     {
                         XPDrop.CombatXPDrop(AttackStyles.attackStyle, AttackStyles.attackType, Mathf.Min(hitRoll, enemy.hitpoints), enemy.xpMult, offensivePrayerOn);
                         playerDealtDamage?.Invoke(hitRoll);
                     }
                 }
+            }
+
+            if (useSpec)
+            {
+                SpecBar.instance.UseSpec();
             }
 
 

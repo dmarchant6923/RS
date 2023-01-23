@@ -76,6 +76,7 @@ public class WornEquipment : MonoBehaviour
     public static bool recoil;
     public static bool justiciar;
     public static bool regenBrace;
+    public static bool ely;
 
     public static bool diamondBoltsE;
     public static bool rubyBoltsE;
@@ -351,6 +352,12 @@ public class WornEquipment : MonoBehaviour
         if (glove != null && glove.name == "Regen bracelet")
         {
             regenBrace = true;
+        }
+
+        ely = false;
+        if (shield != null && shield.name == "Elysian spirit shield")
+        {
+            ely = true;
         }
     }
     public void UpdateText()

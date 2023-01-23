@@ -21,6 +21,8 @@ public class Zuk : MonoBehaviour
     int threshold3 = 240; //240
     bool thresh3Passed;
 
+    int sets = -10;
+
     NPC NPCScript;
     [HideInInspector] public Enemy enemyScript;
     Combat combatScript;
@@ -160,12 +162,15 @@ public class Zuk : MonoBehaviour
         SetSpawn spawnScript = newRanger.AddComponent<SetSpawn>();
         spawnScript.shieldScript = shieldScript;
         spawnScript.attackSpeed = 4;
+        newRanger.GetComponent<SpriteRenderer>().sortingOrder = sets;
 
         GameObject newMager = Instantiate(magerPrefab, mageSpawnTile.position + Vector3.one * 1.5f, Quaternion.identity);
         newMager.name = magerPrefab.name;
         spawnScript = newMager.AddComponent<SetSpawn>();
         spawnScript.shieldScript = shieldScript;
         spawnScript.attackSpeed = 4;
+        newMager.GetComponent<SpriteRenderer>().sortingOrder = sets;
+        sets++;
     }
 
     void JadSpawn()

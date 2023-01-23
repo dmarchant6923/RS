@@ -199,6 +199,11 @@ public class InfernoManager : MonoBehaviour
         {
             GameLog.Log("Oh dear, you are dead!");
         }
+        else if (OptionManager.ignoreHiscores == false)
+        {
+            GameObject newCape = Tools.LoadFromResource("Infernal cape");
+            Inventory.instance.PlaceInInventory(newCape);
+        }
 
         SceneManager.LoadScene("Lobby");
     }
