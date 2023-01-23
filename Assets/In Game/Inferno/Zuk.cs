@@ -170,7 +170,10 @@ public class Zuk : MonoBehaviour
         spawnScript.shieldScript = shieldScript;
         spawnScript.attackSpeed = 4;
         newMager.GetComponent<SpriteRenderer>().sortingOrder = sets;
-        sets++;
+        if (sets < 0)
+        {
+            sets++;
+        }
     }
 
     void JadSpawn()

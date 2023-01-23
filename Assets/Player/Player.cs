@@ -272,7 +272,7 @@ public class Player : MonoBehaviour
         damageQueue.Add(newDamage);
     }
 
-    public void InstantDamage(int damage, int maxHit, int minHit, bool prayedAgainst, float hitChance)
+    public void InstantDamage(int damage, int maxHit, int minHit, bool prayedAgainst, float hitChance, Enemy enemyAttacking)
     {
         IncomingDamage newDamage = new IncomingDamage();
         newDamage.damage = Mathf.Min(PlayerStats.currentHitpoints, damage);
@@ -281,11 +281,12 @@ public class Player : MonoBehaviour
         newDamage.minHit = minHit;
         newDamage.prayedAgainst = prayedAgainst;
         newDamage.hitChance = hitChance;
+        newDamage.enemyAttacking = enemyAttacking;
         damageQueue.Add(newDamage);
     }
     public void TakeDamage(IncomingDamage damage)
     {
-        if (WornEquipment.ely && damage.damage > 0)
+        if (WornEquipment.ely && damage.damage > 0 && damage.enemyAttacking != null)
         {
             float rand = Random.Range(0f, 1f);
             if (rand > 0.3f)

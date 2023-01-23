@@ -78,7 +78,7 @@ public class ZukHealer : MonoBehaviour
             {
                 if (TileManager.TileDistance(Player.player.trueTile, activeAttacks[i].position) < 2)
                 {
-                    Player.player.InstantDamage(activeAttacks[i].damage, 10, 5, false, 1);
+                    Player.player.InstantDamage(activeAttacks[i].damage, 10, 5, false, 1, enemyScript);
                 }
                 Instantiate(explosion, activeAttacks[i].position, Quaternion.identity);
 
