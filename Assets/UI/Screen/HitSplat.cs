@@ -93,11 +93,6 @@ public class HitSplat : MonoBehaviour
                 GameObject newHitSplat = Instantiate(hitSplat, transform);
                 newHitSplat.transform.SetAsLastSibling();
 
-                if (fromPlayer)
-                {
-                    Debug.Log(damage + " " + maxHit);
-                }
-
                 if (damage == 0)
                 {
                     newHitSplat.GetComponent<RawImage>().texture = blueHitSplat;

@@ -132,12 +132,39 @@ public class ZukHealer : MonoBehaviour
             if (combatScript.attackCooldown <= 0 && enemyScript.death == false)
             {
                 enemyScript.attackThisTick = true;
+                Vector2 min = new Vector2(npcScript.trueTile.x - 5, -4);
+                Vector2 max = new Vector2(npcScript.trueTile.x + 5, 0);
+                Vector2 playerPos = Player.player.trueTile;
+                List<Vector2> usedTiles = new List<Vector2>();
                 for (int i = 0; i < 3; i++)
                 {
                     AOE newAttack = new AOE();
-                    int positionX = (int)npcScript.trueTile.x + Random.Range(-5, 6);
-                    int positionY = Random.Range(0, -4);
-                    newAttack.position = new Vector2(positionX, positionY);
+                    if (i == 0 && playerPos.x >= min.x && playerPos.y >= min.y && playerPos.x <= max.x && playerPos.y <= max.y)
+                    {
+                        newAttack.position = playerPos;
+                    }
+                    else
+                    {
+                        bool validPos = true;
+                        Vector2 pos;
+                        do
+                        {
+                            int positionX = (int)npcScript.trueTile.x + Random.Range(-5, 6);
+                            int positionY = Random.Range(0, -4);
+                            pos = new Vector2(positionX, positionY);
+                            validPos = true;
+                            for (int j = 0; j < usedTiles.Count; j++)
+                            {
+                                if (pos == usedTiles[j])
+                                {
+                                    validPos = false;
+                                    break;
+                                }
+                            }
+                        } while (validPos == false);
+                        newAttack.position = pos;
+                    }
+                    usedTiles.Add(newAttack.position);
                     newAttack.damage = Random.Range(5, 11);
                     newAttack.delay = 4;
                     activeAttacks.Add(newAttack);

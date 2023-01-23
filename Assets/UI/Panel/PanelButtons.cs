@@ -194,7 +194,6 @@ public class PanelButtons : MonoBehaviour
             if (keys[i] != "-1")
             {
                 string code = keys[i];
-                Debug.Log(keys[i] + " " + System.Char.IsNumber(code[0]));
                 if (System.Char.IsNumber(code[0]) && int.Parse(code) > -1)
                 {
                     code = "Alpha" + keys[i];

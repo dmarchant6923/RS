@@ -335,6 +335,12 @@ public class PlayerStats : MonoBehaviour
             Prayer.DeactivatePrayers();
             Player.player.ClearDamageQueue();
             PlayerHeal(Mathf.FloorToInt((float)initialPrayer / 4));
+            currentAttack = Mathf.Max(initialAttack, currentAttack);
+            currentStrength = Mathf.Max(initialStrength, currentStrength);
+            currentDefence = Mathf.Max(initialDefence, currentDefence);
+            currentRanged = Mathf.Max(initialRanged, currentRanged);
+            currentMagic = Mathf.Max(initialMagic, currentMagic);
+            BuffBar.instance.UpdateStats();
         }
     }
 
