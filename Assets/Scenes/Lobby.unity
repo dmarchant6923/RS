@@ -364,6 +364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 095d099744dd4df438372772d990b983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nibbler: {fileID: 4011814972862496978, guid: 89b259a371b5db041b2ad05fd5c1e5ad, type: 3}
 --- !u!4 &241026840
 Transform:
   m_ObjectHideFlags: 0

@@ -505,7 +505,7 @@ public class Pathfinder : MonoBehaviour
         return path;
     }
 
-    public List<Vector2> FindNPCPath(NPC npcScript, Vector2 startTile, Vector2 endTile, int npcSize)
+    public static List<Vector2> FindNPCPath(NPC npcScript, Vector2 startTile, Vector2 endTile, int npcSize)
     {
         List<Vector2> path = new List<Vector2>();
         Vector2 currentTile = startTile;

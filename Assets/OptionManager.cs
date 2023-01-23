@@ -80,6 +80,10 @@ public class OptionManager : MonoBehaviour
         MouseManager.instance.newMouseTile.GetComponent<SpriteRenderer>().enabled = settings[3];
 
         NPC.showTrueTile = settings[4];
+        foreach (NPC npc in FindObjectsOfType<NPC>())
+        {
+            npc.ShowTrueTile(settings[4]);
+        }
 
         showManualSetTimer = settings[5];
 

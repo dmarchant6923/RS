@@ -7,7 +7,6 @@ public class NPC : MonoBehaviour
     Vector2 originTile;
     [HideInInspector] public Vector2 trueTile;
     public int wanderRange;
-    Pathfinder pathFinder;
     int pathTick = 0;
     int newPathTick = 0;
     public int newPathFrequency = 7;
@@ -26,6 +25,7 @@ public class NPC : MonoBehaviour
 
     public static bool showTrueTile = true;
     public bool showSizeTile = false;
+    public bool disableShowTrueTile = false;
     public GameObject trueTileMarker;
     GameObject newTrueTileMarker;
     [HideInInspector] public GameObject newSizeTileMarker;
@@ -60,8 +60,6 @@ public class NPC : MonoBehaviour
         originTile = trueTile;
         transform.position = trueTile - centerOffset;
         npcPosition = transform.position;
-        pathFinder = FindObjectOfType<Pathfinder>();
-        pathFinder.debugEnabled = true;
         newPathTick = Random.Range(0, newPathFrequency);
 
         newTrueTileMarker = Instantiate(trueTileMarker, trueTile, Quaternion.identity);
@@ -121,7 +119,6 @@ public class NPC : MonoBehaviour
         path = new List<Vector2>();
         moving = false;
     }
-
     public void ExternalMovement(Vector2 destination)
     {
         if (stationary)
@@ -129,7 +126,7 @@ public class NPC : MonoBehaviour
             return;
         }
         path = new List<Vector2>();
-        path = pathFinder.FindNPCPath(this, trueTile, destination, tileSize);
+        path = Pathfinder.FindNPCPath(this, trueTile, destination, tileSize);
     }
 
     void BeforeTick()
@@ -149,7 +146,7 @@ public class NPC : MonoBehaviour
             {
                 pathTick = 0;
                 newPathTick = Random.Range(Mathf.RoundToInt(newPathFrequency / 2), Mathf.RoundToInt(newPathFrequency * 1.5f));
-                path = pathFinder.FindNPCPath(this, trueTile, TileManager.FindTile(originTile + new Vector2(Random.Range(-wanderRange, wanderRange), Random.Range(-wanderRange, wanderRange))), tileSize);
+                path = Pathfinder.FindNPCPath(this, trueTile, TileManager.FindTile(originTile + new Vector2(Random.Range(-wanderRange, wanderRange), Random.Range(-wanderRange, wanderRange))), tileSize);
             }
         }
 
@@ -199,7 +196,6 @@ public class NPC : MonoBehaviour
 
         afterMovement?.Invoke();
     }
-
     void AfterTick()
     {
         if (GetComponent<Enemy>() != null && GetComponent<Enemy>().attackThisTick)
@@ -214,6 +210,11 @@ public class NPC : MonoBehaviour
         {
             arrowColor.color = Color.green;
         }
+    }
+
+    public void ShowTrueTile(bool show)
+    {
+        newSizeTileMarker.GetComponent<SpriteRenderer>().enabled = show;
     }
 
     private void Update()

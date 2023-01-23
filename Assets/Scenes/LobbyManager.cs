@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class LobbyManager : MonoBehaviour
 {
     public static bool firstLoad = true;
+    public GameObject nibbler;
 
     private IEnumerator Start()
     {
@@ -26,6 +27,11 @@ public class LobbyManager : MonoBehaviour
         UIManager.instance.fadeBox.color = Color.black;
         Player.player.ClearDamageQueue();
         StartCoroutine(Unfade());
+        if (PlayerPrefs.GetInt("nibbler", 0) == 1)
+        {
+            GameObject newNibbler = Instantiate(nibbler, new Vector2(0, 3), Quaternion.identity);
+            newNibbler.name = nibbler.name;
+        }
     }
 
     IEnumerator Unfade()

@@ -44,14 +44,15 @@ public class CompletionPanel : MonoBehaviour
         gearValue.text = GameManager.foundPrices ? Tools.DoubleToCashValue(InfernoPortal.GearValueAtPortalEntrance) : "-";
         float score = CalculateScore();
         grade.text = CalculateGrade(score);
-        float nibblerChance = 1 / 100;
+        float nibblerChance = 1f / 100f;
         if (WornEquipment.slayerHelm)
         {
-            nibblerChance = 1 / 75;
+            nibblerChance = 1f / 75f;
         }
         if (Random.Range(0f, 1f) < nibblerChance)
         {
             nibbler.text = "YES! gzzzz";
+            PlayerPrefs.SetInt("nibbler", 1);
         }
         else
         {
@@ -74,9 +75,9 @@ public class CompletionPanel : MonoBehaviour
 
     public static string CalculateGrade(float total)
     {
-        float Aplus = 3200;
+        float Aplus = 3300;
         float Aminus = 2700;
-        float Bminus = 1600;
+        float Bminus = 1800;
         float Cminus = 1000;
         float D = 700;
         float[] thresholds = new float[6];
