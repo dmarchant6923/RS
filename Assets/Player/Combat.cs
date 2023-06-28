@@ -226,6 +226,7 @@ public class Combat : MonoBehaviour
                     newEffect.GetComponent<Explosion>().decaySpeed = 0.4f;
                     newEffect.GetComponent<Explosion>().rotate = true;
 
+                    PlayerAudio.PlayClip(PlayerAudio.instance.diamondBoltProcSound);
                 }
             }
             if (WornEquipment.rubyBoltsE)
@@ -236,6 +237,7 @@ public class Combat : MonoBehaviour
                     realRubyBoltChance = specScript.EnchantedBoltChance(realRubyBoltChance, success);
                 }
                 float rand = Random.Range(0f, 1f);
+                Debug.Log(rand + " " + realRubyBoltChance);
                 if (rand <= realRubyBoltChance) //0.121f
                 {
                     success = true;
@@ -253,6 +255,8 @@ public class Combat : MonoBehaviour
                     newEffect.GetComponent<SpriteRenderer>().color = Color.red;
                     newEffect.GetComponent<Explosion>().decaySpeed = 0.4f;
                     newEffect.GetComponent<Explosion>().rotate = true;
+
+                    PlayerAudio.PlayClip(PlayerAudio.instance.rubyBoltProcSound);
                 }
             }
 

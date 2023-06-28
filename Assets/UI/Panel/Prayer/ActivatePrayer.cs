@@ -39,6 +39,8 @@ public class ActivatePrayer : MonoBehaviour
 
     bool locked;
 
+    public AudioClip activateSound;
+
     private IEnumerator Start()
     {
         image = GetComponent<RawImage>();
@@ -47,7 +49,7 @@ public class ActivatePrayer : MonoBehaviour
         prayerAction.menuTexts[0] = "Activate <color=orange>" + gameObject.name + "</color>";
 
         prayerAction.clientAction0 += ClientClickPrayer;
-        prayerAction.serverAction0 += ServerClickPrayer;
+        prayerAction.serverAction0 += ServerActuallyClickedOnPrayer;
         prayerAction.clientAction1 += ClientSelectQuickPrayer;
         prayerAction.serverAction1 += ServerSelectQuickPrayer;
         prayerAction.orderLevels[0] = -1;
@@ -109,22 +111,34 @@ public class ActivatePrayer : MonoBehaviour
 
     public void ClientClickPrayer()
     {
+        bool available = true;
         if (locked)
         {
+            GameLog.Log("Your prayer level is too low to use this prayer.");
+            available = false;
+        }
+        else if (PlayerStats.currentPrayer == 0 && active == false)
+        {
+            GameLog.Log("You are out of prayer points.");
+            available = false;
+        }
+
+        if (available == false)
+        {
+            PlayerAudio.PlayClip(PlayerAudio.instance.prayerUnavailableSound);
             return;
         }
         ChangeColors();
     }
-    public void ServerClickPrayer()
+
+    public void ServerActuallyClickedOnPrayer()
     {
-        if (locked)
+        ServerClickPrayer(true);
+    }
+    public void ServerClickPrayer(bool actuallyClicked)
+    {
+        if (locked || (PlayerStats.currentPrayer == 0 && active == false))
         {
-            GameLog.Log("Your prayer level is too low to use this prayer.");
-            return;
-        }
-        if (PlayerStats.currentPrayer == 0 && active == false)
-        {
-            GameLog.Log("You are out of prayer points.");
             return;
         }
 
@@ -132,7 +146,12 @@ public class ActivatePrayer : MonoBehaviour
         ChangeColors(active);
         if (active)
         {
+            PlayerAudio.PlayClip(activateSound);
             AvoidConflictingPrayers(false);
+        }
+        if (active == false && actuallyClicked)
+        {
+            PlayerAudio.PlayClip(PlayerAudio.instance.deactivatePrayerSound);
         }
         if (active == false && Prayer.CheckActivePrayers().Count == 0)
         {
@@ -180,7 +199,7 @@ public class ActivatePrayer : MonoBehaviour
         {
             if (active)
             {
-                ServerClickPrayer();
+                ServerClickPrayer(false);
             }
         }
         else

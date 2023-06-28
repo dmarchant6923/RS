@@ -271,9 +271,12 @@ public class PlayerStats : MonoBehaviour
     {
         if (truePrayer <= 0)
         {
-            Prayer.DeactivatePrayers();
             truePrayer = 0;
             currentPrayer = (int)Mathf.Ceil(truePrayer / 100);
+            if (Prayer.drainRate > 0)
+            {
+                Prayer.DeactivatePrayers();
+            }
         }
         drainPerTick = Prayer.drainRate / (WornEquipment.prayer * 2 + 60);
         if (prayersOnForATick)

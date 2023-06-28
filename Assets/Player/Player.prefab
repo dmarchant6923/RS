@@ -406,7 +406,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -503,9 +503,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c28c108cdbe894fb5777413865f0fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  source: {fileID: 2721029936325099771}
   equipSound: {fileID: 0}
   unequipSound: {fileID: 0}
-  takeDamage: {fileID: 8300000, guid: 50b2c634ebbd2d5418d61aca20c6a651, type: 3}
+  takeDamageSound: {fileID: 8300000, guid: 50b2c634ebbd2d5418d61aca20c6a651, type: 3}
+  outOfPrayerSound: {fileID: 8300000, guid: 4ce50c644da9777489ca3317d7ba2eff, type: 3}
+  deactivatePrayerSound: {fileID: 8300000, guid: 2ee3fe79642050d4e8cede115cfc6fa1, type: 3}
+  prayerUnavailableSound: {fileID: 0}
+  diamondBoltProcSound: {fileID: 8300000, guid: e397c32baaa62a549a5f4249aab5d491, type: 3}
+  rubyBoltProcSound: {fileID: 8300000, guid: 1460a25f47acd81489fb17060856d565, type: 3}
 --- !u!1 &5795649407363136618
 GameObject:
   m_ObjectHideFlags: 0

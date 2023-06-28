@@ -22,6 +22,8 @@ public class Potion : MonoBehaviour
     Action potionAction;
     Item itemScript;
 
+    public AudioClip drinkSound;
+
 
     private IEnumerator Start()
     {
@@ -53,6 +55,7 @@ public class Potion : MonoBehaviour
 
         currentDose--;
         potionDrank?.Invoke();
+        PlayerAudio.instance.source.PlayOneShot(drinkSound);
         if (currentDose == 0)
         {
             Destroy(gameObject);

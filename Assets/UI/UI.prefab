@@ -226,6 +226,7 @@ MonoBehaviour:
   unarmedKick: {fileID: 2800000, guid: ab1dd1dba60474c4e9af16526255b235, type: 3}
   unarmedPunch: {fileID: 2800000, guid: 0dca333a1eb344243a17641122501b3b, type: 3}
   styleChanged: 0
+  bowAttackSound: {fileID: 0}
 --- !u!1 &11746131078602850
 GameObject:
   m_ObjectHideFlags: 0
@@ -1077,6 +1078,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: 5d2c9a20f5fde67409b29a3cfe3edb0c, type: 3}
 --- !u!222 &2192648380473719242
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3070,6 +3072,7 @@ MonoBehaviour:
   - 0
   - 1.25
   - 1.25
+  activateSound: {fileID: 8300000, guid: 16f433b093de3cd489c7040c4df68b9f, type: 3}
 --- !u!222 &5102660448198308603
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4716,6 +4719,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: a552184cf29d2124c8225b34209ac2f1, type: 3}
 --- !u!222 &3635426719019556337
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7873,6 +7877,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: 2a34e6f33c9230b4485996319de56bc8, type: 3}
 --- !u!222 &2452606643237916292
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9544,6 +9549,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: 5d77453ce1b9be04bb79380ebb955644, type: 3}
 --- !u!222 &8388787719313894975
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14499,6 +14505,7 @@ MonoBehaviour:
   - 0
   - 0
   - 1.15
+  activateSound: {fileID: 8300000, guid: 08863d32b6ab7bc4784ee5f9a921d3d2, type: 3}
 --- !u!222 &7375584464001745090
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17100,6 +17107,7 @@ MonoBehaviour:
   - 1.23
   - 0
   - 1.25
+  activateSound: {fileID: 8300000, guid: 33ce5c2f88b18b14bb4485e3e99162e0, type: 3}
 --- !u!222 &8601395988738141480
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -19372,6 +19380,7 @@ MonoBehaviour:
   - 0
   - 0
   - 1.2
+  activateSound: {fileID: 8300000, guid: 5f2bc71122a1dec41991fdc0e1a40c3a, type: 3}
 --- !u!222 &7621551374964799888
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -21324,6 +21333,7 @@ MonoBehaviour:
   - 0
   - 1.05
   - 0
+  activateSound: {fileID: 8300000, guid: 7d70709574816d643acf101b5ef8f364, type: 3}
 --- !u!222 &4067276717686082479
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -23760,6 +23770,7 @@ MonoBehaviour:
   - 0
   - 1.15
   - 0
+  activateSound: {fileID: 8300000, guid: 7d70709574816d643acf101b5ef8f364, type: 3}
 --- !u!222 &6139554150397616623
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -24065,6 +24076,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: 7eb85e3250aa8df4b8fcad56f2b37f67, type: 3}
 --- !u!222 &5468130525144496649
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -27617,6 +27629,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: 85bc4c1f53603784cb8c5bfedc9f7a54, type: 3}
 --- !u!222 &1053384926536318331
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -28709,6 +28722,7 @@ MonoBehaviour:
   - 1.05
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: f80392840067cf2488533c0f01525f2f, type: 3}
 --- !u!222 &7250540588385508903
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -29845,6 +29859,7 @@ MonoBehaviour:
   - 0
   - 0
   - 1.1
+  activateSound: {fileID: 8300000, guid: 08863d32b6ab7bc4784ee5f9a921d3d2, type: 3}
 --- !u!222 &6759690514683248272
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -30985,6 +31000,7 @@ MonoBehaviour:
   - 1.15
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: f80392840067cf2488533c0f01525f2f, type: 3}
 --- !u!222 &2648373016192865604
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -32410,6 +32426,7 @@ MonoBehaviour:
   - 0
   - 0
   - 1.05
+  activateSound: {fileID: 8300000, guid: 08863d32b6ab7bc4784ee5f9a921d3d2, type: 3}
 --- !u!222 &800792423990550707
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -33247,6 +33264,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: 7eb85e3250aa8df4b8fcad56f2b37f67, type: 3}
 --- !u!222 &495544545282134148
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -34189,6 +34207,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: 2a34e6f33c9230b4485996319de56bc8, type: 3}
 --- !u!222 &1982779694808298724
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -34639,6 +34658,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: 5d77453ce1b9be04bb79380ebb955644, type: 3}
 --- !u!222 &1895598473929358408
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -35244,6 +35264,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: 5d2c9a20f5fde67409b29a3cfe3edb0c, type: 3}
 --- !u!222 &3649655243414022113
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -36355,6 +36376,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: 7f3da5d38aebab64da51a88e490445f9, type: 3}
 --- !u!222 &6291132777350878640
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -40168,6 +40190,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: 5d2c9a20f5fde67409b29a3cfe3edb0c, type: 3}
 --- !u!222 &897240659189827813
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -41494,6 +41517,7 @@ MonoBehaviour:
   - 0
   - 0
   - 1.25
+  activateSound: {fileID: 8300000, guid: 5f2bc71122a1dec41991fdc0e1a40c3a, type: 3}
 --- !u!222 &150075089006683028
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -41724,6 +41748,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: 8952c3436802b6e46b93cd457219669c, type: 3}
 --- !u!222 &1965673971437143417
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -45998,6 +46023,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: 7eb85e3250aa8df4b8fcad56f2b37f67, type: 3}
 --- !u!222 &1501547196757638292
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -46205,6 +46231,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: a552184cf29d2124c8225b34209ac2f1, type: 3}
 --- !u!222 &2026933919263079305
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -47085,6 +47112,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: 5d77453ce1b9be04bb79380ebb955644, type: 3}
 --- !u!222 &7189029484460032865
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -47559,6 +47587,7 @@ MonoBehaviour:
   - 1.1
   - 0
   - 0
+  activateSound: {fileID: 8300000, guid: f80392840067cf2488533c0f01525f2f, type: 3}
 --- !u!222 &2764919270204558476
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -49582,6 +49611,7 @@ MonoBehaviour:
   - 0
   - 1.1
   - 0
+  activateSound: {fileID: 8300000, guid: 7d70709574816d643acf101b5ef8f364, type: 3}
 --- !u!222 &1995179519195724389
 CanvasRenderer:
   m_ObjectHideFlags: 0

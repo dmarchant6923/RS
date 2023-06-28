@@ -168,7 +168,8 @@ MonoBehaviour:
   dose3: {fileID: 2800000, guid: 1c19babb9374b364394d5c11880ff4e1, type: 3}
   dose2: {fileID: 2800000, guid: 136c695329834274f95919958ee02aa8, type: 3}
   dose1: {fileID: 2800000, guid: 91bb0a83fda2d2d44be4b1cc9c426dc6, type: 3}
-  doseImage: {fileID: 0}
   potionColor: {r: 1, g: 1, b: 1, a: 1}
   startingDose: 4
+  initialName: 
   divine: 0
+  drinkSound: {fileID: 8300000, guid: 303a68467e6e30d4a88bd7a81a5ee370, type: 3}

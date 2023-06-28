@@ -185,6 +185,10 @@ public class Prayer : MonoBehaviour
     {
         if (orbActive == false)
         {
+            if (drainRate > 0)
+            {
+                PlayerAudio.PlayClip(PlayerAudio.instance.deactivatePrayerSound);
+            }
             DeactivatePrayers();
             return;
         }
@@ -199,7 +203,7 @@ public class Prayer : MonoBehaviour
 
             if (prayer.active == false)
             {
-                prayer.ServerClickPrayer();
+                prayer.ServerClickPrayer(true);
             }
         }
     }
@@ -243,6 +247,11 @@ public class Prayer : MonoBehaviour
             prayer.ForceDeactivate(false);
         }
         drainRate = 0;
+
+        if (PlayerStats.truePrayer == 0)
+        {
+            PlayerAudio.PlayClip(PlayerAudio.instance.outOfPrayerSound);
+        }
     }
 
     void UpdateText()

@@ -52,6 +52,14 @@ public class CompletionPanel : MonoBehaviour
         if (Random.Range(0f, 1f) < nibblerChance)
         {
             nibbler.text = "YES! gzzzz";
+            if (PlayerPrefs.GetInt("nibbler") != 1)
+            {
+                GameLog.Log("You sense something weird sneaking into the lobby.");
+            }
+            else
+            {
+                GameLog.Log("You feel like something weird would have snuck into the lobby.");
+            }
             PlayerPrefs.SetInt("nibbler", 1);
         }
         else
