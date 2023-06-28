@@ -20,6 +20,7 @@ public class ZukShield : MonoBehaviour
 
     public static bool showSafeSpot;
     public GameObject safeSpotMarker;
+    float initialSafeSpotScaleX;
     public Vector3 relativePosition;
 
 
@@ -51,6 +52,8 @@ public class ZukShield : MonoBehaviour
             safeSpotMarker.SetActive(false);
         }
         relativePosition = safeSpotMarker.transform.position - npcScript.newSizeTileMarker.transform.position;
+        initialSafeSpotScaleX = safeSpotMarker.transform.localScale.x;
+        Debug.Log(initialSafeSpotScaleX);
     }
 
     void AfterMovement()
@@ -77,19 +80,22 @@ public class ZukShield : MonoBehaviour
 
         safeSpotRange[0] = npcScript.trueTile.x - 1;
         safeSpotRange[1] = npcScript.trueTile.x + 3;
-        if (npcScript.trueTile == new Vector2(absolutePosition.x * -1, absolutePosition.y) + Vector2.left)
-        {
-            safeSpotRange[1]++;
-            safeSpotMarker.transform.position = npcScript.newSizeTileMarker.transform.position + relativePosition + Vector3.right;
+        if (npcScript.trueTile == new Vector2(absolutePosition.x * -1, absolutePosition.y) + Vector2.left) 
+        {            
+            //safeSpotRange[1]++;
+            safeSpotMarker.transform.position = npcScript.newSizeTileMarker.transform.position + relativePosition + Vector3.right * 0.5f;
+            safeSpotMarker.transform.localScale = new Vector2(initialSafeSpotScaleX * 4f / 5f, safeSpotMarker.transform.localScale.y);
         }
         else if (npcScript.trueTile == new Vector2(absolutePosition.x, absolutePosition.y) + Vector2.left)
         {
-            safeSpotRange[0]--;
-            safeSpotMarker.transform.position = npcScript.newSizeTileMarker.transform.position + relativePosition + Vector3.left;
+            //safeSpotRange[0]--;
+            safeSpotMarker.transform.position = npcScript.newSizeTileMarker.transform.position + relativePosition + Vector3.left * .5f;
+            safeSpotMarker.transform.localScale = new Vector2(initialSafeSpotScaleX * 4f / 5f, safeSpotMarker.transform.localScale.y);
         }
         else
         {
             safeSpotMarker.transform.position = npcScript.newSizeTileMarker.transform.position + relativePosition;
+            safeSpotMarker.transform.localScale = new Vector2(initialSafeSpotScaleX, safeSpotMarker.transform.localScale.y);
         }
     }
 }
