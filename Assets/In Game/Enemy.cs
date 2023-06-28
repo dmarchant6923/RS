@@ -84,6 +84,8 @@ public class Enemy : MonoBehaviour
     public event EnemyCombat beforeAttack;
     public event EnemyCombat enemyDied;
 
+    AudioSource audioSource;
+    public AudioClip takeDamageSound;
 
     public class IncomingDamage
     {
@@ -107,6 +109,8 @@ public class Enemy : MonoBehaviour
         playerScript = FindObjectOfType<Player>();
         combatScript = GetComponent<Combat>();
         combatScript.attackCooldown = attackSpeed;
+
+        audioSource = GetComponent<AudioSource>();
 
         float baselvl = 0.25f * ((float)defence + hitpoints + (1 * 0.5f));
         float meleelvl = (13f / 40f) * ((float)attack + strength);
@@ -316,6 +320,11 @@ public class Enemy : MonoBehaviour
         }
 
         tookDamage?.Invoke();
+
+        if (damage.damage > -1 && takeDamageSound != null)
+        {
+            audioSource.PlayOneShot(takeDamageSound);
+        }
 
         if (hitpoints <= 0)
         {

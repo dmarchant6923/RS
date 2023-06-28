@@ -99,6 +99,8 @@ GameObject:
   - component: {fileID: 981017874431734}
   - component: {fileID: 4140966173132359281}
   - component: {fileID: 8102755757396477490}
+  - component: {fileID: 2721029936325099771}
+  - component: {fileID: 4088359153118896544}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -201,6 +203,8 @@ MonoBehaviour:
   minimapIcon: {fileID: 7298516019385278622}
   kandarinHard: 1
   debugEnabled: 0
+  dead: 0
+  standardDeath: 0
 --- !u!114 &5435353179154756461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,7 +224,6 @@ MonoBehaviour:
   magic: 99
   hitpoints: 99
   prayer: 99
-  agility: 99
 --- !u!114 &-1379261487197747176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,16 +239,13 @@ MonoBehaviour:
   onPlayer: 0
   targetEnemy: {fileID: 0}
   attackCooldown: 0
-  minCoolDown: -7
   projectile: {fileID: 6025835048010670392, guid: 5b5b57d91dfa50f43ba55ef8df626e95, type: 3}
   projectileSize: 1
-  debug: 0
+  debugEnabled: 0
   LOSIntersection: {fileID: 1569941437318096177, guid: 71312f94cab06184b830080749e95b33, type: 3}
   checkedTileMarker: {fileID: 6542302095627379823, guid: a3c20cf03d9487a4d8e63fbc499ea5ef, type: 3}
   projectileSpawnsImmediately: 0
   attackEffect: {fileID: 2639870101485629893, guid: f4e6b8bc2f94d7d40887fbf0dc934dd2, type: 3}
-  diamondBoltProcChance: 0.1
-  rubyBoltProcChance: 0.11
   useSpec: 0
 --- !u!114 &981017874431734
 MonoBehaviour:
@@ -268,6 +268,7 @@ MonoBehaviour:
   currentTile: {x: 0, y: 0}
   destinationTile: {x: 0, y: 0}
   serverDestinationTile: {x: 0, y: 0}
+  path: []
   moving: 0
   oddTilesInPath: 0
   showTrueTile: 0
@@ -293,6 +294,7 @@ MonoBehaviour:
   inGame: 0
   redClick: 1
   actionUsedOnThis: {fileID: 0}
+  foundUseActionMethod: 0
   actionOnPointerUp: 0
   useActionSuccessful: 0
 --- !u!120 &8102755757396477490
@@ -393,6 +395,117 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!82 &2721029936325099771
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5385707279894170681}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &4088359153118896544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5385707279894170681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5c28c108cdbe894fb5777413865f0fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equipSound: {fileID: 0}
+  unequipSound: {fileID: 0}
+  takeDamage: {fileID: 8300000, guid: 50b2c634ebbd2d5418d61aca20c6a651, type: 3}
 --- !u!1 &5795649407363136618
 GameObject:
   m_ObjectHideFlags: 0

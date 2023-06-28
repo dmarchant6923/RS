@@ -50,9 +50,19 @@ public class Combat : MonoBehaviour
     public delegate void PlayerDamage(int damage);
     public event PlayerDamage playerDealtDamage;
 
+    AudioSource audioSource;
+    public class QueuedAudio
+    {
+        public AudioClip soundClip;
+        public int tickDelay;
+    }
+    List<QueuedAudio> audioQueue = new List<QueuedAudio>();
+
+
     private void Start()
     {
         playerScript = FindObjectOfType<Player>();
+        audioSource = GetComponent<AudioSource>();
 
         TickManager.beforeTick += BeforeTick;
 
@@ -82,6 +92,7 @@ public class Combat : MonoBehaviour
 
         playerScript.attackThisTick = false;
 
+        //check ranged ammo
         if (AttackStyles.attackStyle == AttackStyles.rangedStyle)
         {
             if (WornEquipment.weapon.addAmmoRangedStats)
@@ -121,6 +132,8 @@ public class Combat : MonoBehaviour
                 }
             }
         }
+
+        //check bulwark attack style (not working)
         if (WornEquipment.weapon != null && WornEquipment.weapon.weaponCategory == WornEquipment.bulwarkCategory && AttackStyles.attackType == AttackStyles.defensiveType)
         {
             GameLog.Log("Your bulwark gets in the way.");
@@ -128,6 +141,7 @@ public class Combat : MonoBehaviour
             return;
         }
 
+        //check powered staff charges
         if (AttackStyles.attackStyle == AttackStyles.magicStyle && WornEquipment.weapon.weaponCategory == WornEquipment.poweredStaffCategory)
         {
             if (WornEquipment.weapon.GetComponent<ChargeItem>().charges <= 0)
@@ -327,6 +341,17 @@ public class Combat : MonoBehaviour
                     WornEquipment.weapon.GetComponent<StackableItem>().AddToQuantity(-1);
                 }
             }
+
+            //sounds
+            if (WornEquipment.weapon != null && WornEquipment.weapon.overrideAttackSound != null)
+            {
+                AddToAudioQueue(WornEquipment.weapon.overrideAttackSound, 0);
+            }
+            else if (AttackStyles.defaultAttackSound != null)
+            {
+                AddToAudioQueue(AttackStyles.defaultAttackSound, 0);
+            }
+
 
             //chins and dcb spec
             if ((specialEffects && effects.chinchompa) || (useSpec && specScript.dcb))
@@ -927,6 +952,20 @@ public class Combat : MonoBehaviour
         {
             attackCooldown--;
         }
+
+        for (int i = 0; i < audioQueue.Count; i++)
+        {
+            if (audioQueue[i].tickDelay == 0)
+            {
+                audioSource.PlayOneShot(audioQueue[i].soundClip);
+                audioQueue.Remove(audioQueue[i]);
+                i--;
+            }
+            else
+            {
+                audioQueue[i].tickDelay--;
+            }
+        }
     }
 
     public bool InAttackRange(Vector2 playerTile, Vector2 NPCSWTile, int attackRange, int NPCSize)
@@ -1258,6 +1297,8 @@ public class Combat : MonoBehaviour
 
             playerScript.AddToDamageQueue(hitRoll, delay, enemyScript, enemyScript.overkill, (int)maxHit, 0, prayedAgainst, hitChance);
             enemyScript.attackThisTick = true;
+
+
 
             float dps = (maxHit / 2) * hitChance / attackCooldown / 0.6f;
 
@@ -1629,5 +1670,13 @@ public class Combat : MonoBehaviour
         }
 
         return true;
+    }
+
+    public void AddToAudioQueue(AudioClip clip, int tickDelay)
+    {
+        QueuedAudio newAudio = new QueuedAudio();
+        newAudio.tickDelay = tickDelay;
+        newAudio.soundClip = clip;
+        audioQueue.Add(newAudio);
     }
 }

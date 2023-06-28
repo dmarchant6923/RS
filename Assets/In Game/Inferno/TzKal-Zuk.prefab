@@ -104,6 +104,10 @@ PrefabInstance:
       value: 1400
       objectReference: {fileID: 0}
     - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: takeDamageSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 344916432d658b0459c86839c76ba67c, type: 3}
+    - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: customProjectile
       value: 
       objectReference: {fileID: 21300000, guid: 6abcf5604caa807478fc25f3c11bf1c1, type: 3}

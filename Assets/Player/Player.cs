@@ -349,6 +349,11 @@ public class Player : MonoBehaviour
             damage.enemyAttacking.AddToDamageQueue(recoilDamage, 0, false, 0);
         }
 
+        if (damage.damage > 0)
+        {
+            combatScript.AddToAudioQueue(PlayerAudio.instance.takeDamage, 0);
+        }
+
         if (PlayerStats.currentHitpoints <= 0 && dead == false)
         {
             dead = true;

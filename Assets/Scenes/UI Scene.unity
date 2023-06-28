@@ -435,6 +435,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6159500584458043551, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: bowAttackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: e034b6fe5c045234e87c376ac4a169c4, type: 3}
+    - target: {fileID: 6837283644190335734, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: bowAttackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: e034b6fe5c045234e87c376ac4a169c4, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
 --- !u!1001 &1427918318

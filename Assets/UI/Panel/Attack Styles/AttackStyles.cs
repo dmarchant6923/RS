@@ -104,6 +104,9 @@ public class AttackStyles : MonoBehaviour
 
     public static AttackStyles instance;
 
+    public static AudioClip defaultAttackSound;
+    public AudioClip bowAttackSound;
+
 
     private IEnumerator Start()
     {
@@ -401,6 +404,8 @@ public class AttackStyles : MonoBehaviour
             {
                 attackType = longrangeType;
             }
+
+            defaultAttackSound = bowAttackSound;
         }
         else if (category == WornEquipment.crossbowCategory)
         {
@@ -432,6 +437,8 @@ public class AttackStyles : MonoBehaviour
             {
                 attackType = longrangeType;
             }
+
+            defaultAttackSound = bowAttackSound;
         }
         else if (category == WornEquipment.thrownCategory)
         {

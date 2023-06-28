@@ -24,6 +24,10 @@ public class Jad : MonoBehaviour
     bool healersSpawned = false;
     public int numberOfHealers = 3;
 
+    public AudioClip rangeSound;
+    public AudioClip mageSound;
+    AudioSource audioSource;
+
     private void Start()
     {
         enemyScript = GetComponent<Enemy>();
@@ -34,6 +38,8 @@ public class Jad : MonoBehaviour
         signalSprite.enabled = false;
 
         TickManager.afterTick += AfterTick;
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     void AfterTick()
@@ -56,6 +62,7 @@ public class Jad : MonoBehaviour
                 enemyScript.attackStyle = "Ranged";
                 enemyScript.customProjectile = rangeProjectile;
                 enemyScript.projectileColor = rangeProjectileColor;
+                audioSource.clip = rangeSound;
             }
             else
             {
@@ -63,7 +70,10 @@ public class Jad : MonoBehaviour
                 enemyScript.attackStyle = "Magic";
                 enemyScript.customProjectile = mageProjectile;
                 enemyScript.projectileColor = mageProjectileColor;
+                audioSource.clip = mageSound;
             }
+
+            audioSource.Play();
         }
 
         if (healersSpawned == false && (float)enemyScript.hitpoints <= (float)enemyScript.initialHitpoints / 2)

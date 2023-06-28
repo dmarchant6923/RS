@@ -162,6 +162,10 @@ PrefabInstance:
       value: 900
       objectReference: {fileID: 0}
     - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: takeDamageSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 344916432d658b0459c86839c76ba67c, type: 3}
+    - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: customProjectile
       value: 
       objectReference: {fileID: 21300000, guid: 6abcf5604caa807478fc25f3c11bf1c1, type: 3}
@@ -312,3 +316,5 @@ MonoBehaviour:
   signalSprite: {fileID: 6080521058263350475}
   healerPrefab: {fileID: 31989251100283336, guid: 81f14d5f669a0ca4abf15f4a722d160d, type: 3}
   numberOfHealers: 3
+  rangeSound: {fileID: 8300000, guid: 35901988a4727624abf86a8374932e54, type: 3}
+  mageSound: {fileID: 8300000, guid: 1aae42b3be43599418a548758dd0ce67, type: 3}

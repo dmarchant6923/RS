@@ -50,6 +50,8 @@ public class Equipment : MonoBehaviour
 
     [HideInInspector] public SpecialAttack spec;
 
+    public AudioClip overrideAttackSound;
+
     private IEnumerator Start()
     {
         itemAction = GetComponent<Action>();

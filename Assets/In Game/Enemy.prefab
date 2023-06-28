@@ -161,6 +161,7 @@ MonoBehaviour:
   isAttackingPlayer: 0
   attackThisTick: 0
   death: 0
+  takeDamageSound: {fileID: 0}
 --- !u!114 &6428832248520485119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,7 +177,6 @@ MonoBehaviour:
   onPlayer: 0
   targetEnemy: {fileID: 0}
   attackCooldown: 0
-  minCoolDown: -7
   projectile: {fileID: 6025835048010670392, guid: 5b5b57d91dfa50f43ba55ef8df626e95, type: 3}
   projectileSize: 1
   debugEnabled: 0
@@ -184,6 +184,5 @@ MonoBehaviour:
   checkedTileMarker: {fileID: 0}
   projectileSpawnsImmediately: 0
   attackEffect: {fileID: 0}
-  diamondBoltProcChance: 0.1
-  rubyBoltProcChance: 0.11
   useSpec: 0
+  attackSound: {fileID: 0}
