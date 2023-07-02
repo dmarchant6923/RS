@@ -185,6 +185,7 @@ MonoBehaviour:
   inGame: 0
   redClick: 1
   actionUsedOnThis: {fileID: 0}
+  foundUseActionMethod: 0
   actionOnPointerUp: 0
   useActionSuccessful: 0
 --- !u!61 &6607004498786039253

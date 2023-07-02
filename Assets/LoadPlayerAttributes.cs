@@ -103,11 +103,14 @@ public class LoadPlayerAttributes : MonoBehaviour
 
         yield return new WaitForSeconds(0.05f);
 
+        WornEquipment.instance.ignoreEquipSounds = true;
         foreach (GameObject equipItem in equipments)
         {
             equipItem.GetComponent<Equipment>().Equip();
         }
         newItems.Reverse();
+        WornEquipment.instance.ignoreEquipSounds = false;
+        WornEquipment.PlayEquipNoise();
         //foreach (GameObject item in newItems)
         //{
         //    Inventory.instance.PlaceInInventory(item);

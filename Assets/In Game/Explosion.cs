@@ -10,19 +10,24 @@ public class Explosion : MonoBehaviour
     public float decaySpeed = 2;
     public bool rotate;
 
-    private void Start()
+    AudioSource audioSource;
+    public AudioClip explosionSound;
+
+    private IEnumerator Start()
     {
         sprite = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(explosionSound);
+
+        yield return new WaitForSeconds((1f / decaySpeed) * 4);
+
+        Destroy(gameObject);
     }
     void Update()
     {
         Color color = sprite.color;
         color.a -= decaySpeed * Time.deltaTime;
         sprite.color = color;
-        if (color.a <= 0)
-        {
-            Destroy(gameObject);
-        }
 
         if (followObject != null)
         {

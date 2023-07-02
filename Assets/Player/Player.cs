@@ -351,7 +351,7 @@ public class Player : MonoBehaviour
 
         if (damage.damage > 0)
         {
-            combatScript.AddToAudioQueue(PlayerAudio.instance.takeDamageSound, 0);
+            combatScript.AddToAudioQueue(PlayerAudio.PlayerDamageNoise(), 0);
         }
 
         if (PlayerStats.currentHitpoints <= 0 && dead == false)

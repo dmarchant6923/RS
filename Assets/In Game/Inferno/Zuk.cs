@@ -85,8 +85,9 @@ public class Zuk : MonoBehaviour
                 Player.player.trueTile.y >= -2 && shieldScript != null)
             {
                 combatScript.attackCooldown = enemyScript.attackSpeed;
-                combatScript.SpawnProjectile(shieldScript.gameObject, gameObject, 5, enemyScript.projectileColor, "");
+                combatScript.SpawnProjectile(shieldScript.gameObject, gameObject, 4, enemyScript.projectileColor, "");
                 enemyScript.attackThisTick = true;
+                combatScript.AddToAudioQueue(enemyScript.attackSound, 0);
             }
             else
             {

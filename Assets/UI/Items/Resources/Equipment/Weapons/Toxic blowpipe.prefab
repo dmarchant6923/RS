@@ -160,6 +160,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8609742374551197549, guid: 8015afd1acb07b6429420431f92b511f, type: 3}
+      propertyPath: overrideAttackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: ec5da69dbfbc48047b0c27411f4856f0, type: 3}
+    - target: {fileID: 8609742374551197549, guid: 8015afd1acb07b6429420431f92b511f, type: 3}
       propertyPath: overrideProjectileColor.a
       value: 1
       objectReference: {fileID: 0}
@@ -203,6 +207,7 @@ MonoBehaviour:
   zaryteCrossbow: 0
   eldritchStaff: 0
   sgs: 0
+  dcb: 0
 --- !u!114 &6111148215138046795
 MonoBehaviour:
   m_ObjectHideFlags: 0

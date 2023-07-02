@@ -172,4 +172,4 @@ MonoBehaviour:
   startingDose: 4
   initialName: 
   divine: 0
-  drinkSound: {fileID: 8300000, guid: 303a68467e6e30d4a88bd7a81a5ee370, type: 3}
+  drinkSound: {fileID: 8300000, guid: e56c2bed8b4d25e48ad1d6a93efa7a8f, type: 3}

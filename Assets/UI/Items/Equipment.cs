@@ -51,6 +51,7 @@ public class Equipment : MonoBehaviour
     [HideInInspector] public SpecialAttack spec;
 
     public AudioClip overrideAttackSound;
+    AudioClip equipSound;
 
     private IEnumerator Start()
     {
@@ -94,6 +95,8 @@ public class Equipment : MonoBehaviour
             chargeItem = true;
             chargeScript = GetComponent<ChargeItem>();
         }
+
+
     }
 
     void Click()
@@ -164,6 +167,8 @@ public class Equipment : MonoBehaviour
             {
                 chargeScript.RemoveUnchargeAction();
             }
+
+            WornEquipment.PlayEquipNoise();
         }
         else
         {

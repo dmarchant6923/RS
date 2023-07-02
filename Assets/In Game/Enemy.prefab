@@ -161,7 +161,11 @@ MonoBehaviour:
   isAttackingPlayer: 0
   attackThisTick: 0
   death: 0
+  audioSource: {fileID: 0}
   takeDamageSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  attackSound: {fileID: 0}
+  attackSoundDelay: 0
 --- !u!114 &6428832248520485119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,7 +186,7 @@ MonoBehaviour:
   debugEnabled: 0
   LOSIntersection: {fileID: 0}
   checkedTileMarker: {fileID: 0}
-  projectileSpawnsImmediately: 0
+  projectileSpawnDelay: 1
   attackEffect: {fileID: 0}
   useSpec: 0
-  attackSound: {fileID: 0}
+  projectileDestroySound: {fileID: 0}

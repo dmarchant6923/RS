@@ -21,6 +21,8 @@ public class ZukHealer : MonoBehaviour
 
     bool addedAttackActionBack;
 
+    public AudioClip explosionSound;
+
     public class AOE
     {
         public Vector2 position;
@@ -80,7 +82,8 @@ public class ZukHealer : MonoBehaviour
                 {
                     Player.player.InstantDamage(activeAttacks[i].damage, 10, 5, false, 1, enemyScript);
                 }
-                Instantiate(explosion, activeAttacks[i].position, Quaternion.identity);
+                GameObject newExplosion = Instantiate(explosion, activeAttacks[i].position, Quaternion.identity);
+                newExplosion.GetComponent<Explosion>().explosionSound = explosionSound;
 
                 activeAttacks.RemoveAt(i);
                 i--;

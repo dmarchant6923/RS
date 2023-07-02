@@ -32,7 +32,7 @@ public class Combat : MonoBehaviour
 
     bool offensivePrayerOn = false;
 
-    [HideInInspector] public bool projectileSpawnsImmediately = false;
+    public int projectileSpawnDelay = 1;
 
     public GameObject attackEffect;
 
@@ -51,6 +51,7 @@ public class Combat : MonoBehaviour
     public event PlayerDamage playerDealtDamage;
 
     AudioSource audioSource;
+    public AudioClip projectileDestroySound;
     public class QueuedAudio
     {
         public AudioClip soundClip;
@@ -65,6 +66,7 @@ public class Combat : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         TickManager.beforeTick += BeforeTick;
+        TickManager.afterTick += AfterTick;
 
         specialEffects = false;
         effects = null;
@@ -237,7 +239,6 @@ public class Combat : MonoBehaviour
                     realRubyBoltChance = specScript.EnchantedBoltChance(realRubyBoltChance, success);
                 }
                 float rand = Random.Range(0f, 1f);
-                Debug.Log(rand + " " + realRubyBoltChance);
                 if (rand <= realRubyBoltChance) //0.121f
                 {
                     success = true;
@@ -349,11 +350,11 @@ public class Combat : MonoBehaviour
             //sounds
             if (WornEquipment.weapon != null && WornEquipment.weapon.overrideAttackSound != null)
             {
-                AddToAudioQueue(WornEquipment.weapon.overrideAttackSound, 0);
+                AddToAudioQueue(WornEquipment.weapon.overrideAttackSound, 1);
             }
             else if (AttackStyles.defaultAttackSound != null)
             {
-                AddToAudioQueue(AttackStyles.defaultAttackSound, 0);
+                AddToAudioQueue(AttackStyles.defaultAttackSound, 1);
             }
 
 
@@ -956,20 +957,6 @@ public class Combat : MonoBehaviour
         {
             attackCooldown--;
         }
-
-        for (int i = 0; i < audioQueue.Count; i++)
-        {
-            if (audioQueue[i].tickDelay == 0)
-            {
-                audioSource.PlayOneShot(audioQueue[i].soundClip);
-                audioQueue.Remove(audioQueue[i]);
-                i--;
-            }
-            else
-            {
-                audioQueue[i].tickDelay--;
-            }
-        }
     }
 
     public bool InAttackRange(Vector2 playerTile, Vector2 NPCSWTile, int attackRange, int NPCSize)
@@ -1171,8 +1158,9 @@ public class Combat : MonoBehaviour
         script.color = color;
         script.source = source;
         script.customSprite = projectileSprite;
-        script.appearInstantly = projectileSpawnsImmediately;
+        script.spawnDelay = projectileSpawnDelay;
         script.transform.localScale *= projectileSize;
+        script.onDestroySound = projectileDestroySound;
     }
     public void SpawnProjectile(GameObject target, GameObject source, int airborneTicks, Color color, Sprite projectileSprite)
     {
@@ -1183,8 +1171,9 @@ public class Combat : MonoBehaviour
         script.color = color;
         script.source = source;
         script.customSprite = projectileSprite;
-        script.appearInstantly = projectileSpawnsImmediately;
+        script.spawnDelay = projectileSpawnDelay;
         script.transform.localScale *= projectileSize;
+        script.onDestroySound = projectileDestroySound;
     }
     public void SpawnProjectile(GameObject target, GameObject source, int airborneTicks, Color color, string WeaponCategory)
     {
@@ -1194,7 +1183,7 @@ public class Combat : MonoBehaviour
         script.target = target;
         script.color = color;
         script.source = source;
-        script.appearInstantly = projectileSpawnsImmediately;
+        script.spawnDelay = projectileSpawnDelay;
         if (onPlayer == false && source.GetComponent<Enemy>().customProjectile != null)
         {
             script.customSprite = source.GetComponent<Enemy>().customProjectile;
@@ -1216,6 +1205,7 @@ public class Combat : MonoBehaviour
             }
         }
         script.transform.localScale *= projectileSize;
+        script.onDestroySound = projectileDestroySound;
     }
 
 
@@ -1296,11 +1286,13 @@ public class Combat : MonoBehaviour
             }
             if (melee == false)
             {
-                SpawnProjectile(playerScript.gameObject, enemyScript.gameObject, delay, enemyScript.projectileColor, type);
+                SpawnProjectile(playerScript.gameObject, enemyScript.gameObject, delay + projectileSpawnDelay - 1, enemyScript.projectileColor, type);
             }
 
-            playerScript.AddToDamageQueue(hitRoll, delay, enemyScript, enemyScript.overkill, (int)maxHit, 0, prayedAgainst, hitChance);
+            playerScript.AddToDamageQueue(hitRoll, delay + projectileSpawnDelay - 1, enemyScript, enemyScript.overkill, (int)maxHit, 0, prayedAgainst, hitChance);
             enemyScript.attackThisTick = true;
+
+            AddToAudioQueue(enemyScript.attackSound, enemyScript.attackSoundDelay);
 
 
 
@@ -1676,11 +1668,28 @@ public class Combat : MonoBehaviour
         return true;
     }
 
+
     public void AddToAudioQueue(AudioClip clip, int tickDelay)
     {
         QueuedAudio newAudio = new QueuedAudio();
         newAudio.tickDelay = tickDelay;
         newAudio.soundClip = clip;
         audioQueue.Add(newAudio);
+    }
+    void AfterTick()
+    {
+        for (int i = 0; i < audioQueue.Count; i++)
+        {
+            if (audioQueue[i].tickDelay == 0)
+            {
+                audioSource.PlayOneShot(audioQueue[i].soundClip);
+                audioQueue.Remove(audioQueue[i]);
+                i--;
+            }
+            else
+            {
+                audioQueue[i].tickDelay--;
+            }
+        }
     }
 }

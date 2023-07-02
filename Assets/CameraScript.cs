@@ -58,7 +58,7 @@ public class CameraScript : MonoBehaviour
 
         camSpeed = minCamSpeed + Mathf.Max((transform.position - player.transform.position).magnitude / 3 * (maxCamSpeed - minCamSpeed), maxCamSpeed - minCamSpeed);
         transform.position = Vector3.MoveTowards(transform.position, player.transform.position, camSpeed * Time.deltaTime);
-        transform.position = new Vector3(transform.position.x, transform.position.y, -10);
+        transform.position = new Vector3(transform.position.x, transform.position.y, -1);
 
         if (Input.GetMouseButton(2))
         {

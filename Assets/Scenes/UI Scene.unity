@@ -215,7 +215,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 720135270}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -443,6 +443,54 @@ PrefabInstance:
       propertyPath: bowAttackSound
       value: 
       objectReference: {fileID: 8300000, guid: e034b6fe5c045234e87c376ac4a169c4, type: 3}
+    - target: {fileID: 6837283644190335734, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: equipSounds.Array.size
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837283644190335734, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: equipSounds.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: d5a869ae5844aa842951429101b19a37, type: 3}
+    - target: {fileID: 6837283644190335734, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: equipSounds.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 46e62cacaacf3414a93da1522c66ad4a, type: 3}
+    - target: {fileID: 6837283644190335734, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: equipSounds.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 35519962338e8de439beee5d0a23e892, type: 3}
+    - target: {fileID: 6837283644190335734, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: equipSounds.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: 6c924375848d45840be1d1264627cf29, type: 3}
+    - target: {fileID: 6837283644190335734, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: equipSounds.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: d7183df1056b13843b2bc1f21fe88a8f, type: 3}
+    - target: {fileID: 6837283644190335734, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: equipSounds.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: 249086b22ca157f44be0ff6901e36e12, type: 3}
+    - target: {fileID: 6837283644190335734, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: equipSounds.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: 8160b5aeb34eb7749a982213576b7494, type: 3}
+    - target: {fileID: 6837283644190335734, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: equipSounds.Array.data[7]
+      value: 
+      objectReference: {fileID: 8300000, guid: 660e41b1751b51e42ae96bb5b5fd8c17, type: 3}
+    - target: {fileID: 6837283644190335734, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: equipSounds.Array.data[8]
+      value: 
+      objectReference: {fileID: 8300000, guid: 6dc0b4ed2ee77a543aedecb4a40cf6aa, type: 3}
+    - target: {fileID: 6837283644190335734, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: equipSounds.Array.data[9]
+      value: 
+      objectReference: {fileID: 8300000, guid: 511d9584ff40d1343b9e146c9467cd92, type: 3}
+    - target: {fileID: 6837283644190335734, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: equipSounds.Array.data[10]
+      value: 
+      objectReference: {fileID: 8300000, guid: ebe48c0670fb4ca4cbface2e6008272a, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
 --- !u!1001 &1427918318

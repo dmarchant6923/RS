@@ -40,6 +40,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5194834354910527777, guid: 3b947440a119e9040b006cd247117587, type: 3}
+      propertyPath: overrideAttackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 0ba44bda13b09934397759b729573e15, type: 3}
+    - target: {fileID: -5194834354910527777, guid: 3b947440a119e9040b006cd247117587, type: 3}
       propertyPath: overrideProjectileColor.a
       value: 1
       objectReference: {fileID: 0}

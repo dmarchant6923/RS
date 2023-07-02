@@ -61,6 +61,7 @@ public class SetSpawn : MonoBehaviour
             int hitRoll = Random.Range(0, (int)combatScript.EnemyMaxHit(enemyScript) + 1);
             shieldScript.enemyScript.AddToDamageQueue(hitRoll, delay, false, 0);
             combatScript.attackCooldown = attackSpeed;
+            combatScript.AddToAudioQueue(enemyScript.attackSound, enemyScript.attackSoundDelay);
             if (switchAggroOnAttack)
             {
                 SwitchAggro();
@@ -86,6 +87,7 @@ public class SetSpawn : MonoBehaviour
 
     void SwitchAggro()
     {
+        enemyScript.audioSource.Stop();
         enemyScript.tookDamage -= TookDamage;
         if (attackPlayer)
         {

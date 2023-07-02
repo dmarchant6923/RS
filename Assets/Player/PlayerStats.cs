@@ -344,6 +344,7 @@ public class PlayerStats : MonoBehaviour
             currentRanged = Mathf.Max(initialRanged, currentRanged);
             currentMagic = Mathf.Max(initialMagic, currentMagic);
             BuffBar.instance.UpdateStats();
+            PlayerAudio.PlayClip(PlayerAudio.instance.redemptionHealSound);
         }
     }
 

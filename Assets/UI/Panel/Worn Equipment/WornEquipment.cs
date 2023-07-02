@@ -100,9 +100,12 @@ public class WornEquipment : MonoBehaviour
     public static string bladedStaffCategory = "Bladed Staff";
     public static string poweredStaffCategory = "Powered Staff";
 
+    public AudioClip[] equipSounds;
+    [HideInInspector] public bool ignoreEquipSounds = true;
+
     public static WornEquipment instance;
 
-    private void Start()
+    private IEnumerator Start()
     {
         headSlot = headTransform;
         capeSlot = capeTransform;
@@ -151,6 +154,10 @@ public class WornEquipment : MonoBehaviour
         panelOpenButton.buttonClicked += StatsPanelActivate;
 
         canvas = FindObjectOfType<Canvas>();
+
+        ignoreEquipSounds = true;
+        yield return new WaitForSeconds(1);
+        ignoreEquipSounds = false;
     }
 
     public static void UpdateStats()
@@ -392,5 +399,23 @@ public class WornEquipment : MonoBehaviour
         //Debug.Log(statPanel.position);
         //statPanel.position = new Vector2(-350 * canvas.scaleFactor, statPanel.position.y);
         //Debug.Log(statPanel.position);
+    }
+
+    public static void PlayEquipNoise()
+    {
+        Debug.Log(instance.ignoreEquipSounds);
+        if (instance.ignoreEquipSounds)
+        {
+            return;
+        }
+
+        int rand = Random.Range(0, instance.equipSounds.Length);
+        for (int i = 0; i < instance.equipSounds.Length; i++)
+        {
+            if (rand == i)
+            {
+                PlayerAudio.PlayClip(instance.equipSounds[i]);
+            }
+        }
     }
 }

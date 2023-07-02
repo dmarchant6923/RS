@@ -24,7 +24,9 @@ public class Projectile : MonoBehaviour
 
     public Sprite customSprite;
 
-    public bool appearInstantly = false;
+    public int spawnDelay = 1;
+
+    public AudioClip onDestroySound;
 
     private IEnumerator Start()
     {
@@ -52,9 +54,9 @@ public class Projectile : MonoBehaviour
             }
         }
 
-        if (appearInstantly == false)
+        if (spawnDelay > 0)
         {
-            airborneTime -= 0.5f;
+            airborneTime -= spawnDelay * 0.6f - 0.1f;
             sprite.enabled = false;
         }
         else
@@ -80,7 +82,9 @@ public class Projectile : MonoBehaviour
 
     void BeforeTick()
     {
-        if (sprite.enabled == false)
+        spawnDelay--;
+
+        if (sprite.enabled == false && spawnDelay == 0)
         {
             float mult = 0.4f;
             if (source != null && source.GetComponent<NPC>() != null)
@@ -124,5 +128,15 @@ public class Projectile : MonoBehaviour
     private void OnDestroy()
     {
         TickManager.beforeTick -= BeforeTick;
+
+        if (onDestroySound == null) { return; }
+        if (target != null && target.GetComponent<AudioSource>() != null)
+        {
+            target.GetComponent<AudioSource>().PlayOneShot(onDestroySound);
+        }
+        else
+        {
+            Debug.LogWarning("projectile had no audio source to play clip from");
+        }
     }
 }

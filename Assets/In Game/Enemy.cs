@@ -84,8 +84,11 @@ public class Enemy : MonoBehaviour
     public event EnemyCombat beforeAttack;
     public event EnemyCombat enemyDied;
 
-    AudioSource audioSource;
+    [HideInInspector] public AudioSource audioSource;
     public AudioClip takeDamageSound;
+    public AudioClip deathSound;
+    public AudioClip attackSound;
+    public int attackSoundDelay = 0;
 
     public class IncomingDamage
     {
@@ -224,6 +227,10 @@ public class Enemy : MonoBehaviour
         if (death)
         {
             deathTicks--;
+            if (deathTicks == 2)
+            {
+                audioSource.PlayOneShot(deathSound);
+            }
             if (deathTicks == 0)
             {
                 Destroy(gameObject);

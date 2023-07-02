@@ -36,6 +36,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: deathSound
+      value: 
+      objectReference: {fileID: 8300000, guid: b4c5b64ee8036f343bd96afe203f379a, type: 3}
+    - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: attackSpeed
       value: 3
       objectReference: {fileID: 0}
@@ -51,6 +55,10 @@ PrefabInstance:
       propertyPath: customCombatLvl
       value: 250
       objectReference: {fileID: 0}
+    - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: takeDamageSound
+      value: 
+      objectReference: {fileID: 8300000, guid: b97162448ff616e4493ad9b7a7988023, type: 3}
     - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: customProjectile
       value: 
@@ -198,3 +206,4 @@ MonoBehaviour:
   projectile: {fileID: 21300000, guid: a57b047449a7f8d4789581ecab3377dd, type: 3}
   projectileColor: {r: 1, g: 0.6183692, b: 0.25943398, a: 1}
   explosion: {fileID: 2639870101485629893, guid: f4e6b8bc2f94d7d40887fbf0dc934dd2, type: 3}
+  explosionSound: {fileID: 8300000, guid: 2b9da9c465bda7f44a98d1bd5f13dd94, type: 3}

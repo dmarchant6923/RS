@@ -52,6 +52,10 @@ PrefabInstance:
       value: 80
       objectReference: {fileID: 0}
     - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: attackSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 0864858467a5cb248aae8e7a5a1a093d, type: 3}
+    - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: attackStyle
       value: Magic
       objectReference: {fileID: 0}

@@ -33,7 +33,7 @@ public class Jad : MonoBehaviour
         enemyScript = GetComponent<Enemy>();
         npcScript = GetComponent<NPC>();
         combatScript = GetComponent<Combat>();
-        combatScript.projectileSpawnsImmediately = true;
+        combatScript.projectileSpawnDelay = 0;
 
         signalSprite.enabled = false;
 
