@@ -67,16 +67,17 @@ public class GameManager : MonoBehaviour
             scores.fastestTicks = PlayerPrefs.GetInt("scores fastest ticks", 0);
             scores.highestScore = PlayerPrefs.GetFloat("scores highests score", 0);
         }
-        else if (File.Exists(dir))
-        {
-            string jsonString = File.ReadAllText(dir);
-            scores = JsonUtility.FromJson<Hiscores>(jsonString);
-        }
-        else
-        {
-            string jsonString = JsonUtility.ToJson(scores);
-            File.WriteAllText(dir, jsonString);
-        }
+        //UNREACHABLE CODE BELOW
+        //else if (File.Exists(dir))
+        //{
+        //    string jsonString = File.ReadAllText(dir);
+        //    scores = JsonUtility.FromJson<Hiscores>(jsonString);
+        //}
+        //else
+        //{
+        //    string jsonString = JsonUtility.ToJson(scores);
+        //    File.WriteAllText(dir, jsonString);
+        //}
     }
 
     public void ResetScores()
@@ -136,9 +137,11 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        string dir = Application.persistentDataPath + folder + fileName + extension;
-        string jsonString = JsonUtility.ToJson(scores);
-        File.WriteAllText(dir, jsonString);
+        //UNREACHABLE CODE BELOW
+
+        //string dir = Application.persistentDataPath + folder + fileName + extension;
+        //string jsonString = JsonUtility.ToJson(scores);
+        //File.WriteAllText(dir, jsonString);
     }
 
     public void StartGetPrices()

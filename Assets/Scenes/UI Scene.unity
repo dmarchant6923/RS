@@ -435,6 +435,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2979721457505854108, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -2576002151728532428, guid: c688fbacb8256724398afdc82297a44c, type: 2}
     - target: {fileID: 6159500584458043551, guid: 4a1d20fd5f81a0547b4a05d74342ef4d, type: 3}
       propertyPath: bowAttackSound
       value: 

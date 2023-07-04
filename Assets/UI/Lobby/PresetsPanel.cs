@@ -288,25 +288,26 @@ public class PresetsPanel : MonoBehaviour
                     }
                 }
             }
-            else if (File.Exists(fullPath))
-            {
-                string jsonString = File.ReadAllText(fullPath);
-                presetInventory[i] = JsonUtility.FromJson<PresetInventory>(jsonString);
-            }
-            else
-            {
-                presetInventory[i] = new PresetInventory();
-                if (i == 0)
-                {
-                    presetInventory[0] = initialPreset1Inventory;
-                }
-                if (i == 1)
-                {
-                    presetInventory[1] = initialPreset2Inventory;
-                }
-                string jsonString = JsonUtility.ToJson(presetInventory[i]);
-                File.WriteAllText(fullPath, jsonString);
-            }
+            //UNREACHABLE CODE
+            //else if (File.Exists(fullPath))
+            //{
+            //    string jsonString = File.ReadAllText(fullPath);
+            //    presetInventory[i] = JsonUtility.FromJson<PresetInventory>(jsonString);
+            //}
+            //else
+            //{
+            //    presetInventory[i] = new PresetInventory();
+            //    if (i == 0)
+            //    {
+            //        presetInventory[0] = initialPreset1Inventory;
+            //    }
+            //    if (i == 1)
+            //    {
+            //        presetInventory[1] = initialPreset2Inventory;
+            //    }
+            //    string jsonString = JsonUtility.ToJson(presetInventory[i]);
+            //    File.WriteAllText(fullPath, jsonString);
+            //}
 
 
 
@@ -372,25 +373,26 @@ public class PresetsPanel : MonoBehaviour
                     }
                 }
             }
-            else if (File.Exists(fullPath))
-            {
-                string jsonString = File.ReadAllText(fullPath);
-                presetEquipment[i] = JsonUtility.FromJson<PresetEquipment>(jsonString);
-            }
-            else
-            {
-                presetEquipment[i] = new PresetEquipment();
-                if (i == 0)
-                {
-                    presetEquipment[0] = initialPreset1Equipment;
-                }
-                if (i == 1)
-                {
-                    presetEquipment[1] = initialPreset2Equipment;
-                }
-                string jsonString = JsonUtility.ToJson(presetEquipment[i]);
-                File.WriteAllText(fullPath, jsonString);
-            }
+            //UNREACHABLE CODE
+            //else if (File.Exists(fullPath))
+            //{
+            //    string jsonString = File.ReadAllText(fullPath);
+            //    presetEquipment[i] = JsonUtility.FromJson<PresetEquipment>(jsonString);
+            //}
+            //else
+            //{
+            //    presetEquipment[i] = new PresetEquipment();
+            //    if (i == 0)
+            //    {
+            //        presetEquipment[0] = initialPreset1Equipment;
+            //    }
+            //    if (i == 1)
+            //    {
+            //        presetEquipment[1] = initialPreset2Equipment;
+            //    }
+            //    string jsonString = JsonUtility.ToJson(presetEquipment[i]);
+            //    File.WriteAllText(fullPath, jsonString);
+            //}
 
             WritePresetText(i);
         }
@@ -515,18 +517,19 @@ public class PresetsPanel : MonoBehaviour
             }
             PlayerPrefs.SetString("Preset Equipment " + (presetNumber + 1) + " blowpipe ammo", presetEquipment[presetNumber].blowpipeAmmo);
         }
-        else
-        {
-            string fileName = "Preset" + presetNumber + "Equipment";
-            string fullPath = dir + fileName + extension;
-            string jsonString = JsonUtility.ToJson(presetEquipment[presetNumber]);
-            File.WriteAllText(fullPath, jsonString);
+        //UNREACHABLE CODE
+        //else
+        //{
+        //    string fileName = "Preset" + presetNumber + "Equipment";
+        //    string fullPath = dir + fileName + extension;
+        //    string jsonString = JsonUtility.ToJson(presetEquipment[presetNumber]);
+        //    File.WriteAllText(fullPath, jsonString);
 
-            fileName = "Preset" + presetNumber + "Inventory";
-            fullPath = dir + fileName + extension;
-            jsonString = JsonUtility.ToJson(presetInventory[presetNumber]);
-            File.WriteAllText(fullPath, jsonString);
-        }
+        //    fileName = "Preset" + presetNumber + "Inventory";
+        //    fullPath = dir + fileName + extension;
+        //    jsonString = JsonUtility.ToJson(presetInventory[presetNumber]);
+        //    File.WriteAllText(fullPath, jsonString);
+        //}
     }
     public void LoadPreset(int num)
     {
@@ -620,15 +623,16 @@ public class PresetsPanel : MonoBehaviour
             return;
         }
 
-        string fileName = "Preset" + presetNumber + "Inventory";
-        string fullPath = dir + fileName + extension;
-        string jsonString = JsonUtility.ToJson(presetInventory[presetNumber]);
-        File.WriteAllText(fullPath, jsonString);
+        //UNREACHABLE CODE
+        //string fileName = "Preset" + presetNumber + "Inventory";
+        //string fullPath = dir + fileName + extension;
+        //string jsonString = JsonUtility.ToJson(presetInventory[presetNumber]);
+        //File.WriteAllText(fullPath, jsonString);
 
-        fileName = "Preset" + presetNumber + "Equipment";
-        fullPath = dir + fileName + extension;
-        jsonString = JsonUtility.ToJson(presetEquipment[presetNumber]);
-        File.WriteAllText(fullPath, jsonString);
+        //fileName = "Preset" + presetNumber + "Equipment";
+        //fullPath = dir + fileName + extension;
+        //jsonString = JsonUtility.ToJson(presetEquipment[presetNumber]);
+        //File.WriteAllText(fullPath, jsonString);
     }
 
     void BeforeTick()

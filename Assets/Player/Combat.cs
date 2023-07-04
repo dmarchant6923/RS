@@ -1682,7 +1682,15 @@ public class Combat : MonoBehaviour
         {
             if (audioQueue[i].tickDelay == 0)
             {
-                audioSource.PlayOneShot(audioQueue[i].soundClip);
+                if (audioQueue[i].soundClip == null)
+                {
+                    Debug.LogWarning("sound clip is null! object: " + this.name);
+                }
+                else
+                {
+                    audioSource.PlayOneShot(audioQueue[i].soundClip);
+                }
+                    
                 audioQueue.Remove(audioQueue[i]);
                 i--;
             }

@@ -259,6 +259,15 @@ public class Enemy : MonoBehaviour
         {
             inCombat = false;
         }
+
+        if (npcScript.isTargetingPlayer || playerAttackingEnemy)
+        {
+            audioSource.spatialBlend = 0;
+        }
+        else
+        {
+            audioSource.spatialBlend = 1;
+        }
     }
 
     public void AddToDamageQueue(int damage, int tickDelay, bool fromPlayer, int maxHit)

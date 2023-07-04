@@ -62,6 +62,7 @@ public class InfernoPortal : MonoBehaviour
     IEnumerator PortalFade()
     {
         Action.ignoreAllActions = true;
+        Music.FadeTrack();
         UIManager.instance.entryInfoBox.SetActive(false);
         GearValueAtPortalEntrance = GameManager.instance.TotalCarriedValue();
         fadeTicks = fadeTime;

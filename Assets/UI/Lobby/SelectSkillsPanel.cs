@@ -140,12 +140,13 @@ public class SelectSkillsPanel : MonoBehaviour
                 PlayerPrefs.SetInt("savedSkills level " + i, savedSkills.levels[i]);
             }
         }
-        else
-        {
-            string fullPath = dir + fileName + extension;
-            string jsonString = JsonUtility.ToJson(savedSkills);
-            File.WriteAllText(fullPath, jsonString);
-        }
+        //UNREACHABLE CODE
+        //else
+        //{
+        //    string fullPath = dir + fileName + extension;
+        //    string jsonString = JsonUtility.ToJson(savedSkills);
+        //    File.WriteAllText(fullPath, jsonString);
+        //}
 
         GetComponent<BasePanelScript>().ClosePanel();
     }
@@ -169,22 +170,23 @@ public class SelectSkillsPanel : MonoBehaviour
                 savedSkills.levels[i] = PlayerPrefs.GetInt("savedSkills level " + i, 99);
             }
         }
-        else if (File.Exists(fullPath))
-        {
-            string jsonString = File.ReadAllText(fullPath);
-            savedSkills = JsonUtility.FromJson<SavedSkills>(jsonString);
-        }
-        else
-        {
-            savedSkills = new SavedSkills();
-            for (int i = 0; i < 7; i++)
-            {
-                savedSkills.levels[i] = 99;
-            }
+        //UNREACHABLE CODE
+        //else if (File.Exists(fullPath))
+        //{
+        //    string jsonString = File.ReadAllText(fullPath);
+        //    savedSkills = JsonUtility.FromJson<SavedSkills>(jsonString);
+        //}
+        //else
+        //{
+        //    savedSkills = new SavedSkills();
+        //    for (int i = 0; i < 7; i++)
+        //    {
+        //        savedSkills.levels[i] = 99;
+        //    }
 
-            string jsonString = JsonUtility.ToJson(savedSkills);
-            File.WriteAllText(fullPath, jsonString);
-        }
+        //    string jsonString = JsonUtility.ToJson(savedSkills);
+        //    File.WriteAllText(fullPath, jsonString);
+        //}
 
         for (int i = 0; i < 7; i++)
         {

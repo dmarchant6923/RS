@@ -403,7 +403,6 @@ public class WornEquipment : MonoBehaviour
 
     public static void PlayEquipNoise()
     {
-        Debug.Log(instance.ignoreEquipSounds);
         if (instance.ignoreEquipSounds)
         {
             return;

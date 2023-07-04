@@ -76,6 +76,7 @@ public class InfernoManager : MonoBehaviour
     IEnumerator Unfade()
     {
         yield return null;
+        Music.PlayInfernoTrack();
         CameraScript.instance.ResetCameraPosition();
         Color color = UIManager.instance.fadeBox.color;
         while (color.a > 0)
@@ -171,6 +172,7 @@ public class InfernoManager : MonoBehaviour
     public IEnumerator ReturnToLobby(float delay)
     {
         Player.player.ClearDamageQueue();
+        Music.FadeTrack();
         yield return null;
         Player.player.trueTileScript.StopMovement();
         yield return new WaitForSeconds(delay);

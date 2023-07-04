@@ -21,10 +21,16 @@ public class PlayerAudio : MonoBehaviour
     public AudioClip diamondBoltProcSound;
     public AudioClip rubyBoltProcSound;
 
-    private void Start()
+    private IEnumerator Start()
     {
         instance = this;
         source = GetComponent<AudioSource>();
+
+        yield return null;
+        AudioListener.volume = 0;
+        yield return new WaitForSeconds(1.5f);
+        AudioListener.volume = 1;
+        UIManager.instance.musicSource.Play();
     }
 
     public static void PlayClip(AudioClip clip)

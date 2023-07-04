@@ -32,6 +32,10 @@ public class LobbyManager : MonoBehaviour
             GameObject newNibbler = Instantiate(nibbler, new Vector2(0, 3), Quaternion.identity);
             newNibbler.name = nibbler.name;
         }
+
+        yield return new WaitForSeconds(0.1f);
+
+        Music.PlayLobbyTrack();
     }
 
     IEnumerator Unfade()

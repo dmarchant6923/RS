@@ -17,7 +17,10 @@ public class Explosion : MonoBehaviour
     {
         sprite = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
-        audioSource.PlayOneShot(explosionSound);
+        if (explosionSound != null)
+        {
+            audioSource.PlayOneShot(explosionSound);
+        }
 
         yield return new WaitForSeconds((1f / decaySpeed) * 4);
 

@@ -84,7 +84,7 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerDownHan
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
-        if (active == false)
+        if (active == false || buttonText == null)
         {
             return;
         }
@@ -113,6 +113,10 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerDownHan
             return;
         }
         ButtonOff();
+        if (buttonText == null)
+        {
+            return;
+        }
         buttonText.color = mouseOffColor;
     }
     void ButtonOff()
@@ -130,7 +134,11 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerDownHan
         {
             return;
         }
-        buttonText.color = mouseOffColor;
         ButtonOff();
+        if (buttonText == null)
+        {
+            return;
+        }
+        buttonText.color = mouseOffColor;
     }
 }

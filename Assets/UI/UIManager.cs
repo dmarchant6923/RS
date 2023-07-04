@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Audio;
 
 public class UIManager : MonoBehaviour
 {
@@ -43,6 +44,8 @@ public class UIManager : MonoBehaviour
 
     public GameObject infernoUI;
     public GameObject entryInfoBox;
+    public AudioSource musicSource;
+    public AudioMixer audioMixer;
 
     public List<GameObject> bannedItems = new List<GameObject>();
 
