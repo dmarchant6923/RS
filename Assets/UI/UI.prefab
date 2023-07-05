@@ -2397,6 +2397,10 @@ MonoBehaviour:
   InfernoTrack: {fileID: 8300000, guid: 851ed3699047f504e8cb39be6f90b0ea, type: 3}
   lobbyTracks:
   - {fileID: 8300000, guid: a355b83d46c36f343b26fe7ab3e5876f, type: 3}
+  - {fileID: 8300000, guid: 86ffbbfdf66757848a9c11c7a1bd01c3, type: 3}
+  - {fileID: 8300000, guid: c800534f301741a429d33867b74338ad, type: 3}
+  - {fileID: 8300000, guid: 95acd89c921ac7c4f9d28c8b3b8f1dfd, type: 3}
+  - {fileID: 8300000, guid: cad446ae3b84c5240ac57ab17fdb84fe, type: 3}
 --- !u!1 &502658597539275628
 GameObject:
   m_ObjectHideFlags: 0

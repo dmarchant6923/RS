@@ -81,7 +81,7 @@ public class SettingsSlider : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         }
 
         PlayerPrefs.SetFloat(str, value);
-        float db = -80 + Mathf.Pow(_value, 0.25f) * 80;
+        float db = -80 + Mathf.Pow(_value, 0.18f) * 80;
         mixer.SetFloat(str, db);
     }
 

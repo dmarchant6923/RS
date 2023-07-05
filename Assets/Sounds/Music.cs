@@ -34,7 +34,7 @@ public class Music : MonoBehaviour
 
     public IEnumerator FadeTrackEnum()
     {
-        float fadeWindow = 1.5f;
+        float fadeWindow = 1.7f;
 
         float fadeTime = 0;
         if (UIManager.instance.musicSource.isPlaying)
