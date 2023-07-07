@@ -60,6 +60,5 @@ public class SettingsDisableButton : MonoBehaviour
             noun = "SFX";
         }
         PlayerPrefs.SetInt(noun + " enabled", active ? 1 : 0);
-        Debug.Log(PlayerPrefs.GetInt("Music enabled", 1));
     }
 }

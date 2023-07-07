@@ -55,7 +55,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8669470073607972}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -781,7 +781,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 120, y: -250}
+  m_AnchoredPosition: {x: 300, y: -220}
   m_SizeDelta: {x: 75, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8534868966553469408
@@ -1504,6 +1504,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0, g: 0, b: 0, a: 1}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -3361,6 +3363,8 @@ MonoBehaviour:
   attackDebuff: 1
   debuffPercent: 15
   projectileColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -4145,8 +4149,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -178.5, y: 0}
-  m_SizeDelta: {x: 35, y: 35}
+  m_AnchoredPosition: {x: -400, y: 0}
+  m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2974470846546437989
 CanvasRenderer:
@@ -4196,7 +4200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 3, y: -3}
+  m_EffectDistance: {x: 6, y: -6}
   m_UseGraphicAlpha: 1
 --- !u!1 &833926216745232823
 GameObject:
@@ -4332,6 +4336,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0.8160377, g: 0.90539086, b: 1, a: 1}
+  castSound: {fileID: 8300000, guid: 518df42d62fdf29438d99df2291887bb, type: 3}
+  damageSound: {fileID: 8300000, guid: 3ae49f9c63d448143a34da139069f069, type: 3}
   runes:
   - 
   - 
@@ -5378,6 +5384,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0.8160377, g: 0.90539086, b: 1, a: 1}
+  castSound: {fileID: 8300000, guid: 518df42d62fdf29438d99df2291887bb, type: 3}
+  damageSound: {fileID: 8300000, guid: 3ae49f9c63d448143a34da139069f069, type: 3}
   runes:
   - 
   - 
@@ -8270,6 +8278,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0, g: 0, b: 0, a: 1}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -8679,6 +8689,8 @@ MonoBehaviour:
   attackDebuff: 1
   debuffPercent: 10
   projectileColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -10074,7 +10086,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &147336866940214228
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11145,6 +11157,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0, g: 0, b: 0, a: 1}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -11520,6 +11534,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0, g: 0, b: 0, a: 0}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -13508,6 +13524,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0, g: 0, b: 0, a: 0}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -15897,6 +15915,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0, g: 0, b: 0, a: 0}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -16858,6 +16878,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0.764151, g: 0, b: 0, a: 1}
+  castSound: {fileID: 8300000, guid: 4f19e26d54ab4d04594f162a9f9ee235, type: 3}
+  damageSound: {fileID: 8300000, guid: a8c1ce8b51d98ba4d9c16c45eb6fb7a5, type: 3}
   runes:
   - 
   - 
@@ -17210,6 +17232,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0.8160377, g: 0.90539086, b: 1, a: 1}
+  castSound: {fileID: 8300000, guid: 518df42d62fdf29438d99df2291887bb, type: 3}
+  damageSound: {fileID: 8300000, guid: 3ae49f9c63d448143a34da139069f069, type: 3}
   runes:
   - 
   - 
@@ -18780,6 +18804,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0, g: 0, b: 0, a: 1}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -19006,8 +19032,8 @@ RectTransform:
   - {fileID: 5596651831086919432}
   - {fileID: 5162046062547361564}
   - {fileID: 995790984438574949}
-  - {fileID: 5314569884813436385}
   - {fileID: 6792478780951406678}
+  - {fileID: 5314569884813436385}
   m_Father: {fileID: 1229237604897228173}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -21605,6 +21631,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0, g: 0, b: 0, a: 0}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -23545,6 +23573,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0.764151, g: 0, b: 0, a: 1}
+  castSound: {fileID: 8300000, guid: 4f19e26d54ab4d04594f162a9f9ee235, type: 3}
+  damageSound: {fileID: 8300000, guid: a8c1ce8b51d98ba4d9c16c45eb6fb7a5, type: 3}
   runes:
   - 
   - 
@@ -24415,7 +24445,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -120, y: -250}
+  m_AnchoredPosition: {x: 150, y: -220}
   m_SizeDelta: {x: 75, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8196893741480261140
@@ -25999,7 +26029,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3571177496837504355
 RectTransform:
   m_ObjectHideFlags: 0
@@ -27730,6 +27760,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0, g: 0, b: 0, a: 0}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -28376,7 +28408,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -28396,7 +28428,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Click here to logout
+  m_Text: Return to Lobby
 --- !u!114 &2303023075411311971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30062,6 +30094,8 @@ MonoBehaviour:
   attackDebuff: 1
   debuffPercent: 15
   projectileColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -30368,6 +30402,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0, g: 0, b: 0, a: 0}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -30913,6 +30949,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0, g: 0, b: 0, a: 0}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -31582,6 +31620,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0.8160377, g: 0.90539086, b: 1, a: 1}
+  castSound: {fileID: 8300000, guid: 518df42d62fdf29438d99df2291887bb, type: 3}
+  damageSound: {fileID: 8300000, guid: 3ae49f9c63d448143a34da139069f069, type: 3}
   runes:
   - 
   - 
@@ -32826,6 +32866,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0, g: 0, b: 0, a: 0}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -33587,7 +33629,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &995790984438574949
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33597,7 +33639,7 @@ RectTransform:
   m_GameObject: {fileID: 5883173479898975292}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 8167197970551835582}
   m_Father: {fileID: 8244013616884726364}
@@ -33605,8 +33647,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0.000029564, y: -528.4749}
-  m_SizeDelta: {x: 600, y: 61.4195}
+  m_AnchoredPosition: {x: 235, y: -400}
+  m_SizeDelta: {x: 1200, y: 61.4195}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &2448500922015460338
 CanvasRenderer:
@@ -33638,11 +33680,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 20
+    m_FontSize: 45
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 40
+    m_MaxSize: 45
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -33663,7 +33705,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 3, y: -3}
+  m_EffectDistance: {x: 6, y: -6}
   m_UseGraphicAlpha: 1
 --- !u!1 &5892346295985096466
 GameObject:
@@ -34292,11 +34334,11 @@ RectTransform:
   - {fileID: 6645165229933192024}
   - {fileID: 1218106143787096091}
   m_Father: {fileID: 8244013616884726364}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 200, y: -160}
+  m_AnchoredPosition: {x: -250, y: -160}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6012811202704052106
@@ -36824,6 +36866,8 @@ MonoBehaviour:
   attackDebuff: 1
   debuffPercent: 10
   projectileColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -38822,6 +38866,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0.764151, g: 0, b: 0, a: 1}
+  castSound: {fileID: 8300000, guid: 4f19e26d54ab4d04594f162a9f9ee235, type: 3}
+  damageSound: {fileID: 8300000, guid: a8c1ce8b51d98ba4d9c16c45eb6fb7a5, type: 3}
   runes:
   - 
   - 
@@ -41765,11 +41811,11 @@ RectTransform:
   - {fileID: 3908268817579988885}
   - {fileID: 2680613884910249434}
   m_Father: {fileID: 8244013616884726364}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -200, y: -160}
+  m_AnchoredPosition: {x: -250, y: -240}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7273114495719383154
@@ -42142,6 +42188,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0, g: 0, b: 0, a: 0}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 
@@ -46724,6 +46772,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0.764151, g: 0, b: 0, a: 1}
+  castSound: {fileID: 8300000, guid: 4f19e26d54ab4d04594f162a9f9ee235, type: 3}
+  damageSound: {fileID: 8300000, guid: a8c1ce8b51d98ba4d9c16c45eb6fb7a5, type: 3}
   runes:
   - 
   - 
@@ -49078,6 +49128,8 @@ MonoBehaviour:
   attackDebuff: 0
   debuffPercent: 0
   projectileColor: {r: 0, g: 0, b: 0, a: 0}
+  castSound: {fileID: 0}
+  damageSound: {fileID: 0}
   runes:
   - 
   - 

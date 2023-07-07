@@ -541,15 +541,8 @@ public class Combat : MonoBehaviour
             {
                 spell.UseRunes();
             }
-            if (useSpec && specScript.eldritchStaff)
-            {
-                SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, specScript.customProjectileColor, specScript.customProjectile);
-            }
-            else
-            {
-                SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, spell.projectileColor, "");
-            }
 
+            bool castSuccessful = false;
             float maxHit = 0;
             foreach (Enemy enemy in enemies)
             {
@@ -560,12 +553,12 @@ public class Combat : MonoBehaviour
                 float magicDamage = (float)WornEquipment.magicDamage;
                 if (specialEffects && effects.tumekensShadow)
                 {
-                    magicDamage = Mathf.Ceil(magicDamage / 3);
+                    magicDamage = Mathf.Ceil(magicDamage / 3f);
                 }
-                maxHit = Mathf.Floor((float)spell.maxDamage * (1 + (magicDamage / 100)));
+                maxHit = Mathf.Floor((float)spell.maxDamage * (1f + (magicDamage / 100f)));
                 if (useSpec && specScript.eldritchStaff)
                 {
-                    maxHit = 39 + (((float)PlayerStats.currentMagic - 75) * (11 / 24));
+                    maxHit = 39f + (((float)PlayerStats.currentMagic - 75f) * (11f / 24f));
                 }
 
                 if (WornEquipment.slayerHelm)
@@ -580,6 +573,7 @@ public class Combat : MonoBehaviour
                 if (attRoll > defRoll)
                 {
                     success = true;
+                    castSuccessful = true;
                 }
 
                 int hitRoll = 0;
@@ -616,6 +610,18 @@ public class Combat : MonoBehaviour
                         enemy.AttackPlayer();
                     }
                 }
+            }
+
+            if (useSpec && specScript.eldritchStaff)
+            {
+                SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, specScript.customProjectileColor, specScript.customProjectile);
+            }
+            else
+            {
+                AudioClip destroySound = PlayerAudio.instance.spellSplashSound;
+                if (castSuccessful) { destroySound = spell.damageSound; }
+                SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, spell.projectileColor, "", destroySound);
+                PlayerAudio.PlayClip(spell.castSound);
             }
 
             if (useSpec)
@@ -1175,7 +1181,7 @@ public class Combat : MonoBehaviour
         script.transform.localScale *= projectileSize;
         script.onDestroySound = projectileDestroySound;
     }
-    public void SpawnProjectile(GameObject target, GameObject source, int airborneTicks, Color color, string WeaponCategory)
+    public void SpawnProjectile(GameObject target, GameObject source, int airborneTicks, Color color, string WeaponCategory, AudioClip onDestroySound)
     {
         GameObject newProjectile = Instantiate(projectile, transform.position, Quaternion.identity);
         Projectile script = newProjectile.GetComponent<Projectile>();
@@ -1205,7 +1211,11 @@ public class Combat : MonoBehaviour
             }
         }
         script.transform.localScale *= projectileSize;
-        script.onDestroySound = projectileDestroySound;
+        script.onDestroySound = onDestroySound;
+    }
+    public void SpawnProjectile(GameObject target, GameObject source, int airborneTicks, Color color, string WeaponCategory)
+    {
+        SpawnProjectile(target, source, airborneTicks, color, WeaponCategory, projectileDestroySound);
     }
 
 

@@ -46,7 +46,6 @@ public class GroundItemTile : MonoBehaviour
             {
                 groundItems[i].enabled = true;
             }
-            Debug.Log(groundItems[i].name + " " + groundItems[i].sortingOrder);
         }
     }
 }

@@ -8,9 +8,6 @@ public class PlayerAudio : MonoBehaviour
 
     [HideInInspector] public AudioSource source;
 
-    public AudioClip equipSound;
-    public AudioClip unequipSound;
-
     public AudioClip[] takeDamageSounds;
 
     public AudioClip outOfPrayerSound;
@@ -20,6 +17,13 @@ public class PlayerAudio : MonoBehaviour
 
     public AudioClip diamondBoltProcSound;
     public AudioClip rubyBoltProcSound;
+
+    public AudioClip spellSplashSound;
+
+    public AudioClip dropSound;
+    public AudioClip pickUpSound;
+
+    public AudioClip menuClickSound;
 
     private IEnumerator Start()
     {

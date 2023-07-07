@@ -35,6 +35,7 @@ public class SelectSkillsArrow : MonoBehaviour, IPointerDownHandler, IPointerUpH
     void Click()
     {
         panelScript.IncrementSkill(skillImage, up);
+        PlayerAudio.PlayClip(PlayerAudio.instance.menuClickSound);
     }
 
     public void OnPointerDown(PointerEventData pointerEventData)

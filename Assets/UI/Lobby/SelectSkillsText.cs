@@ -22,7 +22,13 @@ public class SelectSkillsText : MonoBehaviour, IPointerEnterHandler, IPointerExi
         skillText = transform.parent.name;
 
         textAction.menuTexts[0] = "Set " + skillText + " level";
+        textAction.clientAction0 += ClickSound;
         textAction.serverAction0 += OpenDialogue;
+    }
+
+    void ClickSound()
+    {
+        PlayerAudio.PlayClip(PlayerAudio.instance.menuClickSound);
     }
 
     void OpenDialogue()

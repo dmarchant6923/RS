@@ -22,8 +22,8 @@ public class ChestPanelItem : MonoBehaviour
         {
             itemAction.menuTexts[1] = "Take-10 ";
             itemAction.serverAction1 += TakeTen;
-            itemAction.menuTexts[2] = "Take-100 ";
-            itemAction.serverAction2 += TakeHundred;
+            itemAction.menuTexts[2] = "Take-1000 ";
+            itemAction.serverAction2 += TakeThousand;
         }
         itemAction.examineText = examineText;
         itemAction.serverActionExamine += itemAction.ReturnGEPrice;
@@ -38,9 +38,9 @@ public class ChestPanelItem : MonoBehaviour
     {
         TakeItem(10);
     }
-    void TakeHundred()
+    void TakeThousand()
     {
-        TakeItem(100);
+        TakeItem(1000);
     }
 
     void TakeItem(int num)
@@ -91,6 +91,8 @@ public class ChestPanelItem : MonoBehaviour
             newItem.GetComponent<BlowPipe>().numberLoaded = 2000;
         }
         Inventory.instance.PlaceInInventory(newItem);
+
+        PlayerAudio.PlayClip(PlayerAudio.instance.pickUpSound);
 
         yield return null;
 

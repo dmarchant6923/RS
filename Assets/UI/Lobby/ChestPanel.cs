@@ -166,6 +166,7 @@ public class ChestPanel : MonoBehaviour
             if (slot.GetComponentInChildren<Equipment>() != null)
             {
                 slot.GetComponentInChildren<Equipment>().DestroyEquippedItem();
+                WornEquipment.PlayEquipNoise();
             }
         }
         //UpdatePrice();

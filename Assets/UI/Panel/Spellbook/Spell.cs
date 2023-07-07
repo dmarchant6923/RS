@@ -34,6 +34,8 @@ public class Spell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public int debuffPercent;
 
     public Color projectileColor;
+    public AudioClip castSound;
+    public AudioClip damageSound;
 
     [HideInInspector] public string[] runes = new string[4];
     [HideInInspector] public int[] quantities = new int[4];

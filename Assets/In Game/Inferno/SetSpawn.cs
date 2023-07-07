@@ -75,10 +75,10 @@ public class SetSpawn : MonoBehaviour
         {
             return;
         }
-        //if (Jad && combatScript.attackCooldown <= 3)
-        //{
-        //    switchAggroOnAttack = true;
-        //}
+        if (Jad && combatScript.attackCooldown <= 3)
+        {
+            switchAggroOnAttack = true;
+        }
         else
         {
             SwitchAggro();
@@ -87,7 +87,6 @@ public class SetSpawn : MonoBehaviour
 
     void SwitchAggro()
     {
-        enemyScript.audioSource.Stop();
         enemyScript.tookDamage -= TookDamage;
         if (attackPlayer)
         {

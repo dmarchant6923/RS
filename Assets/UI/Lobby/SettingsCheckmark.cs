@@ -40,6 +40,7 @@ public class SettingsCheckmark : MonoBehaviour
     {
         check = !check;
         Check(check);
+        PlayerAudio.PlayClip(PlayerAudio.instance.menuClickSound);
     }
 
     public void Check(bool on)

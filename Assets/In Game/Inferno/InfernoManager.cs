@@ -56,6 +56,7 @@ public class InfernoManager : MonoBehaviour
         canvas = FindObjectOfType<Canvas>();
         infernoUI = UIManager.instance.infernoUI;
         infernoUI.SetActive(true);
+        LogoutButton.instance.Toggle(true);
         //newUI = Instantiate(infernoUI, canvas.transform);
         //newUI.transform.position = canvas.transform.position;
         //newUI.GetComponent<RectTransform>().sizeDelta = new Vector2(newUI.GetComponent<RectTransform>().rect.width / canvas.scaleFactor, newUI.GetComponent<RectTransform>().rect.height / canvas.scaleFactor);
@@ -196,12 +197,13 @@ public class InfernoManager : MonoBehaviour
         //Destroy(infernoUI);
         timer.text = Tools.SecondsToMinutes(0, true, true);
         infernoUI.SetActive(false);
+        LogoutButton.instance.Toggle(false);
         winPanel.gameObject.SetActive(true);
         if (Player.player.standardDeath)
         {
             GameLog.Log("Oh dear, you are dead!");
         }
-        else if (OptionManager.ignoreHiscores == false)
+        else if (OptionManager.ignoreHiscores == false && zukScript == null)
         {
             GameObject newCape = Tools.LoadFromResource("Infernal cape");
             Inventory.instance.PlaceInInventory(newCape);

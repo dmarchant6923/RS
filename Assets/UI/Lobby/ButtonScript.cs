@@ -46,6 +46,7 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerDownHan
 
     private void Start()
     {
+        buttonAction.clientAction0 += ClickSound;
         if (serverClick == false)
         {
             buttonAction.clientAction0 += ButtonClick;
@@ -59,6 +60,11 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerDownHan
             buttonAction.menuTexts[0] = actionText;
         }
         buttonAction.UpdateName();
+    }
+
+    void ClickSound()
+    {
+        PlayerAudio.PlayClip(PlayerAudio.instance.menuClickSound);
     }
 
     void ButtonClick()

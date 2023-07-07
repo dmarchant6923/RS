@@ -64,18 +64,7 @@ public class GroundItem : MonoBehaviour
         inventory = FindObjectOfType<Inventory>();
         playerScript = FindObjectOfType<Player>();
 
-        //RaycastHit2D[] castAll = Physics2D.CircleCastAll(trueTile, 0.1f, Vector2.zero, 0, LayerMask.GetMask("Ground Items"));
-        //foreach (RaycastHit2D cast in castAll)
-        //{
-        //    if (cast.collider.GetComponent<GroundItem>() != null)
-        //    {
-        //        sprite.sortingOrder--;
-        //        if (sprite.sortingOrder < -2)
-        //        {
-        //            sprite.enabled = false;
-        //        }
-        //    }
-        //}
+        PlayerAudio.PlayClip(PlayerAudio.instance.dropSound);
     }
 
     void TrueTileIndicator()
@@ -102,6 +91,8 @@ public class GroundItem : MonoBehaviour
             itemToTake = null;
 
             itemTileObject.RemoveGroundItem(GetComponent<SpriteRenderer>());
+
+            PlayerAudio.PlayClip(PlayerAudio.instance.pickUpSound);
 
             GameObject newItem;
             if (stackableItem)
