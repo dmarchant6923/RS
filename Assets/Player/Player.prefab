@@ -525,6 +525,7 @@ MonoBehaviour:
   redemptionHealSound: {fileID: 8300000, guid: d672116b70c63ae44a723d0def7ccde7, type: 3}
   diamondBoltProcSound: {fileID: 8300000, guid: e397c32baaa62a549a5f4249aab5d491, type: 3}
   rubyBoltProcSound: {fileID: 8300000, guid: 1460a25f47acd81489fb17060856d565, type: 3}
+  tridentDamageSound: {fileID: 8300000, guid: 113dbe3b90e9104449e40dbd427f9f77, type: 3}
   spellSplashSound: {fileID: 8300000, guid: dd90cebd2ea69374eb36cc94253924d7, type: 3}
   dropSound: {fileID: 8300000, guid: 4864999daa8379746a58286963db99b3, type: 3}
   pickUpSound: {fileID: 8300000, guid: 86989532e74027f4ba2052c4ea3c2dce, type: 3}

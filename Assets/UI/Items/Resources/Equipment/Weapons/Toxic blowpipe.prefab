@@ -208,6 +208,7 @@ MonoBehaviour:
   eldritchStaff: 0
   sgs: 0
   dcb: 0
+  specSound: {fileID: 8300000, guid: 8537d6a31e503e24c9305c4e2356f171, type: 3}
 --- !u!114 &6111148215138046795
 MonoBehaviour:
   m_ObjectHideFlags: 0

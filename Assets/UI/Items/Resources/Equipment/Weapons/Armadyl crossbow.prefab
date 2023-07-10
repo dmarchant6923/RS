@@ -161,3 +161,7 @@ MonoBehaviour:
   blowPipe: 0
   armadylCrossbow: 1
   zaryteCrossbow: 0
+  eldritchStaff: 0
+  sgs: 0
+  dcb: 0
+  specSound: {fileID: 8300000, guid: 35585e21f81b15349b790431e6edd6c4, type: 3}

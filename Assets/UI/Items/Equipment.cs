@@ -47,11 +47,13 @@ public class Equipment : MonoBehaviour
     public bool addAmmoRangedStats = true;
     public Color overrideProjectileColor;
     public bool canFireDragonAmmo = true;
-
+    
     [HideInInspector] public SpecialAttack spec;
 
     public AudioClip overrideAttackSound;
-    AudioClip equipSound;
+
+    public bool metalBody;
+    public bool leatherBody;
 
     private IEnumerator Start()
     {

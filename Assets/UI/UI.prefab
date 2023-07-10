@@ -226,7 +226,9 @@ MonoBehaviour:
   unarmedKick: {fileID: 2800000, guid: ab1dd1dba60474c4e9af16526255b235, type: 3}
   unarmedPunch: {fileID: 2800000, guid: 0dca333a1eb344243a17641122501b3b, type: 3}
   styleChanged: 0
-  bowAttackSound: {fileID: 0}
+  bowAttackSound: {fileID: 8300000, guid: e034b6fe5c045234e87c376ac4a169c4, type: 3}
+  thrownAttackSound: {fileID: 8300000, guid: c4bcc0cb17d53834eb72acd550297291, type: 3}
+  tridentAttackSound: {fileID: 8300000, guid: f1a93146e1278464682c64b7eb426332, type: 3}
 --- !u!1 &11746131078602850
 GameObject:
   m_ObjectHideFlags: 0
@@ -48937,6 +48939,21 @@ MonoBehaviour:
   panelOpenButton: {fileID: 1833440208289543323}
   equipSounds: []
   ignoreEquipSounds: 1
+  metalBodyBlockSounds:
+  - {fileID: 8300000, guid: 99aab200cf6727246bf6446239a0a91a, type: 3}
+  - {fileID: 8300000, guid: 1b6a6418a380a954cb4d217ae21b7573, type: 3}
+  - {fileID: 8300000, guid: 1786d2b5f985ccb4fabedcc22e0dc3fd, type: 3}
+  - {fileID: 8300000, guid: 48cadbae8dde31743bfdfcc6569603f6, type: 3}
+  - {fileID: 8300000, guid: 82d84e7e1f928004fb15db11dc277657, type: 3}
+  leatherBodyBlockSounds:
+  - {fileID: 8300000, guid: b21452402d43b934a86220dcb694edd4, type: 3}
+  - {fileID: 8300000, guid: 1fe23f7a67bf61944ab286c0a3fb2983, type: 3}
+  - {fileID: 8300000, guid: e09d5a4d2a5d7744ebf17ff395e4c959, type: 3}
+  shieldBlockSounds:
+  - {fileID: 8300000, guid: 757137f0971420149b8b414a171de732, type: 3}
+  - {fileID: 8300000, guid: ad93a38ba0b89ec4682588eac059ad7d, type: 3}
+  - {fileID: 8300000, guid: e692c12e83d654c468f60c77ce899a5f, type: 3}
+  nakedBlockSound: {fileID: 8300000, guid: 8f5d41c132670f1499eedef77d28ade3, type: 3}
 --- !u!114 &677526595305660113
 MonoBehaviour:
   m_ObjectHideFlags: 0

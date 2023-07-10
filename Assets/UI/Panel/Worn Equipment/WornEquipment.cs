@@ -105,6 +105,11 @@ public class WornEquipment : MonoBehaviour
 
     public static WornEquipment instance;
 
+    public List<AudioClip> metalBodyBlockSounds = new List<AudioClip>();
+    public List<AudioClip> leatherBodyBlockSounds = new List<AudioClip>();
+    public List<AudioClip> shieldBlockSounds = new List<AudioClip>();
+    public AudioClip nakedBlockSound;
+
     private IEnumerator Start()
     {
         headSlot = headTransform;
@@ -415,6 +420,34 @@ public class WornEquipment : MonoBehaviour
             {
                 PlayerAudio.PlayClip(instance.equipSounds[i]);
             }
+        }
+    }
+
+    public static AudioClip GetBlockNoise()
+    {
+        Debug.Log(shield + " " + body);
+        if (shield != null)
+        {
+            Debug.Log("shield noise");
+            return instance.shieldBlockSounds[Random.Range(0, instance.shieldBlockSounds.Count)];
+        }
+        else if (body != null && body.metalBody || body.leatherBody)
+        {
+            if (body.metalBody)
+            {
+                Debug.Log("metal body noise");
+                return instance.metalBodyBlockSounds[Random.Range(0, instance.metalBodyBlockSounds.Count)];
+            }
+            else
+            {
+                Debug.Log("leather noise");
+                return instance.leatherBodyBlockSounds[Random.Range(0, instance.leatherBodyBlockSounds.Count)];
+            }
+        }
+        else
+        {
+            Debug.Log("naked noise");
+            return instance.nakedBlockSound;
         }
     }
 }

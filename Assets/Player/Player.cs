@@ -353,6 +353,10 @@ public class Player : MonoBehaviour
         {
             combatScript.AddToAudioQueue(PlayerAudio.PlayerDamageNoise(), 0);
         }
+        else
+        {
+            combatScript.AddToAudioQueue(WornEquipment.GetBlockNoise(), 0);
+        }
 
         if (PlayerStats.currentHitpoints <= 0 && dead == false)
         {

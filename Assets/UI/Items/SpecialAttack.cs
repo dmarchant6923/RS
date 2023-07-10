@@ -21,6 +21,8 @@ public class SpecialAttack : MonoBehaviour
     [System.NonSerialized] public bool leech = false;
     [System.NonSerialized] public float leechPercent;
 
+    public AudioClip specSound;
+
     private void Start()
     {
         if (blowPipe)

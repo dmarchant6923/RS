@@ -173,7 +173,7 @@ public class Combat : MonoBehaviour
 
 
 
-            
+            //whether or not the weapon has special effects or if a spec is being used
             specialEffects = false;
             effects = null;
             if (WornEquipment.weapon != null && WornEquipment.weapon.GetComponent<SpecialEffects>() != null)
@@ -192,7 +192,7 @@ public class Combat : MonoBehaviour
             }
 
 
-
+            //attack roll, defense roll, and hit roll
             float maxAttRoll = PlayerAttackRoll();
             float maxDefRoll = EnemyDefenseRoll(enemyScript, AttackStyles.attackStyle);
             bool success = SuccessfulAttack(maxAttRoll, maxDefRoll);
@@ -204,7 +204,7 @@ public class Combat : MonoBehaviour
                 hitRoll = Random.Range(0, (int)maxHit + 1);
             }
 
-
+            //diamond bolts
             if (WornEquipment.diamondBoltsE)
             {
                 realDiamondBoltChance = diamondBoltProcChance;
@@ -231,6 +231,7 @@ public class Combat : MonoBehaviour
                     PlayerAudio.PlayClip(PlayerAudio.instance.diamondBoltProcSound);
                 }
             }
+            //ruby bolts
             if (WornEquipment.rubyBoltsE)
             {
                 realRubyBoltChance = rubyBoltProcChance;
@@ -261,12 +262,14 @@ public class Combat : MonoBehaviour
                 }
             }
 
+            //xp drop, dealt damage invoke
             if (hitRoll > 0)
             {
                 XPDrop.CombatXPDrop(AttackStyles.attackStyle, AttackStyles.attackType, Mathf.Min(hitRoll, enemyScript.hitpoints), enemyScript.xpMult, offensivePrayerOn);
                 playerDealtDamage?.Invoke(hitRoll);
             }
 
+            //calculating delay and spawning projectiles, using trident charge
             int delay = CalculateDelay();
             if (useSpec && specScript.customProjectile != null)
             {
@@ -290,10 +293,12 @@ public class Combat : MonoBehaviour
             }
             else if (AttackStyles.attackStyle == AttackStyles.magicStyle)
             {
-                SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, WornEquipment.weapon.GetComponent<PoweredStaff>().projectileColor, WornEquipment.weapon.weaponCategory);
+                SpawnProjectile(Player.targetedNPC.gameObject, playerScript.gameObject, delay, WornEquipment.weapon.GetComponent<PoweredStaff>().projectileColor, 
+                                WornEquipment.weapon.weaponCategory, PlayerAudio.instance.tridentDamageSound);
                 WornEquipment.weapon.GetComponent<ChargeItem>().UseCharge();
             }
 
+            //various weapon and spec effects
             if (useSpec && specScript.leech)
             {
                 PlayerStats.PlayerHeal(Mathf.CeilToInt((float)hitRoll * specScript.leechPercent));
@@ -311,9 +316,7 @@ public class Combat : MonoBehaviour
                 }
             }
 
-
-
-
+            //damage enemy, also cause autoretaliate when magic splashes
             if (AttackStyles.attackStyle == AttackStyles.magicStyle && success == false)
             {
                 if (enemyScript.autoRetaliate)
@@ -326,7 +329,7 @@ public class Combat : MonoBehaviour
                 enemyScript.AddToDamageQueue(hitRoll, delay, true, (int)maxHit);
             }
 
-
+            //using ranged ammo
             if (AttackStyles.attackStyle == AttackStyles.rangedStyle)
             {
                 if (WornEquipment.weapon.addAmmoRangedStats)
@@ -347,16 +350,24 @@ public class Combat : MonoBehaviour
                 }
             }
 
-            //sounds
-            if (WornEquipment.weapon != null && WornEquipment.weapon.overrideAttackSound != null)
+            //attack sounds
+            int soundDelay = 1;
+            if (WornEquipment.weapon != null && WornEquipment.weapon.weaponCategory == WornEquipment.poweredStaffCategory)
             {
-                AddToAudioQueue(WornEquipment.weapon.overrideAttackSound, 1);
+                soundDelay = 0;
+            }
+            if (useSpec && WornEquipment.weapon.spec.specSound != null)
+            {
+                AddToAudioQueue(WornEquipment.weapon.spec.specSound, soundDelay);
+            }
+            else if (WornEquipment.weapon != null && WornEquipment.weapon.overrideAttackSound != null)
+            {
+                AddToAudioQueue(WornEquipment.weapon.overrideAttackSound, soundDelay);
             }
             else if (AttackStyles.defaultAttackSound != null)
             {
-                AddToAudioQueue(AttackStyles.defaultAttackSound, 1);
+                AddToAudioQueue(AttackStyles.defaultAttackSound, soundDelay);
             }
-
 
             //chins and dcb spec
             if ((specialEffects && effects.chinchompa) || (useSpec && specScript.dcb))
@@ -399,13 +410,13 @@ public class Combat : MonoBehaviour
                 }
             }
 
+            //use special attack bar
             if (useSpec)
             {
                 SpecBar.instance.UseSpec();
             }
 
-
-
+            //combat info calculations
             float hitChance;
             if (maxAttRoll > maxDefRoll)
             {
@@ -1694,7 +1705,7 @@ public class Combat : MonoBehaviour
             {
                 if (audioQueue[i].soundClip == null)
                 {
-                    Debug.LogWarning("sound clip is null! object: " + this.name);
+                    //Debug.LogWarning("sound clip is null! object: " + this.name);
                 }
                 else
                 {

@@ -40,6 +40,10 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: deathSound
+      value: 
+      objectReference: {fileID: 8300000, guid: e8bc6cbbcf48da14bb065617db9b59ba, type: 3}
+    - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: meleeStyle
       value: Crush
       objectReference: {fileID: 0}
@@ -67,6 +71,10 @@ PrefabInstance:
       propertyPath: slowProjectile
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: takeDamageSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 3dda3aaf7ed2b8147996cf086566d273, type: 3}
     - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: attackSoundDelay
       value: 2

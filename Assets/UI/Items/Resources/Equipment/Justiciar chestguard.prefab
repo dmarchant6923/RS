@@ -12,6 +12,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -5194834354910527777, guid: 3b947440a119e9040b006cd247117587, type: 3}
+      propertyPath: metalBody
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5194834354910527777, guid: 3b947440a119e9040b006cd247117587, type: 3}
       propertyPath: attackMagic
       value: -40
       objectReference: {fileID: 0}

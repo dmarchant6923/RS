@@ -106,6 +106,8 @@ public class AttackStyles : MonoBehaviour
 
     public static AudioClip defaultAttackSound;
     public AudioClip bowAttackSound;
+    public AudioClip thrownAttackSound;
+    public AudioClip tridentAttackSound;
 
 
     private IEnumerator Start()
@@ -196,6 +198,7 @@ public class AttackStyles : MonoBehaviour
         }
 
         attBonus = 0; strBonus = 0; defBonus = 0; rangedBonus = 0; distanceBonus = 0; rapidBonus = 0; magicBonus = 0;
+        defaultAttackSound = null;
 
         if (WornEquipment.weapon == null)
         {
@@ -470,6 +473,8 @@ public class AttackStyles : MonoBehaviour
             {
                 attackType = longrangeType;
             }
+
+            defaultAttackSound = thrownAttackSound;
         }
         else if (category == WornEquipment.chinchompaCategory)
         {
@@ -501,6 +506,8 @@ public class AttackStyles : MonoBehaviour
             {
                 attackType = longrangeType;
             }
+
+            defaultAttackSound = thrownAttackSound;
         }
 
 
@@ -620,6 +627,8 @@ public class AttackStyles : MonoBehaviour
             {
                 attackType = longrangeType;
             }
+
+            defaultAttackSound = tridentAttackSound;
         }
         else
         {

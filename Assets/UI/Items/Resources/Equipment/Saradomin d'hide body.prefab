@@ -24,6 +24,10 @@ PrefabInstance:
       value: 55
       objectReference: {fileID: 0}
     - target: {fileID: -5194834354910527777, guid: 3b947440a119e9040b006cd247117587, type: 3}
+      propertyPath: leatherBody
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5194834354910527777, guid: 3b947440a119e9040b006cd247117587, type: 3}
       propertyPath: defenceCrush
       value: 60
       objectReference: {fileID: 0}

@@ -40,6 +40,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: deathSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 11896b085225cc043a41bcf1bb4f4467, type: 3}
+    - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: attackMagic
       value: 100
       objectReference: {fileID: 0}
@@ -59,6 +63,10 @@ PrefabInstance:
       propertyPath: defenceRange
       value: 130
       objectReference: {fileID: 0}
+    - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
+      propertyPath: takeDamageSound
+      value: 
+      objectReference: {fileID: 8300000, guid: b842dc56797e856488627e6566f40c66, type: 3}
     - target: {fileID: -3399557333580251665, guid: fa4500041fb159f43b87f86d2fd921cc, type: 3}
       propertyPath: willOverrideMaxHit
       value: 1
@@ -154,3 +162,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891366f93254a7643855c5c8607729b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jadScript: {fileID: 0}

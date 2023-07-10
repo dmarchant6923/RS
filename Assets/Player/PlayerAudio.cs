@@ -18,6 +18,8 @@ public class PlayerAudio : MonoBehaviour
     public AudioClip diamondBoltProcSound;
     public AudioClip rubyBoltProcSound;
 
+    public AudioClip tridentDamageSound;
+
     public AudioClip spellSplashSound;
 
     public AudioClip dropSound;
